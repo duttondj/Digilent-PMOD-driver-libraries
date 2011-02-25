@@ -5,7 +5,6 @@
   ../../FreeRTOS_Source/include/mpu_wrappers.h \
   ../../FreeRTOS_Source/include/task.h \
   ../../FreeRTOS_Source/include/list.h ../../spi/spi_mx4_7.h \
-  ../../FreeRTOS_Source/include/semphr.h \
+  ../../spi/spi_config.h ../../FreeRTOS_Source/include/semphr.h \
   ../../FreeRTOS_Source/include/queue.h \
-  ../../FreeRTOS_Source/portable/ISR_Support.h ./FreeRTOSConfig.h \
   ../../FreeRTOS_Source/demo_code/basic_io.h

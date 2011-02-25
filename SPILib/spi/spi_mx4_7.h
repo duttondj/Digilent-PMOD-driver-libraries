@@ -23,6 +23,7 @@
 #include <peripheral/ports.h>
 #include <peripheral/spi.h>
 #include <peripheral/system.h>
+#include "spi_config.h"
 
 
 /* ------------------------------------------------------------ */
