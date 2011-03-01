@@ -1,11 +1,12 @@
 == Introduction ==
 
-I dug around looking for answers to some of the questions regarding how libraries are linked into projects. Here is what I have found.
+I dug around looking for answers to some of the questions regarding how libraries are linked into projects. I've also include some general information just in case it would save anyone some time.
 
 ----
 == Includes ==
 
-The 
+The compiler looks for includes files in 
+   ../Microchip/MPLAB C32 Suite/pic32mx/includes
 
 ----
 
@@ -19,12 +20,18 @@ The library peripheral source is located under:
 
 I looked at the make files for these and here are some observations.
   * The makefiles were compiled under linux/unix and use extensive use of bash.
-  * All the libraries in pic32-libs are linked into chip specific .a files located at 
+  * All the libraries in pic32-libs are linked into chip specific .a files located at (where the linker finds them):
    ../Microchip/MPLAB C32 Suite/pic32mx/lib 
   * The pic32mx/includes folder is identical to the same in pic32-libs (this is the 'source' it was created from)     
  
 == Linking ==
 
-I still haven't found information on how the linker decides what to include or not. 
+I still haven't found information on how the linker decides what to include or not. We can look through the documentation or maybe try some empirical tests.
 
-The libraries .c code is separated in function-per-file chunks as we discussed last Tuesday. 
+I have confirmed that some of the libraries .c code is separated in function-per-file chunks as we discussed last Tuesday. A few observations:
+
+  * Can -  is devided into files for functionality
+  ** CANConfiguration, CANEventFunctions, CANFilterFuncations....
+  * SPI - Is divided into many files with only a few functions each
+  * I2C - is divided into functions-per-file
+  * Uart - is a single file
