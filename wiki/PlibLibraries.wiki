@@ -26,7 +26,7 @@ I looked at the make files for these and here are some observations.
  
 == Linking ==
 
-I still haven't found information on how the linker decides what to include or not. We can look through the documentation or maybe try some empirical tests.
+(From the GNU make documentation) The .a files are archive files that are staticly linked into the code. Using the GNU tools on my linux box I used the GNU archiver 'ar' to view the contents of the archive. This is the same tool microchip used to create their archive, we can (using the right flags) reproduce the same effect, by making each code unit into separate files (to create unique .o files) and linking this into our own archive.    
 
 I have confirmed that some of the libraries .c code is separated in function-per-file chunks as we discussed last Tuesday. A few observations:
 
@@ -35,3 +35,5 @@ I have confirmed that some of the libraries .c code is separated in function-per
   * SPI - Is divided into many files with only a few functions each
   * I2C - is divided into functions-per-file
   * Uart - is a single file
+
+We should use the same reasoning in our own development to determine when the reduced size merits the extra work to divide the source into discrete files vs when code will always be used together and will always be linked anyway. 
