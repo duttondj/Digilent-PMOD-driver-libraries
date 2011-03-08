@@ -2,12 +2,11 @@
 
 = Introduction =
 
-Add your content here.
+The Microchip I2C PLIB comes in two flavors. The I2C legacy  (V1.0 depreciated) and version 2.0.  
 
+= Legacy I2C =
 
-= Details =
+The Legacy I2C design 
+= I2C V2.0 =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+= I2C interrupts =
