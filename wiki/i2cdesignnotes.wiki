@@ -2,6 +2,8 @@
 
 = Introduction =
 
+Note: formatting for this wiki is different then I'm use to. I'm still working on it, sorry for the readability. 
+
 The Microchip I2C PLIB comes in two flavors. The I2C legacy  (V1.0 depreciated) and version 2.0.  
 
 See 
@@ -14,6 +16,7 @@ See
 
   * I2c Specification
 <code>[http://www.i2c-bus.org/ http://www.i2c-bus.org/]</code>
+
 = Legacy I2C =
 
 The Legacy I2C design is depreciated. Microchip suggests that projects do not use this code, it is only provided for legacy applications. 
@@ -55,6 +58,4 @@ I would like to better understand how the interrupt handling works so I can writ
 
 == I2C1 ==
 
-The I2C1 Buss already contains a number of devices. It would be useful to supply code to interact with these devices for the user. I haven't yet found out if they can be disabled. If not the total address space of I2C1 will be reduced by how IC2 interacts with the master. 
-
-
+The I2C1 already contains a number of devices. It would be useful to supply code to interact with these devices for the user. I haven't yet found out if they can be disabled. If not the total address space of I2C1 will be reduced by how IC2 interacts with the master. 
