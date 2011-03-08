@@ -27,9 +27,13 @@ I looked at the make files for these and here are some observations.
 == Linking ==
 
 
-(From the GNU make documentation) The .a files are archive files that are staticly linked into the code. Using the GNU tools on my linux box I used the GNU archiver 'ar' to view the contents of the archive. This is the same tool microchip used to create their archive, we can (using the right flags) reproduce the same effect, by making each code unit into separate files (to create unique .o files) and linking this into our own archive.    
+(From the GNU make documentation) The .a files are archive files that are staticly linked into the code. Using the GNU tools on my linux box I used the GNU archiver 'ar' to view the contents of the archive. This is the same tool microchip used to create their archive (at list from viewing the makefile), we can (using the right flags) reproduce the same effect, by making each code unit into separate files (to create unique .o files) and linking this into our own archive.    
 
 From the MPLIB Documentation
+
+Microchip provides a MPLIB program to manage libraries see the MPLIB help topics in MPLAB. It provides an IDE and command line interface to managing libraries. 
+
+MPLIB note on how objects are linked. 
   * Libraries help keep code small. Since a linker only uses the required object files contained in a library, not all object files which are contained in the library necessarily wind up in the linker's output module. 
 
 I have confirmed that some of the libraries .c code is separated in function-per-file chunks as we discussed last Tuesday. A few observations:
