@@ -5,6 +5,9 @@
 #include <peripheral/uart.h>	// Enable UARTs 1 and 2 for reception and transmission of serial data
 #include <peripheral/system.h>	// Set up the system and perihperal clocks for best performance
 
+//Local includes
+#include <UartLib/uart_config.h>	//uart_config.h file is used to setup the configuration of device/s 
+									//communicating with the UARTs.
 
 // SYSCLK = 80 MHz (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
 // PBCLK = 40 MHz
@@ -41,12 +44,6 @@ unsigned char home_cursor[] = {27, '[', 'j', '\0'};
 unsigned char wrap_line[] = {27, '[', '0', 'h', '\0'};
 
 
-
-
-//TODO::
-//ADD TO cls.h file == >>>>
-#define _UART_JE_ 0
-#define _UART_JH_ 1
 
 
 int main (void)
