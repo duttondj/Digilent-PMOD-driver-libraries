@@ -23,6 +23,7 @@
 #include <peripheral/ports.h>
 #include <peripheral/spi.h>
 #include <peripheral/system.h>
+#include<stdint.h>
 #include "spi_config.h"
 
 
@@ -67,8 +68,15 @@ typedef enum
 /*					Procedure Declarations						*/
 /* ------------------------------------------------------------ */
 
-
-void fnSPIConfigureChannelMasterNoFrames (unsigned long ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,unsigned int uSckFreq);
+void fnSPIConfigureChannelMasterForPMODSF(SPICHANNEL spiChannel,uint32_t ulClock);
+void fnSPIConfigureChannelMasterNoFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq);
+void fnSPIConfigureChannelSlaveNoFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode);
+void fnSPIConfigureChannelMasterWithFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq);
+void fnSPIConfigureChannelSlaveWithFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode);
 void fnSPIEnableDigitalPinIO(SPICHANNEL spiChannel);
 void fnSPIEnableInterrupts(void);
+void fnOpenSPI(uint16_t uConfig,uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq );
+void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulClock);
+void fnSPISetSSLow(SPICHANNEL chn);
+void fnSPISetSSHigh(SPICHANNEL chn);
 #endif

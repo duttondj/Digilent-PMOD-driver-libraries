@@ -48,13 +48,38 @@
 **	    used when transmitting to an external device such as an LCD display. 
 **      Example config with PmodCLS:  fnSPIConfigureChannelMasterNoFrames(80000000,SPI_C2,SPI_8BIT_MODE,156250);
 */
-void fnSPIConfigureChannelMasterNoFrames (unsigned long ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,unsigned int uSckFreq)
+void fnSPIConfigureChannelMasterNoFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
+{
+    uint16_t uConfig = SPI_CONFIG_MSTEN ;
+	fnOpenSPI(uConfig,ulClock,spiChannel,spiOpenMode,uSckFreq);
+}
+
+void fnSPIConfigureChannelMasterWithFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
+{
+    uint16_t uConfig = SPI_CONFIG_MSTEN | SPI_CONFIG_FRMEN;
+	fnOpenSPI(uConfig,ulClock,spiChannel,spiOpenMode,uSckFreq);
+}
+
+void fnSPIConfigureChannelSlaveWithFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode)
 {
 
- 	unsigned int uPbClk;
+    uint16_t uConfig = SPI_CONFIG_SLVEN|SPI_CONFIG_FRMEN | SPI_CONFIG_FSP_IN; 
+	fnOpenSPI(uConfig,0,spiChannel,spiOpenMode,0);
 
-	//master mode, clock edge reversed
-    unsigned int uConfig = SPI_CONFIG_MSTEN|SPI_CONFIG_CKE_REV;
+}
+
+void fnSPIConfigureChannelSlaveNoFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode)
+{
+
+    uint16_t uConfig = SPI_CONFIG_SLVEN; 
+	fnOpenSPI(uConfig,0,spiChannel,spiOpenMode,0);
+
+}
+
+void fnOpenSPI(uint16_t uConfig,uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
+{
+
+    uint16_t uPbClk;
 
 	switch(spiOpenMode)
 	{
@@ -71,10 +96,11 @@ void fnSPIConfigureChannelMasterNoFrames (unsigned long ulClock,SPICHANNEL spiCh
 			uConfig |= SPI_CONFIG_MODE32;
 			break;
 	}
-    
-	//get the peripheral bus clack
-	uPbClk = SYSTEMConfigPerformance (ulClock); 
-
+    if(ulClock > 0) //clock value of zero indicates slave
+	{
+		//get the peripheral bus clack
+		uPbClk = SYSTEMConfigPerformance (ulClock); 
+	}
 	//Enable digital IO for Cerebot32MX4
 	fnSPIEnableDigitalPinIO(spiChannel);
 	
@@ -85,7 +111,10 @@ void fnSPIConfigureChannelMasterNoFrames (unsigned long ulClock,SPICHANNEL spiCh
 		//configure and open SPI channel 1
 		SpiChnConfigure(SPI_CHANNEL1, uConfig );
 		//set the baud rate for SPI channel 1
-		SpiChnSetBrg(SPI_CHANNEL1,SpiBrgVal(uPbClk, uSckFreq));
+		if(ulClock > 0) //clock value of zero indicates slave
+		{
+			SpiChnSetBrg(SPI_CHANNEL1,SpiBrgVal(uPbClk, uSckFreq));
+		}
 		//enable SPI channel 1
 		SpiChnEnable(SPI_CHANNEL1, 1);
 	}
@@ -100,7 +129,10 @@ void fnSPIConfigureChannelMasterNoFrames (unsigned long ulClock,SPICHANNEL spiCh
 		//configure and open SPI channel 2
 		SpiChnConfigure(SPI_CHANNEL2, uConfig );
 		//set the baud rate for SPI channel 2
-		SpiChnSetBrg(SPI_CHANNEL2,SpiBrgVal(uPbClk, uSckFreq));
+		if(ulClock > 0) //clock value of zero indicates slave
+		{
+			SpiChnSetBrg(SPI_CHANNEL2,SpiBrgVal(uPbClk, uSckFreq));
+		}
 		//enable SPI channel 2
 		SpiChnEnable(SPI_CHANNEL2, 1);
 	}
@@ -193,4 +225,51 @@ void fnSPIEnableInterrupts(void)
     	INTSetVectorSubPriority(INT_SOURCE_SPI(INT_SPI2), configSPI_CHANNEL_2_INTERRUPT_SUB_PRIORITY);
 	}
 
+}
+
+
+void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulClock)
+{
+    uint16_t uConfig = SPI_CONFIG_MSTEN | SPI_CONFIG_CKE_REV;
+    fnSPIEnableDigitalPinIO(spiChannel);
+
+	fnOpenSPI(uConfig,ulClock,spiChannel,SPI_8BIT_MODE,156250);
+}
+
+void fnSPISetSSLow(SPICHANNEL chn)
+{
+	if(chn == SPI_C1)
+	{
+		PORTClearBits (IOPORT_D,BIT_9);
+	}
+	else if(chn == SPI_C2)
+	{
+		PORTClearBits (IOPORT_G, BIT_9);
+	}
+}
+
+void fnSPISetSSHigh(SPICHANNEL chn)
+{
+	if(chn == SPI_C1)
+	{
+		PORTSetBits (IOPORT_D,BIT_9);
+	}
+	else if(chn == SPI_C2)
+	{
+		PORTSetBits (IOPORT_G, BIT_9);
+	}
+}
+
+uint8_t getSPIRcvBufStatus(SPICHANNEL chn)
+{
+	if(chn == SPI_C1)
+	{
+		return SPI1STATbits.SPIRBF;
+	}
+	else if(chn == SPI_C2)
+	{
+		return SPI2STATbits.SPIRBF;
+	}
+
+    return -1;
 }
