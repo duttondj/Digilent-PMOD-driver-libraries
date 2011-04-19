@@ -38,39 +38,7 @@ int I2C_Initialize( I2C_MODULE id, UINT32 i2cClock, UINT16 address )
 	I2CEnable(id, TRUE);
 }
 
-void  write_I2C(I2C_MODULE id, UINT8 slaveAddr, UINT8 data )
-{
-	UINT8  byte;
 
-	 
-	while (!I2CBusIsIdle(id)){ DBPRINTF("Waiting on bus idle \n");}
-
-    DBPRINTF(" !writing Starting\n");
-
-    if (I2CStart(id) == I2C_SUCCESS )
-    {	// transmiter is ready to send
-	    DBPRINTF("Start sent \n");
-	    print_i2c_status(id);
-	    
-	    // sent write to slave
-	 	byte = (slaveAddr << 1)|I2C_WRITE;
-	    send(id, byte );
-	    // 24cl256 internal addr high
-	    byte = 0x00;
-	 	send(id, byte);	    
-	    // 24cl256 internal addr low
-	    byte = 0x00;
-	 	send(id, byte);	    
-	    //data
-	    byte = data;
-	 	send(id, byte);
-
-	    DBPRINTF("stop\n");
-	    I2CStop(id);
- 	}      	
-	else 
-		DBPRINTF("i2c%d failed to start", id + 1 );
-}
 
 
 void print_i2c_status( I2C_MODULE id)
@@ -130,103 +98,251 @@ void print_i2c_status( I2C_MODULE id)
 	
 }
 
-void send(I2C_MODULE id, UINT8 byte)
+UINT8 writeTo(UINT8 addr)
+{
+	return 	(addr << 1)|I2C_WRITE;
+}
+
+UINT8 readTo(UINT8 addr)
+{
+	return (addr << 1) | I2C_READ;	
+}	
+
+
+
+	
+UINT8 sendWithAck(I2C_MODULE id, UINT8 byte)
 {
 		while (!I2CTransmitterIsReady(id)){DBPRINTF("Waiting for transmitter to be ready\n");}
 				// send address and write to slave
-				I2CSendByte(id, (byte << 1)|I2C_WRITE);
-				print_i2c_status(id);
+				I2CSendByte(id, byte);
+				//print_i2c_status(id);
 				while (!I2CTransmissionHasCompleted(I2C1)){DBPRINTF("Waiting for trans to complete\n");}
 
 			 	if (I2CByteWasAcknowledged(id))
 			    {
-				   print_i2c_status(id);
+			//	   print_i2c_status(id);
 			       DBPRINTF("ack - slave responds to call\n");
+			       return 1;
 			    }
+			    return 0;
 }
 
-UINT8  eeprom_read_current_byte(I2C_MODULE id, UINT8 slaveAddr)
+
+
+int eeprom_write_address( I2C_MODULE id, UINT8 slaveAddr, UINT8 highAddr, UINT8 lowAddr, UINT8 data)
 {
-	UINT8  byte;
-//	print_i2c_status(id);
-	 
+	DBPRINTF("eeprom_write_address\n");
 	while (!I2CBusIsIdle(id)){ DBPRINTF("Waiting on bus idle \n");}
+	if (I2CStart(id) != I2C_SUCCESS )
+		return 0;
+   	
+   	// transmiter is ready to send
+    DBPRINTF("Start sent \n");
+    // send slave addr int write mode
+    if( !sendWithAck(id, (slaveAddr << 1)|I2C_WRITE ))
+    	return 0;
+	//wait for byte to be sent
+	if( !sendWithAck(id, highAddr))
+		return 0;
+	if( !sendWithAck(id, lowAddr))
+		return 0;
+	if(! sendWithAck(id, data))
+		return 0;
+	// Send stopbit
+	I2CStop(id);
+	
+	return 1;
+}
 
-    DBPRINTF(" !reading start\n");
-//    print_i2c_status(id);
-    if (I2CStart(id) == I2C_SUCCESS )
-    {	// transmiter is ready to send
-	    DBPRINTF("Start sent \n");
-//	    print_i2c_status(id);
-	    
-	    // send slave addr int write mode
-	 	byte = (slaveAddr << 1)|I2C_WRITE;
-	    send(id, byte );
-	       	    
-	 	byte = get(id);
-		
-	    DBPRINTF("stop\n");
-	    I2CStop(id);
- 	}      	
-	else
-	{ 
-		DBPRINTF("i2c%d failed to start", id + 1 );
-		return NULL;
-	}
-		
-	return byte;
-}	
 
-UINT8  eeprom_write_current_byte(I2C_MODULE id, UINT8 slaveAddr, UINT8 byte)
+UINT getNoAck( I2C_MODULE id)
 {
+	UINT8 data;
+	I2CReceiverEnable(id, TRUE);
+	while(!I2CReceivedDataIsAvailable(id)){}
+	
+//	I2CAcknowledgeByte(id, FALSE);
+	
+	data = I2CGetByte(id);
+	
+	I2CReceiverEnable(id, FALSE);
+	return data;	
+}
+
+UINT8 eeprom_read_address( I2C_MODULE id, UINT8 slaveAddr, UINT8 highAddr, UINT8 lowAddr)
+{
+	DBPRINTF("eeprom_read_address\n");
+	while (!I2CBusIsIdle(id)){ DBPRINTF("Waiting on bus idle \n");}
+	if (I2CStart(id) != I2C_SUCCESS )
+		return 0;
+   	
+   	// transmiter is ready to send
+    DBPRINTF("Start sent \n");
+    // send slave addr in write mode (to set address)
+    if( !sendWithAck(id, writeTo(slaveAddr)))
+    	return 0;
+
+	if( !sendWithAck(id, highAddr))
+		return 0;
+	if( !sendWithAck(id, lowAddr))
+		return 0;
+	// send start again (current addresss is now set on the eeprom)
+	if (I2CStart(id) != I2C_SUCCESS )
+		return 0;
+ 	 if( !sendWithAck(id, readTo(slaveAddr)))
+    	return 0;		
+   	UINT data = getNoAck(id); 
+	I2CStop(id);
+
+	return data;
+	   	
+}
+
+UINT8 eeprom_read_current( I2C_MODULE id, UINT8 slaveAddr)
+{
+	
+	
+	while (!I2CBusIsIdle(id)){ DBPRINTF("Waiting on bus idle \n");}
+	if (I2CStart(id) != I2C_SUCCESS )
+		return 0;
+   	
+   	// transmiter is ready to send
+    DBPRINTF("Start sent \n");
+    // send slave addr in write mode (to set address)
+
+ 	 if( !sendWithAck(id, readTo(slaveAddr ) ))
+    	return 0;		
+   	UINT data = getNoAck(id); 
+
+
+	return data;
+}
+
+UINT8 eeprom_set_current(I2C_MODULE id, UINT8 slaveAddr, UINT8 highAddr, UINT8 lowAddr)
+{
+	while (!I2CBusIsIdle(id)){ DBPRINTF("Waiting on bus idle \n");}
+	if (I2CStart(id) != I2C_SUCCESS )
+		return 0;
+   	
+   	// transmiter is ready to send
+    DBPRINTF("Start sent \n");
+    // send slave addr in write mode (to set address)
+    if( !sendWithAck(id, writeTo(slaveAddr)))
+    {	
+	    
+	    DBPRINTF("error sending slave addr");
+	    I2CStop(id);
+    	return 0;
+	}
+	
+	if( !sendWithAck(id, highAddr))
+	{
+		DBPRINTF("error sending high addr");
+		I2CStop(id);
+		return 0;
+	}
+	if( !sendWithAck(id, lowAddr))
+	{	
+		DBPRINTF("error sending low addr");
+		I2CStop(id);
+		return 0;
+	}
+	I2CStop(id);		
+}
+
+UINT8 eeprom_sequential_read_current(I2C_MODULE id, UINT8 slaveAddr, UINT8 count, UINT8 buffer[])
+{
+	if( count == 0) return 1;
+	
+	while (!I2CBusIsIdle(id)){ DBPRINTF("Waiting on bus idle \n");}
+	if (I2CStart(id) != I2C_SUCCESS )
+		return 0;
+   	
+   	// transmiter is ready to send
+    DBPRINTF("Start sent \n");
+    // send slave addr in write mode (to set address)
+    if( !sendWithAck(id, readTo(slaveAddr)))
+    	return 0;
+    int index;
+	for(index =0; index < count -1; index++)
+	{
+		buffer[index] = getNoAck(id);	
+		I2CAcknowledgeByte(id, TRUE);	
+	}	
+	buffer[count - 1] = getNoAck(id);	
+	
+	I2CStop(id);
+	return 1;
+}
+
+UINT8 eeprom_wait_4_ready( I2C_MODULE id, UINT8 slaveAddr)
+{
+/*Send
+Write Command
+Send Stop
+Condition to
+Initiate Write Cycle
+Send Start
+Send Control Byte
+with R/W = 0
+Did Device
+Acknowledge (ACK = 0)?
+Next Operation	
+*/
 		while (!I2CBusIsIdle(id)){ DBPRINTF("Waiting on bus idle \n");}
-		DBPRINTF("eeprom_write_current_byte starting\n");
 		
-		
-}
+		do
+		{
+			
+			I2CStart(id);
+			I2CSendByte(id, writeTo(slaveAddr));
+			//print_i2c_status(id);
+			while (!I2CTransmissionHasCompleted(I2C1)){DBPRINTF("Waiting for trans to complete\n");}
 
-UINT8  read_I2C(I2C_MODULE id, UINT8 slaveAddr)
-{
-	UINT8  byte;
-	print_i2c_status(id);
-	 
-	while (!I2CBusIsIdle(id)){ DBPRINTF("Waiting on bus idle \n");}
-
-    DBPRINTF(" !reading start\n");
-    print_i2c_status(id);
-    if (I2CStart(id) == I2C_SUCCESS )
-    {	// transmiter is ready to send
-	    DBPRINTF("Start sent \n");
-	    print_i2c_status(id);
-	    
-	    // send slave addr int write mode
-	 	byte = (slaveAddr << 1)|I2C_WRITE;
-	    send(id, byte );
-	    
-	    // send high address to write to
-	    byte = 0x00;
-	    send(id, byte );
-	    
-	    // send low address to write to
-	    byte = 0x00;
-	    send(id, byte );
-	    
-	    // send start again
-	    I2CStart(id);
-	    // send slave addr int write mode
-	 	byte = (slaveAddr << 1)|I2C_READ;
-	    send(id, byte );	 
-	       	    
-	 	byte = get(id);
-		
-	    DBPRINTF("stop\n");
-	    I2CStop(id);
- 	}      	
-	else
-	{ 
-		DBPRINTF("i2c%d failed to start", id + 1 );
-		return NULL;
-	}
-		
-	return byte;
+		} while ( !I2CByteWasAcknowledged(id));
+	I2CStop(id);
 }	
+
+
+
+
+
+	
+	
+UINT8 eeprom_sequential_write_page(I2C_MODULE id, UINT8 slaveAddr,UINT8 highAddr, UINT8 lowAddr, UINT8 count, UINT8 buffer[])
+{
+	
+	if( count > 64) return 0;
+	
+	while (!I2CBusIsIdle(id)){ DBPRINTF("Waiting on bus idle \n");}
+	if (I2CStart(id) != I2C_SUCCESS )
+		return 0;
+   	
+   	// transmiter is ready to send
+    DBPRINTF("Start sent \n");
+    // send slave addr in write mode (to set address)
+    if( !sendWithAck(id, writeTo(slaveAddr)))
+    {	
+	    DBPRINTF("writepage: error sending slave write");
+    	return 0;
+    }
+    if( !sendWithAck(id, highAddr))
+    {	
+	    DBPRINTF("writepage: error sending highaddr");
+    	return 0;
+    }
+    if( !sendWithAck(id, lowAddr))
+    {	
+	    DBPRINTF("writepage: error sending lowaddr");
+    	return 0;
+    }
+    int index;
+	for(index =0; index < count ; index++)
+	{
+		sendWithAck(id, buffer[index]);	
+	}	
+	
+	I2CStop(id);
+	return 1;
+}
