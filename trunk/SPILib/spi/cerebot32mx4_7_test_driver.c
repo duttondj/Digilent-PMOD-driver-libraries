@@ -67,3 +67,41 @@ int UNIT_spfPMOD_ReadID()
     printf("Capacity-> %x",command.ucMemCapacity);
 
 }
+
+int UNIT_sfPMODF_ReadStatusReg()
+{
+  	PMODSFCOMMAND command;
+    command.ucStatusRegister = 0;
+    command.ucSpiChannel = SPI_C2;
+	fnSPIConfigureChannelMasterForPMODSF(SPI_C2,SYSTEM_CLOCK);
+	command.ucInstruction = PMODSF_WRITE_ENABLE;
+	fnPmodSFCommandNoReturn(&command);
+	command.ucInstruction = PMODSF_READ_STATUS_REG;
+	fnPmodSFsendCommand(&command);
+	printf("Register-> %x", command.ucStatusRegister);
+	command.ucInstruction = PMODSF_WRITE_DISABLE;
+	fnPmodSFCommandNoReturn(&command);
+	command.ucInstruction = PMODSF_READ_STATUS_REG;
+	fnPmodSFsendCommand(&command);
+  	printf("Register-> %x", command.ucStatusRegister);
+
+
+}
+
+
+int UNIT_sfPMODF_WriteStatusReg()
+{
+  	PMODSFCOMMAND command;
+    command.ucStatusRegister = 0;
+    command.ucSpiChannel = SPI_C2;
+	fnSPIConfigureChannelMasterForPMODSF(SPI_C2,SYSTEM_CLOCK);
+	command.ucInstruction = PMODSF_WRITE_STATUS_REG;
+	command.ucStatusRegister = PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0;
+	fnPmodSFsendCommand(&command);
+	command.ucInstruction = PMODSF_READ_STATUS_REG;
+    command.ucStatusRegister = 0;
+	fnPmodSFsendCommand(&command);
+  	printf("Register-> %x", command.ucStatusRegister);
+
+
+}
