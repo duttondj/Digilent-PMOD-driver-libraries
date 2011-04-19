@@ -2,6 +2,7 @@
 
 void fnPmodSFsendCommand(PMODSFCOMMAND *command)
 {
+	uint8_t tempInstruction;
 	switch(command->ucInstruction)
 	{
 		case PMODSF_READ_ID:
@@ -17,11 +18,11 @@ void fnPmodSFsendCommand(PMODSFCOMMAND *command)
 			fnPmodSFReadStatusRegister(command);
 			break;
 		case PMODSF_WRITE_STATUS_REG:
-			PMODSFCOMMAND writeEnable;
-			writeEnable->ucSpiChannel = command->ucSpiChannel;
-			writeEnable->ucInstruction = PMODSF_WRITE_STATUS_REG;
-			fnPmodSFCommandNoReturn(&writeEnable);
- 			fnPmodSFWriteStatusRegister(command);
+			tempInstruction = command->ucInstruction;
+			command->ucInstruction = PMODSF_WRITE_ENABLE;
+			fnPmodSFCommandNoReturn(command); //enable write to status register
+ 			command->ucInstruction = tempInstruction;
+			fnPmodSFWriteStatusRegister(command); 
 			break;
 		case PMODSF_READ_DATA_BYTES:
 			break;
@@ -75,7 +76,7 @@ void fnPmodSFWriteStatusRegister(PMODSFCOMMAND *command)
     
 	*spiBuf= command->ucStatusRegister; //triger xfer
     while(!getSPIRcvBufStatus(command->ucSpiChannel));
-	command->ucStatusRegister = *spiBuf;   
+	ucGarbage = *spiBuf;   
 
     fnSPISetSSHigh(command->ucSpiChannel); //SS to High
 }
@@ -89,10 +90,6 @@ void fnPmodSFCommandNoReturn(PMODSFCOMMAND *command)
    *spiBuf = command->ucInstruction;
     while(!getSPIRcvBufStatus(command->ucSpiChannel));   //Wait for transfer complete
     ucGarbage = *spiBuf;                       //first byte will be garbage
-    
-	*spiBuf= command->ucStatusRegister; //triger xfer
-    while(!getSPIRcvBufStatus(command->ucSpiChannel));
-	ucGarbage = *spiBuf;   					//second byte will be garbage
 
     fnSPISetSSHigh(command->ucSpiChannel); //SS to High
 }

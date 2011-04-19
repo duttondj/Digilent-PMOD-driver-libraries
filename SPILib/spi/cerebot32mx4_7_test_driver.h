@@ -12,6 +12,8 @@
 int INTEGRATION_spiMasterSlaveNoFramesSameBoardTXRX();
 int INTEGRATION_spiMasterSlaveFramesSameBoardTXRX();
 int UNIT_spfPMOD_ReadID();
+int UNIT_sfPMODF_ReadStatusReg();
+int UNIT_sfPMODF_WriteStatusReg();
 
 
 #endif

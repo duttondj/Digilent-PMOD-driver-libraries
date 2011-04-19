@@ -10,7 +10,7 @@
 #pragma config FPLLODIV = DIV_1
 #define NUM_INTEGRATION_TEST_FUNCTIONS 2
 
-
+/*
 void integrationTests()
 {
    int intTestNum = 0;  
@@ -22,10 +22,12 @@ void integrationTests()
    }
 
 }
-
+*/
 void unitTests()
 {
-	UNIT_spfPMOD_ReadID();
+//	UNIT_spfPMOD_ReadID();
+//  UNIT_sfPMODF_ReadStatusReg();
+    UNIT_sfPMODF_WriteStatusReg();
 }
 
 
@@ -33,5 +35,5 @@ int main(void)
 {
 	//integrationTests();
 	unitTests();
-	while(1);
+//	while(1);
 }
