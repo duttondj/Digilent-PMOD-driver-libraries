@@ -53,13 +53,41 @@ void fnSPIConfigureChannelMasterNoFrames (uint32_t ulClock,SPICHANNEL spiChannel
     uint16_t uConfig = SPI_CONFIG_MSTEN ;
 	fnOpenSPI(uConfig,ulClock,spiChannel,spiOpenMode,uSckFreq);
 }
-
+/* ------------------------------------------------------------ */
+/***	fnSPIConfigureChannelMasterWithFrames
+**
+**	Synopsis:
+**
+**	Input:
+**
+**	Output:
+**      none
+**
+**	Errors:
+**		none
+**
+**	Description:
+*/
 void fnSPIConfigureChannelMasterWithFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
 {
     uint16_t uConfig = SPI_CONFIG_MSTEN | SPI_CONFIG_FRMEN;
 	fnOpenSPI(uConfig,ulClock,spiChannel,spiOpenMode,uSckFreq);
 }
-
+/* ------------------------------------------------------------ */
+/*** fnSPIConfigureChannelSlaveWithFrames 
+**
+**	Synopsis:
+**
+**	Input:
+**
+**	Output:
+**      none
+**
+**	Errors:
+**		none
+**
+**	Description:
+*/
 void fnSPIConfigureChannelSlaveWithFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode)
 {
 
@@ -67,7 +95,21 @@ void fnSPIConfigureChannelSlaveWithFrames (SPICHANNEL spiChannel, SPIOPENMODE sp
 	fnOpenSPI(uConfig,0,spiChannel,spiOpenMode,0);
 
 }
-
+/* ------------------------------------------------------------ */
+/***	fnOpenSPI
+**
+**	Synopsis:
+**
+**	Input:
+**
+**	Output:
+**      none
+**
+**	Errors:
+**		none
+**
+**	Description:
+*/
 void fnSPIConfigureChannelSlaveNoFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode)
 {
 
@@ -75,7 +117,21 @@ void fnSPIConfigureChannelSlaveNoFrames (SPICHANNEL spiChannel, SPIOPENMODE spiO
 	fnOpenSPI(uConfig,0,spiChannel,spiOpenMode,0);
 
 }
-
+/* ------------------------------------------------------------ */
+/***	fnOpenSPI
+**
+**	Synopsis:
+**
+**	Input:
+**
+**	Output:
+**      none
+**
+**	Errors:
+**		none
+**
+**	Description:
+*/
 void fnOpenSPI(uint16_t uConfig,uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
 {
 
@@ -193,7 +249,7 @@ void fnSPIEnableDigitalPinIO(SPICHANNEL spiChannel)
 }
 
 /* ------------------------------------------------------------ */
-/***	fnSPIEnableDigitalPinIO
+/***	fnSPIEnableInterrupts
 **
 **	Synopsis:
 **
@@ -227,7 +283,21 @@ void fnSPIEnableInterrupts(void)
 
 }
 
-
+/* ------------------------------------------------------------ */
+/***	 fnSPIConfigureChannelMasterForPMODCLS
+**
+**	Synopsis:
+**
+**	Input:
+**
+**	Output:
+**      none
+**
+**	Errors:
+**		none
+**
+**	Description:
+*/
 void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulClock,uint32_t ulBaud)
 {
     uint16_t uConfig = SPI_CONFIG_MSTEN | SPI_CONFIG_CKE_REV;
@@ -235,7 +305,21 @@ void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulCloc
 
 	fnOpenSPI(uConfig,ulClock,spiChannel,SPI_8BIT_MODE,ulBaud);
 }
-
+/* ------------------------------------------------------------ */
+/*** fnSPISetSSLow
+**
+**	Synopsis:
+**
+**	Input:
+**
+**	Output:
+**      none
+**
+**	Errors:
+**		none
+**
+**	Description:
+*/
 void fnSPISetSSLow(SPICHANNEL chn)
 {
 	if(chn == SPI_C1)
@@ -247,7 +331,21 @@ void fnSPISetSSLow(SPICHANNEL chn)
 		PORTClearBits (IOPORT_G, BIT_9);
 	}
 }
-
+/* ------------------------------------------------------------ */
+/***	 fnSPISetSSHigh
+**
+**	Synopsis:
+**
+**	Input:
+**
+**	Output:
+**      none
+**
+**	Errors:
+**		none
+**
+**	Description:
+*/
 void fnSPISetSSHigh(SPICHANNEL chn)
 {
 	if(chn == SPI_C1)
@@ -259,7 +357,21 @@ void fnSPISetSSHigh(SPICHANNEL chn)
 		PORTSetBits (IOPORT_G, BIT_9);
 	}
 }
-
+/* ------------------------------------------------------------ */
+/***	getSPIRcvBufStatus
+**
+**	Synopsis:
+**
+**	Input:
+**
+**	Output:
+**      none
+**
+**	Errors:
+**		none
+**
+**	Description:
+*/
 uint8_t getSPIRcvBufStatus(SPICHANNEL chn)
 {
 	if(chn == SPI_C1)

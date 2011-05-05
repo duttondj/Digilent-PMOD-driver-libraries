@@ -1,3 +1,24 @@
+/************************************************************************/
+/*                                                                      */
+/*   pmodsf.h -- Library to manipulate the Digilent PMODSF	            */
+/*                                                                      */
+/************************************************************************/
+/*	Author: 	Ryan Hoffman											*/
+/*	                                									*/
+/************************************************************************/
+/*  Module Description: 												*/
+/*                                                                      */
+/*  This file contains function definitions, data structures and        */
+/*  macros used in manipulating the Digilent PMODSF on                  */
+/*  the Digilent CEREBOT32MX4 and CEREBOT32MX7                          */
+/*                                                                      */
+/************************************************************************/
+/*  Revision History:													*/
+/*                                                                      */
+/*  5/5/2011(RyanH):                                                    */
+/*                                                                      */
+/************************************************************************/
+
 #ifndef __PMODSF_H__
 #define __PMODSF_H__
 #include <peripheral/ports.h>

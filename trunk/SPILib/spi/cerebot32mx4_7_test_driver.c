@@ -2,61 +2,6 @@
 
 
 
-
-int INTEGRATION_spiMasterSlaveNoFramesSameBoardTXRX()
-{
-	unsigned char myBuffTX[20]= "This is a test"; 
-	unsigned char myBuffRX[20]; 
-	char* txBuff = myBuffTX;
-	char* rxBuff = myBuffRX;
-    int delay = 0;
-	fnSPIConfigureChannelSlaveNoFrames (SPI_C1, SPI_8BIT_MODE );
-	fnSPIConfigureChannelMasterNoFrames (SYSTEM_CLOCK,SPI_C2,  SPI_8BIT_MODE ,156250);
-
-	while(*txBuff != '\0')
-	{
-		SpiChnPutC(SPI_CHANNEL2,*txBuff);
-		for(delay = 0;delay < 40;delay++)
-		{
-			asm("nop");
-		}
-		if(SpiChnDataRdy(SPI_CHANNEL1))
-		{
-			*rxBuff = SpiChnGetC(SPI_CHANNEL1);
-    		rxBuff++;
-    		txBuff++;
-		}
-		else
-		{
-			break;
-		}
-	}
-
-    return (strcmp(myBuffTX,myBuffRX) == 0) ? 1:0;
-
-}
-
-int INTEGRATION_spiMasterSlaveFramesSameBoardTXRX()
-{
-	unsigned char myBuffTX[20]= "This is a test"; 
-	unsigned char myBuffRX[20]; 
-	char* txBuff = myBuffTX;
-	char* rxBuff = myBuffRX;
-    int delay = 0;
-	fnSPIConfigureChannelSlaveWithFrames (SPI_C1, SPI_8BIT_MODE );
-	fnSPIConfigureChannelMasterWithFrames (SYSTEM_CLOCK,SPI_C2,  SPI_8BIT_MODE ,156250);
-
-	while(*txBuff != '\0')
-	{
-		SpiChnPutC(SPI_CHANNEL2,*txBuff);
-		*rxBuff = SpiChnGetC(SPI_CHANNEL1);
-    	rxBuff++;
-    	txBuff++;
-	}
-    return (strcmp(myBuffTX,myBuffRX) == 0) ? 1:0;
-
-}
-
 int UNIT_spfPMOD_ReadID()
 {
   	PMODSFCOMMAND command;
@@ -91,7 +36,7 @@ int UNIT_sfPMODF_ReadStatusReg()
 	fnPmodSFCommandNoReturn(&command);
 	command.ucInstruction = PMODSF_READ_STATUS_REG;
 	fnPmodSFsendCommand(&command);
-  	printf("Register-> %x", command.ucStatusRegister);
+  	putsUART1("\n\rEXECUING TEST => UNIT_sfPMODF_WriteStatusReg()\n\r ");
  	sprintf(results,"Register-> %x\n\r", command.ucStatusRegister);
 	putsUART1(results);
 
@@ -103,16 +48,21 @@ int UNIT_sfPMODF_WriteStatusReg()
 {
   	PMODSFCOMMAND command;
 	char results[1024];
+	putsUART1("\n\rEXECUING TEST => UNIT_sfPMODF_WriteStatusReg()\n\r");
     command.ucStatusRegister = 0;
     command.ucSpiChannel = SPI_C2;
 	fnSPIConfigureChannelMasterForPMODSF(SPI_C2,80000000,156250);
 	command.ucInstruction = PMODSF_WRITE_STATUS_REG;
 	command.ucStatusRegister = PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0;
+
 	fnPmodSFsendCommand(&command);
+	sprintf(results,"Write Register-> %x\n\r", command.ucStatusRegister);
+	putsUART1(results);
 	command.ucInstruction = PMODSF_READ_STATUS_REG;
     command.ucStatusRegister = 0;
 	fnPmodSFsendCommand(&command);
-  	sprintf(results,"Register-> %x\n\r", command.ucStatusRegister);
+
+  	sprintf(results,"Read Register-> %x\n\r", command.ucStatusRegister);
 	putsUART1(results);
 
 
@@ -124,7 +74,7 @@ int UNIT_sfPMODF_PageProgram()
 	PMODSFCOMMAND readCommand;
 	PMODSFCOMMAND disableBlockProtect;
 	char results[1024];
-	int numBytesToWrite = 5;
+	int numBytesToWrite = 100;
 	int i = 0;
 	memset(&pagePGMcommand,0,120);
 	memset(&readCommand,0,120);
@@ -138,14 +88,9 @@ int UNIT_sfPMODF_PageProgram()
 	disableBlockProtect.ucInstruction =  PMODSF_WRITE_STATUS_REG;
     fnPmodSFsendCommand(&disableBlockProtect);
 
-	disableBlockProtect.ucInstruction = PMODSF_READ_STATUS_REG;
-	disableBlockProtect.ucSpiChannel = SPI_C2;
-	fnPmodSFsendCommand(&disableBlockProtect);
-
-
 	//WRITE TO PMODSF address 0x0
     pagePGMcommand.ucNumBytesReadWrite = numBytesToWrite;
-	pagePGMcommand.ulWriteAddress = 0x0;
+	pagePGMcommand.ulWriteAddress = 0xA0;
 	putsUART1("\n\rEXECUING TEST => UNIT_sfPMODF_PageProgram()\n\r ");
 	sprintf(results,"Writiing %d bytes to PMODSF at %x\n\r",numBytesToWrite,pagePGMcommand.ulWriteAddress);
 	putsUART1(results);
@@ -154,7 +99,7 @@ int UNIT_sfPMODF_PageProgram()
 	pagePGMcommand.ucInstruction = PMODSF_PAGE_PGM ;
 	for(i = 0; i < numBytesToWrite;i++)
 	{
-		pagePGMcommand.data[i] = 95;// i + 'A';
+		pagePGMcommand.data[i] =  i + 'A';
 		sprintf(results,"Byte Written %d = %d\n\r",i,pagePGMcommand.data[i]);
 		putsUART1(results);
 	}
@@ -162,15 +107,19 @@ int UNIT_sfPMODF_PageProgram()
 
 	fnPmodSFsendCommand(&pagePGMcommand);
 
+
+
+
 	//READ FROM PMODSF address 0x0
 	readCommand.ucSpiChannel = SPI_C2;
 	readCommand.ucInstruction  =PMODSF_READ_DATA_BYTES;
-	readCommand.ucNumBytesReadWrite = 5;
-	readCommand.ulReadAddress = 0x0;
+	readCommand.ucNumBytesReadWrite = 100;
+	readCommand.ulReadAddress = 0xA0;
 	memset(readCommand.data,0,5);
 	fnPmodSFsendCommand(&readCommand);
 	sprintf(results,"Reading %d bytes from PMODSF from address %x\n\r",numBytesToWrite,readCommand.ulReadAddress);
 	putsUART1(results);
+	
 	for(i = 0;i < numBytesToWrite;i++)
 	{
 		sprintf(results,"Byte Read %d = %d\n\r",i,readCommand.data[i]);

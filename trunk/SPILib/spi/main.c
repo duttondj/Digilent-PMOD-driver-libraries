@@ -9,7 +9,7 @@
 #pragma config FPLLIDIV = DIV_2
 #pragma config FPBDIV = DIV_2
 #pragma config FPLLODIV = DIV_1
-#define NUM_TEST_FUNCTIONS 6
+#define NUM_TEST_FUNCTIONS 4
 
 /*
 void integrationTests()
@@ -35,8 +35,8 @@ void unitTests()
 
 int main(void)
 {
-	char *menuItems[NUM_TEST_FUNCTIONS] = {"UNIT_spfPMOD_ReadID()","UNIT_sfPMODF_ReadStatusReg()","UNIT_sfPMODF_WriteStatusReg()","UNIT_sfPMODF_PageProgram()","INTEGRATION_spiMasterSlaveNoFramesSameBoardTXRX()","INTEGRATION_spiMasterSlaveFramesSameBoardTXRX()"};
-	int (*testFunc[NUM_TEST_FUNCTIONS])(void) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatusReg,UNIT_sfPMODF_WriteStatusReg,UNIT_sfPMODF_PageProgram,INTEGRATION_spiMasterSlaveNoFramesSameBoardTXRX,INTEGRATION_spiMasterSlaveFramesSameBoardTXRX};
+	char *menuItems[NUM_TEST_FUNCTIONS] = {"UNIT_spfPMOD_ReadID()","UNIT_sfPMODF_ReadStatusReg()","UNIT_sfPMODF_WriteStatusReg()","UNIT_sfPMODF_PageProgram()"};
+	int (*testFunc[NUM_TEST_FUNCTIONS])(void) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatusReg,UNIT_sfPMODF_WriteStatusReg,UNIT_sfPMODF_PageProgram};
 	
  	SetupSerialLogging(9600);
 	
