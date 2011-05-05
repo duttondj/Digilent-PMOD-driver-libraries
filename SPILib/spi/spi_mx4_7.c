@@ -21,16 +21,49 @@
 
 #include "spi_mx4_7.h"
 
-/* ------------------------------------------------------------ */
-/***	fnSPIConfigureChannelMasterNoFrames	
+/* ------------------------------------------------------------ 
+**	fnSPIConfigureChannelMasterNoFrames	
 **
 **	Synopsis:
-**	fnSPIConfigureChannelMasterNoFrame(ulClock,uSpiNum,uBitMode,uSckFreq)
+**	fnSPIConfigureChannelMasterNoFrame(ulClock,spiChannel,spiOpenMode,uSckFreq)
 **
 **	Input:
 **        ulClock - peripheral bus clock frequency in Hz
-**        uSpiNum - spi channel number 
-**        uBitMode - transfer mode
+**        spiChannel - spi channel number 
+**        spiOpenMode - transfer mode
+**        uSckFreq - Sck frequency in MHz, see PIC32 Family Reference Manual, Sect. 23 Serial Peripheral Interface for additional information
+**
+**	Output:
+**		none
+**
+**	Errors:
+**		none
+**
+**	Description:
+**		This function configures SPI on the Digilent CEREBOT32MX4 to run in standard, master mode, no framing.
+**      Digital pin IO is setup according to the 
+**      channel selected, see the Digilent CEREBOT32MX4 or CEREBOT32MX7 reference manual for Pmod Port mappings. SCKx, SDIx, 
+**      and SDOx,and SSx are included in the digital pin IO configuration. Number of bits transmitter per clock pulse can be set
+**      with spiOpenMode, additioanlly the Sck frequency (baud rate) can be set with uSckFreq. 
+**      Example config:  fnSPIConfigureChannelMasterNoFrames(80000000,SPI_C2,SPI_8BIT_MODE,156250);
+*/
+void fnSPIConfigureChannelMasterNoFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
+{
+    uint16_t uConfig = SPI_CONFIG_MSTEN ;
+	fnOpenSPI(uConfig,ulClock,spiChannel,spiOpenMode,uSckFreq);
+}
+
+
+/* ------------------------------------------------------------ */
+/***	fnSPIConfigureChannelMasterNoFramesCERev	
+**
+**	Synopsis:
+**	fnSPIConfigureChannelMasterNoFrame(ulClock,spiChannel,spiOpenMode,uSckFreq)
+**
+**	Input:
+**        ulClock - peripheral bus clock frequency in Hz
+**        spiChannel - spi channel number 
+**        spiOpenMode - transfer mode
 **        uSckFreq - Sck frequency in MHz, see PIC32 Family Reference Manual, Sect. 23 Serial Peripheral Interface for additional information
 **
 **	Output:
@@ -44,49 +77,69 @@
 **      with the clock edge reversed (transmit from active to idle). Digital pin IO is setup according to the 
 **      channel selected, see the Digilent CEREBOT32MX4 or CEREBOT32MX7 reference manual for Pmod Port mappings. SCKx, SDIx, 
 **      and SDOx,and SSx are included in the digital pin IO configuration. Number of bits transmitter per clock pulse can be set
-**      with uBitMode, additioanlly the Sck frequency (baud rate) can be set with uSckFreq. This configuation is typically
+**      with spiOpenMode, additioanlly the Sck frequency (baud rate) can be set with uSckFreq. This configuation is typically
 **	    used when transmitting to an external device such as an LCD display. 
-**      Example config with PmodCLS:  fnSPIConfigureChannelMasterNoFrames(80000000,SPI_C2,SPI_8BIT_MODE,156250);
+**      Example config with PmodCLS:  fnSPIConfigureChannelMasterNoFramesCERev(80000000,SPI_C2,SPI_8BIT_MODE,156250);
 */
-void fnSPIConfigureChannelMasterNoFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
+void fnSPIConfigureChannelMasterNoFramesCERev (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
 {
-    uint16_t uConfig = SPI_CONFIG_MSTEN ;
+    uint16_t uConfig = SPI_CONFIG_MSTEN | SPI_CONFIG_CKE_REV  ;
 	fnOpenSPI(uConfig,ulClock,spiChannel,spiOpenMode,uSckFreq);
 }
-/* ------------------------------------------------------------ */
-/***	fnSPIConfigureChannelMasterWithFrames
+
+/* ------------------------------------------------------------ 
+**  fnSPIConfigureChannelMasterWithFrames
 **
 **	Synopsis:
+**	fnSPIConfigureChannelMasterWithFrames(ulClock,spiChannel,spiOpenMode,uSckFreq)
 **
 **	Input:
+**        ulClock - peripheral bus clock frequency in Hz
+**        spiChannel - spi channel number 
+**        spiOpenMode - transfer mode
+**        uSckFreq - Sck frequency in MHz, see PIC32 Family Reference Manual, Sect. 23 Serial Peripheral Interface for additional information
 **
 **	Output:
-**      none
+**		none
 **
 **	Errors:
 **		none
 **
 **	Description:
+**		This function configures SPI on the Digilent CEREBOT32MX4 to run in standard, master mode, with framing.
+**      Digital pin IO is setup according to the 
+**      channel selected, see the Digilent CEREBOT32MX4 or CEREBOT32MX7 reference manual for Pmod Port mappings. SCKx, SDIx, 
+**      and SDOx,and SSx are included in the digital pin IO configuration. Number of bits transmitter per clock pulse can be set
+**      with spiOpenMode, additioanlly the Sck frequency (baud rate) can be set with uSckFreq. 
+**      Example config:  fnSPIConfigureChannelMasterWithFrames(80000000,SPI_C2,SPI_8BIT_MODE,156250);
 */
 void fnSPIConfigureChannelMasterWithFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
 {
     uint16_t uConfig = SPI_CONFIG_MSTEN | SPI_CONFIG_FRMEN;
 	fnOpenSPI(uConfig,ulClock,spiChannel,spiOpenMode,uSckFreq);
 }
-/* ------------------------------------------------------------ */
-/*** fnSPIConfigureChannelSlaveWithFrames 
+/* ------------------------------------------------------------ 
+**  fnSPIConfigureChannelSlaveWithFrames
 **
 **	Synopsis:
+**	fnSPIConfigureChannelSlaveWithFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode)
 **
 **	Input:
+**        spiChannel- spi channel number 
+**        spiOpenMode - transfer mode
 **
 **	Output:
-**      none
+**		none
 **
 **	Errors:
 **		none
 **
 **	Description:
+**		This function configures SPI on the Digilent CEREBOT32MX4 to run in standard, slave mode, with framing.
+**      Digital pin IO is setup according to the channel selected, see the Digilent CEREBOT32MX4 or CEREBOT32MX7 
+**      reference manual for Pmod Port mappings. SCKx, SDIx, and SDOx,and SSx are included in the digital pin IO 
+**      configuration. Number of bits transmitter per clock pulse can be set with spiOpenMode.
+**      Example config:  fnSPIConfigureChannelSlaveWithFrames(SPI_C2,SPI_8BIT_MODE,156250);
 */
 void fnSPIConfigureChannelSlaveWithFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode)
 {
@@ -95,20 +148,29 @@ void fnSPIConfigureChannelSlaveWithFrames (SPICHANNEL spiChannel, SPIOPENMODE sp
 	fnOpenSPI(uConfig,0,spiChannel,spiOpenMode,0);
 
 }
-/* ------------------------------------------------------------ */
-/***	fnOpenSPI
+/* ------------------------------------------------------------ 
+**  fnSPIConfigureChannelSlaveNoFrames
 **
 **	Synopsis:
+**	fnSPIConfigureChannelSlaveWithFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode)
 **
 **	Input:
+**        spiChannel- spi channel number 
+**        spiOpenMode - transfer mode
 **
 **	Output:
-**      none
+**		none
 **
 **	Errors:
 **		none
 **
 **	Description:
+**		This function configures SPI on the Digilent CEREBOT32MX4 to run in standard, slave mode, without framing.
+**      Digital pin IO is setup according to the channel selected, see the Digilent CEREBOT32MX4 or CEREBOT32MX7 
+**      reference manual for Pmod Port mappings. SCKx, SDIx, and SDOx,and SSx are included in the digital pin IO 
+**      configuration. Number of bits transmitter per clock pulse can be set with spiOpenMode.
+**      Example config:  fnSPIConfigureChannelSlaveNoFrames(SPI_C2,SPI_8BIT_MODE,156250);
+** 
 */
 void fnSPIConfigureChannelSlaveNoFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode)
 {
@@ -117,12 +179,18 @@ void fnSPIConfigureChannelSlaveNoFrames (SPICHANNEL spiChannel, SPIOPENMODE spiO
 	fnOpenSPI(uConfig,0,spiChannel,spiOpenMode,0);
 
 }
-/* ------------------------------------------------------------ */
-/***	fnOpenSPI
+/* ------------------------------------------------------------ 
+**	fnOpenSPI
 **
 **	Synopsis:
-**
+**   fnOpenSPI(uint16_t uConfig,uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
 **	Input:
+**        uConfig- configuration bits for opening SPI channel, See Microchip PIC32MX Peripheral Library-> SPI->SPI Types->SpiConfigFlagsEnumeration for details
+**        ulClock - peripheral bus clock frequency in Hz
+**        spiChannel - spi channel number 
+**        spiOpenMode - transfer mode
+**        uSckFreq - Sck frequency in MHz, see PIC32 Family Reference Manual, Sect. 23 Serial Peripheral Interface for additional information
+**
 **
 **	Output:
 **      none
@@ -131,6 +199,12 @@ void fnSPIConfigureChannelSlaveNoFrames (SPICHANNEL spiChannel, SPIOPENMODE spiO
 **		none
 **
 **	Description:
+** 		This function configures SPI on the Digilent CEREBOT32MX4 Master/Slave mode based on the options passed in in uConfig
+**      as well as uClock,spiChannel,spiOpenMode and uSckFreq.
+**      Digital pin IO is setup according to the channel selected, see the Digilent CEREBOT32MX4 or CEREBOT32MX7 
+**      reference manual for Pmod Port mappings. SCKx, SDIx, and SDOx,and SSx are included in the digital pin IO 
+**      configuration. Number of bits transmitter per clock pulse can be set with spiOpenMode.
+**      Example config:  fnOpenSPI(SPI_CONFIG_MSTEN | SPI_CONFIG_FRMEN,periperalBusClockRate,SPI_C2,SPI_8BIT_MODE,156250);
 */
 void fnOpenSPI(uint16_t uConfig,uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq )
 {
@@ -202,10 +276,10 @@ void fnOpenSPI(uint16_t uConfig,uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENM
 /***	fnSPIEnableDigitalPinIO
 **
 **	Synopsis:
-**  fnSPIEnableDigitalPinIO(uSpiNum)
+**  fnSPIEnableDigitalPinIO(spiChannel)
 **
 **	Input:
-**		uSpiNum - SPI channel number
+**		spiChannel - SPI channel number
 **
 **	Output:
 **      none
@@ -262,6 +336,8 @@ void fnSPIEnableDigitalPinIO(SPICHANNEL spiChannel)
 **		none
 **
 **	Description:
+** This functionality is not totally defined yet, TODO in 
+** future release
 */
 void fnSPIEnableInterrupts(void)
 {
@@ -283,35 +359,14 @@ void fnSPIEnableInterrupts(void)
 
 }
 
-/* ------------------------------------------------------------ */
-/***	 fnSPIConfigureChannelMasterForPMODCLS
-**
-**	Synopsis:
-**
-**	Input:
-**
-**	Output:
-**      none
-**
-**	Errors:
-**		none
-**
-**	Description:
-*/
-void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulClock,uint32_t ulBaud)
-{
-    uint16_t uConfig = SPI_CONFIG_MSTEN | SPI_CONFIG_CKE_REV;
-    fnSPIEnableDigitalPinIO(spiChannel);
 
-	fnOpenSPI(uConfig,ulClock,spiChannel,SPI_8BIT_MODE,ulBaud);
-}
 /* ------------------------------------------------------------ */
 /*** fnSPISetSSLow
 **
 **	Synopsis:
-**
+**   fnSPISetSSLow(SPICHANNEL chn)
 **	Input:
-**
+**      chn - SPI channel to drive SS low
 **	Output:
 **      none
 **
@@ -319,6 +374,7 @@ void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulCloc
 **		none
 **
 **	Description:
+** Drives the SS pin low on the requested channel
 */
 void fnSPISetSSLow(SPICHANNEL chn)
 {
@@ -330,14 +386,18 @@ void fnSPISetSSLow(SPICHANNEL chn)
 	{
 		PORTClearBits (IOPORT_G, BIT_9);
 	}
+#if defined __CEREBOT32MX7__
+//TODO: MX7 code goes here
+
+#endif
 }
 /* ------------------------------------------------------------ */
-/***	 fnSPISetSSHigh
+/*** fnSPISetSSHigh
 **
 **	Synopsis:
-**
+**   fnSPISetSSHigh(SPICHANNEL chn)
 **	Input:
-**
+**      chn - SPI channel to drive SS high
 **	Output:
 **      none
 **
@@ -345,6 +405,7 @@ void fnSPISetSSLow(SPICHANNEL chn)
 **		none
 **
 **	Description:
+** Drives the SS pin high on the requested channel
 */
 void fnSPISetSSHigh(SPICHANNEL chn)
 {
@@ -356,21 +417,28 @@ void fnSPISetSSHigh(SPICHANNEL chn)
 	{
 		PORTSetBits (IOPORT_G, BIT_9);
 	}
+#if defined __CEREBOT32MX7__
+//TODO: MX7 code goes here
+
+#endif
 }
 /* ------------------------------------------------------------ */
-/***	getSPIRcvBufStatus
+/*	getSPIRcvBufStatus
 **
 **	Synopsis:
-**
+**      uint8_t getSPIRcvBufStatus(SPICHANNEL chn)
 **	Input:
-**
+**       chn -SPI channel to check RX buffer full status on 
 **	Output:
-**      none
+**      1 = Receive buffer, SPIxRXB is full
+**      0 = Receive buffer, SPIxRXB is not full
 **
 **	Errors:
-**		none
+**		-1 returned on invlalid channel
 **
 **	Description:
+**  Checks the SPI Receive Buffer Full Status bit on 
+**  the specified channel
 */
 uint8_t getSPIRcvBufStatus(SPICHANNEL chn)
 {
@@ -382,6 +450,9 @@ uint8_t getSPIRcvBufStatus(SPICHANNEL chn)
 	{
 		return SPI2STATbits.SPIRBF;
 	}
+#if defined __CEREBOT32MX7__
+//TODO: MX7 code goes here
 
+#endif
     return -1;
 }

@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*  spi_mx4_7.h  -- Wrappers for SPI Microchip PIC32 library functions    */
+/*  spi_mx4_7.h  -- Wrappers for SPI Microchip PIC32 library functions  */
 /*                                                                      */
 /************************************************************************/
 /*	Author:		Ryan Hoffman                                            */
@@ -14,7 +14,8 @@
 /************************************************************************/
 /*  Revision History:                                                   */
 /*                                                                      */
-/*	2/19/2011 (RyanH): 
+/*	2/19/2011 (RyanH):                                                  */ 
+/*  5/5/2001  (RyanH);                                                  */
 /*                                                                      */
 /************************************************************************/
 
@@ -25,13 +26,6 @@
 #include <peripheral/system.h>
 #include<stdint.h>
 #include "spi_config.h"
-
-
-/* ------------------------------------------------------------ */
-/*					Miscellaneous Declarations					*/
-/* ------------------------------------------------------------ */
-
-
 
 
 /* ------------------------------------------------------------ */
@@ -58,16 +52,12 @@ typedef enum
  SPI_8BIT_MODE = 2    //Open in 8bit transfer mode
 }SPIOPENMODE;
 
-/* ------------------------------------------------------------ */
-/*					Variable Declarations						*/
-/* ------------------------------------------------------------ */
-
 
 
 /* ------------------------------------------------------------ */
 /*					Procedure Declarations						*/
 /* ------------------------------------------------------------ */
-
+void fnSPIConfigureChannelMasterNoFramesCERev (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq );
 void fnSPIConfigureChannelMasterNoFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq);
 void fnSPIConfigureChannelSlaveNoFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode);
 void fnSPIConfigureChannelMasterWithFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq);
@@ -75,7 +65,6 @@ void fnSPIConfigureChannelSlaveWithFrames (SPICHANNEL spiChannel, SPIOPENMODE sp
 void fnSPIEnableDigitalPinIO(SPICHANNEL spiChannel);
 void fnSPIEnableInterrupts(void);
 void fnOpenSPI(uint16_t uConfig,uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq );
-void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulClock,uint32_t ulBaud);
 void fnSPISetSSLow(SPICHANNEL chn);
 void fnSPISetSSHigh(SPICHANNEL chn);
 #endif
