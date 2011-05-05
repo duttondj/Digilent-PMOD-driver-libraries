@@ -68,7 +68,6 @@ typedef enum
 /*					Procedure Declarations						*/
 /* ------------------------------------------------------------ */
 
-void fnSPIConfigureChannelMasterForPMODSF(SPICHANNEL spiChannel,uint32_t ulClock);
 void fnSPIConfigureChannelMasterNoFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq);
 void fnSPIConfigureChannelSlaveNoFrames (SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode);
 void fnSPIConfigureChannelMasterWithFrames (uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq);
@@ -76,7 +75,7 @@ void fnSPIConfigureChannelSlaveWithFrames (SPICHANNEL spiChannel, SPIOPENMODE sp
 void fnSPIEnableDigitalPinIO(SPICHANNEL spiChannel);
 void fnSPIEnableInterrupts(void);
 void fnOpenSPI(uint16_t uConfig,uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq );
-void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulClock);
+void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulClock,uint32_t ulBaud);
 void fnSPISetSSLow(SPICHANNEL chn);
 void fnSPISetSSHigh(SPICHANNEL chn);
 #endif

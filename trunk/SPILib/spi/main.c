@@ -2,13 +2,14 @@
 #include <stdio.h>
 #include <string.h>
 #include "cerebot32mx4_7_test_driver.h"
-
+#include "spi_mx4_7.h"
+#include "pmodsf.h"
 #pragma config FNOSC = PRIPLL
 #pragma config FPLLMUL = MUL_20
 #pragma config FPLLIDIV = DIV_2
 #pragma config FPBDIV = DIV_2
 #pragma config FPLLODIV = DIV_1
-#define NUM_INTEGRATION_TEST_FUNCTIONS 2
+#define NUM_TEST_FUNCTIONS 6
 
 /*
 void integrationTests()
@@ -28,12 +29,20 @@ void unitTests()
 //	UNIT_spfPMOD_ReadID();
 //  UNIT_sfPMODF_ReadStatusReg();
     UNIT_sfPMODF_WriteStatusReg();
+//UNIT_sfPMODF_PageProgram();
 }
 
 
 int main(void)
 {
-	//integrationTests();
-	unitTests();
-//	while(1);
+	char *menuItems[NUM_TEST_FUNCTIONS] = {"UNIT_spfPMOD_ReadID()","UNIT_sfPMODF_ReadStatusReg()","UNIT_sfPMODF_WriteStatusReg()","UNIT_sfPMODF_PageProgram()","INTEGRATION_spiMasterSlaveNoFramesSameBoardTXRX()","INTEGRATION_spiMasterSlaveFramesSameBoardTXRX()"};
+	int (*testFunc[NUM_TEST_FUNCTIONS])(void) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatusReg,UNIT_sfPMODF_WriteStatusReg,UNIT_sfPMODF_PageProgram,INTEGRATION_spiMasterSlaveNoFramesSameBoardTXRX,INTEGRATION_spiMasterSlaveFramesSameBoardTXRX};
+	
+ 	SetupSerialLogging(9600);
+	
+	while(1)
+	{
+		(*testFunc[ConsoleMenu(menuItems,NUM_TEST_FUNCTIONS)])();
+	}
+
 }

@@ -228,12 +228,12 @@ void fnSPIEnableInterrupts(void)
 }
 
 
-void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulClock)
+void fnSPIConfigureChannelMasterForPMODCLS(SPICHANNEL spiChannel,uint32_t ulClock,uint32_t ulBaud)
 {
     uint16_t uConfig = SPI_CONFIG_MSTEN | SPI_CONFIG_CKE_REV;
     fnSPIEnableDigitalPinIO(spiChannel);
 
-	fnOpenSPI(uConfig,ulClock,spiChannel,SPI_8BIT_MODE,156250);
+	fnOpenSPI(uConfig,ulClock,spiChannel,SPI_8BIT_MODE,ulBaud);
 }
 
 void fnSPISetSSLow(SPICHANNEL chn)
