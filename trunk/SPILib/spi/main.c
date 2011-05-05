@@ -11,27 +11,6 @@
 #pragma config FPLLODIV = DIV_1
 #define NUM_TEST_FUNCTIONS 4
 
-/*
-void integrationTests()
-{
-   int intTestNum = 0;  
-   int (*testFunction[NUM_INTEGRATION_TEST_FUNCTIONS])() = {INTEGRATION_spiMasterSlaveNoFramesSameBoardTXRX,INTEGRATION_spiMasterSlaveFramesSameBoardTXRX};
-   char *testFunctionNames[NUM_INTEGRATION_TEST_FUNCTIONS] = {"INTEGRATION_spiMasterSlaveNoFramesSameBoardTXRX","INTEGRATION_spiMasterSlaveNoFramesSameBoardTXRX"};
-   for(intTestNum = 0;intTestNum < NUM_INTEGRATION_TEST_FUNCTIONS;intTestNum++)
-   {
-        printf("Test %d: %s => %s",intTestNum,testFunctionNames[intTestNum],(testFunction[intTestNum])? "PASSED\n":"FAILED\n");
-   }
-
-}
-*/
-void unitTests()
-{
-//	UNIT_spfPMOD_ReadID();
-//  UNIT_sfPMODF_ReadStatusReg();
-    UNIT_sfPMODF_WriteStatusReg();
-//UNIT_sfPMODF_PageProgram();
-}
-
 
 int main(void)
 {

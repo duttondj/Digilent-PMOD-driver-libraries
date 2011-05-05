@@ -1,7 +1,6 @@
 #include "cerebot32mx4_7_test_driver.h"
 
 
-
 int UNIT_spfPMOD_ReadID()
 {
   	PMODSFCOMMAND command;

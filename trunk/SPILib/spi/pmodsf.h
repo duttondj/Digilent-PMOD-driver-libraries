@@ -24,7 +24,6 @@
 #include <peripheral/ports.h>
 #include <peripheral/spi.h>
 #include <stdint.h>
-#include <stdio.h> //remove, for debug use
 #include "spi_mx4_7.h"
 
 /*  Table 2 Protected Area Sizes                                                                                   
@@ -136,6 +135,11 @@
 #define PMODSF_SR_WIP  0x1  // Write In Progress Bit
 
 #define MAX_PAGE_LEN 255 //Maximum size of a page write is 256 bytes (0 - 255)
+
+/* ------------------------------------------------------------ */
+/*					Type Declarations							*/
+/* ------------------------------------------------------------ */
+
 
 /* PMODSFCOMMAND is used in all communications
 ** with the Digilient PMODSF, commands sent

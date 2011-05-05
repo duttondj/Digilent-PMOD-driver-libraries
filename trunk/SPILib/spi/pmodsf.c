@@ -13,58 +13,6 @@
 /*  For details on the operation or the PMODSF see the  instruction     */
 /*  manual for the ST MP25P16 flash memory chip, some excerpts have     */
 /*  provided for functions provided in this library                     */
-/*  Table 2 Protected Area Sizes                                        */
-/* -----------------------------------------------------------------------------------------------------------------
-/* |Status Register Content|                                     Memory Content                                    |
-/* -----------------------------------------------------------------------------------------------------------------
-/* |  BP2  |  BP1  |  BP0  |              Protected Area              |            Unprotected Area                |
-/* |----------------------------------------------------------------------------------------------------------------
-/* |   0   |   0   |   0   | none                                     | All sectors1 (32 sectors: 0 to 31)         |
-/* |   0   |   0   |   1   | Upper 32nd (Sector 31)                   | Lower 31/32nds (31 sectors: 0 to 30)       |
-/* |   0   |   1   |   0   | Upper sixteenth (two sectors: 30 and 31) | Lower 15/16ths (30 sectors: 0 to 29)       |
-/* |   0   |   1   |   1   | Upper eighth (four sectors: 28 to 31)    | Lower seven-eighths (28 sectors: 0 to 27)  |
-/* |   1   |   0   |   0   | Upper quarter (eight sectors: 24 to 31)  | Lower three-quarters (24 sectors: 0 to 23) |
-/* |   1   |   0   |   1   | Upper half (sixteen sectors: 16 to 31)   | Lower half (16 sectors: 0 to 15)           |
-/* |   1   |   1   |   0   | All sectors (32 sectors: 0 to 31)        | none                                       |
-/* |   1   |   1   |   1   | All sectors (32 sectors: 0 to 31)        | none                                       |
-/* -----------------------------------------------------------------------------------------------------------------
-/* Table 3. Memory Organization
-/* ------------------------------
-/* | Sector | Address |  Range  |
-/* ------------------------------
-/* |   31   | 1F0000h | 1FFFFFh |
-/* |   30   | 1E0000h | 1EFFFFh |
-/* |   29   | 1D0000h | 1DFFFFh |
-/* |   28   | 1C0000h | 1CFFFFh |
-/* |   27   | 1B0000h | 1BFFFFh |
-/* |   26   | 1A0000h | 1AFFFFh |
-/* |   25   | 190000h | 19FFFFh |
-/* |   24   | 180000h | 18FFFFh |
-/* |   23   | 170000h | 17FFFFh |
-/* |   22   | 160000h | 16FFFFh |
-/* |   21   | 150000h | 15FFFFh |
-/* |   20   | 140000h | 14FFFFh |
-/* |   19   | 130000h | 13FFFFh |
-/* |   18   | 120000h | 12FFFFh |
-/* |   17   | 110000h | 11FFFFh |
-/* |   16   | 100000h | 10FFFFh |
-/* |   15   | 0F0000h | 0FFFFFh |
-/* |   14   | 0E0000h | 0EFFFFh |
-/* |   13   | 0D0000h | 0DFFFFh |
-/* |   12   | 0C0000h | 0CFFFFh |
-/* |   11   | 0B0000h | 0BFFFFh |
-/* |   10   | 0A0000h | 0AFFFFh |
-/* |   9    | 090000h | 09FFFFh |
-/* |   8    | 080000h | 08FFFFh |
-/* |   7    | 070000h | 07FFFFh |
-/* |   6    | 060000h | 06FFFFh |
-/* |   5    | 050000h | 05FFFFh |
-/* |   4    | 040000h | 04FFFFh |
-/* |   3    | 030000h | 03FFFFh |
-/* |   2    | 020000h | 02FFFFh |
-/* |   1    | 010000h | 01FFFFh |
-/* |   0    | 000000h | 00FFFFh |
-/* ------------------------------
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
