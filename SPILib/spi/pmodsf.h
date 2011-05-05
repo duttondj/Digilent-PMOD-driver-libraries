@@ -29,7 +29,7 @@
 #define PMODSF_SR_WEL  0x2
 #define PMODSF_SR_WIP  0x1
 
-
+#define MAX_PAGE_LEN 256
 
 typedef struct 
 {
@@ -40,6 +40,8 @@ typedef struct
 	uint8_t ucID;
 	uint8_t ucMemType;
 	uint8_t ucMemCapacity;
+ 	uint8_t data[MAX_PAGE_LEN];
+	uint8_t ucNumBytesReadWrite;
 	SPICHANNEL ucSpiChannel;
      	
 }PMODSFCOMMAND;
@@ -47,9 +49,12 @@ typedef struct
 
 void fnPmodSFsendCommand(PMODSFCOMMAND *command);
 uint8_t fnPmodSFReadByte(SPICHANNEL channel);
-void fnSPIConfigureChannelMasterForPMODSF(SPICHANNEL spiChannel,uint32_t ulClock);
+void fnSPIConfigureChannelMasterForPMODSF(SPICHANNEL spiChannel,uint32_t ulClock,uint32_t ulBaud);
 void fnPmodSFReadID(PMODSFCOMMAND *command);
 void fnPmodSFReadStatusRegister(PMODSFCOMMAND *command);
 void fnPmodSFCommandNoReturn(PMODSFCOMMAND *command);
 void fnPmodSFWriteStatusRegister(PMODSFCOMMAND *command);
+void  fnPmodSFPageProgram(PMODSFCOMMAND *command);
+uint8_t fnGetByteFromUint32(uint32_t value,uint8_t bytePos);
+void fnPmodSFReadBytes(PMODSFCOMMAND *command);
 #endif
