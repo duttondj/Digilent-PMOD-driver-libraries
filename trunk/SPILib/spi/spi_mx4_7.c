@@ -456,3 +456,35 @@ uint8_t getSPIRcvBufStatus(SPICHANNEL chn)
 #endif
     return -1;
 }
+
+
+/* ------------------------------------------------------------ */
+/*	 fnSPIputString
+**
+**	Synopsis:
+**      void fnSPIputString(SPICHANNEL chn,char* string)
+**	Input:
+**       chn -SPI channel to send the string to
+         string - null terminated string to send to SPI channel 
+**	Output:
+**     none
+**
+**	Errors:
+**		none
+**
+**	Description:
+**  Transmits a null terminated string to the specified SPI Chanel
+*/
+void fnSPIputString(SPICHANNEL chn,char* string)
+{
+ 	uint8_t ucGarbage;
+	uint8_t *spiBuf = SpiChnBuffer(chn);
+ 	char* stringPtr = string;
+     while(*stringPtr != '\0')
+     {
+		*spiBuf = *stringPtr;
+		while(!getSPIRcvBufStatus(chn));   //Wait for transfer complete
+    	ucGarbage = *spiBuf;                       //byte will be garbage
+		stringPtr++;
+	}
+}

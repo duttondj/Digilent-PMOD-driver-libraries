@@ -67,4 +67,5 @@ void fnSPIEnableInterrupts(void);
 void fnOpenSPI(uint16_t uConfig,uint32_t ulClock,SPICHANNEL spiChannel, SPIOPENMODE spiOpenMode,uint16_t uSckFreq );
 void fnSPISetSSLow(SPICHANNEL chn);
 void fnSPISetSSHigh(SPICHANNEL chn);
+void fnSPIputString(SPICHANNEL chn,char* string);
 #endif
