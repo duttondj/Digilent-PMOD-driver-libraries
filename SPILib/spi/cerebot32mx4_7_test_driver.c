@@ -1,3 +1,22 @@
+/************************************************************************/
+/*                                                                      */
+/*   cerebot32mx4_7_test_driver.c test driver functions for SPI,PMODSF  */
+/*                                                                      */
+/************************************************************************/
+/*	Author: 	Ryan Hoffman											*/
+/*	                                									*/
+/************************************************************************/
+/*  Module Description: 												*/
+/*                                                                      */
+/*  This file contains test functions used in for the Digilent          */
+/*  PMODSF,SPI on the Digilent CEREBOT32MX4 and CEREBOT32MX7            */
+/************************************************************************/
+/*  Revision History:													*/
+/*                                                                      */
+/*  5/5/2011(RyanH):                                                    */
+/*                                                                      */
+/************************************************************************/
+
 #include "cerebot32mx4_7_test_driver.h"
 
 
@@ -103,11 +122,7 @@ int UNIT_sfPMODF_PageProgram()
 		putsUART1(results);
 	}
 	
-
 	fnPmodSFsendCommand(&pagePGMcommand);
-
-
-
 
 	//READ FROM PMODSF address 0x0
 	readCommand.ucSpiChannel = SPI_C2;
@@ -126,6 +141,28 @@ int UNIT_sfPMODF_PageProgram()
 	}
 
 }
+
+int UNIT_SPI_MasterNoFrameCKE_Rev()
+{
+	 char testString[40];
+	 char enableDisplay[] = {27, '[', '3', 'e', '\0'};
+	 char setCursor[] = {27, '[', '1', 'c', '\0'};
+	 char homeCursor[] = {27, '[', 'j', '\0'};
+ 	 char wrapLine[] = {27, '[', '0', 'h', '\0'};
+	 static uint8_t runCount = 1;
+	
+	 
+	 uint8_t byteCounter = 0;
+	 fnSPIConfigureChannelMasterNoFramesCERev(80000000,SPI_C1,SPI_8BIT_MODE,156250);
+	 fnSPIputString(SPI_C1,enableDisplay);
+     fnSPIputString(SPI_C1,setCursor);
+     fnSPIputString(SPI_C1,homeCursor);
+     fnSPIputString(SPI_C1,wrapLine);
+	 sprintf(testString,"Test run #%d",runCount);
+     fnSPIputString(SPI_C1,testString);
+     runCount++;
+}
+
 
 int SetupSerialLogging(unsigned int baud_rate)
 {
@@ -200,3 +237,5 @@ int ConsoleMenu(char *testNames[],int numCommands)
 	return selection;
 
 }
+
+
