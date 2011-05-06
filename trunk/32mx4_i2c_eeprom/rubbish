@@ -1,0 +1,46 @@
+
+UINT8  read_I2C(I2C_MODULE id, UINT8 slaveAddr)
+{
+	UINT8  byte;
+	print_i2c_status(id);
+	 
+	while (!I2CBusIsIdle(id)){ DBPRINTF("Waiting on bus idle \n");}
+
+    DBPRINTF(" !reading start\n");
+    print_i2c_status(id);
+    if (I2CStart(id) == I2C_SUCCESS )
+    {	// transmiter is ready to send
+	    DBPRINTF("Start sent \n");
+	    print_i2c_status(id);
+	    
+	    // send slave addr int write mode
+	 	byte = (slaveAddr << 1)|I2C_WRITE;
+	    send(id, byte );
+	    
+	    // send high address to write to
+	    byte = 0x00;
+	    send(id, byte );
+	    
+	    // send low address to write to
+	    byte = 0x00;
+	    send(id, byte );
+	    
+	    // send start again
+	    I2CStart(id);
+	    // send slave addr int write mode
+	 	byte = (slaveAddr << 1)|I2C_READ;
+	    send(id, byte );	 
+	       	    
+	 	byte = get(id);
+		
+	    DBPRINTF("stop\n");
+	    I2CStop(id);
+ 	}      	
+	else
+	{ 
+		DBPRINTF("i2c%d failed to start", id + 1 );
+		return NULL;
+	}
+		
+	return byte;
+}	
