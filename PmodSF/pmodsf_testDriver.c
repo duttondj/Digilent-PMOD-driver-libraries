@@ -20,89 +20,63 @@
 #include "pmodsf_testDriver.h"
 
 
-int UNIT_spfPMOD_DPD_Release()
+uint8_t UNIT_spfPMOD_DPD_Release(uint8_t chn)
 {
 	char results[128];
 	putsUART1("\n\rEXECUING TEST => UNIT_spfPMOD_DPD_Release()\n\r ");
 	putsUART1("Entering Deep Power Down\n\r");
-
-	PmodSFDeepPowerDown(2);
+	BlockWhileWriteInProgress(chn);
+	PmodSFDeepPowerDown(chn);
 	putsUART1("Exiting Deep Power Down\n\r");
-	sprintf(results,"Exited deep power down with signature => %x\n\r",PmodSFDeepPowerDownRelease(2));
+	sprintf(results,"Exited deep power down with signature => %x\n\r",PmodSFDeepPowerDownRelease(chn));
 	putsUART1(results);
 }
 
-int UNIT_spfPMOD_ReadID()
+uint8_t UNIT_spfPMOD_ReadID(uint8_t chn)
 {
-/*
-  	PMODSFCOMMAND command;
-	char outPut[255];
-    command.ucID = command.ucMemType = command.ucMemCapacity = 0;
-    fnSPIConfigureChannelMasterForPMODSF(SPI_C2,80000000,156250);
-	command.ucInstruction = PMODSF_READ_ID;
-	command.ucSpiChannel = SPI_C2;
-	fnPmodSFsendCommand(&command);
-    putsUART1("\n\rEXECUING TEST => UNIT_spfPMOD_ReadID()\n\r");
-	sprintf(outPut,"ID-> %x\n\r", command.ucID);
-	putsUART1(outPut);
-    sprintf(outPut,"Type-> %x\n\r",command.ucMemType);
-	putsUART1(outPut);
-    sprintf(outPut,"Capacity-> %x\n\r",command.ucMemCapacity);
-	putsUART1(outPut);
-*/
-}
-
-int UNIT_sfPMODF_ReadStatusReg()
-{
-/*
-  	PMODSFCOMMAND command;
-	char results[1024];
-    command.ucStatusRegister = 0;
-    command.ucSpiChannel = SPI_C2;
-	fnSPIConfigureChannelMasterForPMODSF(SPI_C2,80000000,156250);
-	command.ucInstruction = PMODSF_WRITE_ENABLE;
-	fnPmodSFCommandNoReturn(&command);
-	command.ucInstruction = PMODSF_READ_STATUS_REG;
-	fnPmodSFsendCommand(&command);
-	printf("Register-> %x", command.ucStatusRegister);
-	command.ucInstruction = PMODSF_WRITE_DISABLE;
-	fnPmodSFCommandNoReturn(&command);
-	command.ucInstruction = PMODSF_READ_STATUS_REG;
-	fnPmodSFsendCommand(&command);
-  	putsUART1("\n\rEXECUING TEST => UNIT_sfPMODF_WriteStatusReg()\n\r ");
- 	sprintf(results,"Register-> %x\n\r", command.ucStatusRegister);
+	uint32_t pmodSFID = 0;
+	char results[128];
+	putsUART1("\n\rEXECUING TEST =>  UNIT_spfPMOD_ReadID()\n\r ");
+    pmodSFID = PmodSFReadID(chn);
+	sprintf(results,"MFID: 0x%x\n\r Type: 0x%x\n\r Capacity: 0x%x\n\r",	
+             fnGetByteFromUint32(pmodSFID,PMODSD_MFID_BYTE),
+             fnGetByteFromUint32(pmodSFID,PMODSD_MEM_TYPE_BYTE),
+             fnGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE));
 	putsUART1(results);
 
-*/
+}
+
+uint8_t UNIT_sfPMODF_ReadStatusReg(uint8_t chn)
+{
+	uint8_t pmodStatusReg = 0;
+	char results[128];
+	putsUART1("\n\rEXECUING TEST =>  UNIT_sfPMODF_ReadStatusReg()\n\r ");
+    BlockWhileWriteInProgress(chn);
+	pmodStatusReg =  PmodSFReadStatusRegister(chn);
+	sprintf(results,"Status Register: 0x%x\n\r",pmodStatusReg);	
+	putsUART1(results);
 }
 
 
-int UNIT_sfPMODF_WriteStatusReg()
+uint8_t UNIT_sfPMODF_ReadWriteStatusReg(uint8_t chn)
 {
-/*
-  	PMODSFCOMMAND command;
-	char results[1024];
+	char results[128];
 	putsUART1("\n\rEXECUING TEST => UNIT_sfPMODF_WriteStatusReg()\n\r");
-    command.ucStatusRegister = 0;
-    command.ucSpiChannel = SPI_C2;
-	fnSPIConfigureChannelMasterForPMODSF(SPI_C2,80000000,156250);
-	command.ucInstruction = PMODSF_WRITE_STATUS_REG;
-	command.ucStatusRegister = PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0;
-
-	fnPmodSFsendCommand(&command);
-	sprintf(results,"Write Register-> %x\n\r", command.ucStatusRegister);
-	putsUART1(results);
-	command.ucInstruction = PMODSF_READ_STATUS_REG;
-    command.ucStatusRegister = 0;
-	fnPmodSFsendCommand(&command);
-
-  	sprintf(results,"Read Register-> %x\n\r", command.ucStatusRegister);
-	putsUART1(results);
-*/
-
+	putsUART1("Setting bits for PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0\r\n");
+	BlockWhileWriteInProgress(chn);
+	PmodSFWriteStatusRegister(chn,0);//clear status register
+	BlockWhileWriteInProgress(chn);
+	PmodSFSetConfigRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
+	BlockWhileWriteInProgress(chn);
+	UNIT_sfPMODF_ReadStatusReg(chn);
+	putsUART1("Clearing bits for PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0\r\n");
+    BlockWhileWriteInProgress(chn);
+	PmodSFClearConfigRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
+	BlockWhileWriteInProgress(chn);
+	UNIT_sfPMODF_ReadStatusReg(chn);
 }
 
-int UNIT_sfPMODF_PageProgram()
+uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn)
 {
 	uint8_t statusReg = 0;
 	char results[1024];
@@ -111,8 +85,10 @@ int UNIT_sfPMODF_PageProgram()
 	unsigned int address= 0x010000;
 	unsigned char data[255];
 	memset(data,0,255);
-	PmodSFDisableBlockProtection(2,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
-    PmodSFSectorErase(2,address);
+	PmodSFClearConfigRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
+	BlockWhileWriteInProgress(chn);    
+	PmodSFSectorErase(chn,address);
+	BlockWhileWriteInProgress(chn);
 	putsUART1("\n\rEXECUING TEST => UNIT_sfPMODF_PageProgram()\n\r ");
 	sprintf(results,"Writiing %d bytes to PMODSF at %x\n\r",numBytesToWrite,address);
 	putsUART1(results);
@@ -122,16 +98,17 @@ int UNIT_sfPMODF_PageProgram()
 		sprintf(results,"Byte Written %d = %d\n\r",i,data[i]);
 		putsUART1(results);
 	}
-	statusReg =  PmodSFReadStatusRegister(2);
-	PmodSFPageProgram(2,numBytesToWrite,data,address);
+	statusReg =  PmodSFReadStatusRegister(chn);
+	BlockWhileWriteInProgress(chn);
+	PmodSFPageProgram(chn,numBytesToWrite,data,address);
 
 	//READ FROM PMODSF address 0x0
 
 	sprintf(results,"Reading %d bytes from PMODSF from address %x\n\r",numBytesToWrite,address);
 	putsUART1(results);
 	memset(data,0,255);
-   
-    PmodSFReadBytes(2,numBytesToWrite,data,address);
+    BlockWhileWriteInProgress(chn);
+    PmodSFReadBytes(chn,numBytesToWrite,data,address);
 	for(i = 0;i < numBytesToWrite;i++)
 	{
 		sprintf(results,"Byte Read %d = %d\n\r",i,data[i]);
@@ -143,7 +120,7 @@ int UNIT_sfPMODF_PageProgram()
 
 
 
-int SetupSerialLogging(unsigned int baud_rate,unsigned int pbClock)
+uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock)
 {
 	// UART 1 port pins - connected to PC
 	/* JE-01 CN20/U1CTS/RD14 		RD14
@@ -158,7 +135,7 @@ int SetupSerialLogging(unsigned int baud_rate,unsigned int pbClock)
 
 }
 
-int getIntegerFromConsole()
+uint8_t getIntegerFromConsole()
 {
 		char recievedChars[10];
 		char oneChar;
@@ -187,7 +164,7 @@ int getIntegerFromConsole()
 	
 }
 
-int ConsoleMenu(char *testNames[],int numCommands)
+uint8_t ConsoleMenu(char *testNames[],uint32_t numCommands)
 {
 	int selection;
 	char menuItem[100];
@@ -217,3 +194,7 @@ int ConsoleMenu(char *testNames[],int numCommands)
 }
 
 
+uint8_t fnGetByteFromUint32(uint32_t value,uint8_t bytePos)
+{
+	return value >> (bytePos * 8) & 255;
+}

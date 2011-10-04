@@ -28,14 +28,15 @@
 #include <peripheral/system.h>	// Set up the system and perihperal clocks for best performance
 #include "pmodsf.h"
 
-int UNIT_spfPMOD_DPD_Release();
-int UNIT_spfPMOD_ReadID();
-int UNIT_sfPMODF_ReadStatusReg();
-int UNIT_sfPMODF_WriteStatusReg();
-int UNIT_sfPMODF_PageProgram();
-int SetupSerialLogging(unsigned int baud_rate,unsigned int pbClock);
-int ConsoleMenu(char *testNames[],int numCommands);
-int getIntegerFromConsole();
+uint8_t UNIT_spfPMOD_DPD_Release(uint8_t chn);
+uint8_t UNIT_spfPMOD_ReadID(uint8_t chn);
+uint8_t UNIT_sfPMODF_ReadStatusReg(uint8_t chn);
+uint8_t  UNIT_sfPMODF_ReadWriteStatusReg(uint8_t chn);
+uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn);
+uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock);
+uint8_t ConsoleMenu(char *testNames[],uint32_t numCommands);
+uint8_t getIntegerFromConsole();
+uint8_t fnGetByteFromUint32(uint32_t value,uint8_t bytePos);
 
 
 #endif
