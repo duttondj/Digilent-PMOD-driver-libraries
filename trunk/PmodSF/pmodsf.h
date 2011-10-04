@@ -27,7 +27,7 @@
 #include <peripheral/system.h>
 #include "cerebotboards.h"
 
-/*  Table 2 Protected Area Sizes                                                                                   
+/*  Table 2 Protected Area Sizes (PMODSF-16)                                                                                  
 ** -----------------------------------------------------------------------------------------------------------------
 ** |Status Register Content|                                     Memory Content                                    |
 ** -----------------------------------------------------------------------------------------------------------------
@@ -42,7 +42,22 @@
 ** |   1   |   1   |   0   | All sectors (32 sectors: 0 to 31)        | none                                       |
 ** |   1   |   1   |   1   | All sectors (32 sectors: 0 to 31)        | none                                       |
 ** -----------------------------------------------------------------------------------------------------------------
-** Table 3. Memory Organization
+**  Table 2 Protected Area Sizes (PMODSF-128)                                                                                  
+** -----------------------------------------------------------------------------------------------------------------
+** |Status Register Content|                                     Memory Content                                    |
+** -----------------------------------------------------------------------------------------------------------------
+** |  BP2  |  BP1  |  BP0  |              Protected Area              |            Unprotected Area                |
+** |----------------------------------------------------------------------------------------------------------------
+** |   0   |   0   |   0   | none                                     | All sectors(0 to 63)                       |
+** |   0   |   0   |   1   | Upper 64th (1 Sector, 2Mb)               | Sectors: 0 to 62                           |
+** |   0   |   1   |   0   | Upper 32nd (2 Sectors, 4 Mb)             | Sectors: 0 to 61)                          | 
+** |   0   |   1   |   1   | Upper 16th (4 sectors, 8 Mb)             | Sectors: 0 to 59)                          |
+** |   1   |   0   |   0   | Upper 8th  (8 sectors, 16 Mb)            | Sectors: 0 to 55)                          |
+** |   1   |   0   |   1   | Upper 1/4  (16 sectors, 32 Mb)           | Sectors: 0 to 47)                          |
+** |   1   |   1   |   0   | Upper 1/2  (32 sectors, 64 Mb)           | Sectors: 0 to 31)                          |
+** |   1   |   1   |   1   | All sectors (64 sectors, 128 Mb)         | none                                       |
+** -----------------------------------------------------------------------------------------------------------------
+** Table 3. Memory Organization (PMODSF-16)
 ** ------------------------------
 ** | Sector | Address |  Range  |
 ** ------------------------------
@@ -79,8 +94,77 @@
 ** |   1    | 010000h | 01FFFFh |
 ** |   0    | 000000h | 00FFFFh |
 ** ------------------------------
-*/
-/* ----------------------------------------------------------------------------------------------------------------------------
+** Table 3. Memory Organization (PMODSF-128)
+** ------------------------------
+** | Sector | Address |  Range  |
+** ------------------------------
+** |   63   | FC0000h | FFFFFFh |
+** |   62   | F80000h | FBFFFFh |
+** |   61   | F40000h | F7FFFFh |
+** |   60   | F00000h | F3FFFFh |
+** |   59   | EC0000h | EFFFFFh |
+** |   58   | E80000h | EBFFFFh |
+** |   57   | E40000h | E7FFFFh |
+** |   56   | E00000h | E3FFFFh |
+** |   55   | DC0000h | DFFFFFh |
+** |   54   | D80000h | DBFFFFh |
+** |   53   | D40000h | D7FFFFh |
+** |   52   | D00000h | D3FFFFh |
+** |   51   | CC0000h | CFFFFFh |
+** |   50   | C80000h | CBFFFFh |
+** |   49   | C40000h | C7FFFFh |
+** |   48   | C00000h | C3FFFFh |
+** |   47   | BC0000h | BFFFFFh |
+** |   46   | B80000h | BBFFFFh |
+** |   45   | B40000h | B7FFFFh |
+** |   44   | B00000h | B3FFFFh |
+** |   43   | AC0000h | AFFFFFh |
+** |   42   | A80000h | ABFFFFh |
+** |   41   | A40000h | A7FFFFh |
+** |   40   | A00000h | A3FFFFh |
+** |   39   | 9C0000h | 9FFFFFh |
+** |   38   | 980000h | 9BFFFFh |
+** |   37   | 940000h | 97FFFFh |
+** |   36   | 900000h | 93FFFFh |
+** |   35   | 8C0000h | 8FFFFFh |
+** |   34   | 880000h | 8BFFFFh |
+** |   33   | 840000h | 87FFFFh |
+** |   32   | 800000h | 83FFFFh |
+** |   31   | 7C0000h | 7FFFFFh |
+** |   30   | 780000h | 7BFFFFh |
+** |   29   | 740000h | 77FFFFh |
+** |   28   | 700000h | 73FFFFh |
+** |   27   | 6C0000h | 6FFFFFh |
+** |   26   | 680000h | 6BFFFFh |
+** |   25   | 640000h | 67FFFFh |
+** |   24   | 600000h | 63FFFFh |
+** |   23   | 5C0000h | 5FFFFFh |
+** |   22   | 580000h | 5BFFFFh |
+** |   21   | 540000h | 57FFFFh |
+** |   20   | 500000h | 53FFFFh |
+** |   19   | 4C0000h | 4FFFFFh |
+** |   18   | 480000h | 4BFFFFh |
+** |   17   | 440000h | 47FFFFh |
+** |   16   | 400000h | 43FFFFh |
+** |   15   | 3C0000h | 3FFFFFh |
+** |   14   | 380000h | 3BFFFFh |
+** |   13   | 340000h | 37FFFFh |
+** |   12   | 300000h | 33FFFFh |
+** |   11   | 2C0000h | 2FFFFFh |
+** |   10   | 280000h | 2BFFFFh |
+** |    9   | 240000h | 27FFFFh |
+** |    8   | 200000h | 23FFFFh |
+** |    7   | 1C0000h | 1FFFFFh |
+** |    6   | 180000h | 1BFFFFh |
+** |    5   | 140000h | 17FFFFh |
+** |    4   | 100000h | 13FFFFh |
+** |    3   | 0C0000h | 0FFFFFh |
+** |    2   | 080000h | 0BFFFFh |
+** |    1   | 040000h | 07FFFFh |
+** |    0   | 000000h | 03FFFFh |
+** ------------------------------
+
+** ----------------------------------------------------------------------------------------------------------------------------
 ** |                                                    PMODSF INSTRUCTION SET                                                |
 ** ----------------------------------------------------------------------------------------------------------------------------
 ** |                           |                                            |                          |Address|Dummy|  Data  |
@@ -135,7 +219,13 @@
 #define PMODSF_SR_WEL  0x2  // Write Enable Latch Bit
 #define PMODSF_SR_WIP  0x1  // Write In Progress Bit
 
-#define PAGE_LEN 255 //Maximum size of a page write is 256 bytes (0 - 255)
+#define PMOD_SF_PAGE_LEN 255 //Maximum size of a page write is 256 bytes (0 - 255)
+enum
+{
+	PMODSD_MEM_CAPACITY_BYTE,
+	PMODSD_MEM_TYPE_BYTE,
+	PMODSD_MFID_BYTE,
+};
 
 typedef struct
 {
@@ -145,8 +235,16 @@ typedef struct
 
 static const SpiPortSS SpiIO[] = {
 	{0,0},
+#if defined __CEREBOT32MX4__
 	{IOPORT_D,BIT_9},
 	{IOPORT_G,BIT_9}
+#endif
+#if defined __CEREBOT32MX7__
+	{IOPORT_D,BIT_9},
+	{0,0},
+	{IOPORT_F,BIT_12}
+
+#endif
 };
 
 
@@ -163,8 +261,8 @@ void PmodSFBulkErase(SpiChannel chn);
 void BlockWhileWriteInProgress(SpiChannel chn);
 static void fnPmodSFSendCommand(SpiChannel chn,uint8_t command);
 static uint8_t fnGetByteFromUint32(uint32_t value,uint8_t bytePos);
-void PmodSFEnableleBlockProtection(SpiChannel chn,uint8_t blockMask);
-void PmodSFDisableBlockProtection(SpiChannel chn,uint8_t blockMask);
+void PmodSFClearConfigRegBits(SpiChannel chn,uint8_t bitMask);
+void PmodSFSetConfigRegBits(SpiChannel chn,uint8_t bitMask);
 void PmodSFSectorErase(SpiChannel chn,uint8_t address);
 uint8_t PmodSFDeepPowerDownRelease(SpiChannel chn);
 void PmodSFDeepPowerDown(SpiChannel chn);

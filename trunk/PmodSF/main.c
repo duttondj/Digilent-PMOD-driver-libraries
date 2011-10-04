@@ -25,6 +25,7 @@
 #include <peripheral/spi.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "pmodsf_testDriver.h"
 #include "pmodsf.h"
 #pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2
@@ -44,15 +45,18 @@
 
 int main(void)
 {
-	char *menuItems[NUM_TEST_FUNCTIONS] = {"UNIT_spfPMOD_ReadID()","UNIT_sfPMODF_ReadStatusReg()","UNIT_sfPMODF_WriteStatusReg()","UNIT_sfPMODF_PageProgram()","UNIT_spfPMOD_DPD_Release()"};
-	int (*testFunc[NUM_TEST_FUNCTIONS])(void) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatusReg,UNIT_sfPMODF_WriteStatusReg,UNIT_sfPMODF_PageProgram,UNIT_spfPMOD_DPD_Release};
-	
-	PmodSFInit(2,PB_CLOCK,PMODSF_BITRATE);
- 	SetupSerialLogging(9600,PB_CLOCK);
+	uint8_t channel = 0;
+	char *menuItems[NUM_TEST_FUNCTIONS] = {"UNIT_spfPMOD_ReadID()","UNIT_sfPMODF_ReadStatusReg()","UNIT_sfPMODF_ReadWriteStatusReg","UNIT_sfPMODF_PageProgram()","UNIT_spfPMOD_DPD_Release()"};
+	uint8_t (*testFunc[NUM_TEST_FUNCTIONS])(uint8_t) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatusReg,UNIT_sfPMODF_ReadWriteStatusReg,UNIT_sfPMODF_PageProgram,UNIT_spfPMOD_DPD_Release};
+	SetupSerialLogging(9600,PB_CLOCK);
+	putsUART1("\r\nPmodSF SPI port=>");
+	channel =  getIntegerFromConsole();
+	PmodSFInit(channel,PB_CLOCK,PMODSF_BITRATE);
+ 	
 	
 	while(1)
 	{
-		(*testFunc[ConsoleMenu(menuItems,NUM_TEST_FUNCTIONS)])();
+		(*testFunc[ConsoleMenu(menuItems,NUM_TEST_FUNCTIONS)])(channel);
 	}
 
 }

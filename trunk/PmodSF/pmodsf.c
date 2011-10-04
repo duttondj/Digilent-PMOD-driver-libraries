@@ -110,14 +110,10 @@ uint32_t PmodSFReadID(SpiChannel chn)
 }
 
 void PmodSFSectorErase (SpiChannel chn,uint8_t address)
-{
-	BlockWhileWriteInProgress(chn);
-	
+{	
 	PmodSFWriteEnable(chn);
 	
 	fnPmodSFSendCommand(chn,PMODSF_SECTOR_ERASE);
-	
-	BlockWhileWriteInProgress(chn);
 }
 
 
@@ -201,8 +197,7 @@ void PmodSFPageProgram(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t ad
 {
 	int8_t byteCounter = 0;
 	uint8_t statusReg = 0;
-    BlockWhileWriteInProgress(chn);
-	
+  	
 	PmodSFWriteEnable(chn);
 
 	PmodSFSetSSLow(chn); //SS to low 
@@ -226,8 +221,6 @@ void PmodSFPageProgram(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t ad
 	}
 
 	PmodSFSetSSHigh(chn); //SS to High
- 	
-	BlockWhileWriteInProgress(chn);
 }
 
 /** PmodSFReadBytes
@@ -275,9 +268,7 @@ void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t addr
 {
 	
    int8_t byteCounter = 0;
-	
-   BlockWhileWriteInProgress(chn);
-
+   
 	//SEND COMMAND FOR PAGE PROGRAM OPERATION
 	PmodSFSetSSLow(chn); //SS to low 
 	SpiChnPutC(chn,PMODSF_READ_DATA_BYTES); //send page read databytes command
@@ -332,33 +323,28 @@ uint8_t PmodSFReadStatusRegister(SpiChannel chn)
 
 void PmodSFBulkErase(SpiChannel chn)
 {
-	BlockWhileWriteInProgress(chn);
-	
 	PmodSFWriteEnable(chn);
 	
 	fnPmodSFSendCommand(chn,PMODSF_BULK_ERASE);
-
-	BlockWhileWriteInProgress(chn);
-
 }
 
-void PmodSFEnableleBlockProtection(SpiChannel chn,uint8_t blockMask)
+void PmodSFSetConfigRegBits(SpiChannel chn,uint8_t bitMask)
 {
     uint8_t statusReg = 0;
 	
 	statusReg = PmodSFReadStatusRegister(chn);
-	statusReg |= blockMask;
+	statusReg |= bitMask;
 	PmodSFWriteEnable(chn);
 	PmodSFWriteStatusRegister(chn,statusReg);
 	
 }
 
-void PmodSFDisableBlockProtection(SpiChannel chn,uint8_t blockMask)
+void PmodSFClearConfigRegBits(SpiChannel chn,uint8_t bitMask)
 {
     uint8_t statusReg = 0;
 	
 	statusReg = PmodSFReadStatusRegister(chn);
-	statusReg &= ~blockMask;
+	statusReg &= ~bitMask;
 	PmodSFWriteEnable(chn);
 	PmodSFWriteStatusRegister(chn,statusReg);
 	
