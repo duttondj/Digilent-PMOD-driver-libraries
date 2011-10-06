@@ -25,9 +25,10 @@ uint8_t UNIT_spfPMOD_DPD_Release(uint8_t chn)
 	char results[128];
 	putsUART1("\n\rEXECUING TEST => UNIT_spfPMOD_DPD_Release()\n\r ");
 	putsUART1("Entering Deep Power Down\n\r");
-	BlockWhileWriteInProgress(chn);
+
 	PmodSFDeepPowerDown(chn);
 	putsUART1("Exiting Deep Power Down\n\r");
+	BlockWhileWriteInProgress(chn);
 	sprintf(results,"Exited deep power down with signature => %x\n\r",PmodSFDeepPowerDownRelease(chn));
 	putsUART1(results);
 }
@@ -51,7 +52,7 @@ uint8_t UNIT_sfPMODF_ReadStatusReg(uint8_t chn)
 	uint8_t pmodStatusReg = 0;
 	char results[128];
 	putsUART1("\n\rEXECUING TEST =>  UNIT_sfPMODF_ReadStatusReg()\n\r ");
-    BlockWhileWriteInProgress(chn);
+
 	pmodStatusReg =  PmodSFReadStatusRegister(chn);
 	sprintf(results,"Status Register: 0x%x\n\r",pmodStatusReg);	
 	putsUART1(results);
@@ -63,16 +64,16 @@ uint8_t UNIT_sfPMODF_ReadWriteStatusReg(uint8_t chn)
 	char results[128];
 	putsUART1("\n\rEXECUING TEST => UNIT_sfPMODF_WriteStatusReg()\n\r");
 	putsUART1("Setting bits for PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0\r\n");
-	BlockWhileWriteInProgress(chn);
+
 	PmodSFWriteStatusRegister(chn,0);//clear status register
-	BlockWhileWriteInProgress(chn);
-	PmodSFSetConfigRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
-	BlockWhileWriteInProgress(chn);
+
+	PmodSFSetStatusRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
+
 	UNIT_sfPMODF_ReadStatusReg(chn);
 	putsUART1("Clearing bits for PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0\r\n");
-    BlockWhileWriteInProgress(chn);
-	PmodSFClearConfigRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
-	BlockWhileWriteInProgress(chn);
+
+	PmodSFClearStatusRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
+
 	UNIT_sfPMODF_ReadStatusReg(chn);
 }
 
@@ -82,13 +83,11 @@ uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn)
 	char results[1024];
 	int numBytesToWrite = 100;
 	int i = 0;
-	unsigned int address= 0x010000;
+	uint32_t address= 0x010000;
 	unsigned char data[255];
 	memset(data,0,255);
-	PmodSFClearConfigRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
-	BlockWhileWriteInProgress(chn);    
+	PmodSFClearStatusRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
 	PmodSFSectorErase(chn,address);
-	BlockWhileWriteInProgress(chn);
 	putsUART1("\n\rEXECUING TEST => UNIT_sfPMODF_PageProgram()\n\r ");
 	sprintf(results,"Writiing %d bytes to PMODSF at %x\n\r",numBytesToWrite,address);
 	putsUART1(results);
@@ -98,8 +97,7 @@ uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn)
 		sprintf(results,"Byte Written %d = %d\n\r",i,data[i]);
 		putsUART1(results);
 	}
-	statusReg =  PmodSFReadStatusRegister(chn);
-	BlockWhileWriteInProgress(chn);
+
 	PmodSFPageProgram(chn,numBytesToWrite,data,address);
 
 	//READ FROM PMODSF address 0x0
@@ -107,7 +105,6 @@ uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn)
 	sprintf(results,"Reading %d bytes from PMODSF from address %x\n\r",numBytesToWrite,address);
 	putsUART1(results);
 	memset(data,0,255);
-    BlockWhileWriteInProgress(chn);
     PmodSFReadBytes(chn,numBytesToWrite,data,address);
 	for(i = 0;i < numBytesToWrite;i++)
 	{
@@ -118,6 +115,12 @@ uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn)
 }
 
 
+uint8_t  UNIT_sfPMODF_SectorErase(uint8_t chn)
+{
+	uint16_t numPagesPerSector = 0;
+	numPagesPerSector = (pmodFlashCapacity == PMODSF_16_MBIT)?255:1024;
+	
+}
 
 
 uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock)
@@ -128,11 +131,17 @@ uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock)
 	*/
 	PORTSetPinsDigitalIn (IOPORT_F, BIT_2);
 	PORTSetPinsDigitalOut (IOPORT_F, BIT_8);
-	OpenUART1 (UART_EN | UART_IDLE_CON | UART_RX_TX | UART_DIS_WAKE | UART_DIS_LOOPBACK | UART_DIS_ABAUD | UART_NO_PAR_8BIT | UART_1STOPBIT | UART_IRDA_DIS | 
-               UART_MODE_FLOWCTRL | UART_DIS_BCLK_CTS_RTS | UART_NORMAL_RX | UART_BRGH_SIXTEEN,
-               UART_TX_PIN_LOW | UART_RX_ENABLE | UART_TX_ENABLE | UART_INT_TX | UART_INT_RX_CHAR | UART_ADR_DETECT_DIS	| UART_RX_OVERRUN_CLEAR, 
+
+	OpenUART1 (UART_EN | UART_IDLE_CON | UART_RX_TX |UART_NO_PAR_8BIT | UART_1STOPBIT , UART_RX_ENABLE | UART_TX_ENABLE, 
 			   mUARTBRG(pbClock, baud_rate));
 
+}
+
+void fnSetPmodFlashCapacity(uint8_t chn)
+{
+	 uint8_t pmodSFID = PmodSFReadID(chn);
+	 pmodFlashCapacity = fnGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE);
+	 
 }
 
 uint8_t getIntegerFromConsole()
@@ -163,6 +172,8 @@ uint8_t getIntegerFromConsole()
 		return atoi(recievedChars);
 	
 }
+
+
 
 uint8_t ConsoleMenu(char *testNames[],uint32_t numCommands)
 {
