@@ -40,9 +40,9 @@ uint8_t UNIT_spfPMOD_ReadID(uint8_t chn)
 	putsUART1("\n\rEXECUING TEST =>  UNIT_spfPMOD_ReadID()\n\r ");
     pmodSFID = PmodSFReadID(chn);
 	sprintf(results,"MFID: 0x%x\n\r Type: 0x%x\n\r Capacity: 0x%x\n\r",	
-             fnGetByteFromUint32(pmodSFID,PMODSD_MFID_BYTE),
-             fnGetByteFromUint32(pmodSFID,PMODSD_MEM_TYPE_BYTE),
-             fnGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE));
+             fnGetByteFromUint32_t(pmodSFID,PMODSD_MFID_BYTE),
+             fnGetByteFromUint32_t(pmodSFID,PMODSD_MEM_TYPE_BYTE),
+             fnGetByteFromUint32_t(pmodSFID,PMODSD_MEM_CAPACITY_BYTE));
 	putsUART1(results);
 
 }
@@ -205,7 +205,7 @@ uint8_t ConsoleMenu(char *testNames[],uint32_t numCommands)
 }
 
 
-uint8_t fnGetByteFromUint32(uint32_t value,uint8_t bytePos)
+uint8_t fnGetByteFromUint32_t(uint32_t value,uint8_t bytePos)
 {
 	return value >> (bytePos * 8) & 255;
 }
