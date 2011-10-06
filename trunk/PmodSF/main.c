@@ -10,8 +10,7 @@
 /*                                                                      */
 /*  This file drives test functions used in for the Digilent            */
 /*  PMODSF,SPI on the Digilent CEREBOT32MX4 and CEREBOT32MX7            */
-/*  SETUP FOR CEREBOT32MX4:                                             */
-/*  PMOD CLS - Connected to SPI1 (J1)                                   */
+/*  SETUP FOR CEREBOT32MX4:                                             */                                  
 /*  PMODSF - Connected JB  pins JB01  - JB06                            */
 /*  PMODRS232 - connected to JE pins JE01 - JE06                        */
 /*  PC - connected to PMODRS232 at 9600 baud, 8 data bits, 1 stop bit,  */
@@ -52,7 +51,7 @@ int main(void)
 	putsUART1("\r\nPmodSF SPI port=>");
 	channel =  getIntegerFromConsole();
 	PmodSFInit(channel,PB_CLOCK,PMODSF_BITRATE);
- 	
+ 	fnSetPmodFlashCapacity(channel);
 	
 	while(1)
 	{
@@ -60,24 +59,3 @@ int main(void)
 	}
 
 }
-/*
-	uint32_t pmodID = 0; 
-	uint8_t statusReg = 0;
-	PmodSFInit(2,PB_CLOCK,PMODSF_BITRATE);
-	pmodID = PmodSFReadID(2);
-	PmodSFWriteStatusRegister(2,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
-	statusReg = PmodSFReadStatusRegister(2);
-	PmodSFDisableBlockProtection(2,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
-    statusReg = PmodSFReadStatusRegister(2);
-	PmodSFEnableleBlockProtection(2,PMODSF_SR_BP0);
-	statusReg = PmodSFReadStatusRegister(2);
-	PmodSFEnableleBlockProtection(2,PMODSF_SR_BP1);
-	statusReg = PmodSFReadStatusRegister(2);
-	PmodSFEnableleBlockProtection(2,PMODSF_SR_BP2);
-	statusReg = PmodSFReadStatusRegister(2);
-	PmodSFBulkErase(2);
-
-
-}
-
-*/

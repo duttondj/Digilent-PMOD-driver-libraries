@@ -10,7 +10,9 @@
 /*                                                                      */
 /*  This file contains function definitions, data structures and        */
 /*  macros used in manipulating the Digilent PMODSF on                  */
-/*  the Digilent CEREBOT32MX4 and CEREBOT32MX7                          */
+/*  the Digilent CEREBOT32MX4 and CEREBOT32MX7. For a complete          */
+/*  description of opeations and signalling see the manuals for         */
+/*  the ST M25P16(PmodSF-16) and M25P128(PmodSF-128)                    */
 /*                                                                      */
 /************************************************************************/
 /*  Revision History:													*/
@@ -164,6 +166,24 @@
 ** |    0   | 000000h | 03FFFFh |
 ** ------------------------------
 
+** --------------------------------------------------------------------------------------------------
+** | Excerpt from PIC32 Familiy Reference Manual Chapter 23 section 23.3.7                          |
+** --------------------------------------------------------------------------------------------------
+** | The following equation defines the SCKx clock frequency as a function of SPIxBRG settings      |
+** |  Fsck = (Fpb) / 2 * (SPIxBRK + 1)                                                              |
+** |                                                                                                |
+** --------------------------------------------------------------------------------------------------
+** |                                       Sample SCKx Frequencies                                  |
+** --------------------------------------------------------------------------------------------------
+** | SPIxBRG Setting   |    0      |    15      |     31     |     63     |     85     |     127    |
+** --------------------------------------------------------------------------------------------------
+** | FPB = 50 MHz      | 25.00 MHz | 1.56 MHz   | 781.25 kHz | 390.63 kHz | 290.7 kHz  | 195.31 kHz |
+** | FPB = 40 MHz      | 20.00 MHz | 1.25 MHz   | 625.00 kHz | 312.50 kHz | 232.56 kHz | 156.25 kHz |
+** | FPB = 25 MHz      | 12.50 MHz | 781.25 kHz | 390.63 kHz | 195.31 kHz | 145.35 kHz | 97.66 kHz  |
+** | FPB = 20 MHz      | 10.00 MHz | 625.00 kHz | 312.50 kHz | 156.25 kHz | 116.28 kHz | 78.13 kHz  |
+** | FPB = 10 MHZ      | 5.00 MHz  | 312.50 kHz | 156.25 kHz | 78.13 kHz  | 58.14 kHz  | 39.06 kHz  |
+** --------------------------------------------------------------------------------------------------
+
 ** ----------------------------------------------------------------------------------------------------------------------------
 ** |                                                    PMODSF INSTRUCTION SET                                                |
 ** ----------------------------------------------------------------------------------------------------------------------------
@@ -176,10 +196,10 @@
 ** | PMODSF_READ_STATUS_REG    | Read Status Register (RDSR)                | 0000 0101 | 05h          |   0   |  0  |1 to 8  |
 ** | PMODSF_WRITE_STATUS_REG   | Write Status Register (WRSR)               | 0000 0001 | 01h          |   0   |  0  |   1    |
 ** | PMODSF_READ_DATA_BYTES    | Read Data Bytes (READ)                     | 0000 0011 | 03h          |   3   |  0  |1 to 8  |
-** | *PMODSF_READ_DATA_BYTES_HS| Read Data Bytes at Higher Speed (FAST_READ)| 0000 1011 | 0Bh          |   3   |  1  |1 to 8  |
+** | #PMODSF_READ_DATA_BYTES_HS| Read Data Bytes at Higher Speed (FAST_READ)| 0000 1011 | 0Bh          |   3   |  1  |1 to 8  |
 ** | PMODSF_PAGE_PGM           | Page Program (PP)                          | 0000 0010 | 02h          |   3   |  0  |1 to 256|
-** | *PMODSF_SECTOR_ERASE      | Sector Erase (SE)                          | 1101 1000 | D8h          |   3   |  0  |   0    |
-** | *PMODSF_BULK_ERASE        | Bulk Erase (BE)                            | 1100 0111 | C7h          |   0   |  0  |   0    |
+** | PMODSF_SECTOR_ERASE       | Sector Erase (SE)                          | 1101 1000 | D8h          |   3   |  0  |   0    |
+** | PMODSF_BULK_ERASE         | Bulk Erase (BE)                            | 1100 0111 | C7h          |   0   |  0  |   0    |
 ** | *PMODSF_DEEP_POWER_DOWN   | Deep Power Down                            | 1011 1001 | B9h          |   0   |  0  |   0    |
 ** |---------------------------------------------------------------------------------------------------------------------------
 ** | *PMODSF_RELEASE_FROM_DPD  | Release From Deep Power Down               | 1010 1011 | ABh          |   0   |  3  | 1 to 8 |
@@ -187,7 +207,8 @@
 ** |                           |--------------------------------------------|           |              |----------------------- 
 ** |                           | Release from Deep Power-down               |           |              |   0   |  0  |   0    |
 ** ----------------------------------------------------------------------------------------------------------------------------
-**   Items marked with a '*' have not been implimented 
+**   Items marked with a '#' have not been implimented 
+**   Items marked with a '*' are for the PmodSF-16 only
 */
 
 //PMODSF INSTRUCTION SET: See table above for descriptions
@@ -201,8 +222,8 @@
 #define PMODSF_PAGE_PGM            0x02  
 #define PMODSF_SECTOR_ERASE        0xD8
 #define PMODSF_BULK_ERASE          0xC7
-#define PMODSF_DEEP_POWER_DOWN     0xB9
-#define PMODSF_RELEASE_FROM_DPD    0xAB
+#define PMODSF_DEEP_POWER_DOWN     0xB9 //PmodSF-16 only
+#define PMODSF_RELEASE_FROM_DPD    0xAB //PmodSF-16 only
 /* -----------------------------------------------------------------------------------------------------------
 ** |                                    PMODSF Status Register Format                                        |
 ** -----------------------------------------------------------------------------------------------------------
@@ -219,7 +240,10 @@
 #define PMODSF_SR_WEL  0x2  // Write Enable Latch Bit
 #define PMODSF_SR_WIP  0x1  // Write In Progress Bit
 
-#define PMOD_SF_PAGE_LEN 255 //Maximum size of a page write is 256 bytes (0 - 255)
+#define PMODSF_128_MBIT 0x18	//128 Mb flash
+#define PMODSF_16_MBIT 0x15    //16 Mb flash
+
+#define PMOD_SF_PAGE_LEN 256 //Maximum size of a page write is 256 bytes (0 - 255)
 enum
 {
 	PMODSD_MEM_CAPACITY_BYTE,
@@ -248,22 +272,23 @@ static const SpiPortSS SpiIO[] = {
 };
 
 
-void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t ulBaud);
+void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 uint32_t PmodSFReadID(SpiChannel chn);
 void PmodSFSetSSHigh(SpiChannel chn);
 void PmodSFSetSSLow(SpiChannel chn);
 uint8_t PmodSFReadStatusRegister(SpiChannel chn);
 void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg);
 void PmodSFWriteEnable(SpiChannel chn);
+void PmodSFWriteDisable(SpiChannel chn);
 void PmodSFPageProgram(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t address);
 void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t address);
 void PmodSFBulkErase(SpiChannel chn);
 void BlockWhileWriteInProgress(SpiChannel chn);
 static void fnPmodSFSendCommand(SpiChannel chn,uint8_t command);
 static uint8_t fnGetByteFromUint32(uint32_t value,uint8_t bytePos);
-void PmodSFClearConfigRegBits(SpiChannel chn,uint8_t bitMask);
-void PmodSFSetConfigRegBits(SpiChannel chn,uint8_t bitMask);
-void PmodSFSectorErase(SpiChannel chn,uint8_t address);
+void PmodSFClearStatusRegBits(SpiChannel chn,uint8_t bitMask);
+void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask);
+void PmodSFSectorErase(SpiChannel chn,uint32_t address);
 uint8_t PmodSFDeepPowerDownRelease(SpiChannel chn);
 void PmodSFDeepPowerDown(SpiChannel chn);
 #endif
