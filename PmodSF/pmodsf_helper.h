@@ -11,6 +11,8 @@
 /*  Header file for PmodSF helper functions                             */
 /*                           fnPmodSFSendCommand  						*/
 /*                           fnGetByteFromUint32                        */
+/*  Functions are not part of the public API, this file should be       */   
+/*  included in every public function implementation file as needed     */
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
@@ -20,6 +22,7 @@
 #ifndef _PMODSF_HELPER_H_
 #define _PMODSF_HELPER_H_
 #include "pmodsf.h"
+
 void fnPmodSFSendCommand(SpiChannel chn,uint8_t command);
 uint8_t fnGetByteFromUint32(uint32_t value,uint8_t bytePos);
 

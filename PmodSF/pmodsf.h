@@ -195,7 +195,6 @@
 ** | PMODSF_READ_STATUS_REG    | Read Status Register (RDSR)                | 0000 0101 | 05h          |   0   |  0  |1 to 8  |
 ** | PMODSF_WRITE_STATUS_REG   | Write Status Register (WRSR)               | 0000 0001 | 01h          |   0   |  0  |   1    |
 ** | PMODSF_READ_DATA_BYTES    | Read Data Bytes (READ)                     | 0000 0011 | 03h          |   3   |  0  |1 to 8  |
-** | #PMODSF_READ_DATA_BYTES_HS| Read Data Bytes at Higher Speed (FAST_READ)| 0000 1011 | 0Bh          |   3   |  1  |1 to 8  |
 ** | PMODSF_PAGE_PGM           | Page Program (PP)                          | 0000 0010 | 02h          |   3   |  0  |1 to 256|
 ** | PMODSF_SECTOR_ERASE       | Sector Erase (SE)                          | 1101 1000 | D8h          |   3   |  0  |   0    |
 ** | PMODSF_BULK_ERASE         | Bulk Erase (BE)                            | 1100 0111 | C7h          |   0   |  0  |   0    |
@@ -255,21 +254,122 @@
 #define PMODSF_16_MBIT 0x15    //16 Mb flash
 #define PMODSF_128_MBIT 0x18	//128 Mb flash
 
-
-enum  //Byte positions for manufacturer identification
-{
-	PMODSD_MEM_CAPACITY_BYTE,
-	PMODSD_MEM_TYPE_BYTE,
-	PMODSD_MFID_BYTE,
-};
+//Byte positions for manufacturer identification
+#define PMODSD_MEM_CAPACITY_BYTE 0
+#define	PMODSD_MEM_TYPE_BYTE 1
+#define	PMODSD_MFID_BYTE 2
 
 #include "pmodsf_helper.h"
 
-
+/** PmodSFInit
+**
+**	Synopsis:
+**  Initializes the PmodSF module on the selected SPI channel. 
+**  
+**  Input: SpiChannel chn  - spi channel initialize
+**         uint32_t pbClock - peripheral bus clock in Hz
+**         uint32_t bitRate - bit rate desired in Hz
+**  Returns: none
+**  Description:
+**  Opens the desired SPI channel in 8-bit mode as a master, enables the slave select bit,
+**  and sets the desired bit rate as a function of pbClock/bitRate.  Examples of peripheral bus
+**  bit rate combinations are available in the table labeld "Excerpt from PIC32 Familiy Reference 
+**  Manual Chapter 23 section 23.3.7" in pmodsf.h.
+**/
 void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
+
+/** PmodSFWriteStatusRegister
+**
+**	Synopsis: Writes configuration bits to the status register
+**            on the specified SPI channel
+**	Input: SpiChannel chn - spi channel to status reg write
+**         uint8_t statusReg - status register bits to write
+**  Returns: none
+**	Errors: none
+**  Notes: Blocks while Write In Progress bit is set
+**         prior to performing operation
+** Description from the M25P16/M25P128 reference manual:
+** The Write Status Register (WRSR) instruction allows
+** new values to be written to the Status Register.
+** Before it can be accepted, a Write Enable
+** (WREN) instruction must previously have been executed.
+** After the Write Enable (WREN) instruction
+** has been decoded and executed, the device sets
+** the Write Enable Latch (WEL).
+** The Write Status Register (WRSR) instruction is
+** entered by driving Chip Select (S) Low, followed
+** by the instruction code and the data byte on Serial
+** Data Input (D).
+** The Write Status Register (WRSR) instruction has
+** no effect on b6, b5, b1 and b0 of the Status Register.
+** b6 and b5 are always read as 0.
+** Chip Select (S) must be driven High after the
+** eighth bit of the data byte has been latched in. If
+** not, the Write Status Register (WRSR) instruction
+** is not executed. As soon as Chip Select (S) is driven
+** High, the self-timed Write Status Register cycle
+** (whose duration is tW) is initiated. While the Write
+** Status Register cycle is in progress, the Status
+** Register may still be read to check the value of the
+** Write In Progress (WIP) bit. The Write In Progress
+** (WIP) bit is 1 during the self-timed Write Status
+** Register cycle, and is 0 when it is completed.
+** When the cycle is completed, the Write Enable
+** Latch (WEL) is reset.
+** The Write Status Register (WRSR) instruction allows
+** the user to change the values of the Block
+** Protect (BP2, BP1, BP0) bits, to define the size of
+** the area that is to be treated as read-only, as defined
+** in Table 2.. The Write Status Register
+** (WRSR) instruction also allows the user to set or
+** reset the Status Register Write Disable (SRWD)
+** bit in accordance with the Write Protect (W) signal.
+** The Status Register Write Disable (SRWD) bit and
+** Write Protect (W) signal allow the device to be put
+** in the Hardware Protected Mode (HPM). The Write
+** Status Register (WRSR) instruction is not executed
+** once the Hardware Protected Mode (HPM) is
+** entered.
+*/
 void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg);
+
+/** BlockWhileWriteInProgress
+**
+**	Synopsis:
+**  Blocks while a write is in progress
+**	Input: SpiChannel chn - channel to poll for write in progress
+**  Returns: none
+**	Errors: none
+**	Description:
+**  During a write operation the Write In Progress(WIP) bit
+**  is set, operations that write to the PmodSF will be
+**  ignored while this bit is set. Calling this function 
+**  blocks further operations until the WIP cleared condition
+**  is met.	
+*/
 void BlockWhileWriteInProgress(SpiChannel chn);
+
+/** PmodSFSetSSHigh
+**
+**	Synopsis:
+**  Sets the slave select bit on the selected SPI channel to high
+**  Input: SpiChannel chn  - spi channel to set SS bit high on
+**  Returns: none
+**	Errors:
+**		none
+**
+**/
 void PmodSFSetSSHigh(SpiChannel chn);
+
+/** PmodSFSetSSLow
+**
+**	Synopsis:
+**  Sets the slave select bit on the selected SPI channel to low
+**  
+**  Input: SpiChannel chn  - spi channel to set SS bit low on
+**  Returns: none
+**
+**/
 void PmodSFSetSSLow(SpiChannel chn);
 
 void PmodSFWriteEnable(SpiChannel chn);
@@ -322,7 +422,6 @@ void PmodSFWriteDisable(SpiChannel chn);
 **
 */
 uint32_t PmodSFReadID(SpiChannel chn);
-
 
 /** PmodSFDeepPowerDownRelease (PmodSF-16 only)
 **
@@ -603,8 +702,39 @@ void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t addr
 */
 void PmodSFBulkErase(SpiChannel chn);
 
-/*need comments*/
+/** PmodSFClearStatusRegBit
+**
+**	Synopsis:
+**  Clear bits in the status register based on a bit mask passed in, the bits
+**  to be cleared should be set to 1 in the bitmask
+**	Input: SpiChannel chn - spi channel to clear status register bits on
+**         uint8_t bitMask - bitmask to apply to status register                          
+**  Returns: none
+**	Errors: none
+**  Notes: Blocks while Write In Progress bit is set
+**         prior to performing operation
+**  Decription: 
+**  Status register is read in, a bitwise OR is performed on the bitmask passed in,
+**  an AND operation is performed on the value of the status register and the bitmask,
+**  this value is then written back to the status register.
+*/
 void PmodSFClearStatusRegBits(SpiChannel chn,uint8_t bitMask);
+
+/** PmodSFSetStatusRegBit
+**
+**	Synopsis:
+**  Set bits in the status register based on a bit mask passed in
+**	Input: SpiChannel chn - spi channel to set status register bits on
+**         uint8_t bitMask - bitmask to apply to status register                          
+**  Returns: none
+**	Errors: none
+**  Notes: Blocks while Write In Progress bit is set
+**         prior to performing operation
+**  Decription: 
+**  Status register is read in, an OR operation is performed on the 
+**  value of the status register, this value is then written back to the
+**  status register.
+*/
 
 void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask);
 /**************/
