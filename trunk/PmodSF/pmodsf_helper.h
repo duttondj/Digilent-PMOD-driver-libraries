@@ -19,8 +19,10 @@
 /*  10/6/2011(RyanH):                                                   */
 /*                                                                      */
 /************************************************************************/
+
 #ifndef _PMODSF_HELPER_H_
 #define _PMODSF_HELPER_H_
+
 #include "pmodsf.h"
 
 void fnPmodSFSendCommand(SpiChannel chn,uint8_t command);

@@ -1,10 +1,10 @@
 /************************************************************************/
 /*                                                                      */
-/*   pmodsf.c -- Library to manipulate the Digilent PMODSF	            */
+/*   pmodsf.c -- Library to manipulate the Digilent PMODSF              */
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*                                                                      */
 /************************************************************************/
 /*  Module Description: 												*/
 /*                                                                      */
@@ -17,10 +17,9 @@
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
-/*  9/30/2011(RyanH):                                                    */
+/*  9/30/2011(RyanH):                                                   */
 /*                                                                      */
 /************************************************************************/
-
 
 #include "pmodsf.h"
 #include "pmodsf_helper.h"
@@ -34,17 +33,17 @@ typedef struct
 //SpiPortSS contains IO Port/SS bit mask mappings for
 //driving SS low and high
 static const SpiPortSS SpiIO[] = {
-	{0,0},
-#if (((__PIC32_FEATURE_SET__ >= 300) && (__PIC32_FEATURE_SET__ <= 499)) || defined(__32MXGENERIC__))
-	{IOPORT_D,BIT_9},
-	{IOPORT_G,BIT_9}
-#elif if (((__PIC32_FEATURE_SET__ >= 500) && (__PIC32_FEATURE_SET__ <= 799)))
-	{IOPORT_D,BIT_9},
-	{0,0},
-	{IOPORT_F,BIT_12}
+	{0,0},  // SPI 0 is invalid
+#if (__PIC32_FEATURE_SET__ == CEREBOTMX4_FEATURE_SET) 
+	{IOPORT_D,BIT_9}, //SPI1
+	{IOPORT_G,BIT_9}  //SPI2
+#elif (__PIC32_FEATURE_SET__ == CEREBOTMX7_FEATURE_SET)
+	{IOPORT_D,BIT_9}, //SPI1
+	{IOPORT_E,BIT_14},//SPI1A/SPI2
+    {0,0},            //SPI2A/SPI3
+	{IOPORT_F,BIT_12} //SPI3A/SPI4
 #endif
 };
-
 
 /** PmodSFInit
 **
@@ -263,8 +262,6 @@ uint8_t PmodSFReadStatusRegister(SpiChannel chn)
 	PmodSFSetSSHigh(chn); //SS to High
 	return statusRegister;
 }
-
-
 
 /** PmodSFWriteEnable
 **

@@ -18,8 +18,10 @@
 /*  10/6/2011(RyanH):                                                   */
 /*                                                                      */
 /************************************************************************/
+
 #include "pmodsf.h"
 #include "pmodsf_helper.h"
+
 /** PmodSFDeepPowerDown (PmodSF-16 only)
 **
 **	Synopsis:

@@ -15,8 +15,10 @@
 /*  10/6/2011(RyanH):                                                   */
 /*                                                                      */
 /************************************************************************/
+
 #include "pmodsf.h"
 #include "pmodsf_helper.h"
+
 /** PmodSFReadBytes
 **
 **	Synopsis:
@@ -62,7 +64,6 @@
 */
 void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t address)
 {
-	
     int8_t byteCounter = 0;
    
     BlockWhileWriteInProgress(chn); 
@@ -70,7 +71,6 @@ void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t addr
 	PmodSFSetSSLow(chn); //SS to low 
 	SpiChnPutC(chn,PMODSF_READ_DATA_BYTES); //send page read databytes command
 	SpiChnGetC(chn);
-
 	
 	//SEND IN THE 24 BIT ADDRESS
 	for(byteCounter = 2;byteCounter >= 0;byteCounter--)    
@@ -88,5 +88,4 @@ void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t addr
 	}
 	
 	PmodSFSetSSHigh(chn); //SS to High
-
 }
