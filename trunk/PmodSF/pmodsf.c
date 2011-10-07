@@ -35,15 +35,13 @@ typedef struct
 //driving SS low and high
 static const SpiPortSS SpiIO[] = {
 	{0,0},
-#if defined __CEREBOT32MX4__
+#if (((__PIC32_FEATURE_SET__ >= 300) && (__PIC32_FEATURE_SET__ <= 499)) || defined(__32MXGENERIC__))
 	{IOPORT_D,BIT_9},
 	{IOPORT_G,BIT_9}
-#endif
-#if defined __CEREBOT32MX7__
+#elif if (((__PIC32_FEATURE_SET__ >= 500) && (__PIC32_FEATURE_SET__ <= 799)))
 	{IOPORT_D,BIT_9},
 	{0,0},
 	{IOPORT_F,BIT_12}
-
 #endif
 };
 
@@ -96,10 +94,6 @@ void PmodSFSetSSHigh(SpiChannel chn)
 {
 	PORTSetBits(SpiIO[chn].portSS,SpiIO[chn].ssMask);
 }
-
-
-
-
 
 /** PmodSFWriteStatusRegister
 **
@@ -156,21 +150,20 @@ void PmodSFSetSSHigh(SpiChannel chn)
 */
 void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg)
 {
-
 	BlockWhileWriteInProgress(chn); 
 
 	PmodSFWriteEnable(chn);
 
 	PmodSFSetSSLow(chn); //SS to low 
+
 	SpiChnPutC(chn,PMODSF_WRITE_STATUS_REG); //send write status register command
 	SpiChnGetC(chn);		
+
 	SpiChnPutC(chn,statusReg); //write to the status register
 	SpiChnGetC(chn);
+
 	PmodSFSetSSHigh(chn); //SS to High
 }
-
-
-
 
 /** BlockWhileWriteInProgress
 **
