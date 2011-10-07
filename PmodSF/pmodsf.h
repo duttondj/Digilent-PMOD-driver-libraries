@@ -42,6 +42,7 @@
 ** |   1   |   1   |   0   | All sectors (32 sectors: 0 to 31)        | none                                       |
 ** |   1   |   1   |   1   | All sectors (32 sectors: 0 to 31)        | none                                       |
 ** -----------------------------------------------------------------------------------------------------------------
+**
 **  Table 2 Protected Area Sizes (PMODSF-128)                                                                                  
 ** -----------------------------------------------------------------------------------------------------------------
 ** |Status Register Content|                                     Memory Content                                    |
@@ -57,6 +58,7 @@
 ** |   1   |   1   |   0   | Upper 1/2  (32 sectors, 64 Mb)           | Sectors: 0 to 31)                          |
 ** |   1   |   1   |   1   | All sectors (64 sectors, 128 Mb)         | none                                       |
 ** -----------------------------------------------------------------------------------------------------------------
+**
 ** Table 3. Memory Organization (PMODSF-16)
 ** ------------------------------
 ** | Sector | Address |  Range  |
@@ -94,6 +96,7 @@
 ** |   1    | 010000h | 01FFFFh |
 ** |   0    | 000000h | 00FFFFh |
 ** ------------------------------
+**
 ** Table 3. Memory Organization (PMODSF-128)
 ** ------------------------------
 ** | Sector | Address |  Range  |
@@ -163,7 +166,7 @@
 ** |    1   | 040000h | 07FFFFh |
 ** |    0   | 000000h | 03FFFFh |
 ** ------------------------------
-
+**
 ** --------------------------------------------------------------------------------------------------
 ** | Excerpt from PIC32 Familiy Reference Manual Chapter 23 section 23.3.7                          |
 ** --------------------------------------------------------------------------------------------------
@@ -181,7 +184,7 @@
 ** | FPB = 20 MHz      | 10.00 MHz | 625.00 kHz | 312.50 kHz | 156.25 kHz | 116.28 kHz | 78.13 kHz  |
 ** | FPB = 10 MHZ      | 5.00 MHz  | 312.50 kHz | 156.25 kHz | 78.13 kHz  | 58.14 kHz  | 39.06 kHz  |
 ** --------------------------------------------------------------------------------------------------
-
+**
 ** ----------------------------------------------------------------------------------------------------------------------------
 ** |                                                    PMODSF INSTRUCTION SET                                                |
 ** ----------------------------------------------------------------------------------------------------------------------------
@@ -259,12 +262,12 @@
 #define	PMODSD_MFID_BYTE 2
 
 //feature set definitions used in conditional compiling for processor type
-#define CEREBOTMX4_FEATURE_SET 460  
-#define CEREBOTMX7_FEATURE_SET 795
+#define PIC32_300_400_SERIES ((__PIC32_FEATURE_SET__ >= 300) && (__PIC32_FEATURE_SET__ <= 499))
+#define PIC32_500_600_700_SERIES ((__PIC32_FEATURE_SET__ >= 500) && (__PIC32_FEATURE_SET__ <= 799))
 
 #include "pmodsf_helper.h"
 
-/** PmodSFInit
+/*  PmodSFInit
 **
 **	Synopsis:
 **  Initializes the PmodSF module on the selected SPI channel. 
@@ -272,26 +275,35 @@
 **  Input: SpiChannel chn  - spi channel initialize
 **         uint32_t pbClock - peripheral bus clock in Hz
 **         uint32_t bitRate - bit rate desired in Hz
+**
 **  Returns: none
+**
 **  Description:
+**
 **  Opens the desired SPI channel in 8-bit mode as a master, enables the slave select bit,
 **  and sets the desired bit rate as a function of pbClock/bitRate.  Examples of peripheral bus
 **  bit rate combinations are available in the table labeld "Excerpt from PIC32 Familiy Reference 
 **  Manual Chapter 23 section 23.3.7" in pmodsf.h.
-**/
+*/
 void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 
-/** PmodSFWriteStatusRegister
+/*  PmodSFWriteStatusRegister
 **
 **	Synopsis: Writes configuration bits to the status register
 **            on the specified SPI channel
+**
 **	Input: SpiChannel chn - spi channel to status reg write
 **         uint8_t statusReg - status register bits to write
+** 
 **  Returns: none
+**
 **	Errors: none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
+** 
 ** Description from the M25P16/M25P128 reference manual:
+**
 ** The Write Status Register (WRSR) instruction allows
 ** new values to be written to the Status Register.
 ** Before it can be accepted, a Write Enable
@@ -299,6 +311,7 @@ void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 ** After the Write Enable (WREN) instruction
 ** has been decoded and executed, the device sets
 ** the Write Enable Latch (WEL).
+**
 ** The Write Status Register (WRSR) instruction is
 ** entered by driving Chip Select (S) Low, followed
 ** by the instruction code and the data byte on Serial
@@ -306,6 +319,7 @@ void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 ** The Write Status Register (WRSR) instruction has
 ** no effect on b6, b5, b1 and b0 of the Status Register.
 ** b6 and b5 are always read as 0.
+**
 ** Chip Select (S) must be driven High after the
 ** eighth bit of the data byte has been latched in. If
 ** not, the Write Status Register (WRSR) instruction
@@ -319,6 +333,7 @@ void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 ** Register cycle, and is 0 when it is completed.
 ** When the cycle is completed, the Write Enable
 ** Latch (WEL) is reset.
+**
 ** The Write Status Register (WRSR) instruction allows
 ** the user to change the values of the Block
 ** Protect (BP2, BP1, BP0) bits, to define the size of
@@ -336,14 +351,19 @@ void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 */
 void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg);
 
-/** BlockWhileWriteInProgress
+/*  BlockWhileWriteInProgress
 **
 **	Synopsis:
 **  Blocks while a write is in progress
+**
 **	Input: SpiChannel chn - channel to poll for write in progress
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **	Description:
+**
 **  During a write operation the Write In Progress(WIP) bit
 **  is set, operations that write to the PmodSF will be
 **  ignored while this bit is set. Calling this function 
@@ -352,44 +372,52 @@ void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg);
 */
 void BlockWhileWriteInProgress(SpiChannel chn);
 
-/** PmodSFSetSSHigh
+/*  PmodSFSetSSHigh
 **
 **	Synopsis:
 **  Sets the slave select bit on the selected SPI channel to high
-**  Input: SpiChannel chn  - spi channel to set SS bit high on
-**  Returns: none
-**	Errors:
-**		none
 **
-**/
+**  Input: SpiChannel chn  - spi channel to set SS bit high on
+**
+**  Returns: none
+**
+**	Errors:	none
+*/
 void PmodSFSetSSHigh(SpiChannel chn);
 
-/** PmodSFSetSSLow
+/*  PmodSFSetSSLow
 **
 **	Synopsis:
 **  Sets the slave select bit on the selected SPI channel to low
 **  
 **  Input: SpiChannel chn  - spi channel to set SS bit low on
-**  Returns: none
 **
-**/
+**  Returns: none
+*/
 void PmodSFSetSSLow(SpiChannel chn);
 
-/** PmodSFWriteEnable
+/*  PmodSFWriteEnable
 **
 **	Synopsis:
 **  Enables writing by setting the Write Enable Latch(WEL)
 **  bit on the selected chanel
+**
 **	Input: SpiChannel chn - channel to enable writes
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **  Description from the M25P16/M25P128 reference manual:
+**
 **  The Write Enable (WREN) instruction 
 **  sets the Write Enable Latch (WEL) bit.
+**
 **  The Write Enable Latch (WEL) bit must be set prior
 **  to every Page Program (PP), Sector Erase
 **  (SE), Bulk Erase (BE) and Write Status Register
 **  (WRSR) instruction.
+**
 **  The Write Enable (WREN) instruction is entered
 **  by driving Chip Select (S) Low, sending the instruction
 **  code, and then driving Chip Select (S)
@@ -397,15 +425,20 @@ void PmodSFSetSSLow(SpiChannel chn);
 */
 void PmodSFWriteEnable(SpiChannel chn);
 
-/** PmodSFReadStatusRegister
+/*  PmodSFReadStatusRegister
 **
 **	Synopsis:
 **  Reads the value of the status register
+**
 **	Input: SpiChannel chn - SPI channel to read status register
+**
 **  Returns: uint8_t - 8-bit representation of the status register
-             (see "PMODSF Status Register Format")
+**           (see "PMODSF Status Register Format")
+**
 **	Errors: none
+**
 **	Description:
+**
 **	The Read Status Register (RDSR) instruction allows
 **	the Status Register to be read. The Status
 **	Register may be read at any time, even while a
@@ -415,22 +448,30 @@ void PmodSFWriteEnable(SpiChannel chn);
 **	(WIP) bit before sending a new instruction to the
 **	device. It is also possible to read the Status Register
 **	continuously.
+**
 **	See table "PMODSF Status Register Format" for a
 **	description of the status register format.
+**
 **	The status and control bits of the Status Register
 **	are as follows:
-**	WIP bit. The Write In Progress (WIP) bit indicates
+**
+**	WIP bit:
+**  The Write In Progress (WIP) bit indicates
 **	whether the memory is busy with a Write Status
 **	Register, Program or Erase cycle. When set to 1,
 **	such a cycle is in progress, when reset to 0 no
 **	such cycle is in progress.
-**	WEL bit. The Write Enable Latch (WEL) bit indicates
+**
+**	WEL bit:
+**  The Write Enable Latch (WEL) bit indicates
 **	the status of the internal Write Enable Latch.
 **	When set to 1 the internal Write Enable Latch is
 **	set, when set to 0 the internal Write Enable Latch
 **	is reset and no Write Status Register, Program or
 **	Erase instruction is accepted.
-**	BP2, BP1, BP0 bits. The Block Protect (BP2,
+**
+**	BP2, BP1, BP0 bits:
+**  The Block Protect (BP2,
 **	BP1, BP0) bits are non-volatile. They define the
 **	size of the area to be software protected against
 **	Program and Erase instructions. These bits are
@@ -444,7 +485,9 @@ void PmodSFWriteEnable(SpiChannel chn);
 **	Protected mode has not been set. The Bulk
 **	Erase (BE) instruction is executed if, and only if,
 **	both Block Protect (BP2, BP1, BP0) bits are 0.
-**	SRWD bit. The Status Register Write Disable
+**
+**	SRWD bit:
+**  The Status Register Write Disable
 **	(SRWD) bit is operated in conjunction with the
 **	Write Protect (W) signal. The Status Register
 **	Write Disable (SRWD) bit and Write Protect (W)
@@ -458,288 +501,334 @@ void PmodSFWriteEnable(SpiChannel chn);
 **	for execution.
 */
 uint8_t PmodSFReadStatusRegister(SpiChannel chn);
-
-/** PmodSFWriteDisable
+ 
+/*  PmodSFWriteDisable
 **
 **	Synopsis:
-**  Dsiable writing by resetting the Write Enable Latch(WEL)
+**  Disable writing by resetting the Write Enable Latch(WEL)
 **  bit on the selected chanel
+**
 **	Input: SpiChannel chn - channel to disable writes
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **  Description from the M25P16/M25P128 reference manual:
-**  The Write Disable (WRDI) instruction (Figure 10.)
+**
+**  The Write Disable (WRDI) instruction 
 **  resets the Write Enable Latch (WEL) bit.
+**
 **  The Write Disable (WRDI) instruction is entered by
 **  driving Chip Select (S) Low, sending the instruction
 **  code, and then driving Chip Select (S) High.
+**
 **  The Write Enable Latch (WEL) bit is reset under
 **  the following conditions:
 **  – Power-up
 **  – Write Disable (WRDI) instruction completion
 **  – Write Status Register (WRSR) instruction
-**  completion
+**    completion
 **  – Page Program (PP) instruction completion
 **  – Sector Erase (SE) instruction completion
 **  – Bulk Erase (BE) instruction completion
 */
 void PmodSFWriteDisable(SpiChannel chn);
 
-/** PmodSFReadID
+/*  PmodSFReadID
 **
 **	Synopsis:
 **  The Read Identification (RDID) instruction allows
 **  the 24-bit device identification to be read
 **  into a 32 bit unsigned integer 
+**
 **	Input: SpiChannel chn - spi channel to read PmodSF ID from
-**  Returns: uin32_t => Bits 0 - 7: Memory Capacity
-**                     Bits 8 - 15: Memory Type
-**                     Bits 16- 23 : Manufacturer ID
+**
+**  Returns: uin32_t => Bits 0 - 7:   Memory Capacity
+**                      Bits 8 - 15:  Memory Type
+**                      Bits 16- 23 : Manufacturer ID
 **	Errors: none
 ** 
-** Description from the M25P16/M25P128 reference manual:
-** Read Identification (RDID)
-** The Read Identification (RDID) instruction allows
-** the 8-bit manufacturer identification to be read, followed
-** by two bytes of device identification. The
-* *manufacturer identification is assigned by JEDEC,
-** and has the value 20h for STMicroelectronics. The
-** device identification is assigned by the device
-** manufacturer, and indicates the memory type in
-** the first byte (20h), and the memory capacity of the
-** device in the second byte 15h (PmodSF-16) and 18h (PmodSF-18).
-** Any Read Identification (RDID) instruction while
-** an Erase or Program cycle is in progress, is not
-** decoded, and has no effect on the cycle that is in
-** progress.
-** The device is first selected by driving Chip Select
-** (S) Low. Then, the 8-bit instruction code for the instruction
-** is shifted in. This is followed by the 24-bit
-** device identification, stored in the memory, being
-** shifted out on Serial Data Output (Q), each bit being
-** shifted out during the falling edge of Serial
-** Clock (C).
-** The Read Identification (RDID) instruction is terminated
-** by driving Chip Select (S) High at any time
-** during data output.
-** When Chip Select (S) is driven High, the device is
-** put in the Stand-by Power mode. Once in the
-** Stand-by Power mode, the device waits to be selected,
-** so that it can receive, decode and execute
-** instructions
+**  Description from the M25P16/M25P128 reference manual:
 **
+**  The Read Identification (RDID) instruction allows
+**  the 8-bit manufacturer identification to be read, followed
+**  by two bytes of device identification. The
+**  manufacturer identification is assigned by JEDEC,
+**  and has the value 20h for STMicroelectronics. The
+**  device identification is assigned by the device
+**  manufacturer, and indicates the memory type in
+**  the first byte (20h), and the memory capacity of the
+**  device in the second byte 15h (PmodSF-16) and 18h (PmodSF-18).
+**
+**  Any Read Identification (RDID) instruction while
+**  an Erase or Program cycle is in progress, is not
+**  decoded, and has no effect on the cycle that is in
+**  progress.
+**
+**  The device is first selected by driving Chip Select
+**  (S) Low. Then, the 8-bit instruction code for the instruction
+**  is shifted in. This is followed by the 24-bit
+**  device identification, stored in the memory, being
+**  shifted out on Serial Data Output (Q), each bit being
+**  shifted out during the falling edge of Serial
+**  Clock (C).
+**
+**  The Read Identification (RDID) instruction is terminated
+**  by driving Chip Select (S) High at any time
+**  during data output.
+**
+**  When Chip Select (S) is driven High, the device is
+**  put in the Stand-by Power mode. Once in the
+**  Stand-by Power mode, the device waits to be selected,
+**  so that it can receive, decode and execute
+**  instructions.
 */
 uint32_t PmodSFReadID(SpiChannel chn);
 
-/** PmodSFDeepPowerDownRelease (PmodSF-16 only)
+/*  PmodSFDeepPowerDownRelease (PmodSF-16 only)
 **
 **	Synopsis:
-**  release  deep power down on the selected channel,
+**  Release deep power down on the selected channel,
 **  old style electronic signature 14h is returned
+**
 **	Input: SpiChannel chn - channel to perform Deep 
 **                          power down release on
+**
 **  Returns: uint8_t electronic signature 14h
+**
 **	Errors: none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
-** Description from the M25P16/M25P128 reference manual:
-** Once the device has entered the Deep Powerdown
-** mode, all instructions are ignored except the
-** Release from Deep Power-down and Read Electronic
-** Signature (RES) instruction. Executing this
-** instruction takes the device out of the Deep Power-
-** down mode.
-** The instruction can also be used to read, on Serial
-** Data Output (Q), the old-style 8-bit Electronic Signature,
-** whose value for the M25P16 is 14h.
-** Please note that this is not the same as, or even a
-** subset of, the JEDEC 16-bit Electronic Signature
-** that is read by the Read Identifier (RDID) instruction.
-** The old-style Electronic Signature is supported
-** for reasons of backward compatibility, only, and
-** should not be used for new designs. New designs
-** should, instead, make use of the JEDEC 16-bit
-** Electronic Signature, and the Read Identifier
-** (RDID) instruction.
-** Except while an Erase, Program or Write Status
-** Register cycle is in progress, the Release from
-** Deep Power-down and Read Electronic Signature
-** (RES) instruction always provides access to the
-** old-style 8-bit Electronic Signature of the device,
-** and can be applied even if the Deep Power-down
-** mode has not been entered.
-** Any Release from Deep Power-down and Read
-** Electronic Signature (RES) instruction while an
-** Erase, Program or Write Status Register cycle is in
-** progress, is not decoded, and has no effect on the
-** cycle that is in progress.
-** The device is first selected by driving Chip Select
-** (S) Low. The instruction code is followed by 3
-** dummy bytes, each bit being latched-in on Serial
-** Data Input (D) during the rising edge of Serial
-** Clock (C). Then, the old-style 8-bit Electronic Signature,
-** stored in the memory, is shifted out on Serial
-** Data Output (Q), each bit being shifted out
-** during the falling edge of Serial Clock (C).
-** The Release from Deep Power-down and Read
-** Electronic Signature (RES) instruction is terminated
-** by driving Chip Select (S) High after the Electronic
-** Signature has been read at least once.
-** Sending additional clock cycles on Serial Clock
-** (C), while Chip Select (S) is driven Low, cause the
-** Electronic Signature to be output repeatedly.
-** When Chip Select (S) is driven High, the device is
-** put in the Stand-by Power mode. If the device was
-** not previously in the Deep Power-down mode, the
-** transition to the Stand-by Power mode is immediate.
-** If the device was previously in the Deep Power-
-** down mode, though, the transition to the Standby
-** Power mode is delayed by tRES2, and Chip Select
-** (S) must remain High for at least tRES2(max)
-** Once in the Stand-by Power mode, the device waits 
-** to be selected, so that it can receive, decode and
-** execute instructions.
+**
+**  Description from the M25P16/M25P128 reference manual:
+**
+**  Once the device has entered the Deep Powerdown
+**  mode, all instructions are ignored except the
+**  Release from Deep Power-down and Read Electronic
+**  Signature (RES) instruction. Executing this
+**  instruction takes the device out of the Deep Power-
+**  down mode.
+**
+**  The instruction can also be used to read, on Serial
+**  Data Output (Q), the old-style 8-bit Electronic Signature,
+**  whose value for the M25P16 is 14h.
+
+**  Please note that this is not the same as, or even a
+**  subset of, the JEDEC 16-bit Electronic Signature
+**  that is read by the Read Identifier (RDID) instruction.
+**  The old-style Electronic Signature is supported
+**  for reasons of backward compatibility, only, and
+**  should not be used for new designs. New designs
+**  should, instead, make use of the JEDEC 16-bit
+**  Electronic Signature, and the Read Identifier
+**  (RDID) instruction.
+**
+**  Except while an Erase, Program or Write Status
+**  Register cycle is in progress, the Release from
+**  Deep Power-down and Read Electronic Signature
+**  (RES) instruction always provides access to the
+**  old-style 8-bit Electronic Signature of the device,
+**  and can be applied even if the Deep Power-down
+**  mode has not been entered.
+**
+**  Any Release from Deep Power-down and Read
+**  Electronic Signature (RES) instruction while an
+**  Erase, Program or Write Status Register cycle is in
+**  progress, is not decoded, and has no effect on the
+**  cycle that is in progress.
+**
+**  The device is first selected by driving Chip Select
+**  (S) Low. The instruction code is followed by 3
+**  dummy bytes, each bit being latched-in on Serial
+**  Data Input (D) during the rising edge of Serial
+**  Clock (C). Then, the old-style 8-bit Electronic Signature,
+**  stored in the memory, is shifted out on Serial
+**  Data Output (Q), each bit being shifted out
+**  during the falling edge of Serial Clock (C).
+**
+**  The Release from Deep Power-down and Read
+**  Electronic Signature (RES) instruction is terminated
+**  by driving Chip Select (S) High after the Electronic
+**  Signature has been read at least once.
+**  Sending additional clock cycles on Serial Clock
+**  (C), while Chip Select (S) is driven Low, cause the
+**  Electronic Signature to be output repeatedly.
+**
+**  When Chip Select (S) is driven High, the device is
+**  put in the Stand-by Power mode. If the device was
+**  not previously in the Deep Power-down mode, the
+**  transition to the Stand-by Power mode is immediate.
+**  If the device was previously in the Deep Power-
+**  down mode, though, the transition to the Standby
+**  Power mode is delayed by tRES2, and Chip Select
+**  (S) must remain High for at least tRES2(max)
+**  Once in the Stand-by Power mode, the device waits 
+**  to be selected, so that it can receive, decode and
+**  execute instructions.
 */
 uint8_t PmodSFDeepPowerDownRelease(SpiChannel chn);
 
-/** PmodSFDeepPowerDown (PmodSF-16 only)
+/*  PmodSFDeepPowerDown (PmodSF-16 only)
 **
 **	Synopsis:
 **  Performs a deep power down on the selected channel
+**
 **	Input: SpiChannel chn - channel to perform Deep 
 **                          power down
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
-** Description from the M25P16/M25P128 reference manual:
-** Executing the Deep Power-down (DP) instruction
-** is the only way to put the device in the lowest consumption
-** mode (the Deep Power-down mode). It
-** can also be used as an extra software protection
-** mechanism, while the device is not in active use,
-** since in this mode, the device ignores all Write,
-** Program and Erase instructions.
-** Driving Chip Select (S) High deselects the device,
-** and puts the device in the Standby mode (if there
-** is no internal cycle currently in progress). But this
-** mode is not the Deep Power-down mode. The
-** Deep Power-down mode can only be entered by
-** executing the Deep Power-down (DP) instruction,
-** to reduce the standby current.
-** Once the device has entered the Deep Powerdown
-** mode, all instructions are ignored except the
-** Release from Deep Power-down and Read Electronic
-** Signature (RES) instruction. This releases
-** the device from this mode. The Release from
-** Deep Power-down and Read Electronic Signature
-** (RES) instruction also allows the Electronic Signature
-** of the device to be output on Serial Data Output
-** (Q).
-** The Deep Power-down mode automatically stops
-** at Power-down, and the device always Powers-up
-** in the Standby mode.
-** The Deep Power-down (DP) instruction is entered
-** by driving Chip Select (S) Low, followed by the instruction
-** code on Serial Data Input (D). Chip Select
-** (S) must be driven Low for the entire duration
-** of the sequence.
-** Chip Select (S) must be driven High after the
-** eighth bit of the instruction code has been latched
-** in, otherwise the Deep Power-down (DP) instruction
-** is not executed. As soon as Chip Select (S) is
-** driven High, it requires a delay of tDP before the
-** supply current is reduced to ICC2 and the Deep
-** Power-down mode is entered.
-** Any Deep Power-down (DP) instruction, while an
-** Erase, Program or Write cycle is in progress, is rejected
-** without having any effects on the cycle that
-** is in progress.
+**
+**  Description from the M25P16/M25P128 reference manual:
+**  Executing the Deep Power-down (DP) instruction
+**  is the only way to put the device in the lowest consumption
+**  mode (the Deep Power-down mode). It
+**  can also be used as an extra software protection
+**  mechanism, while the device is not in active use,
+**  since in this mode, the device ignores all Write,
+**  Program and Erase instructions.
+**
+**  Driving Chip Select (S) High deselects the device,
+**  and puts the device in the Standby mode (if there
+**  is no internal cycle currently in progress). But this
+**  mode is not the Deep Power-down mode. The
+**  Deep Power-down mode can only be entered by
+**  executing the Deep Power-down (DP) instruction,
+**  to reduce the standby current.
+**
+**  Once the device has entered the Deep Powerdown
+**  mode, all instructions are ignored except the
+**  Release from Deep Power-down and Read Electronic
+**  Signature (RES) instruction. This releases
+**  the device from this mode. The Release from
+**  Deep Power-down and Read Electronic Signature
+**  (RES) instruction also allows the Electronic Signature
+**  of the device to be output on Serial Data Output(Q).
+**  The Deep Power-down mode automatically stops
+**  at Power-down, and the device always Powers-up
+**  in the Standby mode.
+**
+**  The Deep Power-down (DP) instruction is entered
+**  by driving Chip Select (S) Low, followed by the instruction
+**  code on Serial Data Input (D). Chip Select
+**  (S) must be driven Low for the entire duration
+**  of the sequence.
+**
+**  Chip Select (S) must be driven High after the
+**  eighth bit of the instruction code has been latched
+**  in, otherwise the Deep Power-down (DP) instruction
+**  is not executed. As soon as Chip Select (S) is
+**  driven High, it requires a delay of tDP before the
+**  supply current is reduced to ICC2 and the Deep
+**  Power-down mode is entered.
+**
+**  Any Deep Power-down (DP) instruction, while an
+**  Erase, Program or Write cycle is in progress, is rejected
+**  without having any effects on the cycle that
+**  is in progress.
 */
 void PmodSFDeepPowerDown(SpiChannel chn);
 
-/** PmodSFPageProgram
+/*  PmodSFPageProgram
 **
 **	Synopsis:
 **  The Page Program (PP) instruction allows bytes to
 **  be programmed in the memory (changing bits from
 **  1 to 0).
-**	Input: SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t address
-** 
-**	chn - spi channe
-**  numBytes - number of bytes to write to the PmodSF
-**  data - data to write to pmod sf
-**  address - 24bit repsresentation of the page address
+**
+**	Input: SpiChannel chn - spi channel
+**         uint8_t numBytes - number of bytes to write to the PmodSF
+**         uint8_t *data - data to write to PmodSF
+**         uint32_t address - 24bit repsresentation of the page address
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
-** Description from the M25P16/M25P128 reference manual:
-** Page Program (PP)
-** The Page Program (PP) instruction allows bytes to
-** be programmed in the memory (changing bits from
-** 1 to 0). Before it can be accepted, a Write Enable
-** (WREN) instruction must previously have been executed.
-** After the Write Enable (WREN) instruction
-** has been decoded, the device sets the Write Enable
-** Latch (WEL).
-** The Page Program (PP) instruction is entered by
-** driving Chip Select (S) Low, followed by the instruction
-** code, three address bytes and at least
-** one data byte on Serial Data Input (D). If the 8
-** least significant address bits (A7-A0) are not all
-** zero, all transmitted data that goes beyond the end
-** of the current page are programmed from the start
-** address of the same page (from the address
-** whose 8 least significant bits (A7-A0) are all zero).
-** Chip Select (S) must be driven Low for the entire
-** duration of the sequence.
-** The instruction sequence is shown in Figure 16..
-** If more than 256 bytes are sent to the device, previously
-** latched data are discarded and the last 256
-** data bytes are guaranteed to be programmed correctly
-** within the same page. If less than 256 Data
-** bytes are sent to device, they are correctly programmed
-** at the requested addresses without having
-** any effects on the other bytes of the same
-** page.
-** Chip Select (S) must be driven High after the
-** eighth bit of the last data byte has been latched in,
-** otherwise the Page Program (PP) instruction is not
-** executed.
-** As soon as Chip Select (S) is driven High, the selftimed
-** Page Program cycle (whose duration is tPP)
-** is initiated. While the Page Program cycle is in
-** progress, the Status Register may be read to
-** check the value of the Write In Progress (WIP) bit.
-** The Write In Progress (WIP) bit is 1 during the selftimed
-** Page Program cycle, and is 0 when it is
-** completed. At some unspecified time before the
-** cycle is completed, the Write Enable Latch (WEL)
-** bit is reset.
-** A Page Program (PP) instruction applied to a page
-** which is protected by the Block Protect (BP2, BP1,
-** BP0) bits (see Table 2. and Table 3.) is not executed
-**/
+**
+**  Description from the M25P16/M25P128 reference manual:
+**
+**  The Page Program (PP) instruction allows bytes to
+**  be programmed in the memory (changing bits from
+**  1 to 0). Before it can be accepted, a Write Enable
+**  (WREN) instruction must previously have been executed.
+**  After the Write Enable (WREN) instruction
+**  has been decoded, the device sets the Write Enable
+**  Latch (WEL).
+**
+**  The Page Program (PP) instruction is entered by
+**  driving Chip Select (S) Low, followed by the instruction
+**  code, three address bytes and at least
+**  one data byte on Serial Data Input (D). If the 8
+**  least significant address bits (A7-A0) are not all
+**  zero, all transmitted data that goes beyond the end
+**  of the current page are programmed from the start
+**  address of the same page (from the address
+**  whose 8 least significant bits (A7-A0) are all zero).
+**  Chip Select (S) must be driven Low for the entire
+**  duration of the sequence.
+**  The instruction sequence is shown in Figure 16..
+**
+**  If more than 256 bytes are sent to the device, previously
+**  latched data are discarded and the last 256
+**  data bytes are guaranteed to be programmed correctly
+**  within the same page. If less than 256 Data
+**  bytes are sent to device, they are correctly programmed
+**  at the requested addresses without having
+**  any effects on the other bytes of the same
+**  page.
+**
+**  Chip Select (S) must be driven High after the
+**  eighth bit of the last data byte has been latched in,
+**  otherwise the Page Program (PP) instruction is not
+**  executed.
+**
+**  As soon as Chip Select (S) is driven High, the selftimed
+**  Page Program cycle (whose duration is tPP)
+**  is initiated. While the Page Program cycle is in
+**  progress, the Status Register may be read to
+**  check the value of the Write In Progress (WIP) bit.
+**  The Write In Progress (WIP) bit is 1 during the selftimed
+**  Page Program cycle, and is 0 when it is
+**  completed. At some unspecified time before the
+**  cycle is completed, the Write Enable Latch (WEL)
+**  bit is reset.
+**
+**  A Page Program (PP) instruction applied to a page
+**  which is protected by the Block Protect (BP2, BP1,
+**  BP0) bits (see Table 2. and Table 3.) is not executed
+*/ 
 void PmodSFPageProgram(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t address);
 
-/** PmodSFReadBytes
+/*  PmodSFReadBytes
 **
 **	Synopsis:
 **  The Read Data bytes  instruction allows bytes to
 **  be read from memory into a buffer from the specified
 **  24-bit address on the SPI channel selected.
-**	Input: 
-**	SpiChannel chn - spi channel
-**  uint8_t numBytes - number of bytes to read from the PmodSF
-**  uint8_t *data - buffer to store data read in from the PmodSF
-**  uint32_t address - 24bit repsresentation of the page address
+**
+**	Input: SpiChannel chn - spi channel
+**         uint32_t numBytes - number of bytes to read from the PmodSF
+**         uint8_t *data - buffer to store data read in from the PmodSF
+**         uint32_t address - 24bit repsresentation of the page address
+**
 **  Returns: none
+**
 **	Errors:	none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
-** Description from the M25P16 reference manual:
-** Read Data Bytes (READ)
+**
+** Description from the M25P16/M25P128 reference manual:
+**
 ** The device is first selected by driving Chip Select
 ** (S) Low. The instruction code for the Read Data
 ** Bytes (READ) instruction is followed by a 3-byte
@@ -749,7 +838,7 @@ void PmodSFPageProgram(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t ad
 ** Data Output (Q), each bit being shifted out, at
 ** a maximum frequency fR, during the falling edge of
 ** Serial Clock (C).
-** The instruction sequence is shown in Figure 14..
+**
 ** The first byte addressed can be at any location.
 ** The address is automatically incremented to the
 ** next higher address after each byte of data is shifted
@@ -758,6 +847,7 @@ void PmodSFPageProgram(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t ad
 ** When the highest address is reached, the address
 ** counter rolls over to 000000h, allowing the read
 ** sequence to be continued indefinitely.
+**
 ** The Read Data Bytes (READ) instruction is terminated
 ** by driving Chip Select (S) High. Chip Select
 ** (S) can be driven High at any time during data output.
@@ -766,30 +856,38 @@ void PmodSFPageProgram(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t ad
 ** progress, is rejected without having any effects on
 ** the cycle that is in progress.
 */
-void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t address);
+void PmodSFReadBytes(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t address);
 
-/** PmodSFBulkErase
+/*  PmodSFBulkErase
 **
 **	Synopsis:
 **  Performs a bulk erase of the entire PmodSF setting
 **  all bits to 1.
+**
 **	Input: SpiChannel chn - channel to perform bulk erase on
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
+**
 ** Description from the M25P16/M25P128 reference manual:
+**
 ** The Bulk Erase (BE) instruction sets all bits to 1
 ** (FFh). Before it can be accepted, a Write Enable
 ** (WREN) instruction must previously have been executed.
 ** After the Write Enable (WREN) instruction
 ** has been decoded, the device sets the Write Enable
 ** Latch (WEL).
+**
 ** The Bulk Erase (BE) instruction is entered by driving
 ** Chip Select (S) Low, followed by the instruction
 ** code on Serial Data Input (D). Chip Select (S)
 ** must be driven Low for the entire duration of the
 ** sequence.
+**
 ** Chip Select (S) must be driven High after the
 ** eighth bit of the instruction code has been latched
 ** in, otherwise the Bulk Erase instruction is not executed.
@@ -803,6 +901,7 @@ void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t addr
 ** At some unspecified time before the cycle
 ** is completed, the Write Enable Latch (WEL) bit is
 ** reset.
+**
 ** The Bulk Erase (BE) instruction is executed only if
 ** all Block Protect (BP2, BP1, BP0) bits are 0. The
 ** Bulk Erase (BE) instruction is ignored if one, or
@@ -810,61 +909,79 @@ void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t addr
 */
 void PmodSFBulkErase(SpiChannel chn);
 
-/** PmodSFClearStatusRegBit
+/*  PmodSFClearStatusRegBit
 **
 **	Synopsis:
 **  Clear bits in the status register based on a bit mask passed in, the bits
 **  to be cleared should be set to 1 in the bitmask
+**
 **	Input: SpiChannel chn - spi channel to clear status register bits on
 **         uint8_t bitMask - bitmask to apply to status register                          
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
+**
 **  Decription: 
+**
 **  Status register is read in, a bitwise OR is performed on the bitmask passed in,
 **  an AND operation is performed on the value of the status register and the bitmask,
 **  this value is then written back to the status register.
 */
 void PmodSFClearStatusRegBits(SpiChannel chn,uint8_t bitMask);
 
-/** PmodSFSetStatusRegBit
+/*  PmodSFSetStatusRegBit
 **
 **	Synopsis:
 **  Set bits in the status register based on a bit mask passed in
+**
 **	Input: SpiChannel chn - spi channel to set status register bits on
 **         uint8_t bitMask - bitmask to apply to status register                          
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
+**
 **  Decription: 
+**
 **  Status register is read in, an OR operation is performed on the 
 **  value of the status register, this value is then written back to the
 **  status register.
 */
 void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask);
 
-/** PmodSFSectorErase
+/*  PmodSFSectorErase
 **
 **	Synopsis:
 **  Erases a sector on the PmodSF on the specified channel
 **  containing the 24-bit address passed in
+**
 **	Input: SpiChannel chn - spi channel to perform sector erase
 **         uint32_t address - 24-bit address contained in sector
 **                            to erase
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
+**
 ** Description from the M25P16/M25P128 reference manual:
-** Sector Erase (SE)
+**
 ** The Sector Erase (SE) instruction sets to 1 (FFh)
 ** all bits inside the chosen sector. Before it can be
 ** accepted, a Write Enable (WREN) instruction
 ** must previously have been executed. After the
 ** Write Enable (WREN) instruction has been decoded,
 ** the device sets the Write Enable Latch (WEL).
+**
 ** The Sector Erase (SE) instruction is entered by
 ** driving Chip Select (S) Low, followed by the instruction
 ** code, and three address bytes on Serial
@@ -872,6 +989,7 @@ void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask);
 ** Table 3.) is a valid address for the Sector Erase
 ** (SE) instruction. Chip Select (S) must be driven
 ** Low for the entire duration of the sequence.
+**
 ** Chip Select (S) must be driven High after the
 ** eighth bit of the last address byte has been latched
 ** in, otherwise the Sector Erase (SE) instruction is
@@ -885,6 +1003,7 @@ void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask);
 ** completed. At some unspecified time before the
 ** cycle is completed, the Write Enable Latch (WEL)
 ** bit is reset.
+**
 ** A Sector Erase (SE) instruction applied to a page
 ** which is protected by the Block Protect (BP2, BP1,
 ** BP0) bits (see Table 2. and Table 3.) is not executed

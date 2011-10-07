@@ -37,7 +37,7 @@
 **	Errors:
 **	if bytePos > 3 0 is returned since all bits will be shitfed out
 */
-uint8_t fnGetByteFromUint32(uint32_t value,uint8_t bytePos)
+uint8_t fnPMODGetByteFromUint32(uint32_t value,uint8_t bytePos)
 {
 	return value >> (bytePos * 8) & 255;
 }
