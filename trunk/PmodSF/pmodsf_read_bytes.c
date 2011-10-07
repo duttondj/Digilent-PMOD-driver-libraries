@@ -19,23 +19,27 @@
 #include "pmodsf.h"
 #include "pmodsf_helper.h"
 
-/** PmodSFReadBytes
+/*  PmodSFReadBytes
 **
 **	Synopsis:
 **  The Read Data bytes  instruction allows bytes to
 **  be read from memory into a buffer from the specified
 **  24-bit address on the SPI channel selected.
-**	Input: 
-**	SpiChannel chn - spi channel
-**  uint8_t numBytes - number of bytes to read from the PmodSF
-**  uint8_t *data - buffer to store data read in from the PmodSF
-**  uint32_t address - 24bit repsresentation of the page address
+**
+**	Input: SpiChannel chn - spi channel
+**         uint32_t numBytes - number of bytes to read from the PmodSF
+**         uint8_t *data - buffer to store data read in from the PmodSF
+**         uint32_t address - 24bit repsresentation of the page address
+**
 **  Returns: none
+**
 **	Errors:	none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
-** Description from the M25P16 reference manual:
-** Read Data Bytes (READ)
+**
+** Description from the M25P16/M25P128 reference manual:
+**
 ** The device is first selected by driving Chip Select
 ** (S) Low. The instruction code for the Read Data
 ** Bytes (READ) instruction is followed by a 3-byte
@@ -45,7 +49,7 @@
 ** Data Output (Q), each bit being shifted out, at
 ** a maximum frequency fR, during the falling edge of
 ** Serial Clock (C).
-** The instruction sequence is shown in Figure 14..
+**
 ** The first byte addressed can be at any location.
 ** The address is automatically incremented to the
 ** next higher address after each byte of data is shifted
@@ -54,6 +58,7 @@
 ** When the highest address is reached, the address
 ** counter rolls over to 000000h, allowing the read
 ** sequence to be continued indefinitely.
+**
 ** The Read Data Bytes (READ) instruction is terminated
 ** by driving Chip Select (S) High. Chip Select
 ** (S) can be driven High at any time during data output.
@@ -62,7 +67,7 @@
 ** progress, is rejected without having any effects on
 ** the cycle that is in progress.
 */
-void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t address)
+void PmodSFReadBytes(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t address)
 {
     int8_t byteCounter = 0;
    
@@ -75,7 +80,7 @@ void PmodSFReadBytes(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t addr
 	//SEND IN THE 24 BIT ADDRESS
 	for(byteCounter = 2;byteCounter >= 0;byteCounter--)    
 	{
-		SpiChnPutC(chn,fnGetByteFromUint32(address,byteCounter));
+		SpiChnPutC(chn,fnPMODGetByteFromUint32(address,byteCounter));
 		SpiChnGetC(chn);
 	}
 	

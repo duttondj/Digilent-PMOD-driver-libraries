@@ -140,7 +140,7 @@ uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock)
 void fnSetPmodFlashCapacity(uint8_t chn)
 {
 	 uint8_t pmodSFID = PmodSFReadID(chn);
-	 pmodFlashCapacity = fnGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE);
+	 pmodFlashCapacity = fnPMODGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE);
 	 
 }
 

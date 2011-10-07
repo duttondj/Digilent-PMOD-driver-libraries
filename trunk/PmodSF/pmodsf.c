@@ -34,18 +34,18 @@ typedef struct
 //driving SS low and high
 static const SpiPortSS SpiIO[] = {
 	{0,0},  // SPI 0 is invalid
-#if (__PIC32_FEATURE_SET__ == CEREBOTMX4_FEATURE_SET) 
+#if (PIC32_300_400_SERIES) 
 	{IOPORT_D,BIT_9}, //SPI1
 	{IOPORT_G,BIT_9}  //SPI2
-#elif (__PIC32_FEATURE_SET__ == CEREBOTMX7_FEATURE_SET)
+#elif (PIC32_500_600_700_SERIES)
 	{IOPORT_D,BIT_9}, //SPI1
-	{IOPORT_E,BIT_14},//SPI1A/SPI2
-    {0,0},            //SPI2A/SPI3
+	{IOPORT_G,BIT_9},//SPI2/SPI2A
+    {IOPORT_D,BIT_14},//SPI1A/SPI3
 	{IOPORT_F,BIT_12} //SPI3A/SPI4
 #endif
 };
 
-/** PmodSFInit
+/*  PmodSFInit
 **
 **	Synopsis:
 **  Initializes the PmodSF module on the selected SPI channel. 
@@ -53,58 +53,68 @@ static const SpiPortSS SpiIO[] = {
 **  Input: SpiChannel chn  - spi channel initialize
 **         uint32_t pbClock - peripheral bus clock in Hz
 **         uint32_t bitRate - bit rate desired in Hz
+**
 **  Returns: none
+**
 **  Description:
+**
 **  Opens the desired SPI channel in 8-bit mode as a master, enables the slave select bit,
 **  and sets the desired bit rate as a function of pbClock/bitRate.  Examples of peripheral bus
 **  bit rate combinations are available in the table labeld "Excerpt from PIC32 Familiy Reference 
 **  Manual Chapter 23 section 23.3.7" in pmodsf.h.
-**/
+*/
 void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate)
 {
     SpiChnOpen(chn, SPI_OPEN_MSTEN | SPI_OPEN_SSEN |  SPI_OPEN_MODE8 , pbClock/bitRate);
 }
 
-/** PmodSFSetSSLow
+/*  PmodSFSetSSLow
 **
 **	Synopsis:
 **  Sets the slave select bit on the selected SPI channel to low
 **  
 **  Input: SpiChannel chn  - spi channel to set SS bit low on
-**  Returns: none
 **
-**/
+**  Returns: none
+*/
 void PmodSFSetSSLow(SpiChannel chn)
 {
 	PORTClearBits(SpiIO[chn].portSS,SpiIO[chn].ssMask);
 }
 
-/** PmodSFSetSSHigh
+/*  PmodSFSetSSHigh
 **
 **	Synopsis:
 **  Sets the slave select bit on the selected SPI channel to high
-**  Input: SpiChannel chn  - spi channel to set SS bit high on
-**  Returns: none
-**	Errors:
-**		none
 **
-**/
+**  Input: SpiChannel chn  - spi channel to set SS bit high on
+**
+**  Returns: none
+**
+**	Errors:	none
+*/
 void PmodSFSetSSHigh(SpiChannel chn)
 {
 	PORTSetBits(SpiIO[chn].portSS,SpiIO[chn].ssMask);
 }
 
-/** PmodSFWriteStatusRegister
+/*  PmodSFWriteStatusRegister
 **
 **	Synopsis: Writes configuration bits to the status register
 **            on the specified SPI channel
+**
 **	Input: SpiChannel chn - spi channel to status reg write
 **         uint8_t statusReg - status register bits to write
+** 
 **  Returns: none
+**
 **	Errors: none
+**
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
+** 
 ** Description from the M25P16/M25P128 reference manual:
+**
 ** The Write Status Register (WRSR) instruction allows
 ** new values to be written to the Status Register.
 ** Before it can be accepted, a Write Enable
@@ -112,6 +122,7 @@ void PmodSFSetSSHigh(SpiChannel chn)
 ** After the Write Enable (WREN) instruction
 ** has been decoded and executed, the device sets
 ** the Write Enable Latch (WEL).
+**
 ** The Write Status Register (WRSR) instruction is
 ** entered by driving Chip Select (S) Low, followed
 ** by the instruction code and the data byte on Serial
@@ -119,6 +130,7 @@ void PmodSFSetSSHigh(SpiChannel chn)
 ** The Write Status Register (WRSR) instruction has
 ** no effect on b6, b5, b1 and b0 of the Status Register.
 ** b6 and b5 are always read as 0.
+**
 ** Chip Select (S) must be driven High after the
 ** eighth bit of the data byte has been latched in. If
 ** not, the Write Status Register (WRSR) instruction
@@ -132,6 +144,7 @@ void PmodSFSetSSHigh(SpiChannel chn)
 ** Register cycle, and is 0 when it is completed.
 ** When the cycle is completed, the Write Enable
 ** Latch (WEL) is reset.
+**
 ** The Write Status Register (WRSR) instruction allows
 ** the user to change the values of the Block
 ** Protect (BP2, BP1, BP0) bits, to define the size of
@@ -164,14 +177,19 @@ void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg)
 	PmodSFSetSSHigh(chn); //SS to High
 }
 
-/** BlockWhileWriteInProgress
+/*  BlockWhileWriteInProgress
 **
 **	Synopsis:
 **  Blocks while a write is in progress
+**
 **	Input: SpiChannel chn - channel to poll for write in progress
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **	Description:
+**
 **  During a write operation the Write In Progress(WIP) bit
 **  is set, operations that write to the PmodSF will be
 **  ignored while this bit is set. Calling this function 
@@ -188,15 +206,20 @@ void BlockWhileWriteInProgress(SpiChannel chn)
 	}while((statusReg & PMODSF_SR_WIP) == PMODSF_SR_WIP); 
 }
 
-/** PmodSFReadStatusRegister
+/*  PmodSFReadStatusRegister
 **
 **	Synopsis:
 **  Reads the value of the status register
+**
 **	Input: SpiChannel chn - SPI channel to read status register
+**
 **  Returns: uint8_t - 8-bit representation of the status register
-             (see "PMODSF Status Register Format")
+**           (see "PMODSF Status Register Format")
+**
 **	Errors: none
+**
 **	Description:
+**
 **	The Read Status Register (RDSR) instruction allows
 **	the Status Register to be read. The Status
 **	Register may be read at any time, even while a
@@ -206,22 +229,30 @@ void BlockWhileWriteInProgress(SpiChannel chn)
 **	(WIP) bit before sending a new instruction to the
 **	device. It is also possible to read the Status Register
 **	continuously.
+**
 **	See table "PMODSF Status Register Format" for a
 **	description of the status register format.
+**
 **	The status and control bits of the Status Register
 **	are as follows:
-**	WIP bit. The Write In Progress (WIP) bit indicates
+**
+**	WIP bit:
+**  The Write In Progress (WIP) bit indicates
 **	whether the memory is busy with a Write Status
 **	Register, Program or Erase cycle. When set to 1,
 **	such a cycle is in progress, when reset to 0 no
 **	such cycle is in progress.
-**	WEL bit. The Write Enable Latch (WEL) bit indicates
+**
+**	WEL bit:
+**  The Write Enable Latch (WEL) bit indicates
 **	the status of the internal Write Enable Latch.
 **	When set to 1 the internal Write Enable Latch is
 **	set, when set to 0 the internal Write Enable Latch
 **	is reset and no Write Status Register, Program or
 **	Erase instruction is accepted.
-**	BP2, BP1, BP0 bits. The Block Protect (BP2,
+**
+**	BP2, BP1, BP0 bits:
+**  The Block Protect (BP2,
 **	BP1, BP0) bits are non-volatile. They define the
 **	size of the area to be software protected against
 **	Program and Erase instructions. These bits are
@@ -235,7 +266,9 @@ void BlockWhileWriteInProgress(SpiChannel chn)
 **	Protected mode has not been set. The Bulk
 **	Erase (BE) instruction is executed if, and only if,
 **	both Block Protect (BP2, BP1, BP0) bits are 0.
-**	SRWD bit. The Status Register Write Disable
+**
+**	SRWD bit:
+**  The Status Register Write Disable
 **	(SRWD) bit is operated in conjunction with the
 **	Write Protect (W) signal. The Status Register
 **	Write Disable (SRWD) bit and Write Protect (W)
@@ -263,21 +296,28 @@ uint8_t PmodSFReadStatusRegister(SpiChannel chn)
 	return statusRegister;
 }
 
-/** PmodSFWriteEnable
+/*  PmodSFWriteEnable
 **
 **	Synopsis:
 **  Enables writing by setting the Write Enable Latch(WEL)
 **  bit on the selected chanel
+**
 **	Input: SpiChannel chn - channel to enable writes
+**
 **  Returns: none
+**
 **	Errors: none
+**
 **  Description from the M25P16/M25P128 reference manual:
+**
 **  The Write Enable (WREN) instruction 
 **  sets the Write Enable Latch (WEL) bit.
+**
 **  The Write Enable Latch (WEL) bit must be set prior
 **  to every Page Program (PP), Sector Erase
 **  (SE), Bulk Erase (BE) and Write Status Register
 **  (WRSR) instruction.
+**
 **  The Write Enable (WREN) instruction is entered
 **  by driving Chip Select (S) Low, sending the instruction
 **  code, and then driving Chip Select (S)
