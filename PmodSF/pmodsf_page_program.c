@@ -15,8 +15,10 @@
 /*  10/6/2011(RyanH):                                                   */
 /*                                                                      */
 /************************************************************************/
+
 #include "pmodsf.h"
 #include "pmodsf_helper.h"
+
 /** PmodSFPageProgram
 **
 **	Synopsis:
@@ -80,7 +82,6 @@
 ** which is protected by the Block Protect (BP2, BP1,
 ** BP0) bits (see Table 2. and Table 3.) is not executed
 **/
-
 void PmodSFPageProgram(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t address)
 {
 	int8_t byteCounter = 0;

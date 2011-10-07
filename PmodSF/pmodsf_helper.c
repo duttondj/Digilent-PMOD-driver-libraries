@@ -4,8 +4,8 @@
 /*                           fnPmodSFSendCommand  						*/
 /*                           fnGetByteFromUint32                        */
 /************************************************************************/
-/*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*	Author: 	Ryan Hoffman                                            */
+/*                                                                      */
 /************************************************************************/
 /*  Module Description: 												*/
 /*  Implementation file for PmodSF helper functions                     */
@@ -19,6 +19,7 @@
 /************************************************************************/
 
 #include "pmodsf_helper.h"
+
 /*  fnGetByteFromUint32
 **	Synopsis:
 **  Takes in an unsigned 32 bit value and a byte position and returns

@@ -27,7 +27,6 @@
 #include <peripheral/spi.h>
 #include <stdint.h>
 
-
 /*  Table 2 Protected Area Sizes (PMODSF-16)                                                                                  
 ** -----------------------------------------------------------------------------------------------------------------
 ** |Status Register Content|                                     Memory Content                                    |
@@ -259,6 +258,10 @@
 #define	PMODSD_MEM_TYPE_BYTE 1
 #define	PMODSD_MFID_BYTE 2
 
+//feature set definitions used in conditional compiling for processor type
+#define CEREBOTMX4_FEATURE_SET 460  
+#define CEREBOTMX7_FEATURE_SET 795
+
 #include "pmodsf_helper.h"
 
 /** PmodSFInit
@@ -372,9 +375,114 @@ void PmodSFSetSSHigh(SpiChannel chn);
 **/
 void PmodSFSetSSLow(SpiChannel chn);
 
+/** PmodSFWriteEnable
+**
+**	Synopsis:
+**  Enables writing by setting the Write Enable Latch(WEL)
+**  bit on the selected chanel
+**	Input: SpiChannel chn - channel to enable writes
+**  Returns: none
+**	Errors: none
+**  Description from the M25P16/M25P128 reference manual:
+**  The Write Enable (WREN) instruction 
+**  sets the Write Enable Latch (WEL) bit.
+**  The Write Enable Latch (WEL) bit must be set prior
+**  to every Page Program (PP), Sector Erase
+**  (SE), Bulk Erase (BE) and Write Status Register
+**  (WRSR) instruction.
+**  The Write Enable (WREN) instruction is entered
+**  by driving Chip Select (S) Low, sending the instruction
+**  code, and then driving Chip Select (S)
+**  High.
+*/
 void PmodSFWriteEnable(SpiChannel chn);
+
+/** PmodSFReadStatusRegister
+**
+**	Synopsis:
+**  Reads the value of the status register
+**	Input: SpiChannel chn - SPI channel to read status register
+**  Returns: uint8_t - 8-bit representation of the status register
+             (see "PMODSF Status Register Format")
+**	Errors: none
+**	Description:
+**	The Read Status Register (RDSR) instruction allows
+**	the Status Register to be read. The Status
+**	Register may be read at any time, even while a
+**	Program, Erase or Write Status Register cycle is in
+**	progress. When one of these cycles is in progress,
+**	it is recommended to check the Write In Progress
+**	(WIP) bit before sending a new instruction to the
+**	device. It is also possible to read the Status Register
+**	continuously.
+**	See table "PMODSF Status Register Format" for a
+**	description of the status register format.
+**	The status and control bits of the Status Register
+**	are as follows:
+**	WIP bit. The Write In Progress (WIP) bit indicates
+**	whether the memory is busy with a Write Status
+**	Register, Program or Erase cycle. When set to 1,
+**	such a cycle is in progress, when reset to 0 no
+**	such cycle is in progress.
+**	WEL bit. The Write Enable Latch (WEL) bit indicates
+**	the status of the internal Write Enable Latch.
+**	When set to 1 the internal Write Enable Latch is
+**	set, when set to 0 the internal Write Enable Latch
+**	is reset and no Write Status Register, Program or
+**	Erase instruction is accepted.
+**	BP2, BP1, BP0 bits. The Block Protect (BP2,
+**	BP1, BP0) bits are non-volatile. They define the
+**	size of the area to be software protected against
+**	Program and Erase instructions. These bits are
+**	written with the Write Status Register (WRSR) instruction.
+**	When one or both of the Block Protect
+**	(BP2, BP1, BP0) bits is set to 1, the relevant memory
+**	area (as defined in Table 2.) becomes protected
+**	against Page Program (PP) and Sector Erase
+**	(SE) instructions. The Block Protect (BP2, BP1,
+**	BP0) bits can be written provided that the Hardware
+**	Protected mode has not been set. The Bulk
+**	Erase (BE) instruction is executed if, and only if,
+**	both Block Protect (BP2, BP1, BP0) bits are 0.
+**	SRWD bit. The Status Register Write Disable
+**	(SRWD) bit is operated in conjunction with the
+**	Write Protect (W) signal. The Status Register
+**	Write Disable (SRWD) bit and Write Protect (W)
+**	signal allow the device to be put in the Hardware
+**	Protected mode (when the Status Register Write
+**	Disable (SRWD) bit is set to 1, and Write Protect
+**	(W) is driven Low). In this mode, the non-volatile
+**	bits of the Status Register (SRWD, BP2, BP1,
+**	BP0) become read-only bits and the Write Status
+**	Register (WRSR) instruction is no longer accepted
+**	for execution.
+*/
 uint8_t PmodSFReadStatusRegister(SpiChannel chn);
 
+/** PmodSFWriteDisable
+**
+**	Synopsis:
+**  Dsiable writing by resetting the Write Enable Latch(WEL)
+**  bit on the selected chanel
+**	Input: SpiChannel chn - channel to disable writes
+**  Returns: none
+**	Errors: none
+**  Description from the M25P16/M25P128 reference manual:
+**  The Write Disable (WRDI) instruction (Figure 10.)
+**  resets the Write Enable Latch (WEL) bit.
+**  The Write Disable (WRDI) instruction is entered by
+**  driving Chip Select (S) Low, sending the instruction
+**  code, and then driving Chip Select (S) High.
+**  The Write Enable Latch (WEL) bit is reset under
+**  the following conditions:
+**  – Power-up
+**  – Write Disable (WRDI) instruction completion
+**  – Write Status Register (WRSR) instruction
+**  completion
+**  – Page Program (PP) instruction completion
+**  – Sector Erase (SE) instruction completion
+**  – Bulk Erase (BE) instruction completion
+*/
 void PmodSFWriteDisable(SpiChannel chn);
 
 /** PmodSFReadID
@@ -735,9 +843,8 @@ void PmodSFClearStatusRegBits(SpiChannel chn,uint8_t bitMask);
 **  value of the status register, this value is then written back to the
 **  status register.
 */
-
 void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask);
-/**************/
+
 /** PmodSFSectorErase
 **
 **	Synopsis:
