@@ -78,7 +78,7 @@
 */
 void PmodSFDeepPowerDown(SpiChannel chn)
 {
-	BlockWhileWriteInProgress(chn); 
+	PmodSFBlockWhileWriteInProgress(chn); 
 	fnPmodSFSendCommand(chn,PMODSF_DEEP_POWER_DOWN);
 }
 
@@ -169,7 +169,7 @@ uint8_t PmodSFDeepPowerDownRelease(SpiChannel chn)
 	uint8_t i = 0;
 	uint8_t signature = 0;
 	
-	BlockWhileWriteInProgress(chn); 
+	PmodSFBlockWhileWriteInProgress(chn); 
 
 	PmodSFSetSSLow(chn); //SS to low 
 

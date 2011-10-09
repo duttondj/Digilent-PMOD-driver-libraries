@@ -162,7 +162,7 @@ void PmodSFSetSSHigh(SpiChannel chn)
 */
 void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg)
 {
-	BlockWhileWriteInProgress(chn); 
+	PmodSFBlockWhileWriteInProgress(chn); 
 
 	PmodSFWriteEnable(chn);
 
@@ -177,7 +177,7 @@ void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg)
 	PmodSFSetSSHigh(chn); //SS to High
 }
 
-/*  BlockWhileWriteInProgress
+/*  PmodSFBlockWhileWriteInProgress
 **
 **	Synopsis:
 **  Blocks while a write is in progress
@@ -196,7 +196,7 @@ void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg)
 **  blocks further operations until the WIP cleared condition
 **  is met.	
 */
-void BlockWhileWriteInProgress(SpiChannel chn)
+void PmodSFBlockWhileWriteInProgress(SpiChannel chn)
 {
 	uint8_t statusReg = 0;
 	//CHECK FOR WRITE IN PROGRESS	

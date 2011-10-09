@@ -8,8 +8,8 @@
 /************************************************************************/
 /*  Module Description: 												*/
 /*                                                                      */
-/*  This file contains test functions used in for the Digilent          */
-/*  PMODSF,SPI on the Digilent CEREBOT32MX4 and CEREBOT32MX7            */
+/*  This file contains implementation for functions used for use with   */
+/*  the  Digilent PMODSF on Digilent Pic32 based boards                 */
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
@@ -19,79 +19,125 @@
 
 #include "pmodsf_testDriver.h"
 
-
-uint8_t UNIT_spfPMOD_DPD_Release(uint8_t chn)
+/*UNIT TEST: PmodSFDeepPowerDown/PmodSFDeepPowerDownRelease
+This feature is only supported on the PMODSF-16. This
+test places the PMODSF in deep power down mode, then releases
+and reads the electronic signature, if a value of 14h will return
+a passing result.
+*/
+uint8_t UNIT_spfPMOD_DPD_Release(uint8_t chn, UART_MODULE uartID)
 {
-	char results[128];
-	UARTPutS("\n\rEXECUING TEST => UNIT_spfPMOD_DPD_Release()\n\r",UART1);
-	UARTPutS("Entering Deep Power Down\n\r",UART1);
-
+	uint8_t results[128];
+	uint8_t signature = 0;
+	UARTPutS("\n\rEXECUING TEST => UNIT_spfPMOD_DPD_Release()\n\r",uartID);
+	if(pmodFlashCapacity == PMODSF_128_MBIT)
+	{
+		UARTPutS("Not Supported on PMODSF-128\r\n",uartID);
+		return 0;
+	}
+	UARTPutS("Entering Deep Power Down\n\r",uartID);
 	PmodSFDeepPowerDown(chn);
-	UARTPutS("Exiting Deep Power Down\n\r",UART1);
-	BlockWhileWriteInProgress(chn);
-	sprintf(results,"Exited deep power down with signature => %x\n\r",PmodSFDeepPowerDownRelease(chn));
-	UARTPutS(results,UART1);
-}
 
-uint8_t UNIT_spfPMOD_ReadID(uint8_t chn)
+	UARTPutS("Exiting Deep Power Down\n\r",uartID);
+	PmodSFBlockWhileWriteInProgress(chn);
+
+	signature = PmodSFDeepPowerDownRelease(chn);
+
+	sprintf(results,"Exited deep power down with signature => %x\n\r",signature);
+	UARTPutS(results,uartID);
+
+	return (signature == PMODSF_16_RES_SIG)?1:0;
+}
+/*
+UNIT TEST: PmodSFReadID
+Reads the manufacturer's ID, for the PMODSF-16 and PMODSF-128
+if the correct value is returned the test passes.
+*/
+uint8_t UNIT_spfPMOD_ReadID(uint8_t chn, UART_MODULE uartID)
 {
 	uint32_t pmodSFID = 0;
-	char results[128];
-	UARTPutS("\n\rEXECUING TEST =>  UNIT_spfPMOD_ReadID()\n\r",UART1);
+	uint8_t results[128];
+	UARTPutS("\n\rEXECUING TEST =>  UNIT_spfPMOD_ReadID()\n\r",uartID);
     pmodSFID = PmodSFReadID(chn);
-	sprintf(results,"MFID: 0x%x\n\r Type: 0x%x\n\r Capacity: 0x%x\n\r",	
+	sprintf(results,"MFID: 0x%x\n\rType: 0x%x\n\rCapacity: 0x%x\n\r",	
              fnGetByteFromUint32_t(pmodSFID,PMODSD_MFID_BYTE),
              fnGetByteFromUint32_t(pmodSFID,PMODSD_MEM_TYPE_BYTE),
-             fnGetByteFromUint32_t(pmodSFID,PMODSD_MEM_CAPACITY_BYTE));
-	UARTPutS(results,UART1);
+             fnGetByteFromUint32_t(pmodSFID,PMODSD_MEM_CAPACITY_BYTE),pmodSFID);
+	UARTPutS(results,uartID);
+	if(pmodFlashCapacity == PMODSF_128_MBIT)
+	{
+		return (pmodSFID == PMODSF_128_MFID)?1:0;
+	}
+	else
+	{
+		return (pmodSFID == PMODSF_16_MFID)?1:0;
+	}
 
 }
+/*
+UNIT TEST: PmodSFReadStatusRegister/PmodSFWriteStatusRegister
 
-uint8_t UNIT_sfPMODF_ReadStatusReg(uint8_t chn)
+Prompts for a bitmask, sets the status register to that 
+value, the status register is then read and the values compared.
+If the values are the same the test returns a pass.
+*/
+uint8_t UNIT_sfPMODF_ReadStatusReg(uint8_t chn, UART_MODULE uartID)
 {
-	uint8_t pmodStatusReg = 0;
-	char results[128];
-	UARTPutS("\n\rEXECUING TEST =>  UNIT_sfPMODF_ReadStatusReg()\n\r ",UART1);
+	uint8_t results[128];
+	uint8_t statusRegIn = 0;
+	uint8_t statusRegOut = 0;
 
-	pmodStatusReg =  PmodSFReadStatusRegister(chn);
-	sprintf(results,"Status Register: 0x%x\n\r",pmodStatusReg);	
-	UARTPutS(results,UART1);
+	UARTPutS("\n\rEXECUING TEST =>  UNIT_sfPMODF_ReadStatusReg()\n\r ",uartID);
+	UARTPutS("Enter an 8-bit register value (base 10)=>",uartID);
+
+	statusRegIn = getIntegerFromConsole(uartID);
+	PmodSFWriteStatusRegister(chn,statusRegIn);
+	
+	PmodSFBlockWhileWriteInProgress(chn);//wait for WEL/WIP bit to reset
+	statusRegOut =  PmodSFReadStatusRegister(chn);
+	
+	sprintf(results,"Status Register: 0x%x\n\r",statusRegOut);	
+	UARTPutS(results,uartID);
+	
+	PmodSFWriteStatusRegister(chn,0); //clear status register
+	
+	return (statusRegIn == statusRegOut)?1:0;	
 }
 
 /*
 UNIT TEST: PmodSFWriteStatusRegister/PmodSFReadStatusRegister
+PmodSFSetStatusRegBits/PmodSFClearStatusRegBits
 All block protect bits are set to enabled, the status register 
 is read if they match PmodSFSetStatusRegBits passes, all block
 protect bits are cleared, if the status register is == 0 then
 PmodSFClearStatusRegBits passed. Both tests must achieve a pass
 for the entire test to pass.
 */
-uint8_t UNIT_sfPMODF_ClearSetStatusRegBits(uint8_t chn)
+uint8_t UNIT_sfPMODF_ClearSetReadWriteStatusRegBits(uint8_t chn, UART_MODULE uartID)
 {
 	uint8_t results[128];
 	uint8_t testResult = 1;
 
-	UARTPutS("\n\rEXECUING TEST => UNIT_sfPMODF_ClearSetStatusRegBits()\n\r",UART1);
-	UARTPutS("Setting bits for PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0\r\n",UART1);
+	UARTPutS("\n\rEXECUING TEST => UNIT_sfPMODF_ClearSetStatusRegBits()\n\r",uartID);
+	UARTPutS("Setting bits for PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0\r\n",uartID);
 
 	PmodSFWriteStatusRegister(chn,0);//clear status register
 
 	PmodSFSetStatusRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
 
-	BlockWhileWriteInProgress(chn);
+	PmodSFBlockWhileWriteInProgress(chn);
 	testResult &= (PmodSFReadStatusRegister(chn) == (PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0) )?1:0;
 	
-	if(testResult) UARTPutS("PmodSFSetStatusRegBits passed\r\n",UART1);
+	if(testResult) UARTPutS("PmodSFSetStatusRegBits passed\r\n",uartID);
 	
-	
-	UARTPutS("Clearing bits for PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0\r\n",UART1);
+	UARTPutS("Clearing bits for PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0\r\n",uartID);
 
 	PmodSFClearStatusRegBits(chn,PMODSF_SR_BP2|PMODSF_SR_BP1|PMODSF_SR_BP0);
 
-	BlockWhileWriteInProgress(chn);
+	PmodSFBlockWhileWriteInProgress(chn);
 	testResult &= (PmodSFReadStatusRegister(chn) == 0)?1:0;
 	
-	if(testResult) UARTPutS("PmodSFClearStatusRegBits passed\r\n",UART1);
+	if(testResult) UARTPutS("PmodSFClearStatusRegBits passed\r\n",uartID);
 
 	return testResult;
 }
@@ -103,43 +149,43 @@ to every page in sector 0, a sector erase is performed and all bits
 in sector 0 are checked, if they are all 1 (sector erase sets all bits to 1)
 the test will pass, otherwise the test will fail. 
 */
-uint8_t UNIT_sfPMODF_SectorErase(uint8_t chn)
+uint8_t UNIT_sfPMODF_SectorErase(uint8_t chn, UART_MODULE uartID)
 {
 	uint8_t test[128];
 	uint32_t sectorSize = 0;
 	uint32_t address = 0;
-	uint8_t data[PMOD_SF_PAGE_LEN];
+	uint8_t data[PMODSF_PAGE_LEN];
 	uint8_t testResults = 1;
-	UARTPutS("\n\rEXECUTING TEST =>UNIT_sfPMODF_SectorErase()\r\n",UART1);
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_sfPMODF_SectorErase()\r\n",uartID);
 	
 	sectorSize = (pmodFlashCapacity == PMODSF_16_MBIT)?PMODSF_16_SECTOR_SIZE:PMODSF_128_SECTOR_SIZE;
 	
-	for(address = 0;address < sectorSize;address+=PMOD_SF_PAGE_LEN)
+	for(address = 0;address < sectorSize;address+=PMODSF_PAGE_LEN)
 	{
-		memset(data,0,PMOD_SF_PAGE_LEN);
-		PmodSFPageProgram(chn,PMOD_SF_PAGE_LEN,data,address);
+		memset(data,0,PMODSF_PAGE_LEN);
+		PmodSFPageProgram(chn,PMODSF_PAGE_LEN,data,address);
 	}
 	
 	PmodSFSectorErase(chn,0);
 
-	for(address = 0;address < sectorSize;address+=PMOD_SF_PAGE_LEN)
+	for(address = 0;address < sectorSize;address+=PMODSF_PAGE_LEN)
 	{
 		int i = 0;
-		PmodSFReadBytes(chn,PMOD_SF_PAGE_LEN,data,address);
-		for(i = 0;i < PMOD_SF_PAGE_LEN;i++)
+		PmodSFReadBytes(chn,PMODSF_PAGE_LEN,data,address);
+		for(i = 0;i < PMODSF_PAGE_LEN;i++)
 		{
 			testResults &= (data[i] == 255)?1:0;
 			if(!testResults)
 			{
 				sprintf(test,"Failed at address: %d offset %d value=>%d\r\n",address,i,data[i]);
-				UARTPutS(test,UART1);
-			
+				UARTPutS(test,uartID);
 			}
 		}
 	}
 
 	return testResults;
 }
+
 /*
 UNIT TEST: 	PmodSFPageProgram
 A sector erase is performed on address 0h. All bytes in a 256 byte buffer 
@@ -147,86 +193,114 @@ are set to address 0h, these bytes are written to the first page.
 The first page is read from address 0h and compared to the bytes originally
 written, if they match the test passes, otherwise it fails.
 */
-uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn)
+uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn, UART_MODULE uartID)
 {
 	uint8_t results[128];
 	uint32_t i = 0;
 	uint8_t testResults = 1;
 	uint32_t address= 0x000000;
-	uint8_t dataIn[PMOD_SF_PAGE_LEN];
-	uint8_t dataOut[PMOD_SF_PAGE_LEN];
+	uint8_t dataIn[PMODSF_PAGE_LEN];
+	uint8_t dataOut[PMODSF_PAGE_LEN];
 
-	memset(dataOut,0,PMOD_SF_PAGE_LEN);
+	memset(dataOut,0,PMODSF_PAGE_LEN);
 
 	PmodSFSectorErase(chn,address);
 
-	UARTPutS("\n\rEXECUTING TEST => UNIT_sfPMODF_PageProgram()\r\n",UART1);
-	sprintf(results,"Writiing %d bytes to PMODSF at address %x\n\r", PMOD_SF_PAGE_LEN,address);
-	UARTPutS(results,UART1);
-	for(i = 0; i < PMOD_SF_PAGE_LEN;i++)
+	UARTPutS("\n\rEXECUTING TEST => UNIT_sfPMODF_PageProgram()\r\n",uartID);
+	sprintf(results,"Writiing %d bytes to PMODSF at address %x\n\r", PMODSF_PAGE_LEN,address);
+	UARTPutS(results,uartID);
+	for(i = 0; i < PMODSF_PAGE_LEN;i++)
 	{
 		dataOut[i] =  i;
 	}
 
-	PmodSFPageProgram(chn,PMOD_SF_PAGE_LEN,dataOut,address);
+	PmodSFPageProgram(chn,PMODSF_PAGE_LEN,dataOut,address);
 
 	//READ FROM PMODSF address 0x0
 
-	sprintf(results,"Reading %d bytes from PMODSF from address %x\n\r",PMOD_SF_PAGE_LEN,address);
-	UARTPutS(results,UART1);
+	sprintf(results,"Reading %d bytes from PMODSF from address %x\n\r",PMODSF_PAGE_LEN,address);
+	UARTPutS(results,uartID);
 
-    PmodSFReadBytes(chn,PMOD_SF_PAGE_LEN,dataIn,address);
-	for(i = 0;i < PMOD_SF_PAGE_LEN;i++)
+    PmodSFReadBytes(chn,PMODSF_PAGE_LEN,dataIn,address);
+	for(i = 0;i < PMODSF_PAGE_LEN;i++)
 	{
 		testResults &= (dataIn[i] == dataOut[i])?1:0;
 		if(!testResults)
 		{
 			sprintf(results,"Failed at address: %d offset %d value=>%d\r\n",address,i,dataIn[i]);
-			UARTPutS(results,UART1);		
+			UARTPutS(results,uartID);		
 		}
 	}
 	return testResults;
 }
-
-uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock)
+/*UNIT TEST: PmodSFBulkErase
+The first three pages starting at address 0h are written with
+0s in all bits. A bulk erase is performed setting all bits to 1,
+the same three pages are read, if all bits read are set to 1
+the test returns a pass.
+*/
+uint8_t UNIT_sfPMODF_BulkErase(uint8_t chn, UART_MODULE uartID)
 {
-	// UART 1 port pins - connected to PC
-	/* JE-01 CN20/U1CTS/RD14 		RD14
-	   JE-02 U1RTS/BCLK1/CN21/RD15  RD15
-	*/
-	PORTSetPinsDigitalIn (IOPORT_F, BIT_2);
-	PORTSetPinsDigitalOut (IOPORT_F, BIT_8);
+	uint8_t dataOut[PMODSF_PAGE_LEN];
+	uint8_t dataIn[PMODSF_PAGE_LEN*3];
+	uint8_t testResult = 1;
+	uint32_t byteCount = 0;
 
-	OpenUART1 (UART_EN | UART_IDLE_CON | UART_RX_TX |UART_NO_PAR_8BIT | UART_1STOPBIT , UART_RX_ENABLE | UART_TX_ENABLE, 
-			   mUARTBRG(pbClock, baud_rate));
+	UARTPutS("\n\rEXECUTING TEST => UNIT_sfPMODF_BulkErase()\r\n",uartID);
+	memset(dataOut,0,PMODSF_PAGE_LEN);
+	//set all bytes of first 3 pages to all 0
+	PmodSFPageProgram(chn,PMODSF_PAGE_LEN,dataOut,0);
+	PmodSFPageProgram(chn,PMODSF_PAGE_LEN,dataOut,PMODSF_PAGE_LEN);
+	PmodSFPageProgram(chn,PMODSF_PAGE_LEN,dataOut,PMODSF_PAGE_LEN *2);
+	PmodSFBulkErase(chn);
+	PmodSFReadBytes(chn,PMODSF_PAGE_LEN,dataIn,0);
+	for(byteCount=0; byteCount < PMODSF_PAGE_LEN; byteCount++)
+	{
+		testResult &= (dataIn[byteCount] == 255)?1:0;
+	}
+	return testResult;
+}
+
+uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock,UART_MODULE uartID)
+{
+
+    UARTConfigure(uartID, UART_ENABLE_PINS_TX_RX_ONLY);
+
+    UARTSetFifoMode(uartID, UART_INTERRUPT_ON_TX_NOT_FULL | UART_INTERRUPT_ON_RX_NOT_EMPTY);
+
+    UARTSetLineControl(uartID, UART_DATA_SIZE_8_BITS | UART_PARITY_NONE | UART_STOP_BITS_1);
+
+    UARTSetDataRate(uartID, pbClock, 9600);
+
+    UARTEnable(uartID, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
 
 }
 
-void fnSetPmodFlashCapacity(uint8_t chn)
+uint8_t fnSetPmodFlashCapacity(uint8_t chn)
 {
 	 uint8_t pmodSFID = PmodSFReadID(chn);
 	 pmodFlashCapacity = fnPMODGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE);
-	 
+	 return pmodFlashCapacity;
 }
 
-uint8_t getIntegerFromConsole()
+uint8_t getIntegerFromConsole(UART_MODULE uartID)
 {
-		char recievedChars[10];
-		char oneChar;
+		uint8_t recievedChars[10];
+		uint8_t oneChar;
 		int bufPos = 0;
 		do
 		{
-			while(!UARTReceivedDataIsAvailable(UART1));
-			oneChar = UARTGetDataByte(UART1);
-			UARTSendDataByte(UART1,oneChar); //echo to console
+			while(!UARTReceivedDataIsAvailable(uartID));
+			oneChar = UARTGetDataByte(uartID);
+			UARTSendDataByte(uartID,oneChar); //echo to console
 			if(oneChar != '\r' && oneChar != '\b')	
 			{
 				recievedChars[bufPos] = oneChar;			
 			}			
 			else
 			{
-				UARTSendDataByte(UART1,'\n');
-				UARTSendDataByte(UART1,'\r');
+				UARTSendDataByte(uartID,'\n');
+				UARTSendDataByte(uartID,'\r');
 			}	
 			if(oneChar != '\b') //TODO: fix backspace
 				bufPos++;
@@ -239,28 +313,27 @@ uint8_t getIntegerFromConsole()
 }
 
 
-
-uint8_t ConsoleMenu(char *testNames[],uint32_t numCommands)
+uint8_t ConsoleMenu(uint8_t *testNames[],uint32_t numCommands,UART_MODULE uartID)
 {
 	int selection;
-	char menuItem[100];
+	uint8_t menuItem[100];
 	int index = 0;
 	
 	do
 	{
-		UARTPutS("\r\nCerebot32MX4 SPI Test Menu\n\r",UART1);
+		UARTPutS("\r\nPMODSF Test Menu\n\r",uartID);
 	
 		for(index = 0; index < numCommands;index++)
 		{	
 			sprintf(menuItem,"%d) %s\n\r",index,testNames[index]);
-			UARTPutS(menuItem,UART1);
+			UARTPutS(menuItem,uartID);
 		}
-		UARTPutS("Select=>",UART1);
-		selection = getIntegerFromConsole();
+		UARTPutS("Select=>",uartID);
+		selection = getIntegerFromConsole(uartID);
 		
 		if(selection < 0 || selection > numCommands)
 		{
-			UARTPutS("\n\rInvalid Selection\n\r",UART1);
+			UARTPutS("\n\rInvalid Selection\n\r",uartID);
 		}
 		
 	}while(selection < 0 || selection > numCommands);
@@ -275,7 +348,7 @@ uint8_t fnGetByteFromUint32_t(uint32_t value,uint8_t bytePos)
 	return value >> (bytePos * 8) & 255;
 }
 
-void UARTPutS(char *string,UART_MODULE uartID)
+void UARTPutS(uint8_t *string,UART_MODULE uartID)
 {
 	while(*string != '\0')
 	{

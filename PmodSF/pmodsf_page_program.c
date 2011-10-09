@@ -94,7 +94,7 @@ void PmodSFPageProgram(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t a
 {
 	int32_t byteCounter = 0;
 
-	BlockWhileWriteInProgress(chn); 
+	PmodSFBlockWhileWriteInProgress(chn); 
 
 	PmodSFWriteEnable(chn);
 

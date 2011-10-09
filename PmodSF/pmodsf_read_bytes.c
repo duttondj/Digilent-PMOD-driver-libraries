@@ -71,7 +71,7 @@ void PmodSFReadBytes(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t add
 {
     int32_t byteCounter = 0;
 
-    BlockWhileWriteInProgress(chn); 
+    PmodSFBlockWhileWriteInProgress(chn); 
 
 	//SEND COMMAND FOR PAGE PROGRAM OPERATION
 	PmodSFSetSSLow(chn); //SS to low 
