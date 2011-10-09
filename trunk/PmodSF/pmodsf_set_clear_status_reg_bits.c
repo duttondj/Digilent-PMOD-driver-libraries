@@ -46,7 +46,7 @@
 */
 void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask)
 {
-	BlockWhileWriteInProgress(chn); 
+//	PmodSFBlockWhileWriteInProgress(chn); 
 	PmodSFWriteStatusRegister(chn,PmodSFReadStatusRegister(chn)| bitMask); //write new status register
 }
 
@@ -74,11 +74,11 @@ void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask)
 */
 void PmodSFClearStatusRegBits(SpiChannel chn,uint8_t bitMask)
 {
-//	BlockWhileWriteInProgress(chn); 
-//	PmodSFWriteStatusRegister(chn,PmodSFReadStatusRegister(chn) & (~bitMask)); //write new status register
-    uint8_t statusReg = 0;
-	BlockWhileWriteInProgress(chn); 
+//	PmodSFBlockWhileWriteInProgress(chn); 
+	PmodSFWriteStatusRegister(chn,PmodSFReadStatusRegister(chn) & (~bitMask)); //write new status register
+ /*   uint8_t statusReg = 0;
+	PmodSFBlockWhileWriteInProgress(chn); 
 	statusReg = PmodSFReadStatusRegister(chn);
 	statusReg &= ~bitMask;
-	PmodSFWriteStatusRegister(chn,statusReg);
+	PmodSFWriteStatusRegister(chn,statusReg);*/
 }

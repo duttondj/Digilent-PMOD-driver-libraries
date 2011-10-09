@@ -75,7 +75,7 @@ void PmodSFSectorErase (SpiChannel chn,uint32_t address)
 {	
 	int8_t byteCounter = 0;
 	
-	BlockWhileWriteInProgress(chn); 
+	PmodSFBlockWhileWriteInProgress(chn); 
 
 	PmodSFWriteEnable(chn); //set the WREN bit in status register
 

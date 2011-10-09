@@ -70,7 +70,7 @@
 */
 void PmodSFBulkErase(SpiChannel chn)
 {
-	BlockWhileWriteInProgress(chn); 
+	PmodSFBlockWhileWriteInProgress(chn); 
 
 	PmodSFWriteEnable(chn);
 	

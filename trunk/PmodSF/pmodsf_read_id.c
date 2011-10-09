@@ -72,7 +72,7 @@ uint32_t PmodSFReadID(SpiChannel chn)
 {
     uint32_t pmodID = 0;
 
-	BlockWhileWriteInProgress(chn); 
+	PmodSFBlockWhileWriteInProgress(chn); 
 
     PmodSFSetSSLow(chn); //SS to low 
 

@@ -239,7 +239,7 @@
 #define PMODSF_SR_WEL  0x2  // Write Enable Latch Bit
 #define PMODSF_SR_WIP  0x1  // Write In Progress Bit
 
-#define PMOD_SF_PAGE_LEN 256 //Maximum size of a page write is 256 bytes (0 - 255)
+#define PMODSF_PAGE_LEN 256 //Maximum size of a page write is 256 bytes (0 - 255)
 /* ---------------------------------------------------------------------------
 ** |            |         Byte 3              |    Byte 1  |      Byte 0     |
 ** ---------------------------------------------------------------------------
@@ -350,7 +350,7 @@ void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 */
 void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg);
 
-/*  BlockWhileWriteInProgress
+/*  PmodSFBlockWhileWriteInProgress
 **
 **	Synopsis:
 **  Blocks while a write is in progress
@@ -369,7 +369,7 @@ void PmodSFWriteStatusRegister(SpiChannel chn,uint8_t statusReg);
 **  blocks further operations until the WIP cleared condition
 **  is met.	
 */
-void BlockWhileWriteInProgress(SpiChannel chn);
+void PmodSFBlockWhileWriteInProgress(SpiChannel chn);
 
 /*  PmodSFSetSSHigh
 **
