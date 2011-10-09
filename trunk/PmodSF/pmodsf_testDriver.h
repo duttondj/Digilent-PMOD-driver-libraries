@@ -28,13 +28,15 @@
 #include <peripheral/system.h>	// Set up the system and perihperal clocks for best performance
 #include "pmodsf.h"
 
+#define PMODSF_16_SECTOR_SIZE  0x10000
+#define PMODSF_128_SECTOR_SIZE 0x40000 
 
 static uint8_t pmodFlashCapacity = PMODSF_16_MBIT;
 
 uint8_t UNIT_spfPMOD_DPD_Release(uint8_t chn);
 uint8_t UNIT_spfPMOD_ReadID(uint8_t chn);
 uint8_t UNIT_sfPMODF_ReadStatusReg(uint8_t chn);
-uint8_t  UNIT_sfPMODF_ReadWriteStatusReg(uint8_t chn);
+uint8_t UNIT_sfPMODF_ClearSetStatusRegBits(uint8_t chn);
 uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn);
 uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock);
 uint8_t ConsoleMenu(char *testNames[],uint32_t numCommands);
@@ -42,6 +44,8 @@ uint8_t getIntegerFromConsole();
 uint8_t fnGetByteFromUint32_t(uint32_t value,uint8_t bytePos);
 uint8_t fnSetPmodType(uint8_t pmodType);
 void fnSetPmodFlashCapacity(uint8_t chn);
+uint8_t UNIT_sfPMODF_SectorErase(uint8_t chn);
+void UARTPutS(char *string,UART_MODULE uartID);
 
 #endif
 

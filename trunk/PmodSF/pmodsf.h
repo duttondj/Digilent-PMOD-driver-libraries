@@ -218,7 +218,6 @@
 #define PMODSF_READ_STATUS_REG     0x05
 #define PMODSF_WRITE_STATUS_REG    0x01
 #define PMODSF_READ_DATA_BYTES     0x03
-#define PMODSF_READ_DATA_BYTES_HS  0x0B
 #define PMODSF_PAGE_PGM            0x02  
 #define PMODSF_SECTOR_ERASE        0xD8
 #define PMODSF_BULK_ERASE          0xC7
@@ -743,7 +742,7 @@ void PmodSFDeepPowerDown(SpiChannel chn);
 **  1 to 0).
 **
 **	Input: SpiChannel chn - spi channel
-**         uint8_t numBytes - number of bytes to write to the PmodSF
+**         uint32_t numBytes - number of bytes to write to the PmodSF
 **         uint8_t *data - data to write to PmodSF
 **         uint32_t address - 24bit repsresentation of the page address
 **
@@ -806,7 +805,7 @@ void PmodSFDeepPowerDown(SpiChannel chn);
 **  which is protected by the Block Protect (BP2, BP1,
 **  BP0) bits (see Table 2. and Table 3.) is not executed
 */ 
-void PmodSFPageProgram(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t address);
+void PmodSFPageProgram(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t address);
 
 /*  PmodSFReadBytes
 **

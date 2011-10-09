@@ -69,9 +69,10 @@
 */
 void PmodSFReadBytes(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t address)
 {
-    int8_t byteCounter = 0;
-   
+    int32_t byteCounter = 0;
+
     BlockWhileWriteInProgress(chn); 
+
 	//SEND COMMAND FOR PAGE PROGRAM OPERATION
 	PmodSFSetSSLow(chn); //SS to low 
 	SpiChnPutC(chn,PMODSF_READ_DATA_BYTES); //send page read databytes command
@@ -85,11 +86,12 @@ void PmodSFReadBytes(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t add
 	}
 	
 	//GET BYTES FROM PMODSF
-
+	
 	for(byteCounter = 0;byteCounter < numBytes ;byteCounter++)    
 	{
+		uint8_t oneByte = 0;
 		SpiChnPutC(chn,0);
-		data[byteCounter] = SpiChnGetC(chn);
+	    data[byteCounter] = SpiChnGetC(chn);
 	}
 	
 	PmodSFSetSSHigh(chn); //SS to High
