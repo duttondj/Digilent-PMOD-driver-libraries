@@ -22,7 +22,6 @@
 /*                                                                      */
 /************************************************************************/
 #include <peripheral/spi.h>
-#include <peripheral/uart.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -46,12 +45,12 @@ int main(void)
 	sprintf(procType,"\r\n**Pic32 %d processor detected**",__PIC32_FEATURE_SET__);
 	uint8_t *menuItems[NUM_TEST_FUNCTIONS] = {"UNIT_spfPMOD_ReadID()","UNIT_sfPMODF_ReadStatusReg()","UNIT_sfPMODF_ClearSetReadWriteStatusRegBits","UNIT_sfPMODF_PageProgram()","UNIT_spfPMOD_DPD_Release()","UNIT_sfPMODF_SectorErase","UNIT_sfPMODF_BulkErase"};
 	uint8_t (*testFunc[NUM_TEST_FUNCTIONS])(uint8_t,UART_MODULE) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatusReg,UNIT_sfPMODF_ClearSetReadWriteStatusRegBits,UNIT_sfPMODF_PageProgram,UNIT_spfPMOD_DPD_Release,UNIT_sfPMODF_SectorErase,UNIT_sfPMODF_BulkErase};
-	SetupSerialLogging(9600,PB_CLOCK,UART1);
+	SetupSerialLogging(9600,PB_CLOCK,UART1); //setup serial console IO
 	
 	UARTPutS(procType,UART1); 	
 	
 	putsUART1("\r\nPmodSF SPI port=>");
-	channel =  getIntegerFromConsole(UART1);
+	channel =  getIntegerFromConsole(UART1); //SPI port PMODSF is connected to
 	
 	PmodSFInit(channel,PB_CLOCK,PMODSF_BITRATE);
 
