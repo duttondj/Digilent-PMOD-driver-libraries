@@ -27,7 +27,7 @@
 **  1 to 0).
 **
 **	Input: SpiChannel chn - spi channel
-**         uint8_t numBytes - number of bytes to write to the PmodSF
+**         uint32_t numBytes - number of bytes to write to the PmodSF
 **         uint8_t *data - data to write to PmodSF
 **         uint32_t address - 24bit repsresentation of the page address
 **
@@ -90,16 +90,16 @@
 **  which is protected by the Block Protect (BP2, BP1,
 **  BP0) bits (see Table 2. and Table 3.) is not executed
 */ 
-void PmodSFPageProgram(SpiChannel chn,uint8_t numBytes,uint8_t *data,uint32_t address)
+void PmodSFPageProgram(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t address)
 {
-	int8_t byteCounter = 0;
-	uint8_t statusReg = 0;
-  	
+	int32_t byteCounter = 0;
+
 	BlockWhileWriteInProgress(chn); 
 
 	PmodSFWriteEnable(chn);
 
 	PmodSFSetSSLow(chn); //SS to low 
+
 	SpiChnPutC(chn,PMODSF_PAGE_PGM); //send page program command
 	SpiChnGetC(chn);
 	

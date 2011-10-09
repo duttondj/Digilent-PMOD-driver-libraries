@@ -73,17 +73,23 @@
 */
 void PmodSFSectorErase (SpiChannel chn,uint32_t address)
 {	
+	int8_t byteCounter = 0;
+	
 	BlockWhileWriteInProgress(chn); 
-	
+
 	PmodSFWriteEnable(chn); //set the WREN bit in status register
-	
+
 	PmodSFSetSSLow(chn); //SS to low 
 
     SpiChnPutC(chn,PMODSF_SECTOR_ERASE); //send read status register command
 	SpiChnGetC(chn);
 	
-	SpiChnPutC(chn,address);
-	SpiChnGetC(chn);		
+	//SEND IN THE 24 BIT ADDRESS
+	for(byteCounter = 2;byteCounter >= 0;byteCounter--)    
+	{
+		SpiChnPutC(chn,fnPMODGetByteFromUint32(address,byteCounter));
+		SpiChnGetC(chn);
+	}		
 
 	PmodSFSetSSHigh(chn); //SS to High
 }

@@ -35,18 +35,14 @@
 #define SYSTEM_CLOCK		80000000
 #define PB_CLOCK (SYSTEM_CLOCK/2)
 #define PMODSF_BITRATE 156250
-#define NUM_TEST_FUNCTIONS 5
-
-
-
-
-
+#define NUM_TEST_FUNCTIONS 6
 
 int main(void)
 {
 	uint8_t channel = 0;
-	char *menuItems[NUM_TEST_FUNCTIONS] = {"UNIT_spfPMOD_ReadID()","UNIT_sfPMODF_ReadStatusReg()","UNIT_sfPMODF_ReadWriteStatusReg","UNIT_sfPMODF_PageProgram()","UNIT_spfPMOD_DPD_Release()"};
-	uint8_t (*testFunc[NUM_TEST_FUNCTIONS])(uint8_t) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatusReg,UNIT_sfPMODF_ReadWriteStatusReg,UNIT_sfPMODF_PageProgram,UNIT_spfPMOD_DPD_Release};
+	char results[128];
+	char *menuItems[NUM_TEST_FUNCTIONS] = {"UNIT_spfPMOD_ReadID()","UNIT_sfPMODF_ReadStatusReg()","UNIT_sfPMODF_ClearSetStatusRegBits","UNIT_sfPMODF_PageProgram()","UNIT_spfPMOD_DPD_Release()","UNIT_sfPMODF_SectorErase"};
+	uint8_t (*testFunc[NUM_TEST_FUNCTIONS])(uint8_t) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatusReg,UNIT_sfPMODF_ClearSetStatusRegBits,UNIT_sfPMODF_PageProgram,UNIT_spfPMOD_DPD_Release,UNIT_sfPMODF_SectorErase};
 	SetupSerialLogging(9600,PB_CLOCK);
 	putsUART1("\r\nPmodSF SPI port=>");
 	channel =  getIntegerFromConsole();
@@ -55,7 +51,13 @@ int main(void)
 	
 	while(1)
 	{
-		(*testFunc[ConsoleMenu(menuItems,NUM_TEST_FUNCTIONS)])(channel);
+		if((*testFunc[ConsoleMenu(menuItems,NUM_TEST_FUNCTIONS)])(channel))
+		{
+			putsUART1("Test Passed\r\n");
+		}
+		else
+		{
+			putsUART1("Test Failed\r\n");
+		}	
 	}
-
 }
