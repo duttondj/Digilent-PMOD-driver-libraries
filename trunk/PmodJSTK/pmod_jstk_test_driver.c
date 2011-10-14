@@ -1,6 +1,7 @@
 /************************************************************************/
 /*                                                                      */
-/*   cerebot32mx4_7_test_driver.c test driver functions for PmodJSTK    */
+/*   pmod_jstk_test_driver.c                                            */
+/*   test driver implimentation file for PmodJSTK                       */
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
@@ -18,7 +19,6 @@
 /************************************************************************/
 
 #include "pmod_jstk_test_driver.h"
-
 
 
 uint8_t UNIT_PmodJSTKAxisBounds(uint8_t chn, UART_MODULE uartID)
@@ -72,20 +72,18 @@ uint8_t UNIT_PmodJSTKLed1_Led2_ON(uint8_t chn, UART_MODULE uartID)
 
 uint8_t UNIT_PmodJSTKButton_1(uint8_t chn, UART_MODULE uartID)
 {
-	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_1\r\nWhile holding button: 1, press any key\r\n",chn,uartID,PMODJSTK_BUTTON_1);
+	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_1\r\nWhile holding button: 1, press any key\r\n",chn,uartID,PMODJSTK_BTN1);
 }
 
 uint8_t UNIT_PmodJSTKButton_2(uint8_t chn, UART_MODULE uartID)
 {
-	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_2\r\nWhile holding button: 2, press any key\r\n",chn,uartID,PMODJSTK_BUTTON_2);
+	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_2\r\nWhile holding button: 2, press any key\r\n",chn,uartID,PMODJSTK_BTN2);
 }
 
 uint8_t UNIT_PmodJSTKButton_Jstk(uint8_t chn, UART_MODULE uartID)
 {
 	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_Jstk\r\nWhile holding button: JoyStick, press any key\r\n",chn,uartID,PMODJSTK_BUTTON_JSTK);
 }
-
-
 
 uint8_t execLedTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t command)
 {
@@ -105,10 +103,10 @@ uint8_t execButtonTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_
 	UARTGetOneByte(uartID);
 	
 	PmodJSTKSendRecv(chn,PMODJSTK_LED_OFF,&jstkAxisButtons);
-	sprintf(results, "Expected: %d, Recieved: %d\r\n",button,jstkAxisButtons.buttonStatus);
+	sprintf(results, "Expected: %d, Recieved: %d\r\n",button,jstkAxisButtons.buttonState);
 	UARTPutS(results,uartID);
 	
-	return (button == jstkAxisButtons.buttonStatus)?1:0;
+	return (button == jstkAxisButtons.buttonState)?1:0;
 }
 
 uint8_t execAxisBounds(uint8_t *testString, uint16_t lowerBound,uint16_t upperBound,UART_MODULE uartID,uint8_t whichAxis,uint8_t chn)
