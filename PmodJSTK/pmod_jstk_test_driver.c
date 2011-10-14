@@ -28,35 +28,26 @@ uint8_t UNIT_PmodJSTKAxisBounds(uint8_t chn, UART_MODULE uartID)
 	uint8_t results[128];
 	uint8_t testResult = 1;
 	PmodJSTKAxisButton jstkAxisButtons;
+	
 	UARTPutS("UNIT TEST: UNIT_PmodJSTKAxisBounds\r\n Recieving initial joystick position\r\n",uartID);
+	
 	PmodJSTKSendRecv(chn,PMODJSTK_LED_OFF,&jstkAxisButtons);
+	
 	xAxis =jstkAxisButtons.xAxis;
     yAxis =jstkAxisButtons.yAxis;
+	
 	sprintf(results,"Joystick baseline: X axis:%d Y axis: %d\r\n",xAxis,yAxis);
 	UARTPutS(results,uartID);
 	
-	UARTPutS("While holding joystick to full LEFT deflection on X axis press any key\r\n",uartID);
-	UARTGetOneByte(uartID);
-	PmodJSTKSendRecv(chn,PMODJSTK_LED_OFF,&jstkAxisButtons);
-	testResult &= IsAxisInBounds(PMODJSTK_MIN_X_Y_AXIS,xAxis - 1,jstkAxisButtons.xAxis,uartID);
+	testResult &=  execAxisBounds("While holding joystick to full LEFT deflection on X axis press any key\r\n",PMODJSTK_MIN_X_Y_AXIS,xAxis - 1,uartID,JSTK_X_AXIS,chn);
+	
+	testResult &=  execAxisBounds("While holding joystick to full RIGHT deflection on X axis press any key\r\n",xAxis + 1,PMODJSTK_MAX_X_Y_AXIS,uartID,JSTK_X_AXIS,chn);
 
-	UARTPutS("While holding joystick to full RIGHT deflection on X axis press any key\r\n",uartID);
-	UARTGetOneByte(uartID);
-	PmodJSTKSendRecv(chn,PMODJSTK_LED_OFF,&jstkAxisButtons);
-	testResult &= IsAxisInBounds(xAxis + 1,PMODJSTK_MAX_X_Y_AXIS,jstkAxisButtons.xAxis,uartID);
-	
-	UARTPutS("While holding joystick to full UPWARD deflection on Y axis press any key\r\n",uartID);
-	UARTGetOneByte(uartID);
-	PmodJSTKSendRecv(chn,PMODJSTK_LED_OFF,&jstkAxisButtons);
-	testResult &= IsAxisInBounds(yAxis + 1,PMODJSTK_MAX_X_Y_AXIS,jstkAxisButtons.yAxis,uartID);
-	
-	UARTPutS("While holding joystick to full DOWNWARD deflection on Y axis press any key\r\n",uartID);
-	UARTGetOneByte(uartID);
-	PmodJSTKSendRecv(chn,PMODJSTK_LED_OFF,&jstkAxisButtons);
-	testResult &= IsAxisInBounds(PMODJSTK_MIN_X_Y_AXIS,yAxis - 1,jstkAxisButtons.yAxis,uartID);	
+	testResult &=  execAxisBounds("While holding joystick to full UPWARD deflection on Y axis press any key\r\n",yAxis + 1,PMODJSTK_MAX_X_Y_AXIS,uartID,JSTK_Y_AXIS,chn);
+		
+	testResult &=  execAxisBounds("While holding joystick to full DOWNWARD deflection on Y axis press any key\r\n",PMODJSTK_MIN_X_Y_AXIS,yAxis - 1,uartID,JSTK_Y_AXIS,chn);
 
 	return testResult;
-
 }
 
 uint8_t UNIT_PmodJSTKLed_OFF(uint8_t chn, UART_MODULE uartID)
@@ -102,7 +93,6 @@ uint8_t execLedTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t c
 	PmodJSTKSendRecv(chn,command,&jstkAxisButtons);
 	UARTPutS(testString,uartID);
 	return getOneOrZeroFromConsole(uartID);
-
 }
 
 uint8_t execButtonTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t button)
@@ -121,9 +111,18 @@ uint8_t execButtonTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_
 	return (button == jstkAxisButtons.buttonStatus)?1:0;
 }
 
-uint8_t IsAxisInBounds(uint16_t lowerBound,uint16_t upperBound,uint16_t axisValue,UART_MODULE uartID)
+uint8_t execAxisBounds(uint8_t *testString, uint16_t lowerBound,uint16_t upperBound,UART_MODULE uartID,uint8_t whichAxis,uint8_t chn)
 {
 	uint8_t results[128];
+	uint16_t axisValue = 0;
+	PmodJSTKAxisButton jstkAxisButtons;
+	
+	UARTPutS(testString,uartID);
+	UARTGetOneByte(uartID);
+	
+	PmodJSTKSendRecv(chn,PMODJSTK_LED_OFF,&jstkAxisButtons);	
+	axisValue = (whichAxis == JSTK_X_AXIS)?jstkAxisButtons.xAxis:jstkAxisButtons.yAxis;
+	
 	if((axisValue >= lowerBound) && (axisValue <= upperBound))
 	{
 		sprintf(results,"PASSED: Lower Bound: %d Upper Bound: %d  Measured: %d\r\n",lowerBound,upperBound,axisValue);
@@ -136,7 +135,6 @@ uint8_t IsAxisInBounds(uint16_t lowerBound,uint16_t upperBound,uint16_t axisValu
 		UARTPutS(results,uartID);
 		return 0;
 	}
-
 }
 
 uint8_t getOneOrZeroFromConsole(UART_MODULE uartID)
@@ -167,36 +165,34 @@ uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock,UART_MODULE uartI
     UARTSetDataRate(uartID, pbClock, 9600);
 
     UARTEnable(uartID, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
-
 }
 
 uint8_t getIntegerFromConsole(UART_MODULE uartID)
 {
-		uint8_t recievedChars[10];
-		uint8_t oneChar;
-		int bufPos = 0;
-		do
+	uint8_t recievedChars[10];
+	uint8_t oneChar;
+	int bufPos = 0;
+	do
+	{
+		oneChar = UARTGetOneByte(uartID);
+		UARTSendDataByte(uartID,oneChar); //echo to console
+
+		if(oneChar != '\r' && oneChar != '\b')	
 		{
-			oneChar = UARTGetOneByte(uartID);
+			recievedChars[bufPos] = oneChar;			
+		}			
+		else
+		{
+			UARTSendDataByte(uartID,'\n');
+			UARTSendDataByte(uartID,'\r');
+		}	
+		if(oneChar != '\b') //TODO: fix backspace
+			bufPos++;
+	}while(bufPos < 9 && oneChar != '\r');
 
-			UARTSendDataByte(uartID,oneChar); //echo to console
-			if(oneChar != '\r' && oneChar != '\b')	
-			{
-				recievedChars[bufPos] = oneChar;			
-			}			
-			else
-			{
-				UARTSendDataByte(uartID,'\n');
-				UARTSendDataByte(uartID,'\r');
-			}	
-			if(oneChar != '\b') //TODO: fix backspace
-				bufPos++;
-		}while(bufPos < 9 && oneChar != '\r');
+	recievedChars[bufPos] = 0;
 
-		recievedChars[bufPos] = 0;
-
-		return atoi(recievedChars);
-	
+	return atoi(recievedChars);
 }
 
 
@@ -215,6 +211,7 @@ uint8_t ConsoleMenu(uint8_t *testNames[],uint32_t numCommands,UART_MODULE uartID
 			sprintf(menuItem,"%d) %s\n\r",index,testNames[index]);
 			UARTPutS(menuItem,uartID);
 		}
+
 		UARTPutS("Select=>",uartID);
 		selection = getIntegerFromConsole(uartID);
 		
@@ -226,7 +223,6 @@ uint8_t ConsoleMenu(uint8_t *testNames[],uint32_t numCommands,UART_MODULE uartID
 	}while(selection < 0 || selection >= numCommands);
 
 	return selection;
-
 }
 
 void UARTPutS(uint8_t *string,UART_MODULE uartID)
