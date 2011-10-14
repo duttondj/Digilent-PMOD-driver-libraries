@@ -42,19 +42,27 @@
 #define SYSTEM_CLOCK 80000000
 #define PB_CLOCK (SYSTEM_CLOCK/2)
 #define PMODJSTK_BITRATE 625000
-#define NUM_TEST_FUNCTIONS 5
+#define NUM_TEST_FUNCTIONS 9
 
+uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID);
 
+uint8_t (*testFunc[NUM_TEST_FUNCTIONS])(uint8_t,UART_MODULE) = {UNIT_PmodJSTKLed_OFF,
+						UNIT_PmodJSTKLed1_ON,UNIT_PmodJSTKLed2_ON,UNIT_PmodJSTKLed1_Led2_ON,
+						UNIT_PmodJSTKAxisBounds,UNIT_PmodJSTKButton_1,UNIT_PmodJSTKButton_2,
+						UNIT_PmodJSTKButton_Jstk,UNIT_Exec_All};
 
 int main()
 {
 	SpiChannel channel = 2;
 	uint8_t procType[128];
 	sprintf(procType,"\r\n**Pic32 %d processor detected**",__PIC32_FEATURE_SET__);
+	
 	uint8_t *menuItems[NUM_TEST_FUNCTIONS] = {"UNIT_PmodJSTKLed_OFF","UNIT_PmodJSTKLed1_ON",
-                "UNIT_PmodJSTKLed2_ON","UNIT_PmodJSTKLed1_Led2_ON","UNIT_PmodJSTKAxisBounds"};
-	uint8_t (*testFunc[NUM_TEST_FUNCTIONS])(uint8_t,UART_MODULE) = {UNIT_PmodJSTKLed_OFF,
-                UNIT_PmodJSTKLed1_ON,UNIT_PmodJSTKLed2_ON,UNIT_PmodJSTKLed1_Led2_ON,UNIT_PmodJSTKAxisBounds};
+                "UNIT_PmodJSTKLed2_ON","UNIT_PmodJSTKLed1_Led2_ON","UNIT_PmodJSTKAxisBounds",
+				"UNIT_PmodJSTKButton_1","UNIT_PmodJSTKButton_2","UNIT_PmodJSTKButton_Jstk","UNIT_Exec_All"};
+
+
+
 	PmodJSTKAxisButton jstkAxisButtons;
 	PmodJSTKInit(channel,PB_CLOCK,PMODJSTK_BITRATE,SYSTEM_CLOCK);
 
@@ -80,4 +88,29 @@ int main()
 		}	
 	}
 
+}
+
+uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID)
+{
+	uint8_t index = 0;
+	uint8_t individualTestResult = 0;
+	uint8_t overallTestResults = 1;
+	for(index = 0;index < NUM_TEST_FUNCTIONS - 1;index++)
+	{
+		individualTestResult = (*testFunc[index])(chn,uartID);
+		if(individualTestResult)
+		{
+			UARTPutS("Test Passed\r\n",uartID);
+		}
+		else
+		{
+			UARTPutS("Test Failed\r\n",uartID);
+		}
+
+		overallTestResults &= individualTestResult;
+	}
+
+	UARTPutS("Overall Results: ",uartID);
+
+	return overallTestResults;
 }

@@ -19,6 +19,8 @@
 
 #include "pmod_jstk_test_driver.h"
 
+
+
 uint8_t UNIT_PmodJSTKAxisBounds(uint8_t chn, UART_MODULE uartID)
 {
 	uint16_t xAxis = 0;
@@ -77,6 +79,23 @@ uint8_t UNIT_PmodJSTKLed1_Led2_ON(uint8_t chn, UART_MODULE uartID)
 	return execLedTest("UNIT TEST: UNIT_PmodJSTKLed1_Led2_ON\r\nAre both LED lights on? (0: no 1: yes) =>",chn,uartID,PMODJSTK_LED1_LED2_ON);
 }
 
+uint8_t UNIT_PmodJSTKButton_1(uint8_t chn, UART_MODULE uartID)
+{
+	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_1\r\nWhile holding button: 1, press any key\r\n",chn,uartID,PMODJSTK_BUTTON_1);
+}
+
+uint8_t UNIT_PmodJSTKButton_2(uint8_t chn, UART_MODULE uartID)
+{
+	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_2\r\nWhile holding button: 2, press any key\r\n",chn,uartID,PMODJSTK_BUTTON_2);
+}
+
+uint8_t UNIT_PmodJSTKButton_Jstk(uint8_t chn, UART_MODULE uartID)
+{
+	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_Jstk\r\nWhile holding button: JoyStick, press any key\r\n",chn,uartID,PMODJSTK_BUTTON_JSTK);
+}
+
+
+
 uint8_t execLedTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t command)
 {
 	PmodJSTKAxisButton jstkAxisButtons;
@@ -84,6 +103,22 @@ uint8_t execLedTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t c
 	UARTPutS(testString,uartID);
 	return getOneOrZeroFromConsole(uartID);
 
+}
+
+uint8_t execButtonTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t button)
+{
+	uint8_t results[128];
+	PmodJSTKAxisButton jstkAxisButtons;
+	//display test text	
+	UARTPutS(testString,uartID);
+
+	UARTGetOneByte(uartID);
+	
+	PmodJSTKSendRecv(chn,PMODJSTK_LED_OFF,&jstkAxisButtons);
+	sprintf(results, "Expected: %d, Recieved: %d\r\n",button,jstkAxisButtons.buttonStatus);
+	UARTPutS(results,uartID);
+	
+	return (button == jstkAxisButtons.buttonStatus)?1:0;
 }
 
 uint8_t IsAxisInBounds(uint16_t lowerBound,uint16_t upperBound,uint16_t axisValue,UART_MODULE uartID)
@@ -183,12 +218,12 @@ uint8_t ConsoleMenu(uint8_t *testNames[],uint32_t numCommands,UART_MODULE uartID
 		UARTPutS("Select=>",uartID);
 		selection = getIntegerFromConsole(uartID);
 		
-		if(selection < 0 || selection > numCommands)
+		if(selection < 0 || selection >= numCommands)
 		{
 			UARTPutS("\n\rInvalid Selection\n\r",uartID);
 		}
 		
-	}while(selection < 0 || selection > numCommands);
+	}while(selection < 0 || selection >= numCommands);
 
 	return selection;
 

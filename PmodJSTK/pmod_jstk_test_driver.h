@@ -13,8 +13,14 @@ uint8_t UNIT_PmodJSTKLed1_ON(uint8_t chn, UART_MODULE uartID);
 uint8_t UNIT_PmodJSTKLed2_ON(uint8_t chn, UART_MODULE uartID);
 uint8_t UNIT_PmodJSTKLed1_Led2_ON(uint8_t chn, UART_MODULE uartID);
 
+uint8_t UNIT_PmodJSTKButton_1(uint8_t chn, UART_MODULE uartID);
+uint8_t UNIT_PmodJSTKButton_2(uint8_t chn, UART_MODULE uartID);
+uint8_t UNIT_PmodJSTKButton_Jstk(uint8_t chn, UART_MODULE uartID);
+
+
 uint8_t IsAxisInBounds(uint16_t lowerBound,uint16_t upperBound,uint16_t axisValue,UART_MODULE uartID);
 uint8_t execLedTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t command);
+uint8_t execButtonTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t button);
 uint8_t getOneOrZeroFromConsole(UART_MODULE uartID);
 void UARTPutS(uint8_t *string,UART_MODULE uartID);
 uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock,UART_MODULE uartID);
