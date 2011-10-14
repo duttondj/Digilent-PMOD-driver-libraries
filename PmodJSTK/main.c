@@ -11,7 +11,7 @@
 /*  This file drives test functions used in for the Digilent            */
 /*  PmodJSTK on the Digilent CEREBOT32MX4 and CEREBOT32MX7              */
 /*  SETUP FOR CEREBOT32MX4:                                             */                                  
-/*  PMODSF - Connected JB  pins JB01  - JB06                            */
+/*  PMODJSTK - Connected JB  pins JB01  - JB06                          */
 /*  PMODRS232 - connected to JE pins JE01 - JE06                        */
 /*  PC - connected to PMODRS232 at 9600 baud, 8 data bits, 1 stop bit,  */
 /*       parity none, flow control off                                  */
@@ -21,6 +21,10 @@
 /*  5/5/2011(RyanH):                                                    */
 /*                                                                      */
 /************************************************************************/
+
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
 #include <peripheral/spi.h>
 #include <peripheral/uart.h>
 #include <peripheral/ports.h>
@@ -33,24 +37,41 @@
 #include "pmodJSTK.h"
 #include "pmod_jstk_test_driver.h"
 
+/* ------------------------------------------------------------ */
+/*				PIC32 Configuration Settings					*/
+/* ------------------------------------------------------------ */
 #pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1  //(8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
 #pragma config FWDTEN = OFF
 #pragma config POSCMOD = HS, FNOSC = PRIPLL
 #pragma config FPBDIV = DIV_2
 
 
+/* ------------------------------------------------------------ */
+/*				Local Type Definitions							*/
+/* ------------------------------------------------------------ */
 #define SYSTEM_CLOCK 80000000
 #define PB_CLOCK (SYSTEM_CLOCK/2)
 #define PMODJSTK_BITRATE 625000
 #define NUM_TEST_FUNCTIONS 9
 
-uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID);
 
+/* ------------------------------------------------------------ */
+/*				Global Variables								*/
+/* ------------------------------------------------------------ */
 uint8_t (*testFunc[NUM_TEST_FUNCTIONS])(uint8_t,UART_MODULE) = {UNIT_PmodJSTKLed_OFF,
 						UNIT_PmodJSTKLed1_ON,UNIT_PmodJSTKLed2_ON,UNIT_PmodJSTKLed1_Led2_ON,
 						UNIT_PmodJSTKAxisBounds,UNIT_PmodJSTKButton_1,UNIT_PmodJSTKButton_2,
 						UNIT_PmodJSTKButton_Jstk,UNIT_Exec_All};
 
+
+/* ------------------------------------------------------------ */
+/*				Forward Declarations							*/
+/* ------------------------------------------------------------ */
+uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID);
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 int main()
 {
 	SpiChannel channel = 2;

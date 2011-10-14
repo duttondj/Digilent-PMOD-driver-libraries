@@ -1,3 +1,23 @@
+/************************************************************************/
+/*                                                                      */
+/*   pmod_jstk_test_driver.h                                            */
+/*   test driver head file for PmodJSTK                                 */
+/*                                                                      */
+/************************************************************************/
+/*	Author: 	Ryan Hoffman											*/
+/*	                                									*/
+/************************************************************************/
+/*  Module Description: 												*/
+/*                                                                      */
+/*  This file contains headers for functions used for use with          */
+/*  the  Digilent PMODJSTK on Digilent Pic32 based boards               */
+/************************************************************************/
+/*  Revision History:													*/
+/*                                                                      */
+/*  10/13/2011(RyanH):                                                  */
+/*                                                                      */
+/************************************************************************/
+
 #ifndef _PMODJSTK_TEST_DRIVER_H_
 #define _PMODJSTK_TEST_DRIVER_H_
 #include <peripheral/spi.h>
