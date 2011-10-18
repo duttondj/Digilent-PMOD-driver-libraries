@@ -17,8 +17,8 @@
 #define PB_CLOCK (SYSTEM_CLOCK/2)
 #define SPI_BITRATE 625000
 
-#define PMODSF 0
-#define PMODJSTK 1
+#define PMODSF 1
+#define PMODJSTK 0
 
 #endif
 
