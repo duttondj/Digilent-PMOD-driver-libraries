@@ -46,7 +46,6 @@ static void fnDelayNcycles(uint32_t systemClock,uint32_t numCycles)
 		}
 	}	
 	while((clockPoll - clockStart) <= numCycles);
-
 }
 
 
