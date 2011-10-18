@@ -37,7 +37,6 @@
 #define PMODSF_16_MFID 0x202015
 #define PMODSF_16_RES_SIG 0x14
 
-#define NUM_TEST_FUNCTIONS 7
 
 static uint8_t pmodFlashCapacity = PMODSF_16_MBIT;
 
@@ -48,9 +47,7 @@ uint8_t UNIT_sfPMODF_ClearSetReadWriteStatusRegBits(uint8_t chn, UART_MODULE uar
 uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn, UART_MODULE uartID);
 uint8_t UNIT_sfPMODF_BulkErase(uint8_t chn, UART_MODULE uartID);
 uint8_t UNIT_sfPMODF_SectorErase(uint8_t chn, UART_MODULE uartID);
-
-uint8_t fnSetPmodType(uint8_t pmodType);
-uint8_t fnSetPmodFlashCapacity(uint8_t chn);
-
+void fnSetPmodFlashCapacity(uint8_t chn,UART_MODULE uart);
+void fnInitPmodSF(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,UART_MODULE uart);
 #endif
 

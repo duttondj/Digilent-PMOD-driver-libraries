@@ -262,3 +262,23 @@ uint8_t UNIT_sfPMODF_BulkErase(uint8_t chn, UART_MODULE uartID)
 	}
 	return testResult;
 }
+
+void fnSetPmodFlashCapacity(uint8_t chn,UART_MODULE uart)
+{
+	 uint8_t pmodSFID = PmodSFReadID(chn);
+	 pmodFlashCapacity = fnPMODGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE);
+	 if(pmodFlashCapacity == PMODSF_128_MBIT)
+	{
+		UARTPutS("\r\n**PMODSF-128 Detected**",UART1);
+	}
+	else
+	{
+		UARTPutS("\r\n**PMODSF-16 Detected**",UART1);
+	}
+}
+
+void fnInitPmodSF(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,UART_MODULE uart)
+{
+	PmodSFInit(chn,pbClock,bitRate);
+	fnSetPmodFlashCapacity(chn,uart);
+}
