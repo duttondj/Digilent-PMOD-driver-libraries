@@ -24,6 +24,7 @@
 #include <peripheral/uart.h>
 #include <peripheral/ports.h>
 #include <stdint.h>
+#include <sys/clock.h>
 #include "pmodJSTK.h"
 
 #define JSTK_X_AXIS 0

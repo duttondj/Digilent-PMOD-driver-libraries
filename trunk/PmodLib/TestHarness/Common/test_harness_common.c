@@ -1,5 +1,44 @@
+/* -------------------------------------------------------------------- */
+/*                                                                      */
+/*                     test_harness_common.c                            */
+/*                                                                      */
+/*                                                                      */
+/* -------------------------------------------------------------------- */
+/*	Author: 	Ryan Hoffman											*/
+/*	                                									*/
+/************************************************************************/
+/*  Module Description: 												*/
+/*                                                                      */
+/* -------------------------------------------------------------------- */
+/*  Revision History:													*/
+/*                                                                      */
+/*  10/18/2011(RyanH):                                                  */
+/*                                                                      */
+/* -------------------------------------------------------------------- */
 #include "./TestHarness/Common/test_harness_common.h"
 
+/*  getOneOrZeroFromConsole
+**
+**	Synopsis:
+**  Retrieve a 1 or 0 from the specified UART
+**
+**  Input: 
+**		UART_MODULE uartID - UART to poll 
+**
+**  Returns:
+**      uint8_t - 1 or 0 recieved from UART
+**
+**	Errors:
+**	Error message sent to UART requesting 
+**  corrected input
+**
+**  Description:
+**  Poll selected UART for character input of
+**  '1' or '0', convert to uint8_t and return.
+**  An error message is displayed for input
+**  other that 1 or 0. The polling loop will
+**  not exit until a 1 or 0 is entered.
+*/
 uint8_t getOneOrZeroFromConsole(UART_MODULE uartID)
 {
 	uint8_t value = 0;
@@ -15,8 +54,27 @@ uint8_t getOneOrZeroFromConsole(UART_MODULE uartID)
 	return value;
 }
 
-
-uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock,UART_MODULE uartID)
+/*  SetupSerialLogging
+**
+**	Synopsis:
+**	Configure and open a UART at the specified baud rate
+** 
+**  Input: 
+**	uint32_t baudRate - baud rate for UART
+**  uint32_t pbClock - peripheral bus clock in Mhz
+**  UART_MODULE uartID - UART module to open
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+**  Open the UART specified in "uartID" at "baudRate", UART
+**  parameters will set be as follows:
+**  Pins Enabled: RX and TX only
+**  Line Control: Data Bits: 8, Parity: none, Stop Bits: 1 
+*/
+void SetupSerialLogging(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID)
 {
 
     UARTConfigure(uartID, UART_ENABLE_PINS_TX_RX_ONLY);
@@ -30,6 +88,20 @@ uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock,UART_MODULE uartI
     UARTEnable(uartID, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
 }
 
+/*  
+**  getIntegerFromConsole
+**  
+**	Synopsis:
+**	
+**  
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 uint8_t getIntegerFromConsole(UART_MODULE uartID)
 {
 	uint8_t recievedChars[10];
@@ -58,7 +130,18 @@ uint8_t getIntegerFromConsole(UART_MODULE uartID)
 	return atoi(recievedChars);
 }
 
-
+/*  
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 uint8_t ConsoleMenu(uint8_t *pmodName,uint8_t *testNames[],uint32_t numCommands,UART_MODULE uartID)
 {
 	int selection;
@@ -88,6 +171,18 @@ uint8_t ConsoleMenu(uint8_t *pmodName,uint8_t *testNames[],uint32_t numCommands,
 	return selection;
 }
 
+/*  
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void UARTPutS(uint8_t *string,UART_MODULE uartID)
 {
 	while(*string != '\0')
@@ -99,6 +194,18 @@ void UARTPutS(uint8_t *string,UART_MODULE uartID)
 	}
 }
 
+/*  
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 uint8_t UARTGetOneByte(UART_MODULE uartID)
 {
 	while(!UARTReceivedDataIsAvailable(uartID));

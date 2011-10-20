@@ -57,6 +57,21 @@ static const SpiPortSS SpiIO[] = {
 static unsigned int NumCycles10us = 0;
 static unsigned int NumCycles15us = 0;
 
+static void fnDelayNcycles(uint32_t systemClock,uint32_t numCycles)
+{
+	volatile uint32_t clockStart =  _CP0_GET_COUNT();
+ 	volatile uint32_t clockPoll = 0;
+	do{
+		clockPoll = _CP0_GET_COUNT();
+		if(clockPoll <= clockStart)
+		{
+			clockPoll += systemClock;
+		}
+	}	
+	while((clockPoll - clockStart) <= numCycles);
+
+}
+
 
 /*  PmodJSTKInit
 **
@@ -81,7 +96,7 @@ void PmodJSTKInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,uint32_t syst
 	PmodJSTKSetSSHigh(chn);
 	//calculate number of processor cycles at the current system clock frequence for 10 and 15 microsecond delays
 	//(Desired Delay)/(Time Elapsed for 1 System Clock Cycle)
-	NumCycles10us = ceil((10.0 * .0000001)/((1.0/(double)systemClock)));
+	NumCycles10us = ceil((10.0 * .0000001)/((1.0/(double)systemClock))) ;
 	NumCycles15us = ceil((15.0 * .0000001)/((1.0/(double)systemClock)));
 }
 
@@ -155,13 +170,13 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 	uint8_t jystkOut[PMODJSTK_BYTES_PER_XFER];
 
 	PmodJSTKSetSSLow(chn);
-	PmodJSTKDelay15us();
+	PmodJSTKDelay15us(0);
 
     for(byteNum = 0;byteNum < PMODJSTK_BYTES_PER_XFER;byteNum++)
 	{
 		SpiChnPutC(chn,cmdIn);
 		jystkOut[byteNum] = SpiChnGetC(chn);	
-		PmodJSTKDelay10us();
+		PmodJSTKDelay10us(0);
 	}
 
 	PmodJSTKSetSSHigh(chn);
@@ -183,9 +198,9 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 **
 **  Description:
 */
-void PmodJSTKDelay10us()
-{   uint32_t cnt = 0;
-    for (cnt = 0; cnt < NumCycles10us; cnt+=12);
+void PmodJSTKDelay10us(uint32_t systemClock)
+{ 
+	fnDelayNcycles(systemClock,NumCycles10us);
 }
 /*  
 **
@@ -199,7 +214,7 @@ void PmodJSTKDelay10us()
 **
 **  Description:
 */
-void PmodJSTKDelay15us()
-{   uint32_t cnt = 0;
-    for (cnt = 0; cnt < NumCycles15us; cnt+=12);
+void PmodJSTKDelay15us(uint32_t systemClock)
+{ 
+	fnDelayNcycles(systemClock,NumCycles15us);
 }

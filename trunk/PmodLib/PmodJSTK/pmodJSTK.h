@@ -1,19 +1,20 @@
-/************************************************************************/
+/* -------------------------------------------------------------------- */
 /*                                                                      */
-/*  pmodJSTK.h head file for PMODJSTK                                   */
+/*                           pmodJSTK.h                                 */
 /*                                                                      */
-/************************************************************************/
+/*                                                                      */
+/* -------------------------------------------------------------------- */
 /*	Author: 	Ryan Hoffman											*/
 /*	                                									*/
 /************************************************************************/
 /*  Module Description: 												*/
 /*                                                                      */
-/************************************************************************/
+/* -------------------------------------------------------------------- */
 /*  Revision History:													*/
 /*                                                                      */
-/*  10/13/2011(RyanH):                                                  */
+/*  10/18/2011(RyanH):                                                  */
 /*                                                                      */
-/************************************************************************/
+/* -------------------------------------------------------------------- */
 #ifndef _PMODJSTK_H_
 #define _PMODJSTK_H_
 
@@ -21,19 +22,16 @@
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
 
-#include <p32xxxx.h>
-#include <peripheral/spi.h>
-#include <peripheral/ports.h>
 #include <math.h>
 #include <stdint.h>
 
+//includes common SPI function defintions and 
+//SPI IO table defition (port/SS mask)
 #include "./PmodCommon/spi/pmod_spi_common.h"
-
 
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
-
 
 //LED state bit masks
 #define PMODJSTK_LED_OFF 0x80 //LD1 and LD2 OFF
@@ -52,18 +50,17 @@
 #define PMODJSTK_BYTES_PER_XFER 5 //number of bytes transfered in and out
                                   //for one poll of the PmodJSTK
 
-
+//Structure representing values recieved from PmodJSTK
 typedef struct 
 {
-	uint16_t xAxis;
-	uint16_t yAxis;
-	uint8_t buttonState;
+	uint16_t xAxis; //X axis position
+	uint16_t yAxis; //Y axis position
+	uint8_t buttonState; //current state of buttons 
 }PmodJSTKAxisButton;
 
 /* ------------------------------------------------------------ */
 /*				Forward Declarations							*/
 /* ------------------------------------------------------------ */
-
 
 /*  PmodJSTKInit
 **
@@ -117,6 +114,7 @@ void PmodJSTKInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,uint32_t syst
 **  determine button status: PMODJSTK_BTN1,PMODJSTK_BTN2.               
 */
 void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxisButtons);
+
 /*  
 **
 **	Synopsis:
@@ -130,6 +128,7 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 **  Description:
 */
 void PmodJSTKDelay10us(uint32_t systemClock);
+
 /*  
 **
 **	Synopsis:

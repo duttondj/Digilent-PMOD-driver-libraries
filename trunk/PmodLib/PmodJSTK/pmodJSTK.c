@@ -1,30 +1,25 @@
-/************************************************************************/
+/* -------------------------------------------------------------------- */
 /*                                                                      */
-/*  pmodJSTK.c test driver Implimentation file for PMODJSTK             */
+/*                           pmodJSTK.c                                 */
 /*                                                                      */
-/************************************************************************/
+/*                                                                      */
+/* -------------------------------------------------------------------- */
 /*	Author: 	Ryan Hoffman											*/
 /*	                                									*/
 /************************************************************************/
 /*  Module Description: 												*/
 /*                                                                      */
-/************************************************************************/
+/* -------------------------------------------------------------------- */
 /*  Revision History:													*/
 /*                                                                      */
-/*  10/13/2011(RyanH):                                                  */
+/*  10/18/2011(RyanH):                                                  */
 /*                                                                      */
-/************************************************************************/
+/* -------------------------------------------------------------------- */
 
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
 #include "./PmodJSTK/pmodJSTK.h"
-
-/* ------------------------------------------------------------ */
-/*				Local Type Definitions							*/
-/* ------------------------------------------------------------ */
-
-
 
 /* ------------------------------------------------------------ */
 /*				Global Variables								*/
@@ -34,20 +29,51 @@
 static unsigned int NumCycles10us = 0;
 static unsigned int NumCycles15us = 0;
 
+
+/*  
+**  fnDelayNcycles
+**
+**	Synopsis:
+**  Block program execution for a minimum number of cpu cycles
+**  
+**  Input: 
+**  	uint32_t systemClock - cpu system clock in Mhz
+**      uint32_t numCycles - minimum number of cpu cycles
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Notes:
+**  This function is not part of the public API therefore a function
+**  prototype is not present in pmodJSTK.h and the function is given 
+**  a storage class of static.
+** 
+**  Description:
+**  Intruduces a blocking delay based on the "numCycles" which is the minumum
+**  number cpu cycles which must pass before returning. The number
+**  of cycles passed is determined by polling coprocessor register 9
+**  (See PIC32MX Family Data Sheet table 2-2) for a baseline cycle 
+**  count then maing subsequent polls taking the difference until
+**  the cycle count difference meets or exceeds the minumum desired
+**  cycle count.
+** 
+*/
 static void fnDelayNcycles(uint32_t systemClock,uint32_t numCycles)
 {
 	volatile uint32_t clockStart =  _CP0_GET_COUNT();
  	volatile uint32_t clockPoll = 0;
+	
 	do{
 		clockPoll = _CP0_GET_COUNT();
+
 		if(clockPoll <= clockStart)
 		{
 			clockPoll += systemClock;
 		}
-	}	
-	while((clockPoll - clockStart) <= numCycles);
-}
 
+	}while((clockPoll - clockStart) <= numCycles);
+}
 
 /*  PmodJSTKInit
 **
@@ -109,7 +135,6 @@ void PmodJSTKInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,uint32_t syst
 **  determine button status: PMODJSTK_BTN1,PMODJSTK_BTN2. 
 **              
 */
-
 void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxisButtons)
 {
 	int byteNum = 0;
@@ -148,6 +173,7 @@ void PmodJSTKDelay10us(uint32_t systemClock)
 { 
 	fnDelayNcycles(systemClock,NumCycles10us);
 }
+
 /*  
 **
 **	Synopsis:

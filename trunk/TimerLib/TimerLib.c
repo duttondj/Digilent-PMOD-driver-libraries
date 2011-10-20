@@ -158,7 +158,7 @@ fnSetTimer1 (unsigned int ulMS)
 
 #endif
 
-#if defined ADVTIMER_1
+#if ADVTIMER_1 == 1
 
 /* ------------------------------------------------------------ */
 /***	fnAdvTimer1Setup

@@ -32,14 +32,25 @@
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
-#define SYSTEM_CLOCK 80000000
+#define SYSTEM_CLOCK 80000000  //system clock speed (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
 #define PB_CLOCK (SYSTEM_CLOCK/2) //peripheral bus clock
 #define SPI_BITRATE 625000 //bit rate for SPI port
 
-//Define which module to test, 1 to test, 0 to exclude, module tests are mutually exclusive
-//conditional compiling will occur in main.c based on these values
+/* ------------------------------------------------------------ */
+/*                     Pmod Selection                           */
+/*  This section defines which module to test, 1 to test,       */
+/*  0 to exclude, module tests are mutually exclusive           */
+/*  conditional compiling will occur in main.c based            */
+/*  on these values.                                            */
+/* ------------------------------------------------------------ */
 #define PMODSF 0    
 #define PMODJSTK 1
+
+//Some test functions will need this value since, since it is not included in the 
+//standard function definition accepted by the test loop utilizing the arrays of function 
+//pointers. If this value is needed use the extern forward declation in the test module
+//for this variable
+uint32_t systemClock = SYSTEM_CLOCK;
 
 #endif
 

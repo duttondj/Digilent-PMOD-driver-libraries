@@ -23,6 +23,10 @@
 
 #ifndef __PMODSF_H__
 #define __PMODSF_H__
+
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
 #include <peripheral/ports.h>
 #include <peripheral/spi.h>
 #include <stdint.h>
