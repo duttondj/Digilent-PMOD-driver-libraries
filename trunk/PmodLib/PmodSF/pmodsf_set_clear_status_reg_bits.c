@@ -5,7 +5,7 @@
 /*                     PmodSFSetStatusRegBits                           */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
 /*  Implementation file for	PmodSF:                                     */
@@ -19,8 +19,16 @@
 /*                                                                      */
 /************************************************************************/
 
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
 #include "./PmodSF/pmodsf.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 
 /*  PmodSFSetStatusRegBit
 **
@@ -73,11 +81,5 @@ void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask)
 */
 void PmodSFClearStatusRegBits(SpiChannel chn,uint8_t bitMask)
 {
-//	PmodSFBlockWhileWriteInProgress(chn); 
 	PmodSFWriteStatusRegister(chn,PmodSFReadStatusRegister(chn) & (~bitMask)); //write new status register
- /*   uint8_t statusReg = 0;
-	PmodSFBlockWhileWriteInProgress(chn); 
-	statusReg = PmodSFReadStatusRegister(chn);
-	statusReg &= ~bitMask;
-	PmodSFWriteStatusRegister(chn,statusReg);*/
 }

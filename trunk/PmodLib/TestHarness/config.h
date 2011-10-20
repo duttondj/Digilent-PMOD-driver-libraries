@@ -1,8 +1,8 @@
 /************************************************************************/
 /*                                                                      */
-/*   config.h                                                           */
-/*   configuration header for testing Digilent PmodLib                  */
-/*                                                                      */
+/*                        config.h                                      */
+/*      Configuration header for testing Digilent PmodLib               */
+/*               Copyright (C) 2011 Ryan Hoffman                        */                                                                     
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
 /*	                                									*/

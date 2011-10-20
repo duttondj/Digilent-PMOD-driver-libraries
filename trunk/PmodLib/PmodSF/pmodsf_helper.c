@@ -1,11 +1,10 @@
 /************************************************************************/
 /*                                                                      */
-/*   pmodsf_helper.c Implementation file for PmodSF helper functions    */
-/*                           fnPmodSFSendCommand  						*/
-/*                           fnGetByteFromUint32                        */
+/*  pmodsf_helper.c -- Implementation file for PmodSF helper functions  */
+/*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman                                            */
-/*                                                                      */
+/*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
 /*  Implementation file for PmodSF helper functions                     */
@@ -18,9 +17,16 @@
 /*                                                                      */
 /************************************************************************/
 
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
 #include "./PmodSF/pmodsf_helper.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
 
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 
 /** fnPmodSFSendCommand
 **

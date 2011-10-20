@@ -5,10 +5,10 @@
 /*                           PmodSFDeepPowerDownRelease                 */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
-/*  Implementation file for PmodSF:                                      */
+/*  Implementation file for PmodSF:                                     */
 /*                           PmodSFDeepPowerDown                        */
 /*                           PmodSFDeepPowerDownRelease                 */
 /*                                                                      */
@@ -19,8 +19,17 @@
 /*                                                                      */
 /************************************************************************/
 
+
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
 #include "./PmodSF/pmodsf.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 
 /** PmodSFDeepPowerDown (PmodSF-16 only)
 **

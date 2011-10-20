@@ -1,10 +1,10 @@
 /************************************************************************/
 /*                                                                      */
-/*   pmodsf_bulk_erase.c Implementation file for PmodSFBulkErase        */
+/*   pmodsf_bulk_erase.c -- Implementation file for PmodSFBulkErase     */
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
 /*  Implementation file for PmodSFBulkErase for PmodSF                  */
@@ -16,9 +16,16 @@
 /*                                                                      */
 /************************************************************************/
 
+
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
 #include "./PmodSF/pmodsf.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
 
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 
 /*  PmodSFBulkErase
 **

@@ -1,10 +1,10 @@
 /************************************************************************/
 /*                                                                      */
-/*   pmodsf_read_id.c Implementation file for PmodSFReadID              */
+/*   pmodsf_read_id.c -- Implementation file for PmodSFReadID           */
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
 /*  Implementation file for PmodSFReadID for PmodSF                     */
@@ -16,8 +16,17 @@
 /*                                                                      */
 /************************************************************************/
 
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
 #include "./PmodSF/pmodsf.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
+
 /*  PmodSFReadID
 **
 **	Synopsis:
