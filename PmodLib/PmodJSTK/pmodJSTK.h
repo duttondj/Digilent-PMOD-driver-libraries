@@ -34,13 +34,14 @@
 /* ------------------------------------------------------------ */
 
 //LED state bit masks
-#define PMODJSTK_LED_OFF 0x80 //LD1 and LD2 OFF
-#define PMODJSTK_LED1_ON 0x81 //LD 1 ON
-#define PMODJSTK_LED2_ON 0x82 //LD 2 ON
-#define PMODJSTK_LED1_LED2_ON 0x83 //LD1 and LD 2 ON
+#define PMODJSTK_LD1_LD2_OFF 0x80 //LD1 and LD2 OFF
+#define PMODJSTK_LD1_ON 0x81 //LD 1 ON
+#define PMODJSTK_LD2_ON 0x82 //LD 2 ON
+#define PMODJSTK_LD1_LD2_ON 0x83 //LD1 and LD 2 ON
 
 //Button state bit masks
-#define PMODJSTK_BUTTON_JSTK 0x1 //joystick button depressed
+#define PMODJSTK_BTN_NONE 0x0 //no buttones are depressed
+#define PMODJSTK_BTN_JSTK 0x1 //joystick button depressed
 #define PMODJSTK_BTN1 0x2    //BTN1 depressed
 #define PMODJSTK_BTN2 0x4    //BTN2 depressed
 
@@ -102,10 +103,10 @@ void PmodJSTKInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,uint32_t syst
 **  This function will operate on the channel specified in parameter chn.
 **  Parameter cmdIn will accept the following values and have the following effect
 **  on the PmodJSTK:
-**	PMODJSTK_LED_OFF: all LEDs off
-**	PMODJSTK_LED1_ON: LD1 on
-**	PMODJSTK_LED2_ON: LD2 on
-**	PMODJSTK_LED1_LED2_ON: LD1 and LD2 on
+**	PMODJSTK_LD1_LD2_OFF: all LEDs off
+**	PMODJSTK_LD1_ON: LD1 on
+**	PMODJSTK_LD2_ON: LD2 on
+**	PMODJSTK_LD1_LD2_ON: LD1 and LD2 on
 **  Parameter *jystkAxisButtons is a pointer to a PmodJSTKAxisButton struct which 
 **  will be filled as specified below:
 **	xAxis: 16 bit field holding the joysitick position on the x axis (between 0 and 1023)
@@ -142,5 +143,6 @@ void PmodJSTKDelay10us(uint32_t systemClock);
 **  Description:
 */
 void PmodJSTKDelay15us(uint32_t systemClock);
+
 
 #endif

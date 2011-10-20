@@ -4,12 +4,13 @@
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*                                                                      */
+/*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
 /*                                                                      */
 /*  This file contains functions used in manipulating the Digilent      */
-/*  PMODSF on the Digilent CEREBOT32MX4 and CEREBOT32MX7                */
+/*  PMODSF on the Digilent PIC32 based microcontrollers                 */
+/* 	                                                                    */
 /*  For details on the operation or the PMODSF see the  instruction     */
 /*  manual for the ST MP25P16/MP25P128 flash memory chip,               */
 /*  some excerpts have been provided for functions provided             */
@@ -21,8 +22,17 @@
 /*                                                                      */
 /************************************************************************/
 
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
 #include "./PmodSF/pmodsf.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
+
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 
 /*  PmodSFInit
 **

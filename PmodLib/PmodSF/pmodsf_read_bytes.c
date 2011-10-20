@@ -1,10 +1,10 @@
 /************************************************************************/
 /*                                                                      */
-/*   pmodsf_read_bytes.c Implementation file for PmodSFReadBytes        */
+/*   pmodsf_read_bytes.c -- Implementation file for PmodSFReadBytes     */
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
 /*  Implementation file for PmodSFReadBytes for PmodSF                  */
@@ -16,8 +16,17 @@
 /*                                                                      */
 /************************************************************************/
 
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
 #include "./PmodSF/pmodsf.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
+
 /*  PmodSFReadBytes
 **
 **	Synopsis:

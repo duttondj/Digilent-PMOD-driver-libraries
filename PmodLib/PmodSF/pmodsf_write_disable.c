@@ -1,10 +1,10 @@
 /************************************************************************/
 /*                                                                      */
-/*   pmodsf_write_disable.c Implementation file for PmodSFWriteDisable  */
+/* pmodsf_write_disable.c -- Implementation file for PmodSFWriteDisable */
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
 /*  Implementation file for PmodSFWriteDisable for PmodSF               */
@@ -16,8 +16,16 @@
 /*                                                                      */
 /************************************************************************/
 
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
 #include "./PmodSF/pmodsf.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 
 /*  PmodSFWriteDisable
 **

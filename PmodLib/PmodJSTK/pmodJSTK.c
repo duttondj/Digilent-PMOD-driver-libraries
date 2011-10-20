@@ -1,20 +1,20 @@
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 /*                                                                      */
 /*                           pmodJSTK.c                                 */
 /*                                                                      */
 /*                                                                      */
 /* -------------------------------------------------------------------- */
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
 /*                                                                      */
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
 /*  10/18/2011(RyanH):                                                  */
 /*                                                                      */
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
@@ -25,10 +25,12 @@
 /*				Global Variables								*/
 /* ------------------------------------------------------------ */
 
-
 static unsigned int NumCycles10us = 0;
 static unsigned int NumCycles15us = 0;
 
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 
 /*  
 **  fnDelayNcycles
@@ -123,10 +125,10 @@ void PmodJSTKInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,uint32_t syst
 **  This function will operate on the channel specified in parameter chn.
 **  Parameter cmdIn will accept the following values and have the following effect
 **  on the PmodJSTK:
-**	PMODJSTK_LED_OFF: all LEDs off
-**	PMODJSTK_LED1_ON: LD1 on
-**	PMODJSTK_LED2_ON: LD2 on
-**	PMODJSTK_LED1_LED2_ON: LD1 and LD2 on
+**	PMODJSTK_LD1_LD2_OFF: all LEDs off
+**	PMODJSTK_LD1_ON: LD1 on
+**	PMODJSTK_LD2_ON: LD2 on
+**	PMODJSTK_LD1_LD2_ON: LD1 and LD2 on
 **  Parameter *jystkAxisButtons is a pointer to a PmodJSTKAxisButton struct which 
 **  will be filled as specified below:
 **	xAxis: 16 bit field holding the joysitick position on the x axis (between 0 and 1023)
