@@ -49,7 +49,7 @@ uint8_t SetupSerialLogging(uint32_t baud_rate,uint32_t pbClock,UART_MODULE uartI
 uint8_t ConsoleMenu(uint8_t *testNames[],uint32_t numCommands,UART_MODULE uartID);
 uint8_t getIntegerFromConsole(UART_MODULE uartID);
 uint8_t fnGetByteFromUint32_t(uint32_t value,uint8_t bytePos);
-uint8_t fnSetPmodType(uint8_t pmodType);
+
 uint8_t fnSetPmodFlashCapacity(uint8_t chn);
 
 void UARTPutS(uint8_t *string,UART_MODULE uartID);

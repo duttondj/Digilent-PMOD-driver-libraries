@@ -21,7 +21,7 @@
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
 
-
+#include <p32xxxx.h>
 #include <peripheral/spi.h>
 #include <peripheral/ports.h>
 #include <math.h>
@@ -151,7 +151,7 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 **
 **  Description:
 */
-void PmodJSTKDelay10us();
+void PmodJSTKDelay10us(uint32_t systemClock);
 /*  
 **
 **	Synopsis:
@@ -164,6 +164,6 @@ void PmodJSTKDelay10us();
 **
 **  Description:
 */
-void PmodJSTKDelay15us();
+void PmodJSTKDelay15us(uint32_t systemClock);
 
 #endif

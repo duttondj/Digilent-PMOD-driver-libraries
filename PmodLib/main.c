@@ -1,34 +1,82 @@
-/************************************************************************/
+/* -------------------------------------------------------------------- */
 /*                                                                      */
 /*                       main.c                                         */
-/*      
 /*                                                                      */
-/************************************************************************/
+/*                                                                      */
+/* -------------------------------------------------------------------- */
 /*	Author: 	Ryan Hoffman											*/
 /*	                                									*/
 /************************************************************************/
 /*  Module Description: 												*/
 /*                                                                      */
-/************************************************************************/
+/* -------------------------------------------------------------------- */
 /*  Revision History:													*/
 /*                                                                      */
 /*  10/18/2011(RyanH):                                                  */
 /*                                                                      */
-/************************************************************************/
+/* -------------------------------------------------------------------- */
 
+
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
 #include <stdint.h>
 #include <peripheral/uart.h>
 #include "./TestHarness/config.h"
 #include "./TestHarness/Common/test_harness_common.h"
 
-uint32_t systemClock = SYSTEM_CLOCK;
+
 
 uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID);
 
-//**************************************
-//*              PmodSF                *
-//*     test functions for PmodSF      *
-//**************************************
+/* ----------------------------------------------------------- */
+/*                 Test Driver Function Setup                  */
+/*                                                             */
+/*	The purpose of this section is to define arrays of test    */
+/*  functions for use with the standardized test harness.      */    
+/*  Currently this test harness only supports modules that     */
+/*  utilized the serial periphal interface and UARTs for       */
+/*  driving the serial console menu.                           */
+/*                                                             */
+/*  Each section must be formatted as follows:                 */
+/*                                                             */
+/*  Define this value in the "Pmod Selection" section of       */
+/*  /TestHarness/config.h                                      */
+/*  #define (<MODULE_NAME> == 1)                               */
+/*                                                             */
+/*  Include the header file for the PMOD test harness          */
+/*  #include <PMOD TEST FUNCTION HEADER FILE>                  */
+/*                                                             */
+/*  Define the number of test functions that will be           */
+/*  executed, this value is used in menu item and function     */
+/*  array definition.                                          */
+/*  #define NUM_TEST_FUNCTIONS <NUMBER OF TEST FUNCTIONS>      */
+/*                                                             */
+/*  Test function names represented as strings to be displayed */
+/*  in the console test menu, ordering must be the same        */
+/*  between menuItems and testFunc                             */
+/*  uint8_t *menuItems[NUM_TEST_FUNCTIONS] =                   */
+/*                                    {<TEST FUNCTION NAMES>}; */
+/*                                                             */   
+/*  Array of function pointer used by the menu system to       */
+/*  execute tests, Test function prototypes must have the      */
+/*  following convetions in ortder to execute correctly.       */
+/*  uint8_t (*testFunc[NUM_TEST_FUNCTIONS])                    */
+/*                    (uint8_t,UART_MODULE) = {TEST FUNCTIONS};*/
+/*                                                             */
+/*  Sting representatino of the Pmod name displayed in the     */
+/*  test menu                                                  */
+/*  char * pmodName = "<PMOD NAME>";                           */
+/*                                                             */
+/*  Pmod initialization macro, an init function should be      */
+/*  present in your test driver, this macro is called in main. */
+/*  #define INITPMOD(CHN,LOG_UART) <PMOD INIT FUNCTION>        */
+/* ------------------------------------------------------------*/
+
+/* ------------------------------------------------------------*/
+/*                            PmodSF                           */
+/*                    Test setup for PmodSF                    */
+/* ------------------------------------------------------------*/
 #if(PMODSF == 1)
 #include "./TestHarness/PmodSF/pmodsf_testDriver.h"
 #define NUM_TEST_FUNCTIONS 8  //number of test functions for PmodSF
@@ -46,13 +94,17 @@ uint8_t (*testFunc[NUM_TEST_FUNCTIONS])(uint8_t,UART_MODULE) = {UNIT_spfPMOD_Rea
 char * pmodName = "PmodSF";
 //Pmod initialization macro for PmodSF
 #define INITPMOD(CHN,LOG_UART) fnInitPmodSF(CHN,PB_CLOCK,SPI_BITRATE,LOG_UART);
-/
-//**************************************
-//*            PmodJSTK                *
-//*   test functions for PmodJSTK      *
-//**************************************
+
+/* ------------------------------------------------------------*/
+/*                            PmodJSTK                         */
+/*                    Test setup for PmodJSTK                  */
+/* ------------------------------------------------------------*/
+
 #elif(PMODJSTK == 1)
+
+//Test function header for PmodJSTK
 #include "./TestHarness/PmodJSTK/pmod_jstk_test_driver.h"
+
 #define NUM_TEST_FUNCTIONS 12 //number of test functions for PmodJSTK
 
 //Array of function pointers to tests for PmodJSTK
@@ -76,19 +128,33 @@ char * pmodName = "PmodJSTK";
 #endif
 
 
-
+/* ------------------------------------------------------------*/
+/*          Main test loop for PMOD test harness               */
+/* ------------------------------------------------------------*/
 int main()
 {
-	uint8_t channel = 0;
-	uint8_t procType[128];
+	uint8_t channel = 0; //spi channel selection
+	uint8_t procType[128]; //Text representaion of processor model
+	
 	sprintf(procType,"\r\n**Pic32 %d processor detected**",__PIC32_FEATURE_SET__);
+	
+	//setup serial console logging 
 	SetupSerialLogging(9600,PB_CLOCK,UART1); //setup serial console IO
+
+	//Display processor type to console
 	UARTPutS(procType,UART1); 	
+	
 	UARTPutS("\r\nPmodJSTK SPI port=>",UART1);
 	channel =  getIntegerFromConsole(UART1); //SPI port PMODSF is connected to
+	
+	//initialize PMOD, UART is needed for init functions that
+    //send output to the console
 	INITPMOD(channel,UART1);
+
+	//Main test loop
 	while(1)
 	{
+        //display the console menu, execute the test function returned by the menu
 		if((*testFunc[ConsoleMenu(pmodName,menuItems,NUM_TEST_FUNCTIONS,UART1)])(channel,UART1))
 		{
 			UARTPutS("Test Passed\r\n",UART1);

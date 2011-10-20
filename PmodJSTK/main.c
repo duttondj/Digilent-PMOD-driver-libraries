@@ -55,6 +55,13 @@
 #define NUM_TEST_FUNCTIONS 9
 
 
+
+/* ------------------------------------------------------------ */
+/*				Forward Declarations							*/
+/* ------------------------------------------------------------ */
+uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID);
+
+
 /* ------------------------------------------------------------ */
 /*				Global Variables								*/
 /* ------------------------------------------------------------ */
@@ -65,16 +72,12 @@ uint8_t (*testFunc[NUM_TEST_FUNCTIONS])(uint8_t,UART_MODULE) = {UNIT_PmodJSTKLed
 
 
 /* ------------------------------------------------------------ */
-/*				Forward Declarations							*/
-/* ------------------------------------------------------------ */
-uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID);
-
-/* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
 int main()
 {
 	SpiChannel channel = 2;
+	/*
 	uint8_t procType[128];
 	sprintf(procType,"\r\n**Pic32 %d processor detected**",__PIC32_FEATURE_SET__);
 	
@@ -85,7 +88,7 @@ int main()
 
 
 	PmodJSTKAxisButton jstkAxisButtons;
-	PmodJSTKInit(channel,PB_CLOCK,PMODJSTK_BITRATE,SYSTEM_CLOCK);
+
 
 	SetupSerialLogging(9600,PB_CLOCK,UART1); //setup serial console IO
 	
@@ -93,10 +96,18 @@ int main()
 	
 	putsUART1("\r\nPmodJSTK SPI port=>");
 	channel =  getIntegerFromConsole(UART1); //SPI port PMODSF is connected to
-	
+*/	
 	PmodJSTKInit(channel,PB_CLOCK,PMODJSTK_BITRATE,SYSTEM_CLOCK);
+while(1)
+{
+	PmodJSTKDelay15us(SYSTEM_CLOCK);	
+	PmodJSTKSetSSLow(2);
+	PmodJSTKDelay15us(SYSTEM_CLOCK);	
+	PmodJSTKSetSSHigh(2);	
 
+}
 
+/*
 	while(1)
 	{
 		if((*testFunc[ConsoleMenu(menuItems,NUM_TEST_FUNCTIONS,UART1)])(channel,UART1))
@@ -108,7 +119,7 @@ int main()
 			putsUART1("Test Failed\r\n");
 		}	
 	}
-
+*/
 }
 
 uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID)

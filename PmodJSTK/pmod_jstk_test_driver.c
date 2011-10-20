@@ -20,7 +20,11 @@
 
 #include "pmod_jstk_test_driver.h"
 
+/*
+Tests the value of the bounds recieved from the joystick, a baseline measurement is
+taken from the joystick and 
 
+*/
 uint8_t UNIT_PmodJSTKAxisBounds(uint8_t chn, UART_MODULE uartID)
 {
 	uint16_t xAxis = 0;
@@ -198,8 +202,11 @@ uint8_t ConsoleMenu(uint8_t *testNames[],uint32_t numCommands,UART_MODULE uartID
 {
 	int selection;
 	uint8_t menuItem[100];
-	int index = 0;
-	
+	int index = 0;;
+	uint32_t clockC1;
+	uint32_t clockC2;
+    clockC1 = _CP0_GET_COUNT();
+	clockC2 = _CP0_GET_COUNT();
 	do
 	{
 		UARTPutS("\r\nPmodJSTK Test Menu\n\r",uartID);
