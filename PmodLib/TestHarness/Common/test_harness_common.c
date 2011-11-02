@@ -15,7 +15,16 @@
 /*  10/18/2011(RyanH):                                                  */
 /*                                                                      */
 /* -------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
 #include "./TestHarness/Common/test_harness_common.h"
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 
 /*  getOneOrZeroFromConsole
 **
@@ -47,7 +56,7 @@ uint8_t getOneOrZeroFromConsole(UART_MODULE uartID)
 		value = getIntegerFromConsole(uartID);
 		if(value > 1)
 		{
-			UARTPutS("Please enter a 0 or 1 =>",UART1);
+			UARTPutS("Please enter a 0 or 1 =>",uartID);
 		}
 	}while(value > 1);
 	
@@ -92,15 +101,20 @@ void SetupSerialLogging(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID)
 **  getIntegerFromConsole
 **  
 **	Synopsis:
-**	
+**	Polls specificed UART for character
+**  input and returns the 8 bit integer value
 **  
 **  Input: 
+**		UART_MODULE uartID - UART to poll
 **
-**  Returns: none
+**  Returns: uint8_t - 8 bit integer value character input
 **
 **	Errors:	none
 **
 **  Description:
+**	Polls specificed UART for character input terminating
+**  on \r and returns the 8 bit integer value 
+**  of the characters enetered.
 */
 uint8_t getIntegerFromConsole(UART_MODULE uartID)
 {
@@ -124,19 +138,24 @@ uint8_t getIntegerFromConsole(UART_MODULE uartID)
 		if(oneChar != '\b') //TODO: fix backspace
 			bufPos++;
 	}while(bufPos < 9 && oneChar != '\r');
-
+	
 	recievedChars[bufPos] = 0;
 
 	return atoi(recievedChars);
 }
 
 /*  
-**
+**  ConsoleMenu
+** 
 **	Synopsis:
 **
 **  Input: 
+**		uint8_t *pmodName - 
+**		uint8_t *testNames[] - 
+**		uint32_t numCommands - 
+**		UART_MODULE uartID - 
 **
-**  Returns: none
+**  Returns: uint8_t 
 **
 **	Errors:	none
 **

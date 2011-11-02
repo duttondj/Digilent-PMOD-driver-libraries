@@ -48,6 +48,6 @@ uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn, UART_MODULE uartID);
 uint8_t UNIT_sfPMODF_BulkErase(uint8_t chn, UART_MODULE uartID);
 uint8_t UNIT_sfPMODF_SectorErase(uint8_t chn, UART_MODULE uartID);
 void fnSetPmodFlashCapacity(uint8_t chn,UART_MODULE uart);
-void fnInitPmodSF(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,UART_MODULE uart);
+void fnInitPmodSF(uint8_t chn,uint32_t pbClock,uint32_t bitRate,UART_MODULE uart);
 #endif
 

@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*   cerebot32mx4_7_test_driver.c test driver functions for SPI,PMODSF  */
+/*   pmodsf_test_driver.c -- test driver functions for PmodSF           */
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
@@ -13,13 +13,19 @@
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
-/*  5/5/2011(RyanH):                                                    */
+/*  10/20/2011(RyanH):                                                  */
 /*                                                                      */
 /************************************************************************/
 
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
 
 #include "./TestHarness/PmodSF/pmodsf_testDriver.h"
 
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 
 /*UNIT TEST: PmodSFDeepPowerDown/PmodSFDeepPowerDownRelease
 This feature is only supported on the PMODSF-16. This
@@ -263,21 +269,65 @@ uint8_t UNIT_sfPMODF_BulkErase(uint8_t chn, UART_MODULE uartID)
 	return testResult;
 }
 
+/*  
+** fnSetPmodFlashCapacity
+**
+**	Synopsis:
+**  Polls PmodSF for capacity and sets pmodFlashCapacity
+**  accordingly
+**
+**  Input: 
+**		uint8_t chn - Pmod SPI channel
+**      UART_MODULE uart - serial console UART
+** 
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+**  The manufucture's ID is read from the PmodSF and 
+**  pmodFlashCapacity is set to the value in the
+**  byte position returned determiend by PMODSD_MEM_CAPACITY_BYTE.
+**  A string is sent to the serial console detailing Pmod 
+**  detected. pmmodFlashCapacity is use during unit tests to 
+**  exclude tests unsopported by the detected module.
+*/
 void fnSetPmodFlashCapacity(uint8_t chn,UART_MODULE uart)
 {
 	 uint8_t pmodSFID = PmodSFReadID(chn);
 	 pmodFlashCapacity = fnPMODGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE);
 	 if(pmodFlashCapacity == PMODSF_128_MBIT)
 	{
-		UARTPutS("\r\n**PMODSF-128 Detected**",UART1);
+		UARTPutS("\r\n**PMODSF-128 Detected**",uart);
 	}
 	else
 	{
-		UARTPutS("\r\n**PMODSF-16 Detected**",UART1);
+		UARTPutS("\r\n**PMODSF-16 Detected**",uart);
 	}
 }
 
-void fnInitPmodSF(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,UART_MODULE uart)
+/*  
+**  fnInitPmodSF
+**
+**	Synopsis:
+**  Initializes the SPI port for the PmodSF and detemines 
+**  its flash capacity.
+**
+**  Input: 
+**  	uint8_t chn - Pmod SPI channel
+**      uint32_t pbClock - peripheral bus clock rate in Hz
+**      uint32_t bitRate - bitrate in Hz
+**      UART_MODULE uart - serial console UART
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+**  Initializes the SPI module at the specified bitrate for the PmodSF,
+**  calls fnSetPmodFlashCapacity to set the global variable pmmodFlashCapacity
+*/
+void fnInitPmodSF(uint8_t chn,uint32_t pbClock,uint32_t bitRate,UART_MODULE uart)
 {
 	PmodSFInit(chn,pbClock,bitRate);
 	fnSetPmodFlashCapacity(chn,uart);

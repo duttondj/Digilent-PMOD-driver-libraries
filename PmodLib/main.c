@@ -144,6 +144,7 @@ uint8_t excludeFromExecAll[NUM_TEST_FUNCTIONS] = {0,0,0,0,0,0,0,0,0,1,1,0};
 
 #endif
 
+#define MENU_UART UART2
 
 /* ------------------------------------------------------------*/
 /*          Main test loop for PMOD test harness               */
@@ -156,29 +157,29 @@ int main(void)
 	sprintf(procType,"\r\n**Pic32 %d processor detected**",__PIC32_FEATURE_SET__);
 	
 	//setup serial console logging 
-	SetupSerialLogging(9600,PB_CLOCK,UART1); //setup serial console IO
+	SetupSerialLogging(9600,PB_CLOCK,MENU_UART); //setup serial console IO
 
 	//Display processor type to console
-	UARTPutS(procType,UART1); 	
+	UARTPutS(procType,MENU_UART); 	
 	
-	UARTPutS("\r\nPmodJSTK SPI port=>",UART1);
-	channel =  getIntegerFromConsole(UART1); //SPI port PMODSF is connected to
+	UARTPutS("\r\nPmodJSTK SPI port=>",MENU_UART);
+	channel =  getIntegerFromConsole(MENU_UART); //SPI port PMODSF is connected to
 	
 	//initialize PMOD, UART is needed for init functions that
     //send output to the console
-	INITPMOD(channel,UART1);
+	INITPMOD(channel,MENU_UART);
 
 	//Main test loop
 	while(1)
 	{
         //display the console menu, execute the test function returned by the menu
-		if((*testFunc[ConsoleMenu(pmodName,menuItems,NUM_TEST_FUNCTIONS,UART1)])(channel,UART1))
+		if((*testFunc[ConsoleMenu(pmodName,menuItems,NUM_TEST_FUNCTIONS,MENU_UART)])(channel,MENU_UART))
 		{
-			UARTPutS("Test Passed\r\n",UART1);
+			UARTPutS("Test Passed\r\n",MENU_UART);
 		}
 		else
 		{
-			UARTPutS("Test Failed\r\n",UART1);
+			UARTPutS("Test Failed\r\n",MENU_UART);
 		}	
 	}
 	

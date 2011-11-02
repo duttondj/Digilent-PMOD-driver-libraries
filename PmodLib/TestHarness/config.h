@@ -32,7 +32,7 @@
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
-#define SYSTEM_CLOCK 80000000  //system clock speed (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
+#define SYSTEM_CLOCK 80000000L  //system clock speed (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
 #define PB_CLOCK (SYSTEM_CLOCK/2) //peripheral bus clock
 #define SPI_BITRATE 625000 //bit rate for SPI port
 
@@ -43,8 +43,8 @@
 /*  conditional compiling will occur in main.c based            */
 /*  on these values.                                            */
 /* ------------------------------------------------------------ */
-#define PMODSF 0    
-#define PMODJSTK 1
+#define PMODSF 1    
+#define PMODJSTK 0
 
 //Some test functions will need this value since, since it is not included in the 
 //standard function definition accepted by the test loop utilizing the arrays of function 

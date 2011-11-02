@@ -188,21 +188,64 @@ uint8_t UNIT_PmodJSTK15usDelay(uint8_t chn,UART_MODULE uartID)
 	return 1;
 }
 
-/*
-UNIT TEST HELPER:
-
+/*  
+**	execLedTest
+**
+**	Synopsis:
+**	Helper function for executing PmodJSTK LED tests
+**
+**  Input: 
+**  	uint8_t *testString - test description and instructions as a string
+**		uint8_t chn - Pmod SPI channel
+**      UART_MODULE uartID - serial console UART
+**      uint8_t command - LED state bit mask, acceptable values follow:
+**                        PMODJSTK_LD1_LD2_OFF,PMODJSTK_LD1_ON, 
+**						  PMODJSTK_LD2_ON, PMODJSTK_LD1_LD2_ON
+**  Returns: 
+**  	uint8_t - 1 test passed, 0 test failed
+**
+**	Errors:	none
+**
+**  Description:
+**  The text in testString is sent to the specified UART, the LED command
+**  is then sent to the PmodJSTK, the tester is prompted on the serial console
+**  to enter a 1 for pass or 0 for fail based on visually observing the 
+**  state of the LEDs vs. the desired state described in the text output to the
+**  serial console.
 */
 uint8_t execLedTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t command)
 {
 	PmodJSTKAxisButton jstkAxisButtons;
-	PmodJSTKSendRecv(chn,command,&jstkAxisButtons);
 	UARTPutS(testString,uartID);
+	PmodJSTKSendRecv(chn,command,&jstkAxisButtons);
 	return getOneOrZeroFromConsole(uartID);
 }
 
-/*
-UNIT TEST HELPER:
-
+/*  
+**  execButtonTest
+**
+**	Synopsis:
+**	Helper function for executing PmodJSTK button tests
+**
+**  Input: 
+**  	uint8_t *testString - test description and instructions as a string
+**		uint8_t chn - Pmod SPI channel
+**      UART_MODULE uartID - serial console UART
+**      uint8_t button - button state bit masks, acceptable values follow:
+**						 PMODJSTK_BTN_NONE,PMODJSTK_BTN_JSTK,
+**						 PMODJSTK_BTN1,PMODJSTK_BTN2 
+**
+**  Returns:
+**      uint8_T - 1 test passed, 0 test failed
+**
+**	Errors:	none
+**
+**  Description:
+**  The text in testString is sent to the specified UART, the tester is
+**  asked to place the buttons in state requested in testString, while
+**  holding the joystick buttons in this state the tester must strike a key
+**  signaling the system to poll the joystick. If the button state returned
+**  matches "button" the test passes, otherwise it fails.
 */
 uint8_t execButtonTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t button)
 {
@@ -214,18 +257,44 @@ uint8_t execButtonTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_
 	UARTGetOneByte(uartID);
 	
 	PmodJSTKSendRecv(chn,PMODJSTK_LD1_LD2_OFF,&jstkAxisButtons);
+
 	sprintf(results, "Expected: %d, Recieved: %d\r\n",button,jstkAxisButtons.buttonState);
 	UARTPutS(results,uartID);
 	
 	return (button == jstkAxisButtons.buttonState)?1:0;
 }
 
-/*
-UNIT TEST HELPER: execAxisBounds
-Tests the value of the bounds recieved from the joystick, a baseline measurement is
-recieved and all values are checked to be below or above the baseline
-for that axis based on the the deflection requested.
+/*  
+**  execAxisBounds
+**
+**	Synopsis:
+**  Helper function for executing PmodJSTK joystick axis tests.
+**  This test Polls the joystick as the tester  moves the joystick 
+**  to full deflection on a the specified axis in the specified direction, 
+**  the value recieved is tested against the lower and upper bounds
+**  passed in.
+** 
+**  Input: 
+**  	uint8_t *testString - test description and instructions as a string
+**      uint16_t lowerBound - lower bound for axis value
+**      uint16_t upperBound - upper buond for axis value
+**      UART_MODULE uartID - serial console UART
+**      uint8_t whichAxis - axis to read, acceptable values follow:
+**		                   JSTK_X_AXIS,JSTK_Y_AXIS 1
+**		uint8_t chn - Pmod SPI channel
+**   
+**  Returns: uint8_T - 1 test passed, 0 test failed
+**
+**	Errors:	none
+**
+**  Description:
+**  Test instructions are displayed to the console, the tester deflects the 
+**  joystick toward the direction specified then presses a key to poll
+**  the joystick. The value recieved is checked againsts the bounds
+**  passed in, for values in bounds test passed: 1 is returned, otherwise 
+**  test failed: 0.
 */
+
 uint8_t execAxisBounds(uint8_t *testString, uint16_t lowerBound,uint16_t upperBound,UART_MODULE uartID,uint8_t whichAxis,uint8_t chn)
 {
 	uint8_t results[128];
@@ -235,6 +304,7 @@ uint8_t execAxisBounds(uint8_t *testString, uint16_t lowerBound,uint16_t upperBo
 	UARTPutS(testString,uartID);
 	UARTGetOneByte(uartID);
 	
+	//LED bit mask sent does not matter for this test
 	PmodJSTKSendRecv(chn,PMODJSTK_LD1_LD2_OFF,&jstkAxisButtons);	
 	axisValue = (whichAxis == JSTK_X_AXIS)?jstkAxisButtons.xAxis:jstkAxisButtons.yAxis;
 	

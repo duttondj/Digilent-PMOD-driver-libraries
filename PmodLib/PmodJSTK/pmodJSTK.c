@@ -25,8 +25,8 @@
 /*				Global Variables								*/
 /* ------------------------------------------------------------ */
 
-static unsigned int NumCycles10us = 0;
-static unsigned int NumCycles15us = 0;
+static uint32_t NumCycles10us = 0;
+static uint32_t NumCycles15us = 0;
 
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
@@ -39,7 +39,7 @@ static unsigned int NumCycles15us = 0;
 **  Block program execution for a minimum number of cpu cycles
 **  
 **  Input: 
-**  	uint32_t systemClock - cpu system clock in Mhz
+**  	uint32_t systemClock - cpu system clock in Hz
 **      uint32_t numCycles - minimum number of cpu cycles
 **
 **  Returns: none
@@ -63,18 +63,17 @@ static unsigned int NumCycles15us = 0;
 */
 static void fnDelayNcycles(uint32_t systemClock,uint32_t numCycles)
 {
-	volatile uint32_t clockStart =  _CP0_GET_COUNT();
- 	volatile uint32_t clockPoll = 0;
-	
-	do{
-		clockPoll = _CP0_GET_COUNT();
+	volatile uint32_t clockStart = _CP0_GET_COUNT();
+	volatile uint32_t clockStop =  clockStart + numCycles;
+	if(clockStop > clockStart)
+	{
+		while(_CP0_GET_COUNT() < clockStop);
+	}
+	else
+	{
+		while(_CP0_GET_COUNT() > clockStart || _CP0_GET_COUNT() < clockStop);
+	}
 
-		if(clockPoll <= clockStart)
-		{
-			clockPoll += systemClock;
-		}
-
-	}while((clockPoll - clockStart) <= numCycles);
 }
 
 /*  PmodJSTKInit
@@ -100,8 +99,8 @@ void PmodJSTKInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,uint32_t syst
 	PmodSPISetSSHigh(chn);
 	//calculate number of processor cycles at the current system clock frequence for 10 and 15 microsecond delays
 	//(Desired Delay)/(Time Elapsed for 1 System Clock Cycle)
-	NumCycles10us = ceil((10.0 * .0000001)/((1.0/(double)systemClock))) ;
-	NumCycles15us = ceil((15.0 * .0000001)/((1.0/(double)systemClock)));
+	NumCycles10us = (((systemClock/4)/1000000) * 10);
+	NumCycles15us = (((systemClock/4)/1000000) * 15);
 }
 
 /*  
@@ -134,7 +133,7 @@ void PmodJSTKInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,uint32_t syst
 **	xAxis: 16 bit field holding the joysitick position on the x axis (between 0 and 1023)
 **  yAxis: 16 bit field holding the joysitick position on the y axis (between 0 and 1023)
 **  buttonState: 8 bit field holding the state of the buttons, use the following bit masks to
-**  determine button status: PMODJSTK_BTN1,PMODJSTK_BTN2. 
+**  determine button status: PMODJSTK_BTN1,PMODJSTK_BTN2,PMODJSTK_BTN_JSTK,PMODJSTK_BTN_NONE 
 **              
 */
 void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxisButtons)
