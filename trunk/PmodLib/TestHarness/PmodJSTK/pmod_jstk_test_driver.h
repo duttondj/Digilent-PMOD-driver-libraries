@@ -30,7 +30,6 @@
 #include <peripheral/ports.h>
 #include <stdint.h>
 #include <sys/clock.h>
-
 #include "./PmodJSTK/pmodJSTK.h"
 #include "./TestHarness/Common/test_harness_common.h"
 

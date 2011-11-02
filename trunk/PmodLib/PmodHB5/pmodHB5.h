@@ -1,5 +1,5 @@
-#ifndef _HBRIDGECONTROL_H_
-#define _HBRIDGECONTROL_H_
+#ifndef _PMOD_HB5_H_
+#define _PMOD_HB5_H_
 #include <stdint.h>
 #include <plib.h>
 
@@ -14,8 +14,8 @@ typedef struct
 	uint16_t directionPortBit;
 	uint32_t pulseCount;
 	uint32_t pollCount;
-	uint32_t rpm;
-	uint32_t prevRpm;
+	uint16_t rpm;
+	uint16_t prevRpm;
 	uint8_t newDirection;
 	uint8_t currentDirection;
 	uint8_t ocChannel;
