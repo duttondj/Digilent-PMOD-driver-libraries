@@ -1,0 +1,253 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=C:\Code\cpts421\PmodLib\pmodsf.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File001]
+Location=C:\Code\cpts421\PmodLib\pmodsf_bulk_erase.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File002]
+Location=C:\Code\cpts421\PmodLib\pmodsf_dpd_rel.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File003]
+Location=C:\Code\cpts421\PmodLib\pmodsf_helper.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File004]
+Location=C:\Code\cpts421\PmodLib\pmodsf_page_program.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File005]
+Location=C:\Code\cpts421\PmodLib\pmodsf_read_bytes.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File006]
+Location=C:\Code\cpts421\PmodLib\pmodsf_read_id.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File007]
+Location=C:\Code\cpts421\PmodLib\pmodsf_sector_erase.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File008]
+Location=C:\Code\cpts421\PmodLib\pmodsf_set_clear_status_reg_bits.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File009]
+Location=C:\Code\cpts421\PmodLib\pmodsf_write_disable.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File010]
+Location=C:\Code\cpts421\PmodLib\pmodJSTK.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File011]
+Location=C:\Code\cpts421\PmodLib\pmodsf_testDriver.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File012]
+Location=C:\Code\cpts421\PmodLib\pmod_jstk_test_driver.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File013]
+Location=C:\Code\cpts421\PmodLib\fnGetByteFromUint32.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File014]
+Location=C:\Code\cpts421\PmodLib\test_harness_common.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File015]
+Location=C:\Code\cpts421\PmodLib\main.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File016]
+Location=C:\Code\cpts421\PmodLib\pmod_spi_common.o
+Folder=Intermediary
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-g
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+[File017]
+Location=C:\Code\cpts421\PmodLib\PmodLib.elf
+Folder=Output
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={C68E5105-1196-4333-A0BF-3DC57271E614}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ld.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
+TraceCmdString=
+DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PIC32MXSK=1
+[File018]
+Location=C:\Code\cpts421\PmodLib\PmodLib.hex
+Folder=Output
+DeviceName=PIC32MX460F512L
+LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
+LanguageToolID={C68E5105-1196-4333-A0BF-3DC57271E614}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ld.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLib||$(LIBDIR)|C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
+SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|PmodSF\pmodsf_helper.c|PmodSF\pmodsf_page_program.c|PmodSF\pmodsf_read_bytes.c|PmodSF\pmodsf_read_id.c|PmodSF\pmodsf_sector_erase.c|PmodSF\pmodsf_set_clear_status_reg_bits.c|PmodSF\pmodsf_write_disable.c|PmodJSTK\pmodJSTK.c|TestHarness\PmodSF\pmodsf_testDriver.c|TestHarness\PmodJSTK\pmod_jstk_test_driver.c|PmodCommon\utility\fnGetByteFromUint32.c|TestHarness\Common\test_harness_common.c|main.c|PmodCommon\spi\pmod_spi_common.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
+TraceCmdString=
+DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PIC32MXSK=1
+[TOOL_LOC_STAMPS]
+tool_loc{430F471F-7ECB-4852-A80D-DEF9A5C8E751}=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
+tool_loc{C68E5105-1196-4333-A0BF-3DC57271E614}=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ld.exe
