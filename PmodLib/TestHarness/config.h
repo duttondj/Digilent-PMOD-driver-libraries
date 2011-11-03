@@ -30,8 +30,8 @@
 /*  on these values.                                            */
 /* ------------------------------------------------------------ */
 #define PMODSF 0   
-#define PMODJSTK 0
-#define PMODHB5 1
+#define PMODJSTK 1
+#define PMODHB5 0
 
 
 /* ------------------------------------------------------------ */
