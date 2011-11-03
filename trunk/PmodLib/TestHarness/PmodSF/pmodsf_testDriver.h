@@ -30,6 +30,10 @@
 #include "./PmodSF/pmodsf.h"
 #include "./TestHarness/Common/test_harness_common.h"
 
+#define SYSTEM_CLOCK 80000000L  //system clock speed (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
+#define PB_CLOCK (SYSTEM_CLOCK/2) //peripheral bus clock
+#define SPI_BITRATE 625000 //bit rate for SPI port
+
 #define PMODSF_16_SECTOR_SIZE  0x10000
 #define PMODSF_128_SECTOR_SIZE 0x40000 
 
@@ -37,17 +41,17 @@
 #define PMODSF_16_MFID 0x202015
 #define PMODSF_16_RES_SIG 0x14
 
-
+static SpiChannel chn;
 static uint8_t pmodFlashCapacity = PMODSF_16_MBIT;
 
-uint8_t UNIT_spfPMOD_DPD_Release(uint8_t chn, UART_MODULE uartID);
-uint8_t UNIT_spfPMOD_ReadID(uint8_t chn, UART_MODULE uartID);
-uint8_t UNIT_sfPMODF_ReadStatusReg(uint8_t chn, UART_MODULE uartID);
-uint8_t UNIT_sfPMODF_ClearSetReadWriteStatusRegBits(uint8_t chn, UART_MODULE uartID);
-uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn, UART_MODULE uartID);
-uint8_t UNIT_sfPMODF_BulkErase(uint8_t chn, UART_MODULE uartID);
-uint8_t UNIT_sfPMODF_SectorErase(uint8_t chn, UART_MODULE uartID);
-void fnSetPmodFlashCapacity(uint8_t chn,UART_MODULE uart);
-void fnInitPmodSF(uint8_t chn,uint32_t pbClock,uint32_t bitRate,UART_MODULE uart);
+uint8_t UNIT_spfPMOD_DPD_Release(UART_MODULE uartID);
+uint8_t UNIT_spfPMOD_ReadID(UART_MODULE uartID);
+uint8_t UNIT_sfPMODF_ReadStatusReg(UART_MODULE uartID);
+uint8_t UNIT_sfPMODF_ClearSetReadWriteStatusRegBits(UART_MODULE uartID);
+uint8_t UNIT_sfPMODF_PageProgram(UART_MODULE uartID);
+uint8_t UNIT_sfPMODF_BulkErase(UART_MODULE uartID);
+uint8_t UNIT_sfPMODF_SectorErase(UART_MODULE uartID);
+void fnSetPmodFlashCapacity(UART_MODULE uart);
+void fnInitPmodSF(UART_MODULE uart);
 #endif
 

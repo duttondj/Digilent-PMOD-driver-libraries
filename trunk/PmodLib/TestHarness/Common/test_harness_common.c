@@ -92,7 +92,7 @@ void SetupSerialLogging(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID)
 
     UARTSetLineControl(uartID, UART_DATA_SIZE_8_BITS | UART_PARITY_NONE | UART_STOP_BITS_1);
 
-    UARTSetDataRate(uartID, pbClock, 9600);
+    UARTSetDataRate(uartID, pbClock, baudRate);
 
     UARTEnable(uartID, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
 }
@@ -121,6 +121,7 @@ uint8_t getIntegerFromConsole(UART_MODULE uartID)
 	uint8_t recievedChars[10];
 	uint8_t oneChar;
 	int bufPos = 0;
+	memset(recievedChars,0,10);
 	do
 	{
 		oneChar = UARTGetOneByte(uartID);
@@ -139,7 +140,7 @@ uint8_t getIntegerFromConsole(UART_MODULE uartID)
 			bufPos++;
 	}while(bufPos < 9 && oneChar != '\r');
 	
-	recievedChars[bufPos] = 0;
+	recievedChars[bufPos] = '\0';
 
 	return atoi(recievedChars);
 }

@@ -22,8 +22,8 @@ typedef struct
 	
 }HBRIDGE;
 
-#define PMOD_HB5_DIR_FWD 0x0
-#define PMOD_HB5_DIR_REV 0x1
+#define PMOD_HB5_DIR_CW 0x0
+#define PMOD_HB5_DIR_CCW 0x1
 
 uint8_t PmodHB5ChangeDirection(HBRIDGE *hBridge);
 void PmodHB5SetDCPWMDutyCycle(uint16_t dutyCycle,uint8_t oc);

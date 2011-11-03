@@ -29,17 +29,15 @@
 /*  conditional compiling will occur in main.c based            */
 /*  on these values.                                            */
 /* ------------------------------------------------------------ */
-#define PMODSF 0    
-#define PMODJSTK 1
-#define PMODHB5 0
-
-
+#define PMODSF 0   
+#define PMODJSTK 0
+#define PMODHB5 1
 
 
 /* ------------------------------------------------------------ */
 /*				Forward Declarations							*/
 /* ------------------------------------------------------------ */
-uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID);
+uint8_t UNIT_Exec_All(UART_MODULE uartID);
 
 /* ----------------------------------------------------------- */
 /*                 Test Driver Function Setup                  */
@@ -107,9 +105,7 @@ uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID);
 #pragma config POSCMOD = HS, FNOSC = PRIPLL
 #pragma config FPBDIV = DIV_2
 
-#define SYSTEM_CLOCK 80000000L  //system clock speed (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
-#define PB_CLOCK (SYSTEM_CLOCK/2) //peripheral bus clock
-#define SPI_BITRATE 625000 //bit rate for SPI port
+
 #include "./TestHarness/PmodSF/pmodsf_testDriver.h"
 #define NUM_TEST_FUNCTIONS 8  //number of test functions for PmodSF
 //Menu Item text pssed into console menu
@@ -118,14 +114,14 @@ uint8_t *menuItems[] = {"UNIT_spfPMOD_ReadID()","UNIT_sfPMODF_ReadStatusReg()",
 						"UNIT_spfPMOD_DPD_Release()","UNIT_sfPMODF_SectorErase","UNIT_sfPMODF_BulkErase","UNIT_Exec_All"};
 
 //Array of function pointers to tests for PmodSF
-uint8_t (*testFunc[])(uint8_t,UART_MODULE) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatusReg,
+uint8_t (*testFunc[])(UART_MODULE) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatusReg,
 						UNIT_sfPMODF_ClearSetReadWriteStatusRegBits,UNIT_sfPMODF_PageProgram,UNIT_spfPMOD_DPD_Release,
 						UNIT_sfPMODF_SectorErase,UNIT_sfPMODF_BulkErase,UNIT_Exec_All};
 
 //Name of module to display on console menu
 char * pmodName = "PmodSF";
 //Pmod initialization macro for PmodSF
-#define INITPMOD(CHN,LOG_UART) fnInitPmodSF(CHN,PB_CLOCK,SPI_BITRATE,LOG_UART);
+#define INITPMOD(UART) fnInitPmodSF(UART);
 
 //Filter excluding specific tests from UNIT_Exec_All 
 uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0};
@@ -145,9 +141,7 @@ uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0};
 #pragma config POSCMOD = HS, FNOSC = PRIPLL
 #pragma config FPBDIV = DIV_2
 
-#define SYSTEM_CLOCK 80000000L  //system clock speed (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
-#define PB_CLOCK (SYSTEM_CLOCK/2) //peripheral bus clock
-#define SPI_BITRATE 625000 //bit rate for SPI port
+
 
 //Test function header for PmodJSTK
 #include "./TestHarness/PmodJSTK/pmod_jstk_test_driver.h"
@@ -155,7 +149,7 @@ uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0};
 #define NUM_TEST_FUNCTIONS 12 //number of test functions for PmodJSTK
 
 //Array of function pointers to tests for PmodJSTK
-uint8_t (*testFunc[])(uint8_t,UART_MODULE) = {UNIT_PmodJSTKLed_OFF,
+uint8_t (*testFunc[])(UART_MODULE) = {UNIT_PmodJSTKLed_OFF,
 						UNIT_PmodJSTKLed1_ON,UNIT_PmodJSTKLed2_ON,UNIT_PmodJSTKLed1_Led2_ON,
 						UNIT_PmodJSTKAxisBounds,UNIT_PmodJSTKButton_1,UNIT_PmodJSTKButton_2,
 						UNIT_PmodJSTKButton_Jstk,UNIT_PmodJSTKButton_None,UNIT_PmodJSTK10usDelay,
@@ -171,7 +165,7 @@ uint8_t *menuItems[] = {"UNIT_PmodJSTKLed_OFF","UNIT_PmodJSTKLed1_ON",
 char * pmodName = "PmodJSTK";
 
 //Pmod initialization macro for PmodJSTK
-#define INITPMOD(CHN,LOG_UART) PmodJSTKInit(CHN,PB_CLOCK,SPI_BITRATE,SYSTEM_CLOCK);
+#define INITPMOD(UART) PmodJSTK_INIT(UART);
 
 //Filter excluding specific tests from UNIT_Exec_All 
 uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0,0,1,1,0};
@@ -185,42 +179,31 @@ uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0,0,1,1,0};
 #pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1, FWDTEN = OFF
 #pragma config POSCMOD = HS, FNOSC = PRIPLL, FPBDIV = DIV_8
 
-#define SYSTEM_CLOCK 80000000L  //system clock speed (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
-#define PB_DIV                 8
-#define PRESCALE               256
-#define TOGGLES_PER_SEC        2000
-#define PB_CLOCK (SYSTEM_CLOCK/2) //peripheral bus clock
-#define T1_TICK               (SYSTEM_CLOCK/PB_DIV/PRESCALE/TOGGLES_PER_SEC)
+
 
 //Test function header for PmodJSTK
-#include "./TestHarness/PmodJSTK/pmodHB5_test_driver.h"
+#include "./TestHarness/PmodHB5/pmodHB5_test_driver.h"
 
-#define NUM_TEST_FUNCTIONS 1 //number of test functions for PmodJSTK
+#define NUM_TEST_FUNCTIONS 3 //number of test functions for PmodJSTK
 
 //Array of function pointers to tests for PmodJSTK
-uint8_t (*testFunc[])(uint8_t,UART_MODULE) = {UNIT_Exec_All};
+uint8_t (*testFunc[])(UART_MODULE) = {UNIT_PmodHB5ChangeDirection,UNIT_PmodHB5SetDCPWMDutCycle,UNIT_Exec_All};
 
 //Menu Item text pssed into console menu
-uint8_t *menuItems[] = {,"UNIT_Exec_All"};
+uint8_t *menuItems[] = {"UNIT_PmodHB5ChangeDirection","UNIT_PmodHB5SetDCPWMDutCycle","UNIT_Exec_All"};
 
 //Name of module to display on console menu
 char * pmodName = "PmodHB5";
 
 //Pmod initialization macro for PmodJSTK
-#define INITPMOD(CHN,LOG_UART) PmodHB5Init();
+#define INITPMOD(UART) PmodHB5_INIT(UART);
 
 //Filter excluding specific tests from UNIT_Exec_All 
-uint8_t excludeFromExecAll[] = {0};
+uint8_t excludeFromExecAll[] = {0,0};
 
 #endif
 
 #define MENU_UART UART2
-
-//Some test functions will need this value since, since it is not included in the 
-//standard function definition accepted by the test loop utilizing the arrays of function 
-//pointers. If this value is needed use the extern forward declation in the test module
-//for this variable
-uint32_t systemClock = SYSTEM_CLOCK;
 
 #endif
 
