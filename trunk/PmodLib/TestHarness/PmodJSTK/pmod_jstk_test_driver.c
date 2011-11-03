@@ -59,13 +59,13 @@ uint8_t UNIT_PmodJSTKAxisBounds(UART_MODULE uartID)
 	sprintf(results,"Joystick baseline: X axis:%d Y axis: %d\r\n",xAxis,yAxis);
 	UARTPutS(results,uartID);
 	
-	testResult &=  execAxisBounds("While holding joystick to full LEFT deflection on X axis press any key\r\n",PMODJSTK_MIN_X_Y_AXIS,xAxis - 1,uartID,JSTK_X_AXIS,chn);
+	testResult &=  execAxisBounds("While holding joystick to full LEFT deflection on X axis press any key\r\n",PMODJSTK_MIN_X_Y_AXIS,xAxis - 200,uartID,JSTK_X_AXIS,chn);
 	
-	testResult &=  execAxisBounds("While holding joystick to full RIGHT deflection on X axis press any key\r\n",xAxis + 1,PMODJSTK_MAX_X_Y_AXIS,uartID,JSTK_X_AXIS,chn);
+	testResult &=  execAxisBounds("While holding joystick to full RIGHT deflection on X axis press any key\r\n",xAxis + 200,PMODJSTK_MAX_X_Y_AXIS,uartID,JSTK_X_AXIS,chn);
 
-	testResult &=  execAxisBounds("While holding joystick to full UPWARD deflection on Y axis press any key\r\n",yAxis + 1,PMODJSTK_MAX_X_Y_AXIS,uartID,JSTK_Y_AXIS,chn);
+	testResult &=  execAxisBounds("While holding joystick to full UPWARD deflection on Y axis press any key\r\n",yAxis + 200,PMODJSTK_MAX_X_Y_AXIS,uartID,JSTK_Y_AXIS,chn);
 		
-	testResult &=  execAxisBounds("While holding joystick to full DOWNWARD deflection on Y axis press any key\r\n",PMODJSTK_MIN_X_Y_AXIS,yAxis - 1,uartID,JSTK_Y_AXIS,chn);
+	testResult &=  execAxisBounds("While holding joystick to full DOWNWARD deflection on Y axis press any key\r\n",PMODJSTK_MIN_X_Y_AXIS,yAxis - 200,uartID,JSTK_Y_AXIS,chn);
 
 	return testResult;
 }
