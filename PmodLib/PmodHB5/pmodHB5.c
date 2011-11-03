@@ -28,7 +28,7 @@ uint8_t PmodHB5ChangeDirection(HBRIDGE *hBridge)
 	
 		if(hBridge->rpm == 0)
 		{
-			if(hBridge->newDirection == PMOD_HB5_DIR_FWD)
+			if(hBridge->newDirection == PMOD_HB5_DIR_CW)
 			{
 				PORTSetBits(hBridge->directionPort,hBridge->directionPortBit);
 			}
@@ -79,3 +79,4 @@ void PmodHB5getQEncRPM(HBRIDGE *hBridge,uint32_t pollsPerSec)
 	}
 	
 }
+

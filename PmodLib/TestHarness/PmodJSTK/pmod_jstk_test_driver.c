@@ -26,6 +26,13 @@
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
 
+void PmodJSTK_INIT(UART_MODULE uartID)
+{
+	UARTPutS("\r\nPmodJSTK SPI port=>",uartID);
+	chn =  getIntegerFromConsole(uartID); //SPI port PMODJSTK is connected to
+	PmodJSTKInit(chn,PB_CLOCK,SPI_BITRATE,SYSTEM_CLOCK);
+}
+
 /*
 UNIT TEST: UNIT_PmodJSTKAxisBounds
 An initial baseline measurement of the X and Y axis values is recieved.
@@ -34,7 +41,7 @@ the joystick, execAxisBounds() is called for full joystick deflection into
 all four quardants of the the joystick, if all four tests are determined 
 to be within bounds the test passes.
 */
-uint8_t UNIT_PmodJSTKAxisBounds(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_PmodJSTKAxisBounds(UART_MODULE uartID)
 {
 	uint16_t xAxis = 0;
 	uint16_t yAxis = 0;
@@ -69,9 +76,9 @@ Turn both LD1 and LD2 off and prompt the tester to verify
 that neither are illuminated, this will ensure 
 the #defined value for PMODJSTK_LD1_LD2_OFF is correct.
 */
-uint8_t UNIT_PmodJSTKLed_OFF(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_PmodJSTKLed_OFF(UART_MODULE uartID)
 {
-	return execLedTest("UNIT TEST: UNIT_PmodJSTKLed_OFF\r\nAre both LD1 and LD2 OFF? (0: no 1: yes)=>",chn,uartID,PMODJSTK_LD1_LD2_OFF);
+	return execLedTest("UNIT TEST: UNIT_PmodJSTKLed_OFF\r\nAre both LD1 and LD2 OFF? (0: no 1: yes)=>",uartID,PMODJSTK_LD1_LD2_OFF);
 }
 
 /*
@@ -80,9 +87,9 @@ Turn LD1 on and prompt the tester to verify that
 only LD1 is illuminated, this will ensure the #defined 
 value for PMODJSTK_LD1_ON is correct.
 */
-uint8_t UNIT_PmodJSTKLed1_ON(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_PmodJSTKLed1_ON(UART_MODULE uartID)
 {
-	return execLedTest("UNIT TEST: UNIT_PmodJSTKLed1_ON\r\nIs only LD1 ON? (0: no 1: yes)=>",chn,uartID,PMODJSTK_LD1_ON);
+	return execLedTest("UNIT TEST: UNIT_PmodJSTKLed1_ON\r\nIs only LD1 ON? (0: no 1: yes)=>",uartID,PMODJSTK_LD1_ON);
 }
 
 /*
@@ -91,9 +98,9 @@ Turn LD2 on and prompt the tester to verify that
 only LD2 is illuminated, this will ensure the #defined 
 value for PMODJSTK_LD2_ON is correct.
 */
-uint8_t UNIT_PmodJSTKLed2_ON(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_PmodJSTKLed2_ON(UART_MODULE uartID)
 {
-	return execLedTest("UNIT TEST: UNIT_PmodJSTKLed_2_ON\r\nIs only LD2 ON? (0: no 1: yes) =>",chn,uartID,PMODJSTK_LD2_ON);
+	return execLedTest("UNIT TEST: UNIT_PmodJSTKLed_2_ON\r\nIs only LD2 ON? (0: no 1: yes) =>",uartID,PMODJSTK_LD2_ON);
 }
 
 /*
@@ -102,9 +109,9 @@ Turn both LD1 and LD2 on and prompt the tester to verify
 that neither are illuminated, this will ensure 
 the #defined value for PMODJSTK_LD1_LD2_ON is correct.
 */
-uint8_t UNIT_PmodJSTKLed1_Led2_ON(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_PmodJSTKLed1_Led2_ON(UART_MODULE uartID)
 {
-	return execLedTest("UNIT TEST: UNIT_PmodJSTKLed1_Led2_ON\r\nAre both LD1 and LD2 on? (0: no 1: yes) =>",chn,uartID,PMODJSTK_LD1_LD2_ON);
+	return execLedTest("UNIT TEST: UNIT_PmodJSTKLed1_Led2_ON\r\nAre both LD1 and LD2 on? (0: no 1: yes) =>",uartID,PMODJSTK_LD1_LD2_ON);
 }
 
 /*
@@ -112,9 +119,9 @@ UNIT TEST:
 Poll for the state of BTN1, ensure that it matches PMODJSTK_BTN1,
 if it is depressed then the #define for PMODJSTK_BTN1 is correct.
 */
-uint8_t UNIT_PmodJSTKButton_1(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_PmodJSTKButton_1(UART_MODULE uartID)
 {
-	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_1\r\nWhile holding BTN1, press any key\r\n",chn,uartID,PMODJSTK_BTN1);
+	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_1\r\nWhile holding BTN1, press any key\r\n",uartID,PMODJSTK_BTN1);
 }
 
 /*
@@ -122,9 +129,9 @@ UNIT TEST:
 Poll for the state of BTN2, ensure that it matches PMODJSTK_BTN1,
 if it is depressed then the #define for PMODJSTK_BTN2 is correct.
 */
-uint8_t UNIT_PmodJSTKButton_2(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_PmodJSTKButton_2(UART_MODULE uartID)
 {
-	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_2\r\nWhile BTN2, press any key\r\n",chn,uartID,PMODJSTK_BTN2);
+	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_2\r\nWhile BTN2, press any key\r\n",uartID,PMODJSTK_BTN2);
 }
 
 /*
@@ -132,9 +139,9 @@ UNIT TEST:
 Poll for the state of the joystick button, ensure that it matches PMODJSTK_BTN_JSTK,
 if it is depressed then the #define for PMODJSTK_BTN_JSTK is correct.
 */
-uint8_t UNIT_PmodJSTKButton_Jstk(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_PmodJSTKButton_Jstk(UART_MODULE uartID)
 {
-	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_Jstk\r\nWhile holding the Joystick button, press any key\r\n",chn,uartID,PMODJSTK_BTN_JSTK);
+	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_Jstk\r\nWhile holding the Joystick button, press any key\r\n",uartID,PMODJSTK_BTN_JSTK);
 }
 
 /*
@@ -143,9 +150,9 @@ UNIT TEST:
 Poll for the state of the joystick button, ensure that it matches PMODJSTK_BTN_NONE,
 if it is depressed then the #define for PMODJSTK_BTN_NONE is correct.
 */
-uint8_t UNIT_PmodJSTKButton_None(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_PmodJSTKButton_None(UART_MODULE uartID)
 {
-	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_Jstk\r\nEnsure no buttons are depress, press any key\r\n",chn,uartID,PMODJSTK_BTN_NONE);
+	return execButtonTest("UNIT TEST: UNIT_PmodJSTKButton_Jstk\r\nEnsure no buttons are depress, press any key\r\n",uartID,PMODJSTK_BTN_NONE);
 }
 
 /*
@@ -154,14 +161,14 @@ This test wil not return, the processor must be reset to run subsequent tests. A
 SS is then driven high again. This process occurs in an infinit loop. An oscilloscope must be connected to the the SS pin of the PmodJSTK,
 the tester should observe SS low for approximatley 10us. 
 */
-uint8_t UNIT_PmodJSTK10usDelay(uint8_t chn,UART_MODULE uartID)
+uint8_t UNIT_PmodJSTK10usDelay(UART_MODULE uartID)
 {
 	UARTPutS("This test requires the use of an oscilloscope,\r\n scale horizontal axis to 10us and set trigger to 1V,\r\nconnect proble to ground and SS pin of PmodJSTK,SS should stay low for ~10us,\r\n this test will not return.\r\n",uartID);
 	while(1)
 	{
- 		 PmodJSTKDelay10us(systemClock);
+ 		 PmodJSTKDelay10us(SYSTEM_CLOCK);
 		 PmodSPISetSSLow(chn);
-		 PmodJSTKDelay10us(systemClock);
+		 PmodJSTKDelay10us(SYSTEM_CLOCK);
 		 PmodSPISetSSHigh(chn);
 	}
 	
@@ -174,14 +181,14 @@ This test wil not return, the processor must be reset to run subsequent tests. A
 SS is then driven high again. This process occurs in an infinit loop. An oscilloscope must be connected to the the SS pin of the PmodJSTK,
 the tester should observe SS low for approximatley 15us. 
 */
-uint8_t UNIT_PmodJSTK15usDelay(uint8_t chn,UART_MODULE uartID)
+uint8_t UNIT_PmodJSTK15usDelay(UART_MODULE uartID)
 {
 	UARTPutS("This test requires the use of an oscilloscope,\r\n scale horizontal axis to 15us and set trigger to 1V,\r\nconnect proble to ground and SS pin of PmodJSTK,SS should stay low for ~15us,\r\n this test will not return.\r\n",uartID);
 	while(1)
 	{
- 		 PmodJSTKDelay15us(systemClock);
+ 		 PmodJSTKDelay15us(SYSTEM_CLOCK);
   		 PmodSPISetSSLow(chn);
-		 PmodJSTKDelay15us(systemClock);
+		 PmodJSTKDelay15us(SYSTEM_CLOCK);
 		 PmodSPISetSSHigh(chn);
 	}
 
@@ -213,7 +220,7 @@ uint8_t UNIT_PmodJSTK15usDelay(uint8_t chn,UART_MODULE uartID)
 **  state of the LEDs vs. the desired state described in the text output to the
 **  serial console.
 */
-uint8_t execLedTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t command)
+uint8_t execLedTest(uint8_t *testString,UART_MODULE uartID,uint8_t command)
 {
 	PmodJSTKAxisButton jstkAxisButtons;
 	UARTPutS(testString,uartID);
@@ -247,7 +254,7 @@ uint8_t execLedTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t c
 **  signaling the system to poll the joystick. If the button state returned
 **  matches "button" the test passes, otherwise it fails.
 */
-uint8_t execButtonTest(uint8_t *testString,uint8_t chn,UART_MODULE uartID,uint8_t button)
+uint8_t execButtonTest(uint8_t *testString,UART_MODULE uartID,uint8_t button)
 {
 	uint8_t results[128];
 	PmodJSTKAxisButton jstkAxisButtons;

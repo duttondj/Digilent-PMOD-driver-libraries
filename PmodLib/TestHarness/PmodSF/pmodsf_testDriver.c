@@ -27,13 +27,15 @@
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
 
+
+
 /*UNIT TEST: PmodSFDeepPowerDown/PmodSFDeepPowerDownRelease
 This feature is only supported on the PMODSF-16. This
 test places the PMODSF in deep power down mode, then releases
 and reads the electronic signature, if a value of 14h will return
 a passing result.
 */
-uint8_t UNIT_spfPMOD_DPD_Release(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_spfPMOD_DPD_Release(UART_MODULE uartID)
 {
 	uint8_t results[128];
 	uint8_t signature = 0;
@@ -61,7 +63,7 @@ UNIT TEST: PmodSFReadID
 Reads the manufacturer's ID, for the PMODSF-16 and PMODSF-128
 if the correct value is returned the test passes.
 */
-uint8_t UNIT_spfPMOD_ReadID(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_spfPMOD_ReadID(UART_MODULE uartID)
 {
 	uint32_t pmodSFID = 0;
 	uint8_t results[128];
@@ -89,7 +91,7 @@ Prompts for a bitmask, sets the status register to that
 value, the status register is then read and the values compared.
 If the values are the same the test returns a pass.
 */
-uint8_t UNIT_sfPMODF_ReadStatusReg(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_sfPMODF_ReadStatusReg(UART_MODULE uartID)
 {
 	uint8_t results[128];
 	uint8_t statusRegIn = 0;
@@ -121,7 +123,7 @@ protect bits are cleared, if the status register is == 0 then
 PmodSFClearStatusRegBits passed. Both tests must achieve a pass
 for the entire test to pass.
 */
-uint8_t UNIT_sfPMODF_ClearSetReadWriteStatusRegBits(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_sfPMODF_ClearSetReadWriteStatusRegBits(UART_MODULE uartID)
 {
 	uint8_t results[128];
 	uint8_t testResult = 1;
@@ -157,7 +159,7 @@ to every page in sector 0, a sector erase is performed and all bits
 in sector 0 are checked, if they are all 1 (sector erase sets all bits to 1)
 the test will pass, otherwise the test will fail. 
 */
-uint8_t UNIT_sfPMODF_SectorErase(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_sfPMODF_SectorErase(UART_MODULE uartID)
 {
 	uint8_t test[128];
 	uint32_t sectorSize = 0;
@@ -201,7 +203,7 @@ are set to address 0h, these bytes are written to the first page.
 The first page is read from address 0h and compared to the bytes originally
 written, if they match the test passes, otherwise it fails.
 */
-uint8_t UNIT_sfPMODF_PageProgram(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_sfPMODF_PageProgram(UART_MODULE uartID)
 {
 	uint8_t results[128];
 	uint32_t i = 0;
@@ -247,7 +249,7 @@ The first three pages starting at address 0h are written with
 the same three pages are read, if all bits read are set to 1
 the test returns a pass.
 */
-uint8_t UNIT_sfPMODF_BulkErase(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_sfPMODF_BulkErase(UART_MODULE uartID)
 {
 	uint8_t dataOut[PMODSF_PAGE_LEN];
 	uint8_t dataIn[PMODSF_PAGE_LEN*3];
@@ -292,7 +294,7 @@ uint8_t UNIT_sfPMODF_BulkErase(uint8_t chn, UART_MODULE uartID)
 **  detected. pmmodFlashCapacity is use during unit tests to 
 **  exclude tests unsopported by the detected module.
 */
-void fnSetPmodFlashCapacity(uint8_t chn,UART_MODULE uart)
+void fnSetPmodFlashCapacity(UART_MODULE uart)
 {
 	 uint8_t pmodSFID = PmodSFReadID(chn);
 	 pmodFlashCapacity = fnPMODGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE);
@@ -327,8 +329,10 @@ void fnSetPmodFlashCapacity(uint8_t chn,UART_MODULE uart)
 **  Initializes the SPI module at the specified bitrate for the PmodSF,
 **  calls fnSetPmodFlashCapacity to set the global variable pmmodFlashCapacity
 */
-void fnInitPmodSF(uint8_t chn,uint32_t pbClock,uint32_t bitRate,UART_MODULE uart)
+void fnInitPmodSF(UART_MODULE uartID)
 {
-	PmodSFInit(chn,pbClock,bitRate);
-	fnSetPmodFlashCapacity(chn,uart);
+	UARTPutS("\r\nPmodSF SPI port=>",uartID);
+	chn =  getIntegerFromConsole(uartID); //SPI port PMODSF is connected to
+	PmodSFInit(chn,PB_CLOCK,SPI_BITRATE);
+	fnSetPmodFlashCapacity(uartID);
 }

@@ -26,11 +26,8 @@
 #include "./TestHarness/Common/test_harness_common.h"
 
 
-
-
-
 extern uint8_t *menuItems[];
-extern uint8_t (*testFunc[])(uint8_t,UART_MODULE);
+extern uint8_t (*testFunc[])(UART_MODULE);
 extern char * pmodName;
 extern uint8_t excludeFromExecAll[];
 
@@ -50,18 +47,15 @@ int main(void)
 	//Display processor type to console
 	UARTPutS(procType,MENU_UART); 	
 	
-	UARTPutS("\r\nPmodJSTK SPI port=>",MENU_UART);
-	channel =  getIntegerFromConsole(MENU_UART); //SPI port PMODSF is connected to
-	
 	//initialize PMOD, UART is needed for init functions that
     //send output to the console
-	INITPMOD(channel,MENU_UART);
+	INITPMOD(MENU_UART);
 
 	//Main test loop
 	while(1)
 	{
         //display the console menu, execute the test function returned by the menu
-		if((*testFunc[ConsoleMenu(pmodName,menuItems,NUM_TEST_FUNCTIONS,MENU_UART)])(channel,MENU_UART))
+		if((*testFunc[ConsoleMenu(pmodName,menuItems,NUM_TEST_FUNCTIONS,MENU_UART)])(MENU_UART))
 		{
 			UARTPutS("Test Passed\r\n",MENU_UART);
 		}
@@ -109,7 +103,7 @@ int main(void)
 **  and function pointer for each function must 
 **  have the same indice.
 */
-uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID)
+uint8_t UNIT_Exec_All(UART_MODULE uartID)
 {
 	uint8_t index = 0;
 	uint8_t individualTestResult = 0;
@@ -124,7 +118,7 @@ uint8_t UNIT_Exec_All(uint8_t chn, UART_MODULE uartID)
 		}
 		else
 		{
-			individualTestResult = (*testFunc[index])(chn,uartID);
+			individualTestResult = (*testFunc[index])(uartID);
 			if(individualTestResult)
 			{
 				UARTPutS("Test Passed\r\n",uartID);
