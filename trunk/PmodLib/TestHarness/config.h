@@ -20,8 +20,6 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
 
-
-
 /* ------------------------------------------------------------ */
 /*                     Pmod Selection                           */
 /*  This section defines which module to test, 1 to test,       */
@@ -30,9 +28,12 @@
 /*  on these values.                                            */
 /* ------------------------------------------------------------ */
 #define PMODSF 0   
-#define PMODJSTK 1
+#define PMODJSTK 0
 #define PMODHB5 0
+#define PMODACL 1
 
+//Test harness menu UART
+#define MENU_UART UART2
 
 /* ------------------------------------------------------------ */
 /*				Forward Declarations							*/
@@ -121,7 +122,7 @@ uint8_t (*testFunc[])(UART_MODULE) = {UNIT_spfPMOD_ReadID,UNIT_sfPMODF_ReadStatu
 //Name of module to display on console menu
 char * pmodName = "PmodSF";
 //Pmod initialization macro for PmodSF
-#define INITPMOD(UART) fnInitPmodSF(UART);
+#define INITPMOD(UART) fnInitPmodSF(UART)
 
 //Filter excluding specific tests from UNIT_Exec_All 
 uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0};
@@ -165,12 +166,16 @@ uint8_t *menuItems[] = {"UNIT_PmodJSTKLed_OFF","UNIT_PmodJSTKLed1_ON",
 char * pmodName = "PmodJSTK";
 
 //Pmod initialization macro for PmodJSTK
-#define INITPMOD(UART) PmodJSTK_INIT(UART);
+#define INITPMOD(UART) PmodJSTK_INIT(UART)
 
 //Filter excluding specific tests from UNIT_Exec_All 
 uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0,0,1,1,0};
 //**************************************
 
+/* ------------------------------------------------------------*/
+/*                            PmodHB5                          */
+/*                    Test setup for PmodHB5                   */
+/* ------------------------------------------------------------*/
 #elif(PMODHB5 == 1)
 
 /* ------------------------------------------------------------ */
@@ -179,14 +184,12 @@ uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0,0,1,1,0};
 #pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1, FWDTEN = OFF
 #pragma config POSCMOD = HS, FNOSC = PRIPLL, FPBDIV = DIV_8
 
-
-
-//Test function header for PmodJSTK
+//Test function header for PmodHB5
 #include "./TestHarness/PmodHB5/pmodHB5_test_driver.h"
 
-#define NUM_TEST_FUNCTIONS 3 //number of test functions for PmodJSTK
+#define NUM_TEST_FUNCTIONS 3 //number of test functions for PmodHB5
 
-//Array of function pointers to tests for PmodJSTK
+//Array of function pointers to tests for PmodHB5
 uint8_t (*testFunc[])(UART_MODULE) = {UNIT_PmodHB5ChangeDirection,UNIT_PmodHB5SetDCPWMDutCycle,UNIT_Exec_All};
 
 //Menu Item text pssed into console menu
@@ -195,15 +198,46 @@ uint8_t *menuItems[] = {"UNIT_PmodHB5ChangeDirection","UNIT_PmodHB5SetDCPWMDutCy
 //Name of module to display on console menu
 char * pmodName = "PmodHB5";
 
-//Pmod initialization macro for PmodJSTK
-#define INITPMOD(UART) PmodHB5_INIT(UART);
+//Pmod initialization macro for PmodHB5
+#define INITPMOD(UART) PmodHB5_INIT(UART)
 
 //Filter excluding specific tests from UNIT_Exec_All 
-uint8_t excludeFromExecAll[] = {0,0};
+uint8_t excludeFromExecAll[] = {0,0,0};
+
+/* ------------------------------------------------------------*/
+/*                            PmodACL                          */
+/*                    Test setup for PmodACL                   */
+/* ------------------------------------------------------------*/
+#elif(PMODACL == 1)
+
+/* ------------------------------------------------------------ */
+/*				PIC32 Configuration Settings					*/
+/* ------------------------------------------------------------ */
+#pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1, FWDTEN = OFF
+#pragma config POSCMOD = HS, FNOSC = PRIPLL, FPBDIV = DIV_8
+
+//Test function header for PmodACL
+#include "./TestHarness/PmodACL/pmodACL_test_driver.h"
+
+#define NUM_TEST_FUNCTIONS 3 //number of test functions for PmodACL
+
+//Array of function pointers to tests for PmodACL
+uint8_t (*testFunc[])(UART_MODULE) = {UNIT_PmodACLGetAxisData,UNIT_PmodACLGetDeviceID,UNIT_Exec_All};
+
+//Menu Item text pssed into console menu
+uint8_t *menuItems[] = {"UNIT_PmodACLGetAxisData","UNIT_PmodACLGetDeviceID","UNIT_Exec_All"};
+
+//Name of module to display on console menu
+char * pmodName = "PmodACL";
+
+//Pmod initialization macro for PmodACL
+#define INITPMOD(UART) PmodACL_INIT(UART);
+
+//Filter excluding specific tests from UNIT_Exec_All 
+uint8_t excludeFromExecAll[] = {0,0,0};
 
 #endif
 
-#define MENU_UART UART2
-
 #endif
+
 
