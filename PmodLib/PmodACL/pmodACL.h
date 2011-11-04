@@ -14,11 +14,14 @@
 /* <MM/DD/YY>(<FIRST NAME><LAST INITIAL): <NOTES>						*/
 /*																		*/
 /************************************************************************/
+#ifndef _PMOD_ACL_H_
+#define _PMOD_ACL_H_
 
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
 #include <plib.h>
+#include <stdint.h>
 #include "./PmodCommon/spi/pmod_spi_common.h"
 
 /* ------------------------------------------------------------ */
@@ -32,7 +35,7 @@
 #define PMODACL_REG_OFSY  			0x1F 
 #define PMODACL_REG_OFSZ  			0x20 
 #define PMODACL_REG_DUR  			0x21 
-#define PMODACL_REG_Latent  		0x22 
+#define PMODACL_REG_LATENT  		0x22 
 #define PMODACL_REG_Window  		0x23 
 #define PMODACL_REG_THRESH_ACT  	0x24 
 #define PMODACL_REG_THRESH_INACT 	0x25 
@@ -57,5 +60,22 @@
 #define PMODACL_REG_FIFO_CTL  		0x38 
 #define PMODACL_REG_FIFO_STATUS  	0x39 
 
-#define PMODACL_RW_BIT				0x40
-#define PMODACL_MB_BIT              0x20
+#define PMODACL_RW_BIT				0x80
+#define PMODACL_MB_BIT              0x40
+
+#define PMODACL_DEVICE_ID			0xE5
+
+typedef struct
+{
+	uint16_t xAxis;
+	uint16_t yAxis;
+	uint16_t zAxis;
+}PMODACL_AXIS;
+
+
+void PmodACLInitSpi4Wire(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
+uint8_t PmodACLGetDeviceID(SpiChannel chn);
+void PmodACLGetAxisData(SpiChannel chn, PMODACL_AXIS *pmodACLAxis);
+
+
+#endif
