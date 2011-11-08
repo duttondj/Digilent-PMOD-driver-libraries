@@ -21,13 +21,15 @@
 /* ------------------------------------------------------------ */
 #include "./PmodMic/pmodMic.h"
 #include "./PmodCommon/bufferlib/bufferlib.h"
+#include "./PmodSF/pmodsf.h"
+#include "./PmodCommon/spi/pmod_spi_common.h"
 
 /* ------------------------------------------------------------ */
 /*				Global Variables								*/
 /* ------------------------------------------------------------ */
 
 #define TICKRATE 8192
-
+SpiChannel chn;
 
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
@@ -80,14 +82,18 @@ void fnInitPmodMic(UART_MODULE uartID)
 **  bit rate combinations are available in the table labeld "Excerpt from PIC32 Familiy Reference 
 **  Manual Chapter 23 section 23.3.7" in pmodsf.h.
 */
-void PmodMicInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate)
+void PmodMicInit(uint32_t pbClock,uint32_t bitRate)
 {
     SpiChnOpen(chn, SPI_OPEN_MSTEN | SPI_OPEN_SSEN |  SPI_OPEN_MODE8 , pbClock/bitRate);
 }
 
 void PmodMicStartRecording()
 {
-
+	//TODO:
+	//Insert UARTID
+	fnInitPmodMic(1);
+	fnTimer1Setup();
+	configure_interrupts();
 }
 
 void PmodMicStopRecording()
@@ -99,20 +105,20 @@ void PmodMicTakeSample()
 {
 	PmodSPISetSSLow(chn); //SS to low 
 	
-	//GET BYTES FROM PMODSF
-	
-	
+	//GET 2 BYTES FROM PMODMIC
+
 	uint8_t oneByte = 0;
 	SpiChnPutC(chn,0);
 	oneByte = SpiChnGetC(chn);
 	oneByte << 8;
 	SpiChnPutC(chn,0);
 	oneByte & SpiChnGetC(chn);
+	
 	PmodSPISetSSHigh(chn); //SS to High
+	BufflibWriteBuffer(oneByte);
 	
 }
-unsigned char
-fnTimer1Setup (unsigned int ulMS)
+unsigned char fnTimer1Setup ()
 {
 	// Open Timer1
 	OpenTimer1 (T1_ON | T1_IDLE_CON | T1_PS_1_1, (pbClock/TICKRATE));
