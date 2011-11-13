@@ -1,9 +1,9 @@
 /************************************************************************/
-/*	<FILE NAME>	--	<BRIEF DESCRIPTION>         						*/
+/*	pmodACL.c	-- PmodACL implimentation file   						*/
 /*																		*/
 /************************************************************************/
-/*	Author: 	<AUTHOR NAME> 											*/
-/*	Copyright (C) <YEAR> <ENTITY>										*/
+/*	Author: 	Ryan Hoffman 											*/
+/*	Copyright (C) 2011 Ryan Hoffman										*/
 /************************************************************************/
 /*  Module Description: 												*/
 /*  <MODULE DESCRIPTION>												*/
