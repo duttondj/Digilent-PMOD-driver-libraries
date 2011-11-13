@@ -19,13 +19,11 @@
 #ifndef _TEST_HARNESS_COMMON_
 #define _TEST_HARNESS_COMMON_
 
-
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <peripheral/spi.h>
-#include <peripheral/ports.h>	// Enable port pins for input or output 
-#include <peripheral/uart.h>	// Enable UARTs 1 and 2 for reception and transmission of serial data
-#include <peripheral/system.h>	// Set up the system and perihperal clocks for best performance
+#include <plib.h>
+
 
 void SetupSerialLogging(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID);
 uint8_t ConsoleMenu(uint8_t *pmodName,uint8_t *testNames[],uint32_t numCommands,UART_MODULE uartID);
