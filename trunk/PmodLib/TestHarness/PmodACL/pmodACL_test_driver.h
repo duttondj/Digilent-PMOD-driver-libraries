@@ -47,12 +47,13 @@
 uint8_t isrFired;
 SpiChannel chn;
 
-
 /* ------------------------------------------------------------ */
 /*				Forward Declarations							*/
 /* ------------------------------------------------------------ */
 
 void fnPmodACL_INIT(UART_MODULE uartID);
+void fnSetupPmodACLForInterruptsInt1(uint8_t interruptMask,uint8_t tapAxes);
+
 uint8_t UNIT_PmodACLGetDeviceID(UART_MODULE uartID);
 uint8_t UNIT_PmodACLGetAxisData(UART_MODULE uartID);
 uint8_t UNIT_PmodACLGetAxisData(UART_MODULE uartID);
@@ -74,7 +75,7 @@ uint8_t UNIT_PmodACLGetActTapStatus(UART_MODULE uartID);
 uint8_t UNIT_PmodACLSetGetThreshFF(UART_MODULE uartID);
 uint8_t UNIT_PmodACLSetGetBwRate(UART_MODULE uartID);
 
-void fnSetupPmodACLForInterruptsInt1(uint8_t interruptMask,uint8_t tapAxes);
+
 
 #endif
 
