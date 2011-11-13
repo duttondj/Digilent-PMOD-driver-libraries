@@ -23,6 +23,8 @@
 
 #include <plib.h>
 #include <stdint.h>
+#include <string.h>
+
 #include "./PmodACL/pmodACL.h"
 #include "./TestHarness/Common/test_harness_common.h"
 
@@ -42,8 +44,9 @@
 /* ------------------------------------------------------------ */
 /*				Local Variables									*/
 /* ------------------------------------------------------------ */
+uint8_t isrFired;
+SpiChannel chn;
 
-static SpiChannel chn;
 
 /* ------------------------------------------------------------ */
 /*				Forward Declarations							*/
@@ -52,5 +55,11 @@ static SpiChannel chn;
 void PmodJSTK_INIT(UART_MODULE uartID);
 uint8_t UNIT_PmodACLGetDeviceID(UART_MODULE uartID);
 uint8_t UNIT_PmodACLGetAxisData(UART_MODULE uartID);
+uint8_t UNIT_PmodACLGetAxisData(UART_MODULE uartID);
+uint8_t UNIT_PmodACLCalibrate(UART_MODULE uartID);
+uint8_t UNIT_PmodACLSetGetTapThresh(UART_MODULE uartID);
+uint8_t UNIT_PmodACLInterupt(UART_MODULE uartID);
+uint8_t UNIT_PmodACLSetGetDataFormat(UART_MODULE uartID);
+uint8_t UNIT_PmodACLSetGetPowerCtl(UART_MODULE uartID);
 #endif
 

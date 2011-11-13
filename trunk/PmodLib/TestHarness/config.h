@@ -33,7 +33,7 @@
 #define PMODACL 1
 
 //Test harness menu UART
-#define MENU_UART UART2
+#define MENU_UART UART1
 
 /* ------------------------------------------------------------ */
 /*				Forward Declarations							*/
@@ -219,13 +219,13 @@ uint8_t excludeFromExecAll[] = {0,0,0};
 //Test function header for PmodACL
 #include "./TestHarness/PmodACL/pmodACL_test_driver.h"
 
-#define NUM_TEST_FUNCTIONS 3 //number of test functions for PmodACL
+#define NUM_TEST_FUNCTIONS 8 //number of test functions for PmodACL
 
 //Array of function pointers to tests for PmodACL
-uint8_t (*testFunc[])(UART_MODULE) = {UNIT_PmodACLGetAxisData,UNIT_PmodACLGetDeviceID,UNIT_Exec_All};
+uint8_t (*testFunc[])(UART_MODULE) = {UNIT_PmodACLSetGetPowerCtl,UNIT_PmodACLSetGetDataFormat,UNIT_PmodACLInterupt,UNIT_PmodACLSetGetTapThresh,UNIT_PmodACLCalibrate,UNIT_PmodACLGetAxisData,UNIT_PmodACLGetDeviceID,UNIT_Exec_All};
 
 //Menu Item text pssed into console menu
-uint8_t *menuItems[] = {"UNIT_PmodACLGetAxisData","UNIT_PmodACLGetDeviceID","UNIT_Exec_All"};
+uint8_t *menuItems[] = {"UNIT_PmodACLSetGetPowerCtl","UNIT_PmodACLSetGetDataFormat","UNIT_PmodACLInterupt","UNIT_PmodACLSetGetTapThresh","UNIT_PmodACLCalibrate","UNIT_PmodACLGetAxisData","UNIT_PmodACLGetDeviceID","UNIT_Exec_All"};
 
 //Name of module to display on console menu
 char * pmodName = "PmodACL";
@@ -234,7 +234,7 @@ char * pmodName = "PmodACL";
 #define INITPMOD(UART) PmodACL_INIT(UART);
 
 //Filter excluding specific tests from UNIT_Exec_All 
-uint8_t excludeFromExecAll[] = {0,0,0};
+uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0};
 
 #endif
 

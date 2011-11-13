@@ -20,62 +20,739 @@
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
-#include <plib.h>
+
 #include <stdint.h>
-#include "./PmodCommon/spi/pmod_spi_common.h"
 
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
 
 //Register address definitions
-#define PMODACL_REG_DEVID  			0x00 
-#define PMODACL_REG_THRESH_TAP 		0x1D 
-#define PMODACL_REG_OFSX  			0x1E 
-#define PMODACL_REG_OFSY  			0x1F 
-#define PMODACL_REG_OFSZ  			0x20 
-#define PMODACL_REG_DUR  			0x21 
-#define PMODACL_REG_LATENT  		0x22 
-#define PMODACL_REG_Window  		0x23 
-#define PMODACL_REG_THRESH_ACT  	0x24 
-#define PMODACL_REG_THRESH_INACT 	0x25 
-#define PMODACL_REG_TIME_INACT  	0x26 
-#define PMODACL_REG_ACT_INACT_CTL   0x27 
-#define PMODACL_REG_THRESH_FF  		0x28 
-#define PMODACL_REG_TIME_FF  		0x29 
-#define PMODACL_REG_TAP_AXES  		0x2A 
-#define PMODACL_REG_ACT_TAP_STATUS  0x2B 
-#define PMODACL_REG_BW_RATE  		0x2C 
-#define PMODACL_REG_POWER_CTL  		0x2D 
-#define PMODACL_REG_INT_ENABLE  	0x2E 
-#define PMODACL_REG_INT_MAP  		0x2F 
-#define PMODACL_REG_INT_SOURCE  	0x30 
-#define PMODACL_REG_DATA_FORMAT  	0x31 
-#define PMODACL_REG_DATAX0  		0x32 
-#define PMODACL_REG_DATAX1  		0x33 
-#define PMODACL_REG_DATAY0  		0x34 
-#define PMODACL_REG_DATAY1  		0x35 
-#define PMODACL_REG_DATAZ0  		0x36 
-#define PMODACL_REG_DATAZ1  		0x37 
-#define PMODACL_REG_FIFO_CTL  		0x38 
-#define PMODACL_REG_FIFO_STATUS  	0x39 
+#define PMODACL_REG_DEVID  						0x00 
+#define PMODACL_REG_THRESH_TAP 					0x1D 
 
-#define PMODACL_RW_BIT				0x80
-#define PMODACL_MB_BIT              0x40
+/************************************/
+/*        OFFSET                    */
+/************************************/
+#define PMODACL_REG_OFSX  						0x1E 
+#define PMODACL_REG_OFSY  						0x1F 
+#define PMODACL_REG_OFSZ  						0x20 
+#define PMODACL_NUM_OFFSET_BYTES                0x03
+/************************************/
 
-#define PMODACL_DEVICE_ID			0xE5
+#define PMODACL_REG_DUR  						0x21 
+#define PMODACL_REG_LATENT  					0x22 
+#define PMODACL_REG_WINDOW  					0x23 
+#define PMODACL_REG_THRESH_ACT 				 	0x24 
+#define PMODACL_REG_THRESH_INACT 				0x25 
+#define PMODACL_REG_TIME_INACT  				0x26 
+
+/************************************/
+/*  PMODACL_REG_ACT_INACT_CTL       */
+/************************************/
+#define PMODACL_REG_ACT_INACT_CTL			    0x27 
+#define PMODACL_BITS_ACT_INACT_CTL_ACT_ACDC	    0x80 
+#define PMODACL_BITS_ACT_INACT_CTL_ACT_X	    0x40 
+#define PMODACL_BITS_ACT_INACT_CTL_ACT_Y	    0x20 
+#define PMODACL_BITS_ACT_INACT_CTL_ACT_Z	    0x10 
+#define PMODACL_BITS_ACT_INACT_CTL_INACT_ACDC   0x08 
+#define PMODACL_BITS_ACT_INACT_CTL_INACT_X	    0x04 
+#define PMODACL_BITS_ACT_INACT_CTL_INACT_Y	    0x02 
+#define PMODACL_BITS_ACT_INACT_CTL_INACT_Z	    0x01 
+/************************************/
+
+#define PMODACL_REG_THRESH_FF  					0x28 
+
+
+#define PMODACL_REG_TIME_FF				  		0x29 
+
+/************************************/
+/*        TAP_AXES                 */
+/************************************/
+#define PMODACL_REG_TAP_AXES  					0x2A 
+#define PMODACL_BIT_TAP_AXES_SUPRESS			0x08
+#define PMODACL_BIT_TAP_AXES_TAP_X				0x04
+#define PMODACL_BIT_TAP_AXES_TAP_Y				0x02
+#define PMODACL_BIT_TAP_AXES_TAP_Z				0x01
+
+/************************************/
+/*        ACT_TAP_STATUS            */
+/************************************/
+#define PMODACL_REG_ACT_TAP_STATUS 				0x2B 
+#define PMODACL_BIT_ACT_TAP_STATUS_ACT_X		0x40
+#define PMODACL_BIT_ACT_TAP_STATUS_ACT_Y		0x20
+#define PMODACL_BIT_ACT_TAP_STATUS_ACT_Z		0x10
+#define PMODACL_BIT_ACT_TAP_STATUS_ASLEEP		0x08
+#define PMODACL_BIT_ACT_TAP_STATUS_TAP_X		0x04
+#define PMODACL_BIT_ACT_TAP_STATUS_TAP_Y		0x02
+#define PMODACL_BIT_ACT_TAP_STATUS_TAP_Z		0x01
+
+/************************************/
+/*        BW_RATE                   */
+/************************************/
+#define PMODACL_REG_BW_RATE  					0x2C 
+#define PMODACL_BIT_BW_RATE_LOW_POWER			0x10 
+#define PMODACL_BIT_MASK_BW_RATE_RATE			0x0F  //bitmask for Rate registers
+
+/************************************/
+/*        POWER_CTL                 */
+/************************************/
+#define PMODACL_REG_POWER_CTL  					0x2D  //POWER_CTL register
+#define PMODACL_BIT_POWER_CTL_LINK				0x20
+#define PMODACL_BIT_POWER_CTL_AUTO_SLEEP		0x10
+#define PMODACL_BIT_POWER_CTL_MEASURE			0x08
+#define PMODACL_BIT_POWER_CTL_SLEEP				0x04
+#define PMODACL_BIT_POWER_CTL_WAKEUP_8HZ		0x00
+#define PMODACL_BIT_POWER_CTL_WAKEUP_4HZ		0x01
+#define PMODACL_BIT_POWER_CTL_WAKEUP_2HZ		0x02
+#define PMODACL_BIT_POWER_CTL_WAKEUP_1HZ		0x03
+/************************************/
+
+/************************************/
+/*        INT_ENABLE                */
+/************************************/
+#define PMODACL_REG_INT_ENABLE  				0x2E 
+#define PMODACL_BIT_INT_ENABLE_DATA_READY		0x80
+#define PMODACL_BIT_INT_ENABLE_SINGLE_TAP		0x40
+#define PMODACL_BIT_INT_ENABLE_DOUBLE_TAP		0x20
+#define PMODACL_BIT_INT_ENABLE_ACTIVITY			0x10
+#define PMODACL_BIT_INT_ENABLE_INACTIVITY		0x08
+#define PMODACL_BIT_INT_ENABLE_FREE_FALL		0x04
+#define PMODACL_BIT_INT_ENABLE_WATERMARK		0x02
+#define PMODACL_BIT_INT_ENABLE_OVERRUN			0x01
+
+/************************************/
+/*        INT_MAP                */
+/************************************/
+#define PMODACL_REG_INT_MAP  					0x2F 
+#define PMODACL_BIT_INT_MAP_DATA_READY			0x80
+#define PMODACL_BIT_INT_MAP_SINGLE_TAP			0x40
+#define PMODACL_BIT_INT_MAP_DOUBLE_TAP			0x20
+#define PMODACL_BIT_INT_MAP_ACTIVITY			0x10
+#define PMODACL_BIT_INT_MAP_INACTIVITY			0x08
+#define PMODACL_BIT_INT_MAP_FREE_FALL			0x04
+#define PMODACL_BIT_INT_MAP_WATERMARK			0x02
+#define PMODACL_BIT_INT_MAP_OVERRUN				0x01
+/************************************/
+/*        INT_SOURCE                */
+/************************************/
+#define PMODACL_REG_INT_SOURCE  				0x30 
+#define PMODACL_BIT_INT_SOURCE_DATA_READY		0x80
+#define PMODACL_BIT_INT_SOURCE_DOUBLE_TAP		0x60 //SingleTap OR DoubleTap (0x40 | 0x20) per ADXL345 Reference
+#define PMODACL_BIT_INT_SOURCE_SINGLE_TAP		0x40
+#define PMODACL_BIT_INT_SOURCE_ACTIVITY			0x10
+#define PMODACL_BIT_INT_SOURCE_INACTIVITY		0x08
+#define PMODACL_BIT_INT_SOURCE_FREE_FALL		0x04
+#define PMODACL_BIT_INT_SOURCE_WATERMARK		0x02
+#define PMODACL_BIT_INT_SOURCE_OVERRUN			0x01
+
+/************************************/
+/*        DATA_FORMAT               */
+/************************************/
+#define PMODACL_REG_DATA_FORMAT  				0x31 
+#define PMODACL_BIT_DATA_FORMAT_SELF_TEST  		0x80 
+#define PMODACL_BIT_DATA_FORMAT_SPI		  		0x40 
+#define PMODACL_BIT_DATA_FORMAT_INT_INVERT 		0x20 
+#define PMODACL_BIT_DATA_FORMAT_FULL_RES  		0x08 
+#define PMODACL_BIT_DATA_FORMAT_JUSTIFY  		0x04 
+#define PMODACL_BIT_DATA_FORMAT_RANGE_16G  		0x03 
+#define PMODACL_BIT_DATA_FORMAT_RANGE_8G  		0x02 
+#define PMODACL_BIT_DATA_FORMAT_RANGE_4G  		0x01 
+#define PMODACL_BIT_DATA_FORMAT_RANGE_2G  		0x00
+/************************************/
+
+#define PMODACL_REG_DATAX0  					0x32 
+#define PMODACL_REG_DATAX1  					0x33 
+#define PMODACL_REG_DATAY0  					0x34 
+#define PMODACL_REG_DATAY1  					0x35 
+#define PMODACL_REG_DATAZ0  					0x36 
+#define PMODACL_REG_DATAZ1  					0x37 
+
+/************************************/
+/*        FIFO_CTL                  */
+/************************************/
+#define PMODACL_REG_FIFO_CTL  					0x38 
+#define PMODACL_BIT_FIFO_CTL_BYPASS				0x00
+#define PMODACL_BIT_FIFO_CTL_FIFO				0x40
+#define PMODACL_BIT_FIFO_CTL_STREAM				0x80
+#define PMODACL_BIT_FIFO_CTL_TRIGGER			0xC0
+#define PMODACL_BIT_FIFO_CTL_TRIGGER_INT2		0x10
+
+
+/************************************/
+/*        FIFO_STATUS               */
+/************************************/
+#define PMODACL_REG_FIFO_STATUS  				0x39 
+#define PMODACL_BIT_FIFO_STATUS_FIFO_TRIG		0x80
+#define PMODACL_BIT_MASK_FIFO_STATUS_ENTRIES	0x3F //bit mask for FIFO status entries
+
+/************************************/
+
+#define PMODACL_RW_BIT							0x80
+#define PMODACL_MB_BIT              			0x40
+
+#define PMODACL_DEVICE_ID						0xE5
+
 
 typedef struct
 {
-	uint16_t xAxis;
-	uint16_t yAxis;
-	uint16_t zAxis;
+	int16_t xAxis;
+	int16_t yAxis;
+	int16_t zAxis;
 }PMODACL_AXIS;
 
 
 void PmodACLInitSpi4Wire(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
-uint8_t PmodACLGetDeviceID(SpiChannel chn);
 void PmodACLGetAxisData(SpiChannel chn, PMODACL_AXIS *pmodACLAxis);
+
+uint8_t PmodACLReadReg(SpiChannel chn,uint8_t address);
+void PmodACLReadRegMultiByte(SpiChannel chn,uint8_t startAddress,uint8_t *data,uint8_t numBytes);
+int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples);
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+void PmodACLWriteRegMultiByte(SpiChannel chn,uint8_t startAddress,uint8_t *data,uint8_t numBytes);
+
+void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
+
+//Function macros
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetDataFormat(CHN,DATA_FORMAT) PmodACLWriteReg(CHN,PMODACL_REG_DATA_FORMAT,DATA_FORMAT)
+
+//Function macros
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetDataFormat(CHN) PmodACLReadReg(CHN,PMODACL_REG_DATA_FORMAT)
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetPowerCtl(CHN,POWER_CTL) PmodACLWriteReg(CHN,PMODACL_REG_POWER_CTL,POWER_CTL)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetPowerCtl(CHN) PmodACLReadReg(CHN,PMODACL_REG_POWER_CTL)
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetDeviceID(CHN) PmodACLReadReg(CHN,PMODACL_REG_DEVID)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetFIFOCtl(CHN,FIFO_CTL) PmodACLWriteReg(CHN,PMODACL_REG_FIFO_CTL,FIFO_CTL)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetOffset(CHN,OFFSET_BYTES) PmodACLWriteRegMultiByte(CHN,PMODACL_REG_OFSX,OFFSET_BYTES,PMODACL_NUM_OFFSET_BYTES);
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetOffset(CHN,OFFSET_BYTES) PmodACLReadRegMultiByte(CHN,PMODACL_REG_OFSX,OFFSET_BYTES,PMODACL_NUM_OFFSET_BYTES)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetTapThresh(CHN,TAP_THRESH) PmodACLWriteReg(CHN,PMODACL_REG_THRESH_TAP,TAP_THRESH)
+
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetTapThresh(CHN) PmodACLReadReg(CHN,PMODACL_REG_THRESH_TAP)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetIntEnable(CHN,INT_ENABLE) PmodACLWriteReg(CHN,PMODACL_REG_INT_ENABLE,INT_ENABLE)
+
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetIntEnable(CHN) PmodACLReadReg(CHN,PMODACL_REG_INT_ENABLE)
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetIntMap(CHN,INT_MAP) PmodACLWriteReg(CHN,PMODACL_REG_INT_MAP,INT_MAP)
+
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetIntMap(CHN) PmodACLReadReg(CHN,PMODACL_REG_INT_MAP)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetIntSource(CHN) PmodACLReadReg(CHN,PMODACL_REG_INT_SOURCE)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetTapAxes(CHN,TAP_AXES) PmodACLWriteReg(CHN,PMODACL_REG_TAP_AXES,TAP_AXES)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetTapAxes(CHN) PmodACLReadReg(CHN,PMODACL_REG_TAP_AXES)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetTapDuration(CHN,TAP_DURATION) PmodACLWriteReg(CHN,PMODACL_REG_DUR,TAP_DURATION)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetTapDuration(CHN) PmodACLReadReg(CHN,PMODACL_REG_DUR)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetTapLatency(CHN,TAP_LATENCY) PmodACLWriteReg(CHN,PMODACL_REG_LATENT ,TAP_LATENCY)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetTapLatency(CHN) PmodACLReadReg(CHN,PMODACL_REG_LATENT)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetTapWindow(CHN,TAP_WINDOW) PmodACLWriteReg(CHN,PMODACL_REG_WINDOW,TAP_WINDOW)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetTapWindow(CHN) PmodACLReadReg(CHN,PMODACL_REG_WINDOW)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetActTapStatus(CHN) PmodACLReadReg(CHN,PMODACL_REG_ACT_TAP_STATUS)
+
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetThreshFF(CHN,THRESH_FF)  PmodACLWriteReg(CHN,PMODACL_REG_THRESH_FF,THRESF_FF)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetThreshFF(CHN) PmodACLReadReg(CHN,PMODACL_REG_THRESH_FF)
+
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetBwRate(CHN,BW_RATE) PmodACLWriteReg(CHN,PMODACL_REG_BW_RATE,BW_RATE)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetBwRate(CHN) PmodACLReadReg(CHN,PMODACL_REG_BW_RATE)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetFIFOStatus(CHN) PmodACLReadReg(CHN,PMODACL_REG_FIFO_STATUS)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetTimeInact(CHN) PmodACLReadReg(CHN,PMODACL_REG_TIME_INACT)
+
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetTimeInact(CHN,TIME_INACT) PmodACLWriteReg(CHN,PMODACL_REG_TIME_INACT,TIME_INACT)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetThreshAct(CHN) PmodACLReadReg(CHN,PMODACL_REG_THRESH_ACT)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetThreshAct(CHN,THRESH_ACT) PmodACLWriteReg(CHN,PMODACL_REG_THRESH_ACT,THRESH_ACT)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetActInactCtl(CHN) PmodACLReadReg(CHN,PMODACL_REG_ACT_INACT_CTL)
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLSetActInactCtl(CHN,ACT_INACT_CTL) PmodACLWriteReg(CHN,PMODACL_REG_ACT_INACT_CTL,ACT_INACT_CTL)
 
 
 #endif
