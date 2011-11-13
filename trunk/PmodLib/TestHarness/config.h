@@ -219,22 +219,41 @@ uint8_t excludeFromExecAll[] = {0,0,0};
 //Test function header for PmodACL
 #include "./TestHarness/PmodACL/pmodACL_test_driver.h"
 
-#define NUM_TEST_FUNCTIONS 8 //number of test functions for PmodACL
+#define NUM_TEST_FUNCTIONS 20 //number of test functions for PmodACL
 
 //Array of function pointers to tests for PmodACL
-uint8_t (*testFunc[])(UART_MODULE) = {UNIT_PmodACLSetGetPowerCtl,UNIT_PmodACLSetGetDataFormat,UNIT_PmodACLInterupt,UNIT_PmodACLSetGetTapThresh,UNIT_PmodACLCalibrate,UNIT_PmodACLGetAxisData,UNIT_PmodACLGetDeviceID,UNIT_Exec_All};
+uint8_t (*testFunc[])(UART_MODULE) ={UNIT_PmodACLSetGetBwRate,UNIT_PmodACLSetGetThreshFF,
+									UNIT_PmodACLGetActTapStatus,UNIT_PmodACLSetGetTapWindow,
+									UNIT_PmodACLSetGetTapLatency,UNIT_PmodACLSetGetTapDuration,
+									UNIT_PmodACLSetGetTapAxes,UNIT_PmodACLSetGetIntSource,
+									UNIT_PmodACLSetGetIntMap,UNIT_PmodACLSetGetIntEnable,
+									UNIT_PmodACLSetGetOffset,UNIT_PmodACLGSetGetFIFOCtl,
+									UNIT_PmodACLSetGetPowerCtl,UNIT_PmodACLSetGetDataFormat,
+									UNIT_PmodACLInterupt,UNIT_PmodACLSetGetTapThresh,
+									UNIT_PmodACLCalibrate,UNIT_PmodACLGetAxisData,
+									UNIT_PmodACLGetDeviceID,UNIT_Exec_All};
 
 //Menu Item text pssed into console menu
-uint8_t *menuItems[] = {"UNIT_PmodACLSetGetPowerCtl","UNIT_PmodACLSetGetDataFormat","UNIT_PmodACLInterupt","UNIT_PmodACLSetGetTapThresh","UNIT_PmodACLCalibrate","UNIT_PmodACLGetAxisData","UNIT_PmodACLGetDeviceID","UNIT_Exec_All"};
+uint8_t *menuItems[] = {"UNIT_PmodACLSetGetBwRate",
+						"UNIT_PmodACLSetGetThreshFF","UNIT_PmodACLGetActTapStatus",
+						"UNIT_PmodACLSetGetTapWindow","UNIT_PmodACLSetGetTapLatency",
+						"UNIT_PmodACLSetGetTapDuration","UNIT_PmodACLSetGetTapAxes",
+						"UNIT_PmodACLSetGetIntSource","UNIT_PmodACLSetGetIntMap",
+						"UNIT_PmodACLSetGetIntEnable","UNIT_PmodACLSetGetOffset",
+						"UNIT_PmodACLGSetGetFIFOCtl","UNIT_PmodACLSetGetPowerCtl",
+						"UNIT_PmodACLSetGetDataFormat","UNIT_PmodACLInterupt",
+						"UNIT_PmodACLSetGetTapThresh","UNIT_PmodACLCalibrate",
+						"UNIT_PmodACLGetAxisData","UNIT_PmodACLGetDeviceID",
+						"UNIT_Exec_All"};
 
 //Name of module to display on console menu
 char * pmodName = "PmodACL";
 
 //Pmod initialization macro for PmodACL
-#define INITPMOD(UART) PmodACL_INIT(UART);
+#define INITPMOD(MENU_UART) fnPmodACL_INIT(MENU_UART)
 
 //Filter excluding specific tests from UNIT_Exec_All 
-uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0};
+uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 #endif
 

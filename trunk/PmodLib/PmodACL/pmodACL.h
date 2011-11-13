@@ -1,9 +1,9 @@
 /************************************************************************/
-/*	<FILE NAME>	--	<BRIEF DESCRIPTION>         						*/
+/*	pmodACL.h	-- PmodACL header file, public API						*/
 /*																		*/
 /************************************************************************/
-/*	Author: 	<AUTHOR NAME> 											*/
-/*	Copyright (C) <YEAR> <ENTITY>										*/
+/*	Author: 	Ryan Hoffman 											*/
+/*	Copyright (C) 2011 Ryan Hoffman										*/
 /************************************************************************/
 /*  Module Description: 												*/
 /*  <MODULE DESCRIPTION>												*/
@@ -62,8 +62,6 @@
 /************************************/
 
 #define PMODACL_REG_THRESH_FF  					0x28 
-
-
 #define PMODACL_REG_TIME_FF				  		0x29 
 
 /************************************/
@@ -92,8 +90,12 @@
 /************************************/
 #define PMODACL_REG_BW_RATE  					0x2C 
 #define PMODACL_BIT_BW_RATE_LOW_POWER			0x10 
-#define PMODACL_BIT_MASK_BW_RATE_RATE			0x0F  //bitmask for Rate registers
-
+#define PMODACL_BIT_RATE_400HZ					0x0C
+#define PMODACL_BIT_RATE_200HZ					0X0B
+#define PMODACL_BIT_RATE_100HZ					0x0A	
+#define PMODACL_BIT_RATE_50HZ					0x09
+#define PMODACL_BIT_RATE_25HZ					0x08
+#define PMODACL_BIT_RATE_12_5HZ					0x07
 /************************************/
 /*        POWER_CTL                 */
 /************************************/
@@ -106,7 +108,6 @@
 #define PMODACL_BIT_POWER_CTL_WAKEUP_4HZ		0x01
 #define PMODACL_BIT_POWER_CTL_WAKEUP_2HZ		0x02
 #define PMODACL_BIT_POWER_CTL_WAKEUP_1HZ		0x03
-/************************************/
 
 /************************************/
 /*        INT_ENABLE                */
@@ -122,7 +123,7 @@
 #define PMODACL_BIT_INT_ENABLE_OVERRUN			0x01
 
 /************************************/
-/*        INT_MAP                */
+/*        INT_MAP                   */
 /************************************/
 #define PMODACL_REG_INT_MAP  					0x2F 
 #define PMODACL_BIT_INT_MAP_DATA_READY			0x80
@@ -133,6 +134,7 @@
 #define PMODACL_BIT_INT_MAP_FREE_FALL			0x04
 #define PMODACL_BIT_INT_MAP_WATERMARK			0x02
 #define PMODACL_BIT_INT_MAP_OVERRUN				0x01
+
 /************************************/
 /*        INT_SOURCE                */
 /************************************/
@@ -314,6 +316,22 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  Description:
 */
 #define PmodACLSetFIFOCtl(CHN,FIFO_CTL) PmodACLWriteReg(CHN,PMODACL_REG_FIFO_CTL,FIFO_CTL)
+
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+#define PmodACLGetFIFOCtl(CHN) PmodACLReadReg(CHN,PMODACL_REG_FIFO_CTL)
 
 /*  
 ** <FUNCTION NAME>
@@ -600,7 +618,7 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 */
-#define PmodACLSetThreshFF(CHN,THRESH_FF)  PmodACLWriteReg(CHN,PMODACL_REG_THRESH_FF,THRESF_FF)
+#define PmodACLSetThreshFF(CHN,THRESH_FF)  PmodACLWriteReg(CHN,PMODACL_REG_THRESH_FF,THRESH_FF)
 
 /*  
 ** <FUNCTION NAME>

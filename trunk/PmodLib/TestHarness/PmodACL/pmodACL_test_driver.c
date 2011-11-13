@@ -26,12 +26,57 @@
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
 
-void PmodACL_INIT(UART_MODULE uartID)
+void fnPmodACL_INIT(UART_MODULE uartID)
 {
 	UARTPutS("\r\nPmodACL SPI port=>",uartID);
 	chn =  getIntegerFromConsole(uartID); //SPI port PMODACL is connected to
 	PmodACLInitSpi4Wire(chn,PB_CLOCK,SPI_BITRATE);
 }
+
+void __ISR(_EXTERNAL_0_VECTOR, ipl7) ExternalInteruptHandlerINT0(void)
+{	
+	isrFired = 1;
+	INTClearFlag(INT_INT0);
+}
+
+void fnSetupPmodACLForInterruptsInt1(uint8_t interruptMask,uint8_t tapAxes)
+{
+	//setup PmodACL
+	PmodACLSetDataFormat(chn,PMODACL_BIT_DATA_FORMAT_RANGE_4G );
+	PmodACLSetPowerCtl(chn,PMODACL_BIT_POWER_CTL_MEASURE);
+	PmodACLSetFIFOCtl(chn,PMODACL_BIT_FIFO_CTL_BYPASS);
+	PmodACLSetTapAxes(chn,tapAxes);
+	PmodACLSetTapThresh(chn,0x38);
+	PmodACLSetTapDuration(chn,0x10);
+	PmodACLSetTapLatency(chn,0x50);
+	PmodACLSetTapWindow(chn,0xFF);
+
+	//setup external interrupt pin for external int 0 to recivieve input
+	PORTSetPinsDigitalIn(IOPORT_D, BIT_0); //CEREBOT32MX4 PIN JH-08
+
+	INTDisableInterrupts();
+	INTClearFlag(INT_INT0);//make sure interrupt flag is cleared
+	
+	//configure multi vector interrupts
+	INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
+
+	//configure INT0 to trigger on rising edge transition with priority 7
+	ConfigINT0(EXT_INT_PRI_7 | RISING_EDGE_INT | EXT_INT_ENABLE); 
+
+	PmodACLSetIntEnable(chn,0); //disable PmodACL interrupts
+	
+	PmodACLGetIntSource(chn); //get interrupt source, clear interrupt
+	
+	//map all interrupts to INT1
+	PmodACLSetIntMap(chn,0);
+	
+	//enable interrupts for Single and Double taps
+	PmodACLSetIntEnable(chn,interruptMask);
+
+	INTEnableInterrupts();
+
+}
+
 
 uint8_t UNIT_PmodACLGetDeviceID(UART_MODULE uartID)
 {
@@ -129,41 +174,10 @@ uint8_t UNIT_PmodACLInterupt(UART_MODULE uartID)
 	uint8_t tapSource = 0;
 	
 	UARTPutS("\n\rEXECUTING TEST =>UNIT_ UNIT_PmodACLInterupt\r\n",uartID);
-	UARTPutS("Perform a single and double on the PmodACL to complete test\r\n",uartID);
+	UARTPutS("Perform a single and double tap on the PmodACL to complete test\r\n",uartID);
 
-	//setup PmodACL
-	PmodACLSetDataFormat(chn,PMODACL_BIT_DATA_FORMAT_RANGE_4G );
-	PmodACLSetPowerCtl(chn,PMODACL_BIT_POWER_CTL_MEASURE);
-	PmodACLSetFIFOCtl(chn,PMODACL_BIT_FIFO_CTL_BYPASS);
-	PmodACLSetTapAxes(chn,PMODACL_BIT_TAP_AXES_TAP_X |PMODACL_BIT_TAP_AXES_TAP_Y | PMODACL_BIT_TAP_AXES_TAP_Z);
-	PmodACLSetTapThresh(chn,0x38);
-	PmodACLSetTapDuration(chn,0x10);
-	PmodACLSetTapLatency(chn,0x50);
-	PmodACLSetTapWindow(chn,0xFF);
-
-	//setup external interrupt pin for external int 0 to recivieve input
-	PORTSetPinsDigitalIn(IOPORT_D, BIT_0); //CEREBOT32MX4 PIN JH-08
-
-	INTDisableInterrupts();
-	INTClearFlag(INT_INT0);//make sure interrupt flag is cleared
-	
-	//configure multi vector interrupts
-	INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
-
-	//configure INT0 to trigger on rising edge transition with priority 7
-	ConfigINT0(EXT_INT_PRI_7 | RISING_EDGE_INT | EXT_INT_ENABLE); 
-
-	PmodACLSetIntEnable(chn,0); //disable PmodACL interrupts
-	
-	PmodACLGetIntSource(chn); //get interrupt source, clear interrupt
-	
-	//map all interrupts to INT1
-	PmodACLSetIntMap(chn,0);
-	
-	//enable interrupts for Single and Double taps
-	PmodACLSetIntEnable(chn,PMODACL_BIT_INT_ENABLE_SINGLE_TAP | PMODACL_BIT_INT_ENABLE_DOUBLE_TAP );
-
-	INTEnableInterrupts();
+	fnSetupPmodACLForInterruptsInt1(PMODACL_BIT_INT_ENABLE_SINGLE_TAP | PMODACL_BIT_INT_ENABLE_DOUBLE_TAP,
+									PMODACL_BIT_TAP_AXES_TAP_X |PMODACL_BIT_TAP_AXES_TAP_Y | PMODACL_BIT_TAP_AXES_TAP_Z);
 
 	while(!(singleTap & doubleTap))
 	{
@@ -190,12 +204,6 @@ uint8_t UNIT_PmodACLInterupt(UART_MODULE uartID)
 }
 
 
-void __ISR(_EXTERNAL_0_VECTOR, ipl7) ExternalInteruptHandlerINT0(void)
-{	
-	isrFired = 1;
-	INTClearFlag(INT_INT0);
-}
-
 
 uint8_t UNIT_PmodACLSetGetDataFormat(UART_MODULE uartID)
 {
@@ -209,4 +217,116 @@ uint8_t UNIT_PmodACLSetGetPowerCtl(UART_MODULE uartID)
 	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetPowerCtl\r\n",uartID);
 	PmodACLSetPowerCtl(chn,PMODACL_BIT_POWER_CTL_AUTO_SLEEP);
 	return (PmodACLGetPowerCtl(chn) == PMODACL_BIT_POWER_CTL_AUTO_SLEEP);
+}
+
+uint8_t UNIT_PmodACLGSetGetFIFOCtl(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetFIFOCtl\r\n",uartID);
+	PmodACLSetFIFOCtl(chn,PMODACL_BIT_FIFO_CTL_STREAM);
+	return (PmodACLGetFIFOCtl(chn) == PMODACL_BIT_FIFO_CTL_STREAM);
+}
+
+uint8_t UNIT_PmodACLSetGetOffset(UART_MODULE uartID)
+{
+	uint8_t offsetBytesOut[PMODACL_NUM_OFFSET_BYTES] = {0x10,0x20,0x30};
+	uint8_t offsetBytesIn[PMODACL_NUM_OFFSET_BYTES];
+	uint8_t testResult = 1;
+	uint8_t byteIndex = 0;
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetOffset\r\n",uartID);
+	PmodACLSetOffset(chn,offsetBytesOut);
+	PmodACLGetOffset(chn,offsetBytesIn);
+	for(byteIndex = 0;byteIndex < PMODACL_NUM_OFFSET_BYTES;byteIndex++)
+	{
+		testResult &= (offsetBytesOut[byteIndex] == offsetBytesIn[byteIndex]);
+	}	
+	return testResult;;
+}
+
+uint8_t UNIT_PmodACLSetGetIntEnable(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetIntEnable\r\n",uartID);
+	PmodACLSetIntEnable(chn,PMODACL_BIT_INT_ENABLE_DOUBLE_TAP);
+	return (PmodACLGetIntEnable(chn) == PMODACL_BIT_INT_ENABLE_DOUBLE_TAP);
+}
+
+
+uint8_t UNIT_PmodACLSetGetIntMap(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetIntMap\r\n",uartID);
+	PmodACLSetIntMap(chn,PMODACL_BIT_INT_MAP_DOUBLE_TAP);
+	return (PmodACLGetIntMap(chn) == PMODACL_BIT_INT_MAP_DOUBLE_TAP);
+}
+
+uint8_t UNIT_PmodACLSetGetIntSource(UART_MODULE uartID)
+{
+
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetIntSource\r\n",uartID);
+	
+
+	fnSetupPmodACLForInterruptsInt1(PMODACL_BIT_INT_ENABLE_DOUBLE_TAP,
+									PMODACL_BIT_TAP_AXES_TAP_X |PMODACL_BIT_TAP_AXES_TAP_Y | PMODACL_BIT_TAP_AXES_TAP_Z);
+	
+	UARTPutS("Perform a double tap on the PmodACL\r\n",uartID);	
+
+	isrFired = 0;
+	while(!isrFired);
+	isrFired = 0;
+
+	return (PmodACLGetIntSource(chn) & PMODACL_BIT_INT_SOURCE_DOUBLE_TAP);
+}
+
+uint8_t UNIT_PmodACLSetGetTapAxes(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetTapAxes\r\n",uartID);
+	PmodACLSetTapAxes(chn,PMODACL_BIT_TAP_AXES_SUPRESS);
+	return (PmodACLGetTapAxes(chn) == PMODACL_BIT_TAP_AXES_SUPRESS);
+}
+
+uint8_t UNIT_PmodACLSetGetTapDuration(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetTapDuration\r\n",uartID);
+	PmodACLSetTapDuration(chn,0x20);
+	return (PmodACLGetTapDuration(chn) == 0x20);
+}
+
+uint8_t UNIT_PmodACLSetGetTapLatency(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetTapLatency\r\n",uartID);
+	PmodACLSetTapLatency(chn,0x40);
+	return (PmodACLGetTapLatency(chn) == 0x40);
+}
+
+uint8_t UNIT_PmodACLSetGetTapWindow(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetTapWindow\r\n",uartID);
+	PmodACLSetTapWindow(chn,0x7F);
+	return (PmodACLGetTapWindow(chn) == 0x7F);
+}
+//Turn on double tap and enable tap for the X axis only
+//we should have bits in for X axis activity and X axis Tap
+uint8_t UNIT_PmodACLGetActTapStatus(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_ PmodACLGetActTapStatus\r\n",uartID);
+	fnSetupPmodACLForInterruptsInt1(PMODACL_BIT_INT_ENABLE_DOUBLE_TAP,PMODACL_BIT_TAP_AXES_TAP_X);
+	UARTPutS("Perform a double tap on the PmodACL X axis\r\n",uartID);
+	
+	isrFired = 0;
+	while(!isrFired);
+	isrFired = 0;
+	
+	return (PmodACLGetActTapStatus(chn) & PMODACL_BIT_ACT_TAP_STATUS_ACT_X|PMODACL_BIT_ACT_TAP_STATUS_TAP_X);
+}
+
+uint8_t UNIT_PmodACLSetGetThreshFF(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetThreshFF\r\n",uartID);
+	PmodACLSetThreshFF(chn,0x07);
+	return (PmodACLGetThreshFF(chn) == 0x07);
+}
+
+uint8_t UNIT_PmodACLSetGetBwRate(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetBWRate\r\n",uartID);
+    PmodACLSetBwRate(chn,PMODACL_BIT_BW_RATE_LOW_POWER| PMODACL_BIT_RATE_50HZ);
+	return (PmodACLGetBwRate(chn) == PMODACL_BIT_BW_RATE_LOW_POWER| PMODACL_BIT_RATE_50HZ);
 }
