@@ -155,6 +155,7 @@ uint8_t getIntegerFromConsole(UART_MODULE uartID)
 **		uint8_t *testNames[] - 
 **		uint32_t numCommands - 
 **		UART_MODULE uartID - 
+**		uint8_t numLinesInPage - 
 **
 **  Returns: uint8_t 
 **
@@ -162,7 +163,7 @@ uint8_t getIntegerFromConsole(UART_MODULE uartID)
 **
 **  Description:
 */
-uint8_t ConsoleMenu(uint8_t *pmodName,uint8_t *testNames[],uint32_t numCommands,UART_MODULE uartID)
+uint8_t ConsoleMenu(uint8_t *pmodName,uint8_t *testNames[],uint32_t numCommands,UART_MODULE uartID,uint8_t numLinesInPage)
 {
 	int selection;
 	uint8_t menuItem[100];
@@ -174,6 +175,12 @@ uint8_t ConsoleMenu(uint8_t *pmodName,uint8_t *testNames[],uint32_t numCommands,
 	
 		for(index = 0; index < numCommands;index++)
 		{	
+			if(index == numLinesInPage)
+			{
+				UARTPutS("--MORE--",uartID);
+				UARTGetOneByte(uartID);
+				UARTPutS("\r",uartID);
+			}
 			sprintf(menuItem,"%d) %s\n\r",index,testNames[index]);
 			UARTPutS(menuItem,uartID);
 		}

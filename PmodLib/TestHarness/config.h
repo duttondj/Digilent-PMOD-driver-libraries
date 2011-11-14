@@ -34,7 +34,7 @@
 
 //Test harness menu UART
 #define MENU_UART UART1
-
+#define NUM_LINES_CONSOLE_PAGE 15
 /* ------------------------------------------------------------ */
 /*				Forward Declarations							*/
 /* ------------------------------------------------------------ */
@@ -219,10 +219,12 @@ uint8_t excludeFromExecAll[] = {0,0,0};
 //Test function header for PmodACL
 #include "./TestHarness/PmodACL/pmodACL_test_driver.h"
 
-#define NUM_TEST_FUNCTIONS 20 //number of test functions for PmodACL
+#define NUM_TEST_FUNCTIONS 24 //number of test functions for PmodACL
 
 //Array of function pointers to tests for PmodACL
-uint8_t (*testFunc[])(UART_MODULE) ={UNIT_PmodACLSetGetBwRate,UNIT_PmodACLSetGetThreshFF,
+uint8_t (*testFunc[])(UART_MODULE) ={ UNIT_PmodACLSetGetActInactCtl,UNIT_PmodACLSetGetThreshAct,
+									UNIT_PmodACLSetGetTimeInact,UNIT_PmodACLGetFIFOStatus,
+									UNIT_PmodACLSetGetBwRate,UNIT_PmodACLSetGetThreshFF,
 									UNIT_PmodACLGetActTapStatus,UNIT_PmodACLSetGetTapWindow,
 									UNIT_PmodACLSetGetTapLatency,UNIT_PmodACLSetGetTapDuration,
 									UNIT_PmodACLSetGetTapAxes,UNIT_PmodACLSetGetIntSource,
@@ -234,7 +236,9 @@ uint8_t (*testFunc[])(UART_MODULE) ={UNIT_PmodACLSetGetBwRate,UNIT_PmodACLSetGet
 									UNIT_PmodACLGetDeviceID,UNIT_Exec_All};
 
 //Menu Item text pssed into console menu
-uint8_t *menuItems[] = {"UNIT_PmodACLSetGetBwRate",
+uint8_t *menuItems[] = {"UNIT_PmodACLSetGetActInactCtl",
+						"UNIT_PmodACLSetGetThreshAct","UNIT_PmodACLSetGetTimeInact",
+						"UNIT_PmodACLGetFIFOStatus","UNIT_PmodACLSetGetBwRate",
 						"UNIT_PmodACLSetGetThreshFF","UNIT_PmodACLGetActTapStatus",
 						"UNIT_PmodACLSetGetTapWindow","UNIT_PmodACLSetGetTapLatency",
 						"UNIT_PmodACLSetGetTapDuration","UNIT_PmodACLSetGetTapAxes",
@@ -253,7 +257,7 @@ char * pmodName = "PmodACL";
 #define INITPMOD(MENU_UART) fnPmodACL_INIT(MENU_UART)
 
 //Filter excluding specific tests from UNIT_Exec_All 
-uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 #endif
 

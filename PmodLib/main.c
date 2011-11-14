@@ -55,7 +55,7 @@ int main(void)
 	while(1)
 	{
         //display the console menu, execute the test function returned by the menu
-		if((*testFunc[ConsoleMenu(pmodName,menuItems,NUM_TEST_FUNCTIONS,MENU_UART)])(MENU_UART))
+		if((*testFunc[ConsoleMenu(pmodName,menuItems,NUM_TEST_FUNCTIONS,MENU_UART,NUM_LINES_CONSOLE_PAGE)])(MENU_UART))
 		{
 			UARTPutS("Test Passed\r\n",MENU_UART);
 		}
@@ -106,9 +106,9 @@ int main(void)
 uint8_t UNIT_Exec_All(UART_MODULE uartID)
 {
 	uint8_t index = 0;
-	uint8_t individualTestResult = 0;
 	uint8_t overallTestResults = 1;
 	uint8_t textOut[128];
+	uint8_t allTestResults[NUM_TEST_FUNCTIONS];
 	for(index = 0;index < NUM_TEST_FUNCTIONS - 1;index++)
 	{
 		if(excludeFromExecAll[index])
@@ -118,8 +118,8 @@ uint8_t UNIT_Exec_All(UART_MODULE uartID)
 		}
 		else
 		{
-			individualTestResult = (*testFunc[index])(uartID);
-			if(individualTestResult)
+			allTestResults[index] = (*testFunc[index])(uartID);
+			if(allTestResults[index])
 			{
 				UARTPutS("Test Passed\r\n",uartID);
 			}
@@ -128,7 +128,15 @@ uint8_t UNIT_Exec_All(UART_MODULE uartID)
 				UARTPutS("Test Failed\r\n",uartID);
 			}
 		}
-		overallTestResults &= individualTestResult;
+		overallTestResults &= allTestResults[index];
+		
+	}
+	
+	UARTPutS("All Results:\r\n",uartID);
+	for(index = 0;index < NUM_TEST_FUNCTIONS;index++)
+	{
+		sprintf(textOut,"%s => %s\r\n",menuItems[index],(allTestResults[index])?"PASS":"FAIL");
+		UARTPutS(textOut,uartID);
 	}
 
 	UARTPutS("Overall Results: ",uartID);
