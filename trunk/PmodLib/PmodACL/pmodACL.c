@@ -41,10 +41,12 @@
 **
 **  Description:
 */
-void PmodACLInitSpi4Wire(SpiChannel chn,uint32_t pbClock,uint32_t bitRate)
+void PmodACLInitSpi(SpiChannel chn,uint32_t pbClock,uint32_t bitRate)
 {
-    SpiChnOpen(chn, SPI_OPEN_MSTEN | SPI_OPEN_SSEN |  SPI_OPEN_MODE8 | SPI_OPEN_CKP_HIGH , pbClock/bitRate);
-	
+	//Open master, enable slave select, 8 bit, CKP high  (SPI Mode 3 -> CKP-1 CKE-0)
+	SpiChnOpen(chn, SPI_OPEN_MSTEN | SPI_OPEN_SSEN |  SPI_OPEN_MODE8 | SPI_OPEN_CKP_HIGH , pbClock/bitRate);
+	//Set SPI 4 wire mode
+	PmodACLSetDataFormat(chn,(PmodACLGetDataFormat(chn) & ~(PMODACL_BIT_DATA_FORMAT_SPI)));
 }
 /*  
 ** <FUNCTION NAME>

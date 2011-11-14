@@ -30,7 +30,7 @@ void fnPmodACL_INIT(UART_MODULE uartID)
 {
 	UARTPutS("\r\nPmodACL SPI port=>",uartID);
 	chn =  getIntegerFromConsole(uartID); //SPI port PMODACL is connected to
-	PmodACLInitSpi4Wire(chn,PB_CLOCK,SPI_BITRATE);
+	PmodACLInitSpi(chn,PB_CLOCK,SPI_BITRATE);
 }
 
 void __ISR(_EXTERNAL_0_VECTOR, ipl7) ExternalInteruptHandlerINT0(void)
@@ -39,18 +39,19 @@ void __ISR(_EXTERNAL_0_VECTOR, ipl7) ExternalInteruptHandlerINT0(void)
 	INTClearFlag(INT_INT0);
 }
 
-void fnSetupPmodACLForInterruptsInt1(uint8_t interruptMask,uint8_t tapAxes)
+void fnSetupPmodACLForInterruptsInt1(uint8_t interruptMask,uint8_t tapAxes,uint8_t fifoCtl)
 {
 	//setup PmodACL
 	PmodACLSetDataFormat(chn,PMODACL_BIT_DATA_FORMAT_RANGE_4G );
 	PmodACLSetPowerCtl(chn,PMODACL_BIT_POWER_CTL_MEASURE);
-	PmodACLSetFIFOCtl(chn,PMODACL_BIT_FIFO_CTL_BYPASS);
+	PmodACLSetFIFOCtl(chn,PMODACL_BIT_FIFO_CTL_BYPASS);//reset FIFO
+	PmodACLSetFIFOCtl(chn,fifoCtl);
 	PmodACLSetTapAxes(chn,tapAxes);
 	PmodACLSetTapThresh(chn,0x38);
 	PmodACLSetTapDuration(chn,0x10);
 	PmodACLSetTapLatency(chn,0x50);
 	PmodACLSetTapWindow(chn,0xFF);
-
+ 	PmodACLSetTimeInact(chn,0x0);
 	//setup external interrupt pin for external int 0 to recivieve input
 	PORTSetPinsDigitalIn(IOPORT_D, BIT_0); //CEREBOT32MX4 PIN JH-08
 
@@ -177,7 +178,8 @@ uint8_t UNIT_PmodACLInterupt(UART_MODULE uartID)
 	UARTPutS("Perform a single and double tap on the PmodACL to complete test\r\n",uartID);
 
 	fnSetupPmodACLForInterruptsInt1(PMODACL_BIT_INT_ENABLE_SINGLE_TAP | PMODACL_BIT_INT_ENABLE_DOUBLE_TAP,
-									PMODACL_BIT_TAP_AXES_TAP_X |PMODACL_BIT_TAP_AXES_TAP_Y | PMODACL_BIT_TAP_AXES_TAP_Z);
+									PMODACL_BIT_TAP_AXES_TAP_X |PMODACL_BIT_TAP_AXES_TAP_Y | PMODACL_BIT_TAP_AXES_TAP_Z,
+									PMODACL_BIT_FIFO_CTL_BYPASS);
 
 	while(!(singleTap & doubleTap))
 	{
@@ -264,7 +266,8 @@ uint8_t UNIT_PmodACLSetGetIntSource(UART_MODULE uartID)
 	
 
 	fnSetupPmodACLForInterruptsInt1(PMODACL_BIT_INT_ENABLE_DOUBLE_TAP,
-									PMODACL_BIT_TAP_AXES_TAP_X |PMODACL_BIT_TAP_AXES_TAP_Y | PMODACL_BIT_TAP_AXES_TAP_Z);
+									PMODACL_BIT_TAP_AXES_TAP_X |PMODACL_BIT_TAP_AXES_TAP_Y | PMODACL_BIT_TAP_AXES_TAP_Z,
+									PMODACL_BIT_FIFO_CTL_BYPASS);
 	
 	UARTPutS("Perform a double tap on the PmodACL\r\n",uartID);	
 
@@ -307,7 +310,7 @@ uint8_t UNIT_PmodACLSetGetTapWindow(UART_MODULE uartID)
 uint8_t UNIT_PmodACLGetActTapStatus(UART_MODULE uartID)
 {
 	UARTPutS("\n\rEXECUTING TEST =>UNIT_ PmodACLGetActTapStatus\r\n",uartID);
-	fnSetupPmodACLForInterruptsInt1(PMODACL_BIT_INT_ENABLE_DOUBLE_TAP,PMODACL_BIT_TAP_AXES_TAP_X);
+	fnSetupPmodACLForInterruptsInt1(PMODACL_BIT_INT_ENABLE_DOUBLE_TAP,PMODACL_BIT_TAP_AXES_TAP_X,PMODACL_BIT_FIFO_CTL_BYPASS);
 	UARTPutS("Perform a double tap on the PmodACL X axis\r\n",uartID);
 	
 	isrFired = 0;
@@ -329,4 +332,47 @@ uint8_t UNIT_PmodACLSetGetBwRate(UART_MODULE uartID)
 	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetBWRate\r\n",uartID);
     PmodACLSetBwRate(chn,PMODACL_BIT_BW_RATE_LOW_POWER| PMODACL_BIT_RATE_50HZ);
 	return (PmodACLGetBwRate(chn) == PMODACL_BIT_BW_RATE_LOW_POWER| PMODACL_BIT_RATE_50HZ);
+}
+
+uint8_t UNIT_PmodACLGetFIFOStatus(UART_MODULE uartID)
+{
+	isrFired = 0;
+	fnSetupPmodACLForInterruptsInt1(PMODACL_BIT_INT_ENABLE_SINGLE_TAP,PMODACL_BIT_TAP_AXES_TAP_X,PMODACL_BIT_FIFO_CTL_TRIGGER|0x0F);
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLGetFIFOStatus\r\n",uartID);
+	UARTPutS("\n\rBegin tapping the PmodACL to fill up the FIFO buffer.\r\n",uartID);
+	while(1)
+	{
+		if(isrFired)
+		{
+			isrFired = 0;
+			PmodACLGetIntSource(chn); 
+			if ((PmodACLGetFIFOStatus(chn) & (PMODACL_BIT_FIFO_STATUS_FIFO_TRIG|0x20)) == (PMODACL_BIT_FIFO_STATUS_FIFO_TRIG|0x20))
+			{
+				break;
+			}
+		}
+	}	
+		
+	return (1);
+}
+
+uint8_t UNIT_PmodACLSetGetTimeInact(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetTimeInact\r\n",uartID);
+    PmodACLSetTimeInact(chn,0x1);
+	return (PmodACLGetTimeInact(chn) == 0x1);
+}
+
+uint8_t UNIT_PmodACLSetGetThreshAct(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetThreshAct\r\n",uartID);
+    PmodACLSetThreshAct(chn,0x3);
+	return (PmodACLGetThreshAct(chn) == 0x3);
+}
+
+uint8_t UNIT_PmodACLSetGetActInactCtl(UART_MODULE uartID)
+{
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetActInactCtl\r\n",uartID);
+    PmodACLSetActInactCtl(chn,0x1);
+	return (PmodACLGetActInactCtl(chn) == 0x1);
 }

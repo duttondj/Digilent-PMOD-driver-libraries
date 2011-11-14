@@ -203,13 +203,81 @@ typedef struct
 	int16_t zAxis;
 }PMODACL_AXIS;
 
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+void PmodACLInitSpi(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 
-void PmodACLInitSpi4Wire(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void PmodACLGetAxisData(SpiChannel chn, PMODACL_AXIS *pmodACLAxis);
 
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 uint8_t PmodACLReadReg(SpiChannel chn,uint8_t address);
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void PmodACLReadRegMultiByte(SpiChannel chn,uint8_t startAddress,uint8_t *data,uint8_t numBytes);
+
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples);
+
 /*  
 ** <FUNCTION NAME>
 **
@@ -225,9 +293,6 @@ int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples);
 */
 void PmodACLWriteRegMultiByte(SpiChannel chn,uint8_t startAddress,uint8_t *data,uint8_t numBytes);
 
-void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
-
-//Function macros
 /*  
 ** <FUNCTION NAME>
 **
@@ -241,21 +306,87 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 */
-#define PmodACLSetDataFormat(CHN,DATA_FORMAT) PmodACLWriteReg(CHN,PMODACL_REG_DATA_FORMAT,DATA_FORMAT)
+void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 
-//Function macros
+/* ------------------------------------------------------------ */
+/*					         MACROS	        					*/
+/* ------------------------------------------------------------ */
+
 /*  
-** <FUNCTION NAME>
+**  PmodACLSetDataFormat
 **
 **	Synopsis:
 **
+**	Sets the resprentation of data to the registers defined in 
+**  PMODACL_REG_DATA<AXIS><BIT>, sets SPI 3 or 4 wire mode, 
+**  interrupt active high or low, full resolution mode, 
+**  bit justification and range bits
+**  
 **  Input: 
+**		SpiChannel CHN -  Spi channel
+**      uint8_t DATA_FORMAT - Combination of ORed values prefixed with 
+**                            PMODACL_BIT_DATA_FORMAT defined in
+**							  "Local Type Definitions"	
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**  DATA_FORMAT Register
+**  ----------------------------------------------------------------
+**  |D7        |D6  |D5         |D4 |D3       |D2      |D1    |   D0|
+**  -----------------------------------------------------------------
+**  |SELF_TEST |SPI |INT_INVERT |0  |FULL_RES |JUSTIFY |RANGE BITS  |
+**  -----------------------------------------------------------------
+**
+**  (Taken from ADXL345 Reference Manual)
+**  The DATA_FORMAT register controls the presentation of data to Register 
+**  0x32 through Register 0x37. All data, except that for the ±16 g range, 
+**  must be clipped to avoid rollover. 
+**  SELF_TEST Bit 
+**	A setting of 1 in the SELF_TEST bit applies a self-test force to the 
+**	sensor, causing a shift in the output data. A value of 0 disables the 
+**  self-test force.
+**  SPI Bit
+**  A value of 1 in the SPI bit sets the device to 3-wire SPI mode, and a 
+**  value of 0 sets the device to 4-wire SPI mode.
+**  INT_INVERT Bit
+**  A value of 0 in the INT_INVERT bit sets the interrupts to active high, 
+**  and a value of 1 sets the interrupts to active low.
+**  FULL_RES Bit
+**  When this bit is set to a value of 1, the device is in full resolution 
+**  mode, where the output resolution increases with the g range set by the 
+**  range bits to maintain a 4 mg/LSB scale factor. When the FULL_RES bit is 
+**  set to 0, the device is in 10-bit mode, and the range bits determine the 
+**  maximum g range and scale factor.
+**  JUSTIFY BIT
+**  A setting of 1 in the justify bit selects left-justified (MSB) mode, 
+**  and a setting of 0 selects right-justified mode with sign extension.
+**  RANGE BITS
+**  Reference DATA_FORMAT constansts begining with PMODACL_BIT_DATA_FORMAT_RANGE
+*/
+#define PmodACLSetDataFormat(CHN,DATA_FORMAT) PmodACLWriteReg(CHN,PMODACL_REG_DATA_FORMAT,DATA_FORMAT)
+
+
+/*  
+**  PmodACLGetDataFormat
+**
+**	Synopsis:
+**
+**  Input: 
+**   	SpiChannel CHN - spiChannel
+**
+**  Returns: 
+**      uint8_t - data format register
+**
+**	Errors:	none
+**
+**  Description:
+**
+**  Returns the DATA_FORMAT register (defined in PMODACL_REG_DATA_FORMAT),
+**  for a description of the contents of this register see the ADXL345 refrence
+**  manual or the description for PmodACLSetDataFormat
 */
 #define PmodACLGetDataFormat(CHN) PmodACLReadReg(CHN,PMODACL_REG_DATA_FORMAT)
 /*  
