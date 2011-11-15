@@ -11,7 +11,7 @@
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
-/* <MM/DD/YY>(<FIRST NAME><LAST INITIAL): <NOTES>						*/
+/* <11/14/11>(Ryan H): Initial Release									*/
 /*																		*/
 /************************************************************************/
 #ifndef _PMOD_ACL_H_
@@ -37,7 +37,7 @@
 #define PMODACL_REG_OFSX  						0x1E 
 #define PMODACL_REG_OFSY  						0x1F 
 #define PMODACL_REG_OFSZ  						0x20 
-#define PMODACL_NUM_OFFSET_BYTES                0x03
+#define PMODACL_NUM_OFFSET_BYTES         		0x03
 /************************************/
 
 #define PMODACL_REG_DUR  						0x21 
@@ -161,14 +161,19 @@
 #define PMODACL_BIT_DATA_FORMAT_RANGE_8G  		0x02 
 #define PMODACL_BIT_DATA_FORMAT_RANGE_4G  		0x01 
 #define PMODACL_BIT_DATA_FORMAT_RANGE_2G  		0x00
+#define PMODACL_MASK_DATA_FORMAT_RANGE			0x0F
 /************************************/
 
+/************************************/
+/*        Axis Registers            */
+/************************************/
 #define PMODACL_REG_DATAX0  					0x32 
 #define PMODACL_REG_DATAX1  					0x33 
 #define PMODACL_REG_DATAY0  					0x34 
 #define PMODACL_REG_DATAY1  					0x35 
 #define PMODACL_REG_DATAZ0  					0x36 
 #define PMODACL_REG_DATAZ1  					0x37 
+#define PMODACL_NUM_AXIS_REGISTERS				0x06
 
 /************************************/
 /*        FIFO_CTL                  */
@@ -190,9 +195,8 @@
 
 /************************************/
 
-#define PMODACL_RW_BIT							0x80
+#define PMODACL_READ_BIT						0x80
 #define PMODACL_MB_BIT              			0x40
-
 #define PMODACL_DEVICE_ID						0xE5
 
 
@@ -202,6 +206,10 @@ typedef struct
 	int16_t yAxis;
 	int16_t zAxis;
 }PMODACL_AXIS;
+
+/* ------------------------------------------------------------ */
+/*				Forward Declarations							*/
+/* ------------------------------------------------------------ */
 
 /*  
 ** <FUNCTION NAME>
@@ -389,6 +397,7 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  manual or the description for PmodACLSetDataFormat
 */
 #define PmodACLGetDataFormat(CHN) PmodACLReadReg(CHN,PMODACL_REG_DATA_FORMAT)
+
 /*  
 ** <FUNCTION NAME>
 **

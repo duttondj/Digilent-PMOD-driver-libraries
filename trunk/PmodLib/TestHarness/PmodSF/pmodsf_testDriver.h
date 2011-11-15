@@ -23,10 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include <peripheral/spi.h>
-#include <peripheral/ports.h>	// Enable port pins for input or output 
-#include <peripheral/uart.h>	// Enable UARTs 1 and 2 for reception and transmission of serial data
-#include <peripheral/system.h>	// Set up the system and perihperal clocks for best performance
+#include <plib.h>
 #include "./PmodSF/pmodsf.h"
 #include "./TestHarness/Common/test_harness_common.h"
 

@@ -21,7 +21,7 @@
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
 #include <stdint.h>
-#include <peripheral/uart.h>
+#include <plib.h>
 #include "./TestHarness/config.h"
 #include "./TestHarness/Common/test_harness_common.h"
 

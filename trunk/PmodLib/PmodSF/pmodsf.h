@@ -27,12 +27,8 @@
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
-#include <peripheral/ports.h>
-#include <peripheral/spi.h>
 #include <stdint.h>
-#include "../PmodCommon/utility/pmod_utility.h"
-#include "../PmodCommon/spi/pmod_spi_common.h"
-#include "./PmodSF/pmodsf_helper.h"
+#include <plib.h>
 
 /*  Table 2 Protected Area Sizes (PMODSF-16)                                                                                  
 ** -----------------------------------------------------------------------------------------------------------------

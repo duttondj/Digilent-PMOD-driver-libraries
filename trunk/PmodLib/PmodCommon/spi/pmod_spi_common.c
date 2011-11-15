@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------------- */
 /*                                                                      */
-/*  pmod_spi_common.c -- Implementation for common Pmod Spi functions   */
+/*  pmod_spi_common.c -- Implimentation for common Pmod Spi functions   */
 /*                                                                      */
 /*                                                                      */
 /* -------------------------------------------------------------------- */

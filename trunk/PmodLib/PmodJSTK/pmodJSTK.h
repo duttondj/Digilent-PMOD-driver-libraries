@@ -22,12 +22,8 @@
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
 
-#include <math.h>
+#include <plib.h>
 #include <stdint.h>
-
-//includes common SPI function defintions and 
-//SPI IO table defition (port/SS mask)
-#include "./PmodCommon/spi/pmod_spi_common.h"
 
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
