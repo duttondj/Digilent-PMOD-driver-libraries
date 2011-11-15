@@ -26,7 +26,17 @@
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
-uint8_t UNIT_BufLibRead(UART_MODULE uartID)
+void BufLib_INIT(UART_MODULE uartID)
+{
+	if(!BufLibInitBuffers(3, 6))
+	{
+		UARTPutS("\r\n\r\nFailed to initalize buffers\r\n", uartID);
+	}
+
+	UARTPutS("\r\n\r\nBuffers Initialized\r\n", uartID);
+}
+
+uint8_t UNIT_BufLibWriteRead(UART_MODULE uartID)
 {
 	uint16_t value;
 	uint8_t result = 0;
@@ -42,7 +52,7 @@ uint8_t UNIT_BufLibRead(UART_MODULE uartID)
 
 	if(BufLibReadBuffer(&value))
 	{
-		UARTPutS("Successfully read from Buffer\r\n", uartID);
+		UARTPutS("Successfully Read from Buffer\r\n", uartID);
 	}
 	else
 	{
@@ -57,37 +67,38 @@ uint8_t UNIT_BufLibRead(UART_MODULE uartID)
 	return result;
 }
 
-uint8_t UNIT_BufLibWrite(UART_MODULE uartID)
+uint8_t UNIT_BufLibWriteReadOverflow(UART_MODULE uartID)
 {
-	return 0;
-}
+	uint8_t result = 0;
+	uint16_t value = 0;
 
-uint8_t UNIT_BufLibReadOverflow(UART_MODULE uartID)
-{
-	return 0;
-}
+	BufLibWriteBuffer(1);
+	BufLibWriteBuffer(2);
+	BufLibWriteBuffer(3);
+	if(BufLibWriteBuffer(4))
+	{
+		result = 1;
+	}
 
-uint8_t UNIT_BufLibWriteOverflow(UART_MODULE uartID)
-{
-	return 0;
+	BufLibReadBuffer(&value);
+	BufLibReadBuffer(&value);
+	BufLibReadBuffer(&value);
+	
+	if(!BufLibReadBuffer(&value) || value != 4)
+	{
+		result = 0;
+	}
+	
+	return result;
 }
 
 uint8_t UNIT_BufLibInvalidRead(UART_MODULE uartID)
 {
-	return 0;
+	uint16_t value = 0;
+	return !BufLibReadBuffer(&value);
 }
 
 uint8_t UNIT_BufLibInvalidWrite(UART_MODULE uartID)
 {
 	return 0;
-}
-
-void BufLib_INIT(UART_MODULE uartID)
-{
-	if(!BufLibInitBuffers(3, 6))
-	{
-		UARTPutS("Failed to initalize buffers\r\n", uartID);
-	}
-
-	UARTPutS("Buffers Initialized\r\n", uartID);
 }

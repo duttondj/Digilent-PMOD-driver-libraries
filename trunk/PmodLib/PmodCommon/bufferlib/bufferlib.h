@@ -28,7 +28,8 @@ typedef struct
 {
 	uint16_t space_used;
 	uint16_t *buffer;
-	uint8_t in_use;
+	uint8_t read;
+	uint8_t write;
 	uint8_t offset;
 } AppBuffer;
 

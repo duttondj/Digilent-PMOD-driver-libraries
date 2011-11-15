@@ -275,22 +275,18 @@ uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 //Test function header for PmodHB5
 #include "./TestHarness/BuffLib/bufflib_test_driver.h"
 
-#define NUM_TEST_FUNCTIONS 7 //number of test functions for PmodHB5
+#define NUM_TEST_FUNCTIONS 5 //number of test functions for PmodHB5
 
 //Array of function pointers to tests for PmodHB5
-uint8_t (*testFunc[])(UART_MODULE) = {UNIT_BufLibRead,
-									UNIT_BufLibWrite,
-									UNIT_BufLibReadOverflow,
-									UNIT_BufLibWriteOverflow,
+uint8_t (*testFunc[])(UART_MODULE) = {UNIT_BufLibWriteRead,
+									UNIT_BufLibWriteReadOverflow,
 									UNIT_BufLibInvalidRead,
 									UNIT_BufLibInvalidWrite,
 									UNIT_Exec_All};
 
 //Menu Item text pssed into console menu
-uint8_t *menuItems[] = {"UNIT_BufLibRead",
-						"UNIT_BufLibWrite",
-						"UNIT_BufLibReadOverflow",
-						"UNIT_BufLibWriteOverflow",
+uint8_t *menuItems[] = {"UNIT_BufLibWriteRead",
+						"UNIT_BufLibWriteReadOverflow",
 						"UNIT_BufLibInvalidRead",
 						"UNIT_BufLibInvalidWrite",
 						"UNIT_Exec_All"};
