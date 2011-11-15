@@ -22,7 +22,7 @@
 /* ------------------------------------------------------------ */
 #include <stdint.h>
 #include <plib.h>
-#include "./TestHarness/config.h"
+#include "./TestHarness/pmodlib_testdriver_config.h"
 #include "./TestHarness/Common/test_harness_common.h"
 
 

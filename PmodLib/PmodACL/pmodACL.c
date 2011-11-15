@@ -19,7 +19,6 @@
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
 
-#include <plib.h>
 #include <math.h>
 #include "./PmodACL/pmodACL.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"

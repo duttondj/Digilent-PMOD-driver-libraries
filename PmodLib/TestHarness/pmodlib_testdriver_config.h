@@ -17,8 +17,8 @@
 /*  10/18/2011(RyanH):                                                  */
 /*                                                                      */
 /************************************************************************/
-#ifndef _CONFIG_H_
-#define _CONFIG_H_
+#ifndef _PMODLIB_TESTDRIVER_CONFIG_H_
+#define _PMODLIB_TESTDRIVER_CONFIG_H_
 
 /* ------------------------------------------------------------ */
 /*                     Pmod Selection                           */
