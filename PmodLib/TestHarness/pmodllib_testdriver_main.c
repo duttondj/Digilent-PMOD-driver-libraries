@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------------- */
 /*                                                                      */
-/*                       main.c                                         */
+/*      pmodlib_testdriver_main.c -                                     */
 /*      Main test driver loop for testing Digilent Pmods                */
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /* -------------------------------------------------------------------- */
