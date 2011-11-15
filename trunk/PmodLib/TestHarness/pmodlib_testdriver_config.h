@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*                        config.h                                      */
+/*      pmodlib_testdriver_config.h -                                   */
 /*      Configuration header for testing Digilent PmodLib               */
 /*               Copyright (C) 2011 Ryan Hoffman                        */                                                                     
 /************************************************************************/
@@ -10,7 +10,7 @@
 /*  Module Description: 												*/
 /*                                                                      */
 /*  Processor configuration and contants for use with test driver main  */
-/*  this file should be included in the main task loop.                 */
+/*  this file should be included in the in the main task                */
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
