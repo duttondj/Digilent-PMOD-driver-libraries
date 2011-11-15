@@ -60,6 +60,10 @@ uint8_t BufLibInitBuffers(uint8_t BufCount, uint16_t BufSize)
 	// Calculate the max size of the buffer
 	gBufLibMaxSize = BufCount * BufSize;
 
+	// Set Global Values
+	gBufLibNumBuffers = BufCount;
+	gBufLibBufferSize = BufSize;
+
 	if(BUFLIB_MAX_ARRAY_MEM < gBufLibMaxSize)
 	{
 		return 0;
@@ -74,9 +78,12 @@ uint8_t BufLibInitBuffers(uint8_t BufCount, uint16_t BufSize)
 		gBufferArray[ii].space_used = 0;
 		// Size of a buffer is maximum memory divided by amount of buffers
 		gBufferArray[ii].buffer = malloc(BufSize);
-		gBufferArray[ii].in_use = 0;
+		gBufferArray[ii].read = 0;
+		gBufferArray[ii].write = 0;
 		gBufferArray[ii].offset = 0;
 	}
+	gBufLibReadIndex = BufCount - 1;
+	gBufferArray[0].write = 1;
 
 	return 1;
 }
@@ -97,7 +104,7 @@ uint8_t BufLibReadBuffer(uint16_t *data)
 {
 	uint8_t next = 0;
 	uint8_t valid = 1;
-
+	
 	// Check if we're at the end of a given buffer
 	if(gBufferArray[gBufLibReadIndex].space_used == gBufferArray[gBufLibReadIndex].offset)
 	{
@@ -105,13 +112,14 @@ uint8_t BufLibReadBuffer(uint16_t *data)
 		next = (gBufLibReadIndex + 1) % gBufLibNumBuffers;
 		
 		// Check that it is ready to be used
-		if(!gBufferArray[next].in_use)
+		if(!gBufferArray[next].write && gBufferArray[next].space_used > 0)
 		{
 			// Reset all the values in that buffer
 			gBufferArray[gBufLibReadIndex].space_used = 0;
 			gBufferArray[gBufLibReadIndex].offset = 0;
-			gBufferArray[gBufLibReadIndex].in_use = 0;
+			gBufferArray[gBufLibReadIndex].read = 0;
 			gBufLibReadIndex = next;
+			gBufferArray[gBufLibReadIndex].read = 1;
 		}
 		else // Next buffer is still in use so don't do anything
 		{
@@ -148,6 +156,12 @@ uint8_t BufLibWriteBuffer(uint16_t data)
 	uint8_t next = 0;
 	uint8_t valid = 1;
 
+	// If the buffer is being read from, don't touch
+	if(gBufferArray[gBufLibReadIndex].read)
+	{
+		return 0;
+	}
+
 	// Check if we're at the end of a given buffer
 	if(gBufferArray[gBufLibWriteIndex].space_used == (gBufLibBufferSize / 2))
 	{
@@ -159,8 +173,9 @@ uint8_t BufLibWriteBuffer(uint16_t data)
 		{
 			// Reset all the values in that buffer
 			gBufferArray[gBufLibWriteIndex].offset = 0;
-			gBufferArray[gBufLibWriteIndex].in_use = 0;
+			gBufferArray[gBufLibWriteIndex].write = 0;
 			gBufLibWriteIndex = next;
+			gBufferArray[gBufLibWriteIndex].write = 1;
 		}
 		else // Next buffer is still in use so don't do anything
 		{
@@ -179,3 +194,15 @@ uint8_t BufLibWriteBuffer(uint16_t data)
 
 	return valid;
 }
+
+/*  BufLibClearBuffers
+**
+**	Synopsis:
+**  Resets all values to clear all the buffers
+**
+**  Input: none
+**
+**  Returns: 0 if failed to write, 1 if wrote 2-bytes
+**
+**	Errors:	returns 0 if failed to write
+*/
