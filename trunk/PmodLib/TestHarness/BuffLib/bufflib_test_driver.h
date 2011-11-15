@@ -21,14 +21,39 @@
 #ifndef _BUFFLIB_TEST_DRIVER_H_
 #define _BUFFLIB_TEST_DRIVER_H_
 
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include <peripheral/system.h>	// Set up the system and perihperal clocks for best performance
 
-#include "../../PmodCommon/bufferlib/bufferlib.h"
+#include "./PmodCommon/bufferlib/bufferlib.h"
+#include "./TestHarness/Common/test_harness_common.h"
 
 #define SYSTEM_CLOCK 80000000L  //system clock speed (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
 #define PB_CLOCK (SYSTEM_CLOCK/2) //peripheral bus clock
+
+/* ------------------------------------------------------------ */
+/*				Global Variables								*/
+/* ------------------------------------------------------------ */
+
+
+/* ------------------------------------------------------------ */
+/*				Local Variables									*/
+/* ------------------------------------------------------------ */
+
+
+/* ------------------------------------------------------------ */
+/*				Forward Declarations							*/
+/* ------------------------------------------------------------ */
+uint8_t UNIT_BufLibRead(UART_MODULE uartID);
+uint8_t UNIT_BufLibWrite(UART_MODULE uartID);
+uint8_t UNIT_BufLibReadOverflow(UART_MODULE uartID);
+uint8_t UNIT_BufLibWriteOverflow(UART_MODULE uartID);
+uint8_t UNIT_BufLibInvalidRead(UART_MODULE uartID);
+uint8_t UNIT_BufLibInvalidWrite(UART_MODULE uartID);
+void BufLib_INIT(UART_MODULE uartID);
 
 #endif

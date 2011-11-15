@@ -30,7 +30,8 @@
 #define PMODSF 0   
 #define PMODJSTK 0
 #define PMODHB5 0
-#define PMODACL 1
+#define PMODACL 0
+#define BUFLIB 1
 
 //Test harness menu UART
 #define MENU_UART UART1
@@ -258,6 +259,50 @@ char * pmodName = "PmodACL";
 
 //Filter excluding specific tests from UNIT_Exec_All 
 uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+/* ------------------------------------------------------------*/
+/*                            BufLib                           */
+/*                    Test setup for BufLib                    */
+/* ------------------------------------------------------------*/
+#elif(BUFLIB == 1)
+
+/* ------------------------------------------------------------ */
+/*				PIC32 Configuration Settings					*/
+/* ------------------------------------------------------------ */
+#pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1, FWDTEN = OFF
+#pragma config POSCMOD = HS, FNOSC = PRIPLL, FPBDIV = DIV_8
+
+//Test function header for PmodHB5
+#include "./TestHarness/BuffLib/bufflib_test_driver.h"
+
+#define NUM_TEST_FUNCTIONS 7 //number of test functions for PmodHB5
+
+//Array of function pointers to tests for PmodHB5
+uint8_t (*testFunc[])(UART_MODULE) = {UNIT_BufLibRead,
+									UNIT_BufLibWrite,
+									UNIT_BufLibReadOverflow,
+									UNIT_BufLibWriteOverflow,
+									UNIT_BufLibInvalidRead,
+									UNIT_BufLibInvalidWrite,
+									UNIT_Exec_All};
+
+//Menu Item text pssed into console menu
+uint8_t *menuItems[] = {"UNIT_BufLibRead",
+						"UNIT_BufLibWrite",
+						"UNIT_BufLibReadOverflow",
+						"UNIT_BufLibWriteOverflow",
+						"UNIT_BufLibInvalidRead",
+						"UNIT_BufLibInvalidWrite",
+						"UNIT_Exec_All"};
+
+//Name of module to display on console menu
+char * pmodName = "BufLib";
+
+//Pmod initialization macro for PmodHB5
+#define INITPMOD(UART) BufLib_INIT(UART)
+
+//Filter excluding specific tests from UNIT_Exec_All 
+uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0};
 
 #endif
 

@@ -19,20 +19,21 @@
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
-#include "../../PmodCommon/bufferlib/bufferlib.h"
+#include "./PmodCommon/bufferlib/bufferlib.h"
 
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
-#define BUFLIB_NUM_ARRAYS 5 // Number of buffers to be allocated
-#define BUFLIB_MEM_SIZE 1280 // Maximum amount of memory allocated for all buffers
-
+#define BUFLIB_MAX_ARRAY_MEM 20000
 
 /* ------------------------------------------------------------ */
 /*				Global Variables								*/
 /* ------------------------------------------------------------ */
 
-AppBuffer gBufferArray[BUFLIB_NUM_ARRAYS];
+AppBuffer *gBufferArray;
+uint16_t gBufLibMaxSize = 0;
+uint8_t gBufLibNumBuffers = 0;
+uint16_t gBufLibBufferSize = 0;
 uint8_t gBufLibReadIndex = 0;
 uint8_t gBufLibWriteIndex = 0;
 
@@ -40,25 +41,60 @@ uint8_t gBufLibWriteIndex = 0;
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
 
-
-void void BufLibInitBuffers();
+/*  BufLibInitBuffers
+**
+**	Synopsis:
+**  Initailzes all the buffers needed for the AD/DA library
+**
+**  Input: uint8_t BufCount - the number of buffers to create
+**		   uint16_t BufSize - the size of each buffer in bytes
+**
+**  Returns: 0 if successfully created the buffers, 1 if failed to create them
+**
+**	Errors:	1 is returend if failed to create buffers
+*/
+uint8_t BufLibInitBuffers(uint8_t BufCount, uint16_t BufSize)
 {
-	int ii = 0;
+	uint8_t ii = 0;
+	
+	// Calculate the max size of the buffer
+	gBufLibMaxSize = BufCount * BufSize;
+
+	if(BUFLIB_MAX_ARRAY_MEM < gBufLibMaxSize)
+	{
+		return 0;
+	}
+
+	// Allocate memory for the buffer arra
+	gBufferArray = malloc(sizeof(AppBuffer) * BufCount);
 
 	// Loop through each array and allocate memory for each buffer
-	for(ii = 0; ii < BUFLIB_NUM_ARRAYS;i++)
+	for(ii = 0; ii < BufCount;ii++)
 	{
 		gBufferArray[ii].space_used = 0;
 		// Size of a buffer is maximum memory divided by amount of buffers
-		gBufferArray[ii].buffer = malloc(BUFLIB_MEM_SIZE/BUFLIB_NUM_ARRAYS);
+		gBufferArray[ii].buffer = malloc(BufSize);
 		gBufferArray[ii].in_use = 0;
 		gBufferArray[ii].offset = 0;
 	}
+
+	return 1;
 }
 
-uint16_t BufLibReadBuffer()
+/*  BufLibReadBuffer
+**
+**	Synopsis:
+**  Reads a 2-byte value from the buffer, switching to the next if no
+**	data is available in the current
+**
+**  Input: uint16_t pointer - a value for the read 2-bytes to be placed in
+**
+**  Returns: 0 if failed to read 2-bytes, 1 if read 2-bytes
+**
+**	Errors:	returns 0 if failed to read 2-bytes
+*/
+uint8_t BufLibReadBuffer(uint16_t *data)
 {
-	uint16_t data;
 	uint8_t next = 0;
 	uint8_t valid = 1;
 
@@ -66,7 +102,7 @@ uint16_t BufLibReadBuffer()
 	if(gBufferArray[gBufLibReadIndex].space_used == gBufferArray[gBufLibReadIndex].offset)
 	{
 		// Find the next buffer in line
-		next = (gBufLibReadIndex + 1) % BUFLIB_NUM_ARRAYS;
+		next = (gBufLibReadIndex + 1) % gBufLibNumBuffers;
 		
 		// Check that it is ready to be used
 		if(!gBufferArray[next].in_use)
@@ -86,26 +122,37 @@ uint16_t BufLibReadBuffer()
 	if(valid)
 	{
 		// If buffer is valid, then read data from the current position in that buffer
-		data = gBufferArray[gBufLibReadIndex].buffer[gBufferArray[gBufLibReadIndex].offset];
+		*data = gBufferArray[gBufLibReadIndex].buffer[gBufferArray[gBufLibReadIndex].offset];
 
 		// Increment the offset for the data just read
 		(gBufferArray[gBufLibReadIndex].offset)++;
 	}
 
-	return data;
+	return valid;
 }
 
-void BufLibWriteBuffer(uint16_t data)
+/*  BufLibWriteBuffer
+**
+**	Synopsis:
+**  Writes a 2-byte value from the buffer, switching to the next if no
+**	room is available in the current
+**
+**  Input: uint16_t - a 2-bytes value to be placed in the buffer
+**
+**  Returns: 0 if failed to write, 1 if wrote 2-bytes
+**
+**	Errors:	returns 0 if failed to write
+*/
+uint8_t BufLibWriteBuffer(uint16_t data)
 {
-	uint8_t maxSize = BUFLIB_MEM_SIZE/BUFLIB_NUM_ARRAYS;
 	uint8_t next = 0;
 	uint8_t valid = 1;
 
 	// Check if we're at the end of a given buffer
-	if(gBufferArray[gBufLibWriteIndex].space_used == (maxSize / 2))
+	if(gBufferArray[gBufLibWriteIndex].space_used == (gBufLibBufferSize / 2))
 	{
 		// Find the next buffer in line
-		next = (gBufLibWriteIndex + 1) % BUFLIB_NUM_ARRAYS;
+		next = (gBufLibWriteIndex + 1) % gBufLibNumBuffers;
 		
 		// Check that it is ready to be used
 		if(!gBufferArray[next].in_use)
@@ -129,4 +176,6 @@ void BufLibWriteBuffer(uint16_t data)
 		// Increment to the next available memory
 		(gBufferArray[gBufLibWriteIndex].space_used)++;
 	}
+
+	return valid;
 }
