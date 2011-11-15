@@ -128,10 +128,9 @@ uint8_t UNIT_PmodACLCalibrate(UART_MODULE uartID)
 	PMODACL_AXIS pmodACLAxisTest;
 	PMODACL_AXIS pmodACLAxisBaseline;
 	uint8_t results[128];
-	uint8_t testResult = 1;
 	int32_t offsetRegisterReturned = 0;
 	int32_t offsetRegisterFromReg = 0;
-	uint8_t offsetBytes[3];
+	int8_t offsetBytes[3];
 
 	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLCalibrate\r\n",uartID);
 	PmodACLSetDataFormat(chn,PMODACL_BIT_DATA_FORMAT_RANGE_4G);
@@ -144,7 +143,7 @@ uint8_t UNIT_PmodACLCalibrate(UART_MODULE uartID)
 	sprintf(results,"Getting baseline measurements=> x-axis: %d  y-axis: %d  z-axis: %d\r\n",pmodACLAxisBaseline.xAxis ,pmodACLAxisBaseline.yAxis,pmodACLAxisBaseline.zAxis);
 	UARTPutS(results,uartID);
 	
-	offsetRegisterReturned = PmodACLCalibrate(chn,5);
+	offsetRegisterReturned = PmodACLCalibrate(chn,10);
 	
 	PmodACLGetAxisData(chn,&pmodACLAxisTest);
 	sprintf(results,"Results after calibration=> x-axis: %d  y-axis: %d  z-axis: %d\r\n",pmodACLAxisTest.xAxis,pmodACLAxisTest.yAxis,pmodACLAxisTest.zAxis);
@@ -155,8 +154,10 @@ uint8_t UNIT_PmodACLCalibrate(UART_MODULE uartID)
 	offsetRegisterFromReg |= offsetBytes[0] << 16;
 	offsetRegisterFromReg |= offsetBytes[1] << 8;
 	offsetRegisterFromReg |= offsetBytes[2];
-	return ((offsetRegisterFromReg & 0xffffff) == (offsetRegisterReturned & 0xffffff));
+	
+	//make sure offset register is set correctly
 
+	return ((offsetRegisterFromReg & 0xffffff) == (offsetRegisterReturned & 0xffffff));
 }
 
 uint8_t UNIT_PmodACLSetGetTapThresh(UART_MODULE uartID)

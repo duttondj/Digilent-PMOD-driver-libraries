@@ -25,8 +25,7 @@
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
 
-#include <peripheral/uart.h>
-#include <peripheral/ports.h>
+#include <plib.h>
 #include <stdint.h>
 #include "./PmodHB5/pmodHB5.h"
 #include "./TestHarness/Common/test_harness_common.h"

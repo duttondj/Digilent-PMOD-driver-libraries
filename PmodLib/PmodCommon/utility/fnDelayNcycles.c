@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*        fnGetByteFromUint32.c --  Implimentation file for             */
+/*        fnGetByteFromUint32.c --  Implementation file for             */
 /*                                   fnGetByteFromUint32                */
 /*                                                                      */
 /* -------------------------------------------------------------------- */
@@ -8,7 +8,7 @@
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
-/*  Implimentation for fnGetByteFromUint32                              */
+/*  Implimentation for fnDelayNcycles	                                */
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
@@ -19,30 +19,53 @@
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
+#include <plib.h>
 #include "./PmodCommon/utility/pmod_utility.h"
 
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
 
-/*  fnGetByteFromUint32
+/*  
+**  fnDelayNcycles
+**
 **	Synopsis:
-**  Takes in an unsigned 32 bit value and a byte position and returns
-**  a byte represending the positions requested
-**          --------------------------------------
-** Position |	  3    |    2    |   1    |   0  |	
-**          --------------------------------------
-** Bits     | 32 - 24 | 23 - 16 | 15 - 8 | 7 - 0 |
-**          --------------------------------------
-**  INPUT:
-**  uint32_t value  32 bit value to retrieve byte from
-**  uint8_t bytePos byte position to retrieve (0 - 3)
-**  OUTPUT:
-**  uint8_t representing the byte specified in the bytePos from value
-**	Errors:
-**	if bytePos > 3 0 is returned since all bits will be shitfed out
+**  Block program execution for a minimum number of cpu cycles
+**  
+**  Input: 
+**  	uint32_t systemClock - cpu system clock in Hz
+**      uint32_t numCycles - minimum number of cpu cycles
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Notes:
+**  This function is not part of the public API therefore a function
+**  prototype is not present in pmodJSTK.h and the function is given 
+**  a storage class of static.
+** 
+**  Description:
+**  Intruduces a blocking delay based on the "numCycles" which is the minumum
+**  number cpu cycles which must pass before returning. The number
+**  of cycles passed is determined by polling coprocessor register 9
+**  (See PIC32MX Family Data Sheet table 2-2) for a baseline cycle 
+**  count then maing subsequent polls taking the difference until
+**  the cycle count difference meets or exceeds the minumum desired
+**  cycle count.
+** 
 */
-uint8_t fnPMODGetByteFromUint32(uint32_t value,uint8_t bytePos)
+void fnDelayNcycles(uint32_t systemClock,uint32_t numCycles)
 {
-	return value >> (bytePos * 8) & 255;
+	volatile uint32_t clockStart = _CP0_GET_COUNT();
+	volatile uint32_t clockStop =  clockStart + numCycles;
+	if(clockStop > clockStart)
+	{
+		while(_CP0_GET_COUNT() < clockStop);
+	}
+	else
+	{
+		while(_CP0_GET_COUNT() > clockStart || _CP0_GET_COUNT() < clockStop);
+	}
+
 }

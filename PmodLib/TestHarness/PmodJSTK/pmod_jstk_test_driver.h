@@ -25,9 +25,7 @@
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
 
-#include <peripheral/spi.h>
-#include <peripheral/uart.h>
-#include <peripheral/ports.h>
+#include <plib.h>
 #include <stdint.h>
 #include "./PmodJSTK/pmodJSTK.h"
 #include "./TestHarness/Common/test_harness_common.h"

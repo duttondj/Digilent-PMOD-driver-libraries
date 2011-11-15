@@ -21,8 +21,7 @@
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
-#include <peripheral/ports.h>
-#include <peripheral/spi.h>
+#include <plib.h>
 #include <stdint.h>
 
 
