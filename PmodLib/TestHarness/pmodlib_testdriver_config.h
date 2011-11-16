@@ -232,7 +232,7 @@ uint8_t (*testFunc[])(UART_MODULE) ={ UNIT_PmodACLSetGetActInactCtl,UNIT_PmodACL
 									UNIT_PmodACLSetGetIntMap,UNIT_PmodACLSetGetIntEnable,
 									UNIT_PmodACLSetGetOffset,UNIT_PmodACLGSetGetFIFOCtl,
 									UNIT_PmodACLSetGetPowerCtl,UNIT_PmodACLSetGetDataFormat,
-									UNIT_PmodACLInterupt,UNIT_PmodACLSetGetTapThresh,
+									UNIT_PmodACLInterupt,UNIT_PmodACLSetGetThreshTap,
 									UNIT_PmodACLCalibrate,UNIT_PmodACLGetAxisData,
 									UNIT_PmodACLGetDeviceID,UNIT_Exec_All};
 
@@ -247,7 +247,7 @@ uint8_t *menuItems[] = {"UNIT_PmodACLSetGetActInactCtl",
 						"UNIT_PmodACLSetGetIntEnable","UNIT_PmodACLSetGetOffset",
 						"UNIT_PmodACLGSetGetFIFOCtl","UNIT_PmodACLSetGetPowerCtl",
 						"UNIT_PmodACLSetGetDataFormat","UNIT_PmodACLInterupt",
-						"UNIT_PmodACLSetGetTapThresh","UNIT_PmodACLCalibrate",
+						"UNIT_PmodACLSetGetThreshTap","UNIT_PmodACLCalibrate",
 						"UNIT_PmodACLGetAxisData","UNIT_PmodACLGetDeviceID",
 						"UNIT_Exec_All"};
 
