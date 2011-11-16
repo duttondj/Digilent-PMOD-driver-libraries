@@ -79,4 +79,31 @@ uint8_t BufLibReadBuffer(uint16_t *data);
 */
 uint8_t BufLibWriteBuffer(uint16_t data);
 
+/*  BufLibResetBuffers
+**
+**	Synopsis:
+**  Resets all values to default for all the buffers
+**
+**  Input: none
+**
+**  Returns: none
+**
+**	Errors:	none
+*/
+void BufLibResetBuffers(void);
+
+/*  BufLibFinishWrite
+**
+**	Synopsis:
+**  Clears the write flag so you can read the remaining data from the buffer
+**	NOTE: once called you must reset the buffers to start writing again
+**
+**  Input: none
+**
+**  Returns: none
+**
+**	Errors:	none
+*/
+void BufLibFinishWrite(void);
+
 #endif
