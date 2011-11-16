@@ -25,7 +25,7 @@
 #include <stdint.h>
 
 
-/*  fnGetByteFromUint32
+/*  fnPmodGetByteFromUint32
 **	Synopsis:
 **  Takes in an unsigned 32 bit value and a byte position and returns
 **  a byte represending the positions requested
@@ -42,10 +42,10 @@
 **	Errors:
 **	if bytePos > 3 0 is returned since all bits will be shitfed out
 */
-uint8_t fnPMODGetByteFromUint32(uint32_t value,uint8_t bytePos);
+uint8_t fnPmodGetByteFromUint32(uint32_t value,uint8_t bytePos);
 
 /*  
-**  fnDelayNcycles
+**  fnPmodDelayNcycles
 **
 **	Synopsis:
 **  Block program execution for a minimum number of cpu cycles
@@ -73,6 +73,6 @@ uint8_t fnPMODGetByteFromUint32(uint32_t value,uint8_t bytePos);
 **  cycle count.
 ** 
 */
-void fnDelayNcycles(uint32_t systemClock,uint32_t numCycles);
+void fnPmodDelayNcycles(uint32_t systemClock,uint32_t numCycles);
 
 #endif

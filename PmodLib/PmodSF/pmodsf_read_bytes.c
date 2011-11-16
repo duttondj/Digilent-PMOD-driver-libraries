@@ -89,7 +89,7 @@ void PmodSFReadBytes(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t add
 	//SEND IN THE 24 BIT ADDRESS
 	for(byteCounter = 2;byteCounter >= 0;byteCounter--)    
 	{
-		SpiChnPutC(chn,fnPMODGetByteFromUint32(address,byteCounter));
+		SpiChnPutC(chn,fnPmodGetByteFromUint32(address,byteCounter));
 		SpiChnGetC(chn);
 	}
 	

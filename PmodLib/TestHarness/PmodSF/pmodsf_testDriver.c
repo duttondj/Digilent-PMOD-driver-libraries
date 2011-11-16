@@ -70,9 +70,9 @@ uint8_t UNIT_spfPMOD_ReadID(UART_MODULE uartID)
 	UARTPutS("\n\rEXECUING TEST =>  UNIT_spfPMOD_ReadID()\n\r",uartID);
     pmodSFID = PmodSFReadID(chn);
 	sprintf(results,"MFID: 0x%x\n\rType: 0x%x\n\rCapacity: 0x%x\n\r",	
-            fnPMODGetByteFromUint32(pmodSFID,PMODSD_MFID_BYTE),
-             fnPMODGetByteFromUint32(pmodSFID,PMODSD_MEM_TYPE_BYTE),
-             fnPMODGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE),pmodSFID);
+            fnPmodGetByteFromUint32(pmodSFID,PMODSD_MFID_BYTE),
+             fnPmodGetByteFromUint32(pmodSFID,PMODSD_MEM_TYPE_BYTE),
+             fnPmodGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE),pmodSFID);
 	UARTPutS(results,uartID);
 	if(pmodFlashCapacity == PMODSF_128_MBIT)
 	{
@@ -297,7 +297,7 @@ uint8_t UNIT_sfPMODF_BulkErase(UART_MODULE uartID)
 void fnSetPmodFlashCapacity(UART_MODULE uart)
 {
 	 uint8_t pmodSFID = PmodSFReadID(chn);
-	 pmodFlashCapacity = fnPMODGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE);
+	 pmodFlashCapacity = fnPmodGetByteFromUint32(pmodSFID,PMODSD_MEM_CAPACITY_BYTE);
 	 if(pmodFlashCapacity == PMODSF_128_MBIT)
 	{
 		UARTPutS("\r\n**PMODSF-128 Detected**",uart);

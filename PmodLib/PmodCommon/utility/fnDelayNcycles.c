@@ -1,14 +1,14 @@
 /************************************************************************/
 /*                                                                      */
-/*        fnGetByteFromUint32.c --  Implementation file for             */
-/*                                   fnGetByteFromUint32                */
+/*        fnPmodDelayNcycles.c --  Implementation file for                  */
+/*                                   fnPmodGetByteFromUint32            */
 /*                                                                      */
 /* -------------------------------------------------------------------- */
 /*	Author: 	Ryan Hoffman											*/
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
-/*  Implimentation for fnDelayNcycles	                                */
+/*  Implimentation for fnPmodDelayNcycles	                                */
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
@@ -27,7 +27,7 @@
 /* ------------------------------------------------------------ */
 
 /*  
-**  fnDelayNcycles
+**  fnPmodDelayNcycles
 **
 **	Synopsis:
 **  Block program execution for a minimum number of cpu cycles
@@ -55,7 +55,7 @@
 **  cycle count.
 ** 
 */
-void fnDelayNcycles(uint32_t systemClock,uint32_t numCycles)
+void fnPmodDelayNcycles(uint32_t systemClock,uint32_t numCycles)
 {
 	volatile uint32_t clockStart = _CP0_GET_COUNT();
 	volatile uint32_t clockStop =  clockStart + numCycles;
