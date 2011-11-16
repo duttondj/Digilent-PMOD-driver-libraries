@@ -2564,7 +2564,7 @@ LOAD data_init
                 0x9d000944                UNIT_PmodACLGetDeviceID
                 0x9d0009e8                UNIT_PmodACLGetAxisData
                 0x9d000bdc                UNIT_PmodACLCalibrate
-                0x9d000dac                UNIT_PmodACLSetGetTapThresh
+                0x9d000dac                UNIT_PmodACLSetGetThreshTap
                 0x9d000e38                UNIT_PmodACLInterupt
                 0x9d000f70                UNIT_PmodACLSetGetDataFormat
                 0x9d000fec                UNIT_PmodACLSetGetPowerCtl

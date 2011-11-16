@@ -1,18 +1,17 @@
 /************************************************************************/
-/*																		*/
-/*	<FILE NAME>	--	<BRIEF DESCRIPTION>         						*/
+/*	pmodACL_test_driver.h -- pmodACL test driver hesder file         	*/
 /*																		*/
 /************************************************************************/
-/*	Author: 	<AUTHOR NAME> 											*/
-/*	Copyright (C) <YEAR> <ENTITY>										*/
+/*	Author: 	Ryan Hoffman 											*/
+/*	Copyright (C) 2011 Ryan Hoffman										*/
 /************************************************************************/
 /*  Module Description: 												*/
-/*  <MODULE DESCRIPTION>												*/
+/*  pmodACL_test_driver header file								        */
 /*																		*/
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
-/* <MM/DD/YY>(<FIRST NAME><LAST INITIAL): <NOTES>						*/
+/* <11/14/11>(Ryan H): Initial Release									*/
 /*																		*/
 /************************************************************************/
 #ifndef _PMODACL_TEST_DRIVER_H_
@@ -24,9 +23,6 @@
 #include <plib.h>
 #include <stdint.h>
 #include <string.h>
-
-#include "./PmodACL/pmodACL.h"
-#include "./TestHarness/Common/test_harness_common.h"
 
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
@@ -58,7 +54,7 @@ uint8_t UNIT_PmodACLGetDeviceID(UART_MODULE uartID);
 uint8_t UNIT_PmodACLGetAxisData(UART_MODULE uartID);
 uint8_t UNIT_PmodACLGetAxisData(UART_MODULE uartID);
 uint8_t UNIT_PmodACLCalibrate(UART_MODULE uartID);
-uint8_t UNIT_PmodACLSetGetTapThresh(UART_MODULE uartID);
+uint8_t UNIT_PmodACLSetGetThreshTap(UART_MODULE uartID);
 uint8_t UNIT_PmodACLInterupt(UART_MODULE uartID);
 uint8_t UNIT_PmodACLSetGetDataFormat(UART_MODULE uartID);
 uint8_t UNIT_PmodACLSetGetPowerCtl(UART_MODULE uartID);

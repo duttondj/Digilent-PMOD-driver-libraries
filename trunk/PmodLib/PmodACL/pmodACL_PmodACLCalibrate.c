@@ -6,12 +6,12 @@
 /*	Copyright (C) 2011 Ryan Hoffman										*/
 /************************************************************************/
 /*  Module Description: 												*/
-/*  <MODULE DESCRIPTION>												*/
+/*  PmodACL PmodACLCalibrate implimenation file							*/
 /*																		*/
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
-/* <MM/DD/YY>(<FIRST NAME><LAST INITIAL): <NOTES>						*/
+/* <11/14/11>(Ryan H): Initial Release									*/
 /*																		*/
 /************************************************************************/
 
@@ -27,9 +27,10 @@
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
-#define SCALE_LSB_2G	 	0x02
-#define SCALE_LSB_4G 		0x04
-#define SCALE_10_BITS 		0x3FF
+#define SCALE_LSB_2G	 	0x02   //2g per LSB scale
+#define SCALE_LSB_4G 		0x04   //4g per LSB scale
+#define SCALE_10_BITS 		0x3FF  //Used for determining bit resolution
+								   //number of bits in axis registers
 
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
@@ -56,13 +57,16 @@
 **  Description:
 **
 **	Axis value sample are taken and averaged to achieve
-**  a baseline reprentation of X axis - 0g, Y Axis - 0g
-**  Z Axis - 1g. 
+**  a baseline reprentation of all axes OFFSET register 
+**  is then set to automatically adjust axis readings. 
+**  PmodACL should placed such that one axis is in a
+**  position to read 1g and the others 0g, typically
+**  this is the Z axis.
 **
 **  Notes:
 **
 **  For a full description of the calibration proceedure see 
-**  "Offset Calibration" in the ADXL345 reference manual.
+**  'Offset Calibration' in the ADXL345 reference manual.
 */
 int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples)
 {
@@ -83,7 +87,7 @@ int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples)
 		range = SCALE_LSB_2G << (dataFormat & PMODACL_MASK_DATA_FORMAT_RANGE);
 	}
 	
-	//determine LSB/g resolution based on the 10bits / range
+	//determine LSB/g resolution based on the 10bits / range  (axis registers are 10 bits)
 	sensitivityLSBg = (SCALE_10_BITS/range) + 1;
 	
 	//accumulate the value of the axis samples 

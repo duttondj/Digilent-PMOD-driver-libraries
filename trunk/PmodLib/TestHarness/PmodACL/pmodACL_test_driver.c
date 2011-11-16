@@ -1,18 +1,17 @@
 /************************************************************************/
-/*																		*/
-/*	<FILE NAME>	--	<BRIEF DESCRIPTION>         						*/
+/*	pmodACL_test_driver.c -- pmodACL test driver implimentation file	*/
 /*																		*/
 /************************************************************************/
-/*	Author: 	<AUTHOR NAME> 											*/
-/*	Copyright (C) <YEAR> <ENTITY>										*/
+/*	Author: 	Ryan Hoffman 											*/
+/*	Copyright (C) 2011 Ryan Hoffman										*/
 /************************************************************************/
 /*  Module Description: 												*/
-/*  <MODULE DESCRIPTION>												*/
+/*  pmodACL_test_driver implimenation file								*/
 /*																		*/
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
-/* <MM/DD/YY>(<FIRST NAME><LAST INITIAL): <NOTES>						*/
+/* <11/14/11>(Ryan H): Initial Release									*/
 /*																		*/
 /************************************************************************/
 
@@ -20,6 +19,13 @@
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
 
+
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
+#include "./PmodACL/pmodACL.h"
+#include "./TestHarness/Common/test_harness_common.h"
 #include "./TestHarness/PmodACL/pmodACL_test_driver.h"
 
 /* ------------------------------------------------------------ */
@@ -47,7 +53,7 @@ void fnSetupPmodACLForInterruptsInt1(uint8_t interruptMask,uint8_t tapAxes,uint8
 	PmodACLSetFIFOCtl(chn,PMODACL_BIT_FIFO_CTL_BYPASS);//reset FIFO
 	PmodACLSetFIFOCtl(chn,fifoCtl);
 	PmodACLSetTapAxes(chn,tapAxes);
-	PmodACLSetTapThresh(chn,0x38);
+	PmodACLSetThreshTap(chn,0x38);
 	PmodACLSetTapDuration(chn,0x10);
 	PmodACLSetTapLatency(chn,0x50);
 	PmodACLSetTapWindow(chn,0xFF);
@@ -160,12 +166,12 @@ uint8_t UNIT_PmodACLCalibrate(UART_MODULE uartID)
 	return ((offsetRegisterFromReg & 0xffffff) == (offsetRegisterReturned & 0xffffff));
 }
 
-uint8_t UNIT_PmodACLSetGetTapThresh(UART_MODULE uartID)
+uint8_t UNIT_PmodACLSetGetThreshTap(UART_MODULE uartID)
 {
 	uint8_t tapThresh = 0x0F;
-	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetTapThresh\r\n",uartID);
-	PmodACLSetTapThresh(chn,tapThresh);
-	return (PmodACLGetTapThresh(chn) == tapThresh);
+	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetThreshTap\r\n",uartID);
+	PmodACLSetThreshTap(chn,tapThresh);
+	return (PmodACLGetThreshTap(chn) == tapThresh);
 }
 
 uint8_t UNIT_PmodACLInterupt(UART_MODULE uartID)
@@ -331,8 +337,8 @@ uint8_t UNIT_PmodACLSetGetThreshFF(UART_MODULE uartID)
 uint8_t UNIT_PmodACLSetGetBwRate(UART_MODULE uartID)
 {
 	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLSetGetBWRate\r\n",uartID);
-    PmodACLSetBwRate(chn,PMODACL_BIT_BW_RATE_LOW_POWER| PMODACL_BIT_RATE_50HZ);
-	return (PmodACLGetBwRate(chn) == PMODACL_BIT_BW_RATE_LOW_POWER| PMODACL_BIT_RATE_50HZ);
+    PmodACLSetBwRate(chn,PMODACL_BIT_BW_RATE_LOW_POWER| PMODACL_BIT_BW_RATE_50HZ);
+	return (PmodACLGetBwRate(chn) == PMODACL_BIT_BW_RATE_LOW_POWER| PMODACL_BIT_BW_RATE_50HZ);
 }
 
 uint8_t UNIT_PmodACLGetFIFOStatus(UART_MODULE uartID)
