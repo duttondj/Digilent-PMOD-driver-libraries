@@ -131,7 +131,7 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 */
 void PmodJSTKDelay10us(uint32_t systemClock)
 { 
-	fnDelayNcycles(systemClock,NumCycles10us);
+	fnPmodDelayNcycles(systemClock,NumCycles10us);
 }
 
 /*  
@@ -148,5 +148,5 @@ void PmodJSTKDelay10us(uint32_t systemClock)
 */
 void PmodJSTKDelay15us(uint32_t systemClock)
 { 
-	fnDelayNcycles(systemClock,NumCycles15us);
+	fnPmodDelayNcycles(systemClock,NumCycles15us);
 }
