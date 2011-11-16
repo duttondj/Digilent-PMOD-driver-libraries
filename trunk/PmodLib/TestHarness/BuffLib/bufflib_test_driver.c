@@ -38,7 +38,7 @@ void BufLib_INIT(UART_MODULE uartID)
 
 uint8_t UNIT_BufLibWriteRead(UART_MODULE uartID)
 {
-	uint16_t value;
+	uint16_t value = 0;
 	uint8_t result = 0;
 
 	if(BufLibWriteBuffer(5))
@@ -47,8 +47,10 @@ uint8_t UNIT_BufLibWriteRead(UART_MODULE uartID)
 	}
 	else
 	{
-		UARTPutS("Write was unsuccessful\r\n", uartID);
+		UARTPutS("Write Failed!\r\n", uartID);
 	}
+
+	BufLibFinishWrite();
 
 	if(BufLibReadBuffer(&value))
 	{
@@ -56,38 +58,56 @@ uint8_t UNIT_BufLibWriteRead(UART_MODULE uartID)
 	}
 	else
 	{
-		UARTPutS("Read was unsuccessful\r\n", uartID);
+		UARTPutS("Read Failed!\r\n", uartID);
 	}
 
 	if(value == 5)
 	{
 		result = 1;
 	}
+	
+	BufLibResetBuffers();
 
 	return result;
 }
 
 uint8_t UNIT_BufLibWriteReadOverflow(UART_MODULE uartID)
 {
-	uint8_t result = 0;
+	uint8_t result = 1;
 	uint16_t value = 0;
 
 	BufLibWriteBuffer(1);
 	BufLibWriteBuffer(2);
 	BufLibWriteBuffer(3);
-	if(BufLibWriteBuffer(4))
-	{
-		result = 1;
-	}
+	BufLibWriteBuffer(4);
+	BufLibWriteBuffer(5);
+	BufLibWriteBuffer(6);
+
+	BufLibReadBuffer(&value);
+	BufLibReadBuffer(&value);
+	BufLibReadBuffer(&value);
+
+	BufLibWriteBuffer(7);
+	BufLibReadBuffer(&value);
+	BufLibReadBuffer(&value);
+	BufLibReadBuffer(&value);
+
+	BufLibWriteBuffer(8);
+	BufLibWriteBuffer(9);
+	BufLibWriteBuffer(10);
+
+	BufLibFinishWrite();
 
 	BufLibReadBuffer(&value);
 	BufLibReadBuffer(&value);
 	BufLibReadBuffer(&value);
 	
-	if(!BufLibReadBuffer(&value) || value != 4)
+	if(!BufLibReadBuffer(&value) || value != 10)
 	{
 		result = 0;
 	}
+
+	BufLibResetBuffers();
 	
 	return result;
 }
@@ -100,5 +120,20 @@ uint8_t UNIT_BufLibInvalidRead(UART_MODULE uartID)
 
 uint8_t UNIT_BufLibInvalidWrite(UART_MODULE uartID)
 {
-	return 0;
+	uint8_t result = 0;
+
+	BufLibWriteBuffer(1);
+	BufLibWriteBuffer(2);
+	BufLibWriteBuffer(3);
+	BufLibWriteBuffer(1);
+	BufLibWriteBuffer(2);
+	BufLibWriteBuffer(3);
+	BufLibWriteBuffer(1);
+	BufLibWriteBuffer(2);
+	BufLibWriteBuffer(3);
+	result = !BufLibWriteBuffer(4);
+
+	BufLibResetBuffers();
+
+	return result;
 }
