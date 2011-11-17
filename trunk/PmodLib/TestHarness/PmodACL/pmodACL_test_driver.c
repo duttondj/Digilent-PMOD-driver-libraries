@@ -102,14 +102,17 @@ uint8_t UNIT_PmodACLGetAxisData(UART_MODULE uartID)
 	PMODACL_AXIS pmodACLAxisTest;
 	uint8_t results[128];
 	uint8_t testResult = 1;
+	uint16_t delayCount = 0;
 	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLGetAxisData\r\n",uartID);
 	
 	PmodACLSetDataFormat(chn,PMODACL_BIT_DATA_FORMAT_RANGE_4G);
 	PmodACLSetPowerCtl(chn,PMODACL_BIT_POWER_CTL_MEASURE);
 	PmodACLSetFIFOCtl(chn,PMODACL_BIT_FIFO_CTL_BYPASS);
-	
-	PmodACLCalibrate(chn,5);
-
+	//Wait for settings to take effect
+	for(delayCount = 0;delayCount < 10000;delayCount++);
+	PmodACLCalibrate(chn,5,PMODACL_CALIBRATE_Z_AXIS);
+	//Wait for settings to take effect
+	for(delayCount = 0;delayCount < 10000;delayCount++);
 	PmodACLGetAxisData(chn,&pmodACLAxisBaseline);
 	sprintf(results,"Getting baseline measurements=> x-axis: %d  y-axis: %d  z-axis: %d\r\n",pmodACLAxisBaseline.xAxis,pmodACLAxisBaseline.yAxis,pmodACLAxisBaseline.zAxis);
 	UARTPutS(results,uartID);
@@ -137,19 +140,28 @@ uint8_t UNIT_PmodACLCalibrate(UART_MODULE uartID)
 	int32_t offsetRegisterReturned = 0;
 	int32_t offsetRegisterFromReg = 0;
 	int8_t offsetBytes[3];
-
+	uint8_t calibrationAxis = 0;
+	uint16_t delayCount = 0;
+	
 	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLCalibrate\r\n",uartID);
 	PmodACLSetDataFormat(chn,PMODACL_BIT_DATA_FORMAT_RANGE_4G);
 	PmodACLSetPowerCtl(chn,PMODACL_BIT_POWER_CTL_MEASURE);
 	PmodACLSetFIFOCtl(chn,PMODACL_BIT_FIFO_CTL_BYPASS);
+ 	do
+ 	{
+	 	UARTPutS("Select axis with 1g force applied, others should be 0g {x,y,z} =>",uartID);
+ 		calibrationAxis =  UARTGetOneByte(uartID);
+ 		UARTSendOneByte(calibrationAxis,uartID);
+ 		UARTPutS("\r\n",uartID);
+ 		calibrationAxis -= 'x';
+	}while(calibrationAxis > 2);
 	
-
-
 	PmodACLGetAxisData(chn,&pmodACLAxisBaseline);
 	sprintf(results,"Getting baseline measurements=> x-axis: %d  y-axis: %d  z-axis: %d\r\n",pmodACLAxisBaseline.xAxis ,pmodACLAxisBaseline.yAxis,pmodACLAxisBaseline.zAxis);
 	UARTPutS(results,uartID);
 	
-	offsetRegisterReturned = PmodACLCalibrate(chn,10);
+	offsetRegisterReturned = PmodACLCalibrate(chn,10,calibrationAxis);
+	for(delayCount = 0;delayCount < 10000;delayCount++){ asm("nop");};
 	
 	PmodACLGetAxisData(chn,&pmodACLAxisTest);
 	sprintf(results,"Results after calibration=> x-axis: %d  y-axis: %d  z-axis: %d\r\n",pmodACLAxisTest.xAxis,pmodACLAxisTest.yAxis,pmodACLAxisTest.zAxis);
