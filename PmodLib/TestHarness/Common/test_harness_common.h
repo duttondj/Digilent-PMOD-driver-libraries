@@ -30,6 +30,6 @@ uint8_t ConsoleMenu(uint8_t *pmodName,uint8_t *testNames[],uint32_t numCommands,
 uint8_t getIntegerFromConsole(UART_MODULE uartID);
 uint8_t UARTGetOneByte(UART_MODULE uartID);
 void UARTPutS(uint8_t *string,UART_MODULE uartID);
-
+void UARTSendOneByte(uint8_t oneByte,UART_MODULE uartID);
 
 #endif

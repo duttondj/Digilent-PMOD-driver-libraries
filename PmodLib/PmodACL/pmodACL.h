@@ -213,6 +213,12 @@
 #define PMODACL_MB_BIT              			0x40
 #define PMODACL_DEVICE_ID						0xE5
 
+/************************************/
+/*    Calibration Orienatation      */
+/************************************/
+#define PMODACL_CALIBRATE_X_AXIS				0x00
+#define PMODACL_CALIBRATE_Y_AXIS				0x01
+#define PMODACL_CALIBRATE_Z_AXIS				0x02
 
 typedef struct
 {
@@ -368,28 +374,35 @@ void PmodACLReadRegMultiByte(SpiChannel chn,uint8_t startAddress,uint8_t *data,u
 **  SpiChannel chn - Spi Channel
 **	uint8_t numSamples -number of samples to take 
 **                      during calibration
+**  uint8_t oneGaxisOrienatation - 1G axis orientation during calibration
+								   Acceptable values are prefixed with 
+**                            	   PMODACL_CALIBRATE defined in
+**							      "Local Type Definitions:Calibration Orientation"	
 **
-**  Returns: 
+**  Returns:
+** 
 **		int32_t - signed integer representing calculated 
-**					offset values
+**				  offset values <AXIS:byte>:  X:2, Y:1, Z:0
 **
 **	Errors:	none
 **
 **  Description:
 **
 **	Axis value sample are taken and averaged to achieve
-**  a baseline reprentation of all axes OFFSET register 
+**  a baseline reprentation of all axes, the OFFSET register 
 **  is then set to automatically adjust axis readings. 
 **  PmodACL should placed such that one axis is in a
 **  position to read 1g and the others 0g, typically
-**  this is the Z axis.
+**  this is the Z axis. The 1G orientation axis is
+**  specified using values defined in "Local Type Definitions
+**  :Calibration Orientation"	
 **
 **  Notes:
 **
 **  For a full description of the calibration proceedure see 
 **  "Offset Calibration" in the ADXL345 reference manual.
 */
-int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples);
+int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples,uint8_t oneGaxisOrienatation);
 
 /*  
 **  PmodACLWriteRegMultiByte

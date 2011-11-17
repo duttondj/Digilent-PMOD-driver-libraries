@@ -27,14 +27,16 @@
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
-#define SCALE_LSB_2G	 	0x02   //2g per LSB scale
-#define SCALE_LSB_4G 		0x04   //4g per LSB scale
-#define SCALE_10_BITS 		0x3FF  //Used for determining bit resolution
-								   //number of bits in axis registers
+#define PMODACL_SCALE_LSB_2G	 	0x02   //2g per LSB scale
+#define PMODACL_SCALE_LSB_4G 		0x04   //4g per LSB scale
+#define PMODACL_SCALE_10_BITS 		0x3FF  //Used for determining bit resolution
+								           //number of bits in axis register
+#define PMODACL_NUM_ACL_AXIS        0x3
 
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
+
 /*  
 **  PmodACLCalibrate
 **
@@ -47,48 +49,55 @@
 **  SpiChannel chn - Spi Channel
 **	uint8_t numSamples -number of samples to take 
 **                      during calibration
+**  uint8_t oneGaxisOrienatation - 1G axis orientation during calibration
+								   Acceptable values are prefixed with 
+**                            	   PMODACL_CALIBRATE defined in
+**							      "Local Type Definitions:Calibration Orientation"	
 **
-**  Returns: 
+**  Returns:
+** 
 **		int32_t - signed integer representing calculated 
-**					offset values
+**				  offset values <AXIS:byte>:  X:2, Y:1, Z:0
 **
 **	Errors:	none
 **
 **  Description:
 **
 **	Axis value sample are taken and averaged to achieve
-**  a baseline reprentation of all axes OFFSET register 
+**  a baseline reprentation of all axes, the OFFSET register 
 **  is then set to automatically adjust axis readings. 
 **  PmodACL should placed such that one axis is in a
 **  position to read 1g and the others 0g, typically
-**  this is the Z axis.
+**  this is the Z axis. The 1G orientation axis is
+**  specified using values defined in "Local Type Definitions
+**  :Calibration Orientation"	
 **
 **  Notes:
 **
 **  For a full description of the calibration proceedure see 
-**  'Offset Calibration' in the ADXL345 reference manual.
+**  "Offset Calibration" in the ADXL345 reference manual.
 */
-int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples)
+int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples,uint8_t oneGaxisOrienatation)
 {
 	PMODACL_AXIS pmodACLAxis;
-	int8_t axisValues[3];
-	uint8_t range = 0;
+	int8_t offsetValues[3];
+	uint8_t range = PMODACL_SCALE_LSB_4G;  //FULL_RES mode, 4mg/LSB scale
 	int16_t xAxis = 0;
 	int16_t yAxis = 0;
 	int16_t zAxis = 0;
-	uint16_t sensitivityLSBg = SCALE_LSB_4G; //FULL_RES mode, 4mg/LSB scale
+	uint16_t sensitivityLSBg[PMODACL_NUM_ACL_AXIS] = {0,0,0};
 	uint8_t sampleCount = 0;
 	int32_t offsetRegister = 0;
 	uint8_t dataFormat = PmodACLGetDataFormat(chn);
-	
+
 	//If data format is not in FULL_RES mode, set the range based on the Range Bits
 	if(!(dataFormat & PMODACL_BIT_DATA_FORMAT_FULL_RES))
 	{
-		range = SCALE_LSB_2G << (dataFormat & PMODACL_MASK_DATA_FORMAT_RANGE);
+		range = PMODACL_SCALE_LSB_2G << (dataFormat & PMODACL_MASK_DATA_FORMAT_RANGE);
 	}
 	
 	//determine LSB/g resolution based on the 10bits / range  (axis registers are 10 bits)
-	sensitivityLSBg = (SCALE_10_BITS/range) + 1;
+	sensitivityLSBg[oneGaxisOrienatation] = (PMODACL_SCALE_10_BITS/range) + 1;
 	
 	//accumulate the value of the axis samples 
 	for(sampleCount = 0;sampleCount <= numSamples;sampleCount++)
@@ -101,15 +110,15 @@ int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples)
 
 	//take the negative ceiling of each axis average and calculate the 
 	//offset based on the range per mg/LSB, ADXL345 states rounding rather than ceil
-	axisValues[0] = -ceil((xAxis/(double)numSamples) / range); //x Axis
-	axisValues[1] = -ceil((yAxis/(double)numSamples) / range); //y Axis
-	//subtract the calculated sensitivity since the Z axis should have 1g 
-	axisValues[2] = -ceil (((zAxis/(double)numSamples) - sensitivityLSBg) / range); //z Axis
-	PmodACLSetOffset(chn,(uint8_t*)axisValues);
+	//1g sensitivity is subtracted from the axis that is oriented to 1g
+	offsetValues[0] = -ceil(((xAxis/(double)numSamples) - sensitivityLSBg[PMODACL_CALIBRATE_X_AXIS])/range); //x Axis
+	offsetValues[1] = -ceil(((yAxis/(double)numSamples) - sensitivityLSBg[PMODACL_CALIBRATE_Y_AXIS])/range); //y Axis
+	offsetValues[2] = -ceil(((zAxis/(double)numSamples) - sensitivityLSBg[PMODACL_CALIBRATE_Z_AXIS])/range); //z Axis
+	PmodACLSetOffset(chn,(uint8_t*)offsetValues);
 	
-	offsetRegister = (int32_t)axisValues[0] << 16;
-	offsetRegister |= (int32_t)axisValues[1] << 8;
-	offsetRegister |= (int32_t)axisValues[2];
+	offsetRegister = (int32_t)offsetValues[PMODACL_CALIBRATE_X_AXIS] << 16;
+	offsetRegister |= (int32_t)offsetValues[PMODACL_CALIBRATE_Y_AXIS] << 8;
+	offsetRegister |= (int32_t)offsetValues[PMODACL_CALIBRATE_Z_AXIS];
 	
 	return offsetRegister;
 }

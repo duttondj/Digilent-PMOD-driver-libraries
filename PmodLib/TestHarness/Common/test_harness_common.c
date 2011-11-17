@@ -240,3 +240,22 @@ uint8_t UARTGetOneByte(UART_MODULE uartID)
 	return UARTGetDataByte(uartID);
 }
 
+/*  
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+void UARTSendOneByte(uint8_t oneByte,UART_MODULE uartID)
+{
+	if (UARTTransmitterIsReady(uartID))
+	{
+   	 	UARTSendDataByte(uartID, oneByte);
+	}	
+}	
