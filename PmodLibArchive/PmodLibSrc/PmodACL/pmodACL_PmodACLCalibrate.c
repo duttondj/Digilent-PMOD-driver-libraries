@@ -27,8 +27,8 @@
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
-#define PMODACL_SCALE_LSB_2G	 	0x02   //2g per LSB scale
-#define PMODACL_SCALE_LSB_4G 		0x04   //4g per LSB scale
+#define PMODACL_SCALE_LSB_2G	 	0x04   //2g per LSB scale
+#define PMODACL_SCALE_LSB_4G 		0x08   //4g per LSB scale
 #define PMODACL_SCALE_10_BITS 		0x3FF  //Used for determining bit resolution
 								           //number of bits in axis register
 #define PMODACL_NUM_ACL_AXIS        0x3
@@ -80,24 +80,33 @@
 int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples,uint8_t oneGaxisOrienatation)
 {
 	PMODACL_AXIS pmodACLAxis;
-	int8_t offsetValues[3];
+	int8_t offsetValues[3] = {0,0,0};
 	uint8_t range = PMODACL_SCALE_LSB_4G;  //FULL_RES mode, 4mg/LSB scale
-	int16_t xAxis = 0;
-	int16_t yAxis = 0;
-	int16_t zAxis = 0;
+	int32_t xAxis = 0;
+	int32_t yAxis = 0;
+	int32_t zAxis = 0;
 	uint16_t sensitivityLSBg[PMODACL_NUM_ACL_AXIS] = {0,0,0};
 	uint8_t sampleCount = 0;
 	int32_t offsetRegister = 0;
 	uint8_t dataFormat = PmodACLGetDataFormat(chn);
-
+	uint16_t resolution = PMODACL_SCALE_10_BITS; //Not at full resolution
+	
+	//clear offset register
+	PmodACLSetOffset(chn,(uint8_t*)offsetValues);
 	//If data format is not in FULL_RES mode, set the range based on the Range Bits
 	if(!(dataFormat & PMODACL_BIT_DATA_FORMAT_FULL_RES))
-	{
-		range = PMODACL_SCALE_LSB_2G << (dataFormat & PMODACL_MASK_DATA_FORMAT_RANGE);
+	{ 
+		//set the g rage based on the RANGE bit in the data format register
+		range = (PMODACL_SCALE_LSB_2G << (dataFormat & PMODACL_MASK_DATA_FORMAT_RANGE));
 	}
-	
-	//determine LSB/g resolution based on the 10bits / range  (axis registers are 10 bits)
-	sensitivityLSBg[oneGaxisOrienatation] = (PMODACL_SCALE_10_BITS/range) + 1;
+	//For FUL_RES set the resolution based on the RANGE bits in the data format register
+	//the base resultion is 10 bits, for each RANGE left shift by 1, then set the LSB 0's to 1 
+	else 
+	{
+		resolution = (resolution << (dataFormat & PMODACL_MASK_DATA_FORMAT_RANGE))|PMODACL_MASK_DATA_FORMAT_RANGE;
+	}	
+	//determine LSB/g resolution based on the (10 to 13)bits / range  
+	sensitivityLSBg[oneGaxisOrienatation] = (resolution/range) + 1;
 	
 	//accumulate the value of the axis samples 
 	for(sampleCount = 0;sampleCount <= numSamples;sampleCount++)
