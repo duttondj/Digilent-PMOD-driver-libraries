@@ -108,6 +108,7 @@ uint8_t UNIT_PmodACLGetAxisData(UART_MODULE uartID)
 	PmodACLSetDataFormat(chn,PMODACL_BIT_DATA_FORMAT_RANGE_4G);
 	PmodACLSetPowerCtl(chn,PMODACL_BIT_POWER_CTL_MEASURE);
 	PmodACLSetFIFOCtl(chn,PMODACL_BIT_FIFO_CTL_BYPASS);
+	PmodACLSetIntEnable(chn,PMODACL_BIT_INT_ENABLE_DATA_READY);
 	//Wait for settings to take effect
 	for(delayCount = 0;delayCount < 10000;delayCount++);
 	PmodACLCalibrate(chn,5,PMODACL_CALIBRATE_Z_AXIS);
@@ -144,7 +145,7 @@ uint8_t UNIT_PmodACLCalibrate(UART_MODULE uartID)
 	uint16_t delayCount = 0;
 	
 	UARTPutS("\n\rEXECUTING TEST =>UNIT_PmodACLCalibrate\r\n",uartID);
-	PmodACLSetDataFormat(chn,PMODACL_BIT_DATA_FORMAT_RANGE_4G);
+	PmodACLSetDataFormat(chn,PMODACL_BIT_DATA_FORMAT_RANGE_4G | PMODACL_BIT_DATA_FORMAT_FULL_RES );
 	PmodACLSetPowerCtl(chn,PMODACL_BIT_POWER_CTL_MEASURE);
 	PmodACLSetFIFOCtl(chn,PMODACL_BIT_FIFO_CTL_BYPASS);
  	do
@@ -157,10 +158,24 @@ uint8_t UNIT_PmodACLCalibrate(UART_MODULE uartID)
 	}while(calibrationAxis > 2);
 	
 	PmodACLGetAxisData(chn,&pmodACLAxisBaseline);
+	UARTPutS("FULL_RES mode\r\n",uartID);
 	sprintf(results,"Getting baseline measurements=> x-axis: %d  y-axis: %d  z-axis: %d\r\n",pmodACLAxisBaseline.xAxis ,pmodACLAxisBaseline.yAxis,pmodACLAxisBaseline.zAxis);
 	UARTPutS(results,uartID);
 	
-	offsetRegisterReturned = PmodACLCalibrate(chn,10,calibrationAxis);
+	offsetRegisterReturned = PmodACLCalibrate(chn,100,calibrationAxis);
+	for(delayCount = 0;delayCount < 10000;delayCount++){ asm("nop");};
+	
+	PmodACLGetAxisData(chn,&pmodACLAxisTest);
+	sprintf(results,"Results after calibration=> x-axis: %d  y-axis: %d  z-axis: %d\r\n",pmodACLAxisTest.xAxis,pmodACLAxisTest.yAxis,pmodACLAxisTest.zAxis);
+	UARTPutS(results,uartID);
+	
+	UARTPutS("Non-FULL_RES mode\r\n",uartID);
+	PmodACLSetDataFormat(chn,PMODACL_BIT_DATA_FORMAT_RANGE_4G);
+		PmodACLGetAxisData(chn,&pmodACLAxisBaseline);
+	sprintf(results,"Getting baseline measurements=> x-axis: %d  y-axis: %d  z-axis: %d\r\n",pmodACLAxisBaseline.xAxis ,pmodACLAxisBaseline.yAxis,pmodACLAxisBaseline.zAxis);
+	UARTPutS(results,uartID);
+	
+	offsetRegisterReturned = PmodACLCalibrate(chn,100,calibrationAxis);
 	for(delayCount = 0;delayCount < 10000;delayCount++){ asm("nop");};
 	
 	PmodACLGetAxisData(chn,&pmodACLAxisTest);
@@ -174,6 +189,8 @@ uint8_t UNIT_PmodACLCalibrate(UART_MODULE uartID)
 	offsetRegisterFromReg |= offsetBytes[2];
 	
 	//make sure offset register is set correctly
+
+//TODO: Check against range bounds in Table 1 of ADXL345 reference manual
 
 	return ((offsetRegisterFromReg & 0xffffff) == (offsetRegisterReturned & 0xffffff));
 }
