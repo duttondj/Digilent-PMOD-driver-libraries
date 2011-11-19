@@ -177,7 +177,7 @@
 #define PMODACL_BIT_DATA_FORMAT_RANGE_8G  		0x02 
 #define PMODACL_BIT_DATA_FORMAT_RANGE_4G  		0x01 
 #define PMODACL_BIT_DATA_FORMAT_RANGE_2G  		0x00
-#define PMODACL_MASK_DATA_FORMAT_RANGE			0x0F
+#define PMODACL_MASK_DATA_FORMAT_RANGE			0x07
 /************************************/
 
 /************************************/
@@ -1589,5 +1589,9 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  PmodACLSetActInactCtl
 */
 #define PmodACLGetActInactCtl(CHN) PmodACLReadReg(CHN,PMODACL_REG_ACT_INACT_CTL)
+
+
+#define PmodACLSetThreshInact(CHN,THRESH_INACT) PmodACLWriteReg(CHN,PMODACL_REG_THRESH_INACT,THRESH_INACT)
+#define PmodACLGetThreshInact(CHN) PmodACLReadReg(CHN,PMODACL_REG_THRESH_INACT)
 
 #endif
