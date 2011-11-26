@@ -1,0 +1,23 @@
+# MPLAB IDE generated this makefile for use with GNU make.
+# Project: bluetooth.mcp
+# Date: Fri Nov 25 13:12:20 2011
+
+AS = pic32-as.exe
+CC = pic32-gcc.exe
+LD = pic32-ld.exe
+AR = pic32-ar.exe
+HX = pic32-bin2hex.exe
+RM = rm
+
+bluetooth.hex : bluetooth.elf
+	$(HX) "bluetooth.elf"
+
+bluetooth.elf : main.o
+	$(CC) -mprocessor=32MX460F512L "main.o" -o"bluetooth.elf" -Wl,-L"C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib",-L"C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib",--defsym=__MPLAB_BUILD=1,--defsym=__MPLAB_DEBUG=1,--defsym=__MPLAB_DEBUGGER_PIC32MXSK=1,-Map="bluetooth.map"
+
+main.o : main.c
+	$(CC) -mprocessor=32MX460F512L -x c -c "main.c" -o"main.o" -MMD -MF"main.d" -D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1 -g
+
+clean : 
+	$(RM) "main.o" "bluetooth.elf" "bluetooth.hex"
+
