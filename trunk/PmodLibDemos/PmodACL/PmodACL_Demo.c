@@ -7,7 +7,7 @@
 #pragma config POSCMOD = HS, FNOSC = PRIPLL, FPBDIV = DIV_2
 
 #if(__PIC32_FEATURE_SET__ == 795)
-#pragma config ICESEL = ICS_PGx1
+#pragma config ICESEL = ICS_PGx1 //debug mode on Pic32 795
 #endif
 
 
@@ -22,7 +22,7 @@
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
-// Let compile time pre-processor calculate the PR1 (period)
+
 #define SYS_FREQ               (80000000L)
 #define PB_DIV                 2
 #define PB_CLOCK			   SYS_FREQ/PB_DIV
@@ -38,35 +38,33 @@
 #define PORT_BIT_BTN1 		IOPORT_A,BIT_6
 #define PORT_BIT_EXT_INT_0 	IOPORT_D,BIT_0
 #define PORT_BIT_SERVO 		IOPORT_G,BIT_12
-
-
-#define CLS_UART 			UART1
-#define PMODACL_SPI			2
+#define PMODACL_SPI			SPI_CHANNEL2
+#define CLS_MODULE_I2C		I2C1
 
 #elif(__PIC32_FEATURE_SET__ == 795)
 
 #define PORT_BIT_BTN1 		IOPORT_G,BIT_6
 #define PORT_BIT_EXT_INT_0 	IOPORT_D,BIT_0  //JD-02
 #define PORT_BIT_SERVO 		IOPORT_E,BIT_0  //PmodCon3 Servo 1, JB-01
-#define CLS_UART 			UART5 //UART3B JF 01-06
-#define PMODACL_SPI			3 //SPI1A JE 01-06
-#define MODULE_I2C			I2C1
-#define PORT_BIT_SCL		IOPORT_A,BIT_14
-#define PORT_BIT_SDA        IOPORT_A,BIT_15
-#define CLS_I2C_ADDRESS		0x48
+#define PMODACL_SPI			SPI_CHANNEL3 //SPI1A JE 01-06
+#define CLS_MODULE_I2C		I2C1
+#define PMODSF_SPI			SPI_CHANNEL4
+
 #endif
 
-#define ONE_DEGREE_RAD	.0174
-#define UPDATE_CLS 50   //update cls 20ms * 50 = 1000ms
 
-#define CLS_DISPLAY_WIDTH 17
+#define CLS_I2C_ADDRESS		0x48   //I2C address of CLS
+#define ONE_DEGREE_RAD		.0174  //3.14/180 = .0174, number of radians in one degree
+#define UPDATE_CLS 			50     //update cls 20ms * 50 = 1000ms 
 
-#define PULSE_STATE_HIGH  0x0
-#define PULSE_STATE_LOW   0x1
+#define CLS_DISPLAY_WIDTH 17 //width of CLS + null character
+
+#define PULSE_STATE_HIGH  0x0 //Next servo pulse wil be high
+#define PULSE_STATE_LOW   0x1 //next servo pulse will be low
 
 #define PULSE_SERVO_STOP_MIN  1500 //0.5ms pulse
-#define PULSE_SERVO_STOP_CENTER  1000  //1.4ms pulse 
-#define PULSE_SERVO_STOP_MAX  500  //2.3ms pulse
+#define PULSE_SERVO_STOP_CENTER  1000  //1.0ms pulse 
+#define PULSE_SERVO_STOP_MAX  500  //1.5ms pulse
 
 #define PULSE_ONE_DEGREE 11 //Range 2ms - 1ms = 1ms = 1000us, 1000ms/90deg = 11
 
@@ -75,19 +73,26 @@
 #define DEG_360 6.28
 #define DEG_270 4.71
 
-
+//ACL data ready interrupt fired
 uint8_t aclDataReady = 0;
+//Pulse width for the servo has completed
 uint8_t servoPulseComplete = 0;
-uint8_t pulseState = 0;
+//Current state of the servo output (High/Low)
+uint8_t pulseState = PULSE_STATE_HIGH;
 
-double surfaceNormal = 0;
-const uint32_t partialTick = SYS_FREQ/PB_DIV/PRESCALE_T1;
-double aclAngle = 0.0;
+//Previous angle of PmodACL, used to determine if pulse width should be updated
 double prevAclAngle = 0.0;
+//Angle to hold, provides reference for adjustemnts to servo
+double surfaceNormal = 0.0;
+//Partial tick calculation for pusle witdth, divide by number of toggles per
+//second desired
+const uint32_t partialTick = SYS_FREQ/PB_DIV/PRESCALE_T1;
+//current angle of PmodACL
+double aclAngle = 0.0;
+//Number of pulses per second, determines servo pulse width (SYS_FREQ/PB_DIV/PRESCALE_T1/TOGGLES_PER_SEC_T1)
 uint16_t pulseRate = T1_TICK;
+//counter for updating the CLS
 uint8_t clsUpdateCount = 0;
-
-
 
 //PmodCLS commands, see PmodCLS manual for descriptions
 uint8_t enableDisplay[] = {27, '[', '3', 'e', '\0'}; //enable display
@@ -205,8 +210,8 @@ void blockUntilBtn1Press()
 
 void calibrate()
 {
-	I2CPutS(homeCursor,MODULE_I2C,CLS_I2C_ADDRESS);
-	I2CPutS("BTN1-Calibrate",MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS(homeCursor,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS("BTN1-Calibrate",CLS_MODULE_I2C,CLS_I2C_ADDRESS);
 	blockUntilBtn1Press();
 	PmodACLSetIntEnable(PMODACL_SPI,0); //disable PmodACL interrupts
 	PmodACLCalibrate(PMODACL_SPI,10,PMODACL_CALIBRATE_X_AXIS);	
@@ -214,8 +219,8 @@ void calibrate()
 
 void setSurfaceNormal()
 {
-	I2CPutS(homeCursor,MODULE_I2C,CLS_I2C_ADDRESS);
-	I2CPutS("BTN1-Set Normal",MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS(homeCursor,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS("BTN1-Set Normal",CLS_MODULE_I2C,CLS_I2C_ADDRESS);
 	blockUntilBtn1Press();
  	surfaceNormal = getCurrentAngle();
  	aclAngle = surfaceNormal;
@@ -370,24 +375,24 @@ void I2CPutS(uint8_t *string,I2C_MODULE module,uint8_t address)
 void initCLS()
 {
 	uint32_t delay = 0;
-	I2CSetup(100000,PB_CLOCK,MODULE_I2C);
+	I2CSetup(100000,PB_CLOCK,CLS_MODULE_I2C);
 	//allow for CLS initialization 
 	for(delay = 0;delay < 10000;delay++);
-	I2CPutS(enableDisplay,MODULE_I2C,CLS_I2C_ADDRESS);
-	I2CPutS(setCursor,MODULE_I2C,CLS_I2C_ADDRESS);
-	I2CPutS(homeCursor,MODULE_I2C,CLS_I2C_ADDRESS);
-	I2CPutS(wrapLine,MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS(enableDisplay,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS(setCursor,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS(homeCursor,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS(wrapLine,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
 }
 
 
 void updateCls()
 {
 	uint8_t oneLine[CLS_DISPLAY_WIDTH];
-	I2CPutS(homeCursor,MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS(homeCursor,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
 	sprintf(oneLine,"Angle: %0.2f",aclAngle);
-	I2CPutS(oneLine,MODULE_I2C,CLS_I2C_ADDRESS);
-	I2CPutS(homeRow2,MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS(oneLine,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS(homeRow2,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
 	sprintf(oneLine,"Norm: %0.2f",surfaceNormal);
-	I2CPutS(oneLine,MODULE_I2C,CLS_I2C_ADDRESS);
+	I2CPutS(oneLine,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
 	
 }	

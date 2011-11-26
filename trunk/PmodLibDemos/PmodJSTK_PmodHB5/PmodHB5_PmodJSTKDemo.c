@@ -358,7 +358,7 @@ void configureTimers()
     OpenTimer2(T2_ON | T2_PS_1_256, SYS_FREQ/PB_DIV/PRESCALE/(TOGGLES_PER_SEC/2));
 
 	//HB5 X axis  
-    //Enable OC | 32 bit Mode  | Timer2 is selected | Continuous O/P   | OC Pin High , S Compare value, Compare value
+    //Enable OC | 32 bit Mode  | Timer3 is selected | Continuous O/P   | OC Pin High , S Compare value, Compare value
     OpenOC3(OC_ON | OC_TIMER3_SRC | OC_PWM_FAULT_PIN_DISABLE, 0, 0);
     OpenTimer3(T3_ON | T3_PS_1_256, SYS_FREQ/PB_DIV/PRESCALE/(TOGGLES_PER_SEC/2));
 
