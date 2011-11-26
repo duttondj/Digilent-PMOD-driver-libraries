@@ -211,19 +211,19 @@ void resetBTModule()
 	uint32_t delay = 0;
 	//Get current Bluetooth CTS pin state
 	uint16_t ctsPinState = PORTReadBits(PORT_BIT_PMODBTN2_CTS);
-
+	delayN(2000000);
 	//Send reset low to initiate reset
 	PORTClearBits(PORT_BIT_PMODBTN2_RESET);
  	while(PORTReadBits(PORT_BIT_PMODBTN2_CTS) == ctsPinState); //wait for CTS to go low, BT off
  
- 	delayN(400000); //delay so PmodBTN2 has to se the state change
+ 	delayN(1000000); //delay so PmodBTN2 has to se the state change
  
  	//Send reset high to finish reset
     PORTSetBits(PORT_BIT_PMODBTN2_RESET);
     while(PORTReadBits(PORT_BIT_PMODBTN2_CTS) != ctsPinState);	//wait for CTS to go high, BT on
  
      //wait for module to fully initialize
- 	delayN(4000000);
+ 	delayN(2000000);
 }
 
 
