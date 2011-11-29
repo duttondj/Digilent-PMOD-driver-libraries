@@ -8,8 +8,8 @@ dir_src=
 dir_bin=
 dir_tmp=
 dir_sin=
-dir_inc=C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth;C:\Code\cpts421\PmodLibArchive\PmodLib\include;.
-dir_lib=C:\Code\cpts421\PmodLibArchive\PmodLib\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib
+dir_inc=C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth;C:\Code\cpts421\PmodLibArchive\PmodLib\include
+dir_lib=C:\Code\cpts421\PmodLibArchive\PmodLib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib
 dir_lkr=
 [CAT_FILTERS]
 filter_src=*.s;*.c
@@ -36,7 +36,7 @@ file_000=no
 file_001=no
 file_002=no
 [FILE_INFO]
-file_000=cerebot_robot_remote.c
+file_000=cerebot_robot.c
 file_001=C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth\pmodBT.c
 file_002=C:\Code\cpts421\PmodLibArchive\PmodLib\lib\pmodlib_460.a
 [SUITE_INFO]

@@ -1,4 +1,4 @@
-cerebot_robot_remote.o: cerebot_robot_remote.c \
+cerebot_robot.o: cerebot_robot.c \
  C:\Code\cpts421\PmodLibArchive\PmodLib\include/pmodlib.h \
  C:\Code\cpts421\PmodLibArchive\PmodLib\include/PmodJSTK/pmodJSTK.h \
  C:\Code\cpts421\PmodLibArchive\PmodLib\include/PmodACL/pmodACL.h \

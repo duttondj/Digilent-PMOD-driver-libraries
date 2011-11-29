@@ -29,26 +29,27 @@
 #include <stdint.h>
 #include <plib.h>
 #include <pmodlib.h>
-#include "PmodBT.h"
+#include <PmodBT.h>
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
 #define SYS_FREQ               (80000000L)
 #define PB_DIV                 2
 #define PB_CLOCK			   SYS_FREQ/PB_DIV
-#define PRESCALE_T1            8
-#define TOGGLES_PER_SEC_T1     1000
+#define PRESCALE_T1            256
+#define TOGGLES_PER_SEC_T1     5
 #define T1_TICK              (SYS_FREQ/PB_DIV/PRESCALE_T1/TOGGLES_PER_SEC_T1)
-
 
 //IO PORT DEFINITIONS
 #define UART_BLUETOOTH					UART2
 #define UART_CLS						UART1
 #define SPI_JSTK_FWD_REV				SPI_CHANNEL2
 #define SPI_JSTK_LEFT_RIGHT				SPI_CHANNEL1
+#define SPI_1_PIC32_460_512L_TRIS		IOPORT_D,BIT_0|BIT_9|BIT_10
 #define PORT_BIT_PMODBTN2_STATUS		IOPORT_B,BIT_0
 #define PORT_BIT_PMODBTN2_RESET			IOPORT_B,BIT_1
 #define PORT_BIT_PMODBTN2_CTS			IOPORT_F,BIT_12
+#define PORT_BIT_LED_1					IOPORT_B,BIT_10
 
 //BIT RATE DEFINITIONS
 #define UART_BLUETOOTH_BITRATE			115200
@@ -57,11 +58,45 @@
 
 //BLUETOOTH PAIRING NAMES
 #define BLUETOOTH_NAME					"CEREBOTREMOTE"
-#define BLUETOOTH_REMOTE				"RYAN-LAPTOP-XPS"
+#define BLUETOOTH_REMOTE				"CEREBOTROBOT"
+
+#define BLUETOOTH_RESPONSE_CONNECT		"DEV_CONNECT\r\n"
 
 #define BLUETOOTH_CONNECTION_RETRIES	5
-
 #define BLUETOOTH_INQUIRY_TIMEOUT		"10"
+
+
+//MAIN APP TASK STATES
+#define STATE_CONNECT					0
+#define STATE_DISCONNECTED				1
+#define STATE_POLLDEV					2
+#define STATE_SEND_MESSAGE				3
+#define STATE_RECIEVE_MESSAGE			4
+#define STATE_UPDATE_CLS				5
+#define STATE_RESEND_MESSAGE			6
+
+
+#define TASK_LOOP_TIMER_FIRED			1
+#define TASK_LOOP_TIMER_RESET			0
+
+#define CLS_DISPLAY_WIDTH 				17
+
+typedef struct
+{
+	uint16_t fwdRevSpeed;
+	uint16_t leftRightSpeed;
+	uint8_t vehicleDirection;
+	uint8_t resetRobot;
+}CEREBOT_REMOTE_MSG;
+
+typedef struct
+{
+	uint16_t leftWheelRPM;
+	uint16_t rightWheelRPM;
+	uint16_t batteryVoltage;
+	uint8_t vehicleDirection;
+} __attribute__((__packed__)) CEREBOT_ROBOT_MSG;	
+
 
 /* ------------------------------------------------------------ */
 /*				Global Variables								*/
@@ -74,6 +109,7 @@ uint8_t homeRow2[] = {27,'[','1',';','0','H','\0'}; //set cursor to col 0, row 1
 uint8_t homeCursor[] = {27, '[', 'j', '\0'}; //set cursor to row 0, col 0, clear display
 uint8_t wrapLine[] = {27, '[', '0', 'h', '\0'}; //set display to "wrap"
 
+uint8_t clsDisplayLine[CLS_DISPLAY_WIDTH];
 
 PmodJSTKAxisButton jstkAxisBtnFwdRev;
 PmodJSTKAxisButton jstkAxisBtnLeftRight;
@@ -86,6 +122,12 @@ uint16_t xAxisMax = 0;
 uint16_t xAxisRange = 0;
 uint16_t yAxisRange = 0;
 
+uint8_t jystkFwdRevLedState = PMODJSTK_LD1_LD2_OFF;
+uint8_t jystkLeftRightLedState = PMODJSTK_LD1_LD2_OFF;
+uint8_t mainLoopState = STATE_CONNECT;
+uint8_t taskLoopTimerState = TASK_LOOP_TIMER_RESET;
+CEREBOT_REMOTE_MSG cerebotRemoteMsg;
+CEREBOT_ROBOT_MSG cerebotRobotMsg;
 
 void init();
 void initControllers();
@@ -97,7 +139,15 @@ void calibrateJoySticks();
 void getJstkValsOnBTNDown(SpiChannel chn,PmodJSTKAxisButton *jstkAxisBtn,uint8_t btn,uint8_t ledState);
 void blockWhileBtnDown(SpiChannel chn,uint8_t button,uint8_t ledState);
 void connectToRemoteHost();
-
+void resetJstkLedState();
+void appTask();
+void pollBlueToothConnected();
+void pollJstkSetLEDState();
+uint8_t longitudinalRedunancyCheck(uint8_t *bytes,uint16_t numBytes);
+void sendMessage();
+void enableTimers();
+void recieveMessage();
+void updateCLS();
 
 uint8_t main(void)
 {
@@ -112,24 +162,190 @@ void init()
 	initControllers();
 	setPinIO();
 	initCLS();
+	resetJstkLedState();
 	initPmodBTN2();
 	calibrateJoySticks();
 	connectToRemoteHost();
+	enableTimers();
+	appTask();
+}	
+
+
+
+void appTask()
+{
+	while(1)
+	{
+		if(taskLoopTimerState == TASK_LOOP_TIMER_FIRED)
+		{
+			switch(mainLoopState)
+			{
+					
+				 case STATE_CONNECT:
+					 connectToRemoteHost();
+					 break;
+				 case STATE_DISCONNECTED:
+				 	mainLoopState = STATE_CONNECT;
+				 	break;
+				 case STATE_POLLDEV:
+				 	pollJstkSetLEDState();
+				 	mainLoopState = STATE_SEND_MESSAGE;
+				 	break;
+				 case STATE_SEND_MESSAGE:
+				 	sendMessage();
+				  	if(mainLoopState != STATE_DISCONNECTED)
+				 		mainLoopState = STATE_RECIEVE_MESSAGE;
+				 	break;
+				 case STATE_RECIEVE_MESSAGE:
+				    recieveMessage();
+				 	mainLoopState = STATE_UPDATE_CLS;
+				 	break;
+				 
+				 case STATE_UPDATE_CLS:
+				 	updateCLS();
+				 	mainLoopState = STATE_POLLDEV;
+				 	taskLoopTimerState = TASK_LOOP_TIMER_RESET;
+				 	break;
+				 	
+				 case STATE_RESEND_MESSAGE:
+				 	mainLoopState =  STATE_SEND_MESSAGE;
+				 	break;			
+			}
+		}
+	}	
+	
+}
+
+void enableTimers()
+{
+	INTDisableInterrupts();
+	INTClearFlag(INT_T1);
+
+
+	//configure multi vector interrupts
+	INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
+	
+	OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_256, T1_TICK);
+    ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_2);    
+ 
+    INTEnableInterrupts();	
+}	
+	
+
+void sendMessage()
+{
+	uint8_t byteCount = 0;
+	uint8_t *msg = (uint8_t*)&cerebotRemoteMsg;
+	uint8_t lrc = 0;
+	cerebotRemoteMsg.fwdRevSpeed = jstkAxisBtnFwdRev.xAxis;
+	cerebotRemoteMsg.leftRightSpeed = jstkAxisBtnLeftRight.yAxis;
+	cerebotRemoteMsg.vehicleDirection = 1;
+	cerebotRemoteMsg.resetRobot = 0;
+	//lrc = longitudinalRedunancyCheck(msg,sizeof(CEREBOT_REMOTE_MSG));
+	for(byteCount = 0;byteCount < sizeof(CEREBOT_REMOTE_MSG);byteCount++)
+	{
+		while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
+		UARTSendDataByte(UART_BLUETOOTH, *msg);
+		msg++;
+	}
+//	while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
+//	UARTSendDataByte(UART_BLUETOOTH, lrc);
+}
+
+void recieveMessage()
+{
+	uint8_t byteCount = 0;
+	uint8_t oneByte = 0;
+	uint8_t *msg = (uint8_t*)&cerebotRobotMsg;
+	uint8_t numBytes = sizeof(CEREBOT_ROBOT_MSG);
+	while(byteCount < numBytes)
+	{
+		while(!UARTReceivedDataIsAvailable(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
+		oneByte = UARTGetDataByte(UART_BLUETOOTH);
+		//TODO: There are left over /r/n from a command somewhere, find and fix
+	//	if(oneByte != '\r' && oneByte != '\n')
+	//	{
+			*msg = oneByte;
+			msg++;
+			byteCount++;
+	//	}
+	}
+	
+}		
+
+
+
+void updateCLS()
+{
+	UARTPutS(homeCursor,UART_CLS);
+
+	sprintf(clsDisplayLine,"%d %d",cerebotRobotMsg.leftWheelRPM,
+											cerebotRobotMsg.rightWheelRPM);
+	UARTPutS(clsDisplayLine,UART_CLS);
+	UARTPutS(homeRow2,UART_CLS);
+	sprintf(clsDisplayLine,"%d %d",cerebotRobotMsg.batteryVoltage,cerebotRobotMsg.vehicleDirection);
+	UARTPutS(clsDisplayLine,UART_CLS);
+										
+}	
+
+ uint8_t longitudinalRedunancyCheck(uint8_t *bytes,uint16_t numBytes)
+ {
+  	uint8_t lrc = 0;
+  	uint16_t byteCount = 0;
+    for (byteCount = 0; byteCount < numBytes;byteCount++ )
+     {
+         lrc ^= bytes[byteCount];
+     }
+     return lrc;
+ }
+void pollBlueToothConnected()
+{
+	if(PORTReadBits(PORT_BIT_PMODBTN2_STATUS) == BIT_0)
+	{
+		PORTSetBits(PORT_BIT_LED_1); 
+	}
+	else
+	{	
+		mainLoopState = STATE_DISCONNECTED;
+		PORTClearBits(PORT_BIT_LED_1); 	
+	}	
+}	
+
+void pollJstkSetLEDState()
+{
+	PmodJSTKSendRecv(SPI_JSTK_FWD_REV,jystkFwdRevLedState,&jstkAxisBtnFwdRev);	
+	PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtnLeftRight);	
+}	
+
+void resetJstkLedState()
+{
+	PmodJSTKAxisButton jstkAxisBtn;
+	jystkFwdRevLedState = PMODJSTK_LD1_LD2_OFF;
+	jystkLeftRightLedState = PMODJSTK_LD1_LD2_OFF;
+	PmodJSTKSendRecv(SPI_JSTK_FWD_REV,jystkFwdRevLedState,&jstkAxisBtn);	
+	PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtn);
 }	
 
 void connectToRemoteHost()
 {
 	UARTPutS(homeCursor,UART_CLS);
 	UARTPutS("Connecting.....",UART_CLS);
-	if(BTInquireAndConnect(UART_BLUETOOTH,BLUETOOTH_REMOTE,BLUETOOTH_INQUIRY_TIMEOUT,BLUETOOTH_CONNECTION_RETRIES))
+	if(BTInquireAndConnect(UART_BLUETOOTH,BLUETOOTH_REMOTE,BLUETOOTH_INQUIRY_TIMEOUT,BLUETOOTH_CONNECTION_RETRIES,BLUETOOTH_RESPONSE_CONNECT))
 	{
 			UARTPutS(homeCursor,UART_CLS);
 			UARTPutS("Connected!!!",UART_CLS);	
+			mainLoopState = STATE_POLLDEV;
+			pollBlueToothConnected();
 	}
 	else
 	{
 			UARTPutS(homeCursor,UART_CLS);
-			UARTPutS("Connect Fail",UART_CLS);
+			UARTPutS("Connect Fail....",UART_CLS);
+			UARTPutS(homeRow2,UART_CLS);
+			UARTPutS("Reset Needed",UART_CLS);
+			mainLoopState = STATE_DISCONNECTED;
+			pollBlueToothConnected();
+			while(1);//User must reset, can not continue 
 	}			
 }	
 
@@ -148,36 +364,43 @@ void calibrateJoySticks()
 {
 	
 	PmodJSTKAxisButton jstkAxisBtn;
-	
+	//Turn on LD1
+	jystkFwdRevLedState = PMODJSTK_LD1_ON; //set joystick Fwd/Rev LED state
+
 	UARTPutS(homeCursor,UART_CLS);
 	UARTPutS("Calibrate Y-",UART_CLS);
-	blockWhileBtnDown(SPI_JSTK_FWD_REV,PMODJSTK_BTN1,PMODJSTK_LD1_ON);
-	getJstkValsOnBTNDown(SPI_JSTK_FWD_REV,&jstkAxisBtn,PMODJSTK_BTN1,PMODJSTK_LD1_ON);
+	blockWhileBtnDown(SPI_JSTK_FWD_REV,PMODJSTK_BTN1,jystkFwdRevLedState);
+	getJstkValsOnBTNDown(SPI_JSTK_FWD_REV,&jstkAxisBtn,PMODJSTK_BTN1,jystkFwdRevLedState);
 	yAxisMin = jstkAxisBtn.yAxis;
 	
 	UARTPutS(homeCursor,UART_CLS);
 	UARTPutS("Calibrate Y+",UART_CLS);
-	blockWhileBtnDown(SPI_JSTK_FWD_REV,PMODJSTK_BTN1,PMODJSTK_LD1_ON);
-	getJstkValsOnBTNDown(SPI_JSTK_FWD_REV,&jstkAxisBtn,PMODJSTK_BTN1,PMODJSTK_LD1_ON);
+	blockWhileBtnDown(SPI_JSTK_FWD_REV,PMODJSTK_BTN1,jystkFwdRevLedState);
+	getJstkValsOnBTNDown(SPI_JSTK_FWD_REV,&jstkAxisBtn,PMODJSTK_BTN1,jystkFwdRevLedState);
 	yAxisMax = jstkAxisBtn.yAxis;
 	//Turn off LD1
-	PmodJSTKSendRecv(SPI_JSTK_FWD_REV,PMODJSTK_LD1_LD2_OFF,&jstkAxisBtn);
+	jystkFwdRevLedState = PMODJSTK_LD1_LD2_OFF; //set joystick Fwd/Rev LED state
+	PmodJSTKSendRecv(SPI_JSTK_FWD_REV,jystkFwdRevLedState,&jstkAxisBtn);
 	
 	
 	UARTPutS(homeCursor,UART_CLS);
 	UARTPutS("Calibrate X-",UART_CLS);
-	blockWhileBtnDown(SPI_JSTK_LEFT_RIGHT,PMODJSTK_BTN1,PMODJSTK_LD1_ON);
-	getJstkValsOnBTNDown(SPI_JSTK_LEFT_RIGHT,&jstkAxisBtn,PMODJSTK_BTN1,PMODJSTK_LD1_ON);
+	jystkLeftRightLedState = PMODJSTK_LD1_ON;
+	blockWhileBtnDown(SPI_JSTK_LEFT_RIGHT,PMODJSTK_BTN1,jystkLeftRightLedState);
+	getJstkValsOnBTNDown(SPI_JSTK_LEFT_RIGHT,&jstkAxisBtn,PMODJSTK_BTN1,jystkLeftRightLedState);
 	xAxisMin = 	jstkAxisBtn.xAxis;
 
 	UARTPutS(homeCursor,UART_CLS);
 	UARTPutS("Calibrate X+",UART_CLS);
-	blockWhileBtnDown(SPI_JSTK_LEFT_RIGHT,PMODJSTK_BTN1,PMODJSTK_LD1_ON);
-	getJstkValsOnBTNDown(SPI_JSTK_LEFT_RIGHT,&jstkAxisBtn,PMODJSTK_BTN1,PMODJSTK_LD1_ON);
+	blockWhileBtnDown(SPI_JSTK_LEFT_RIGHT,PMODJSTK_BTN1,jystkLeftRightLedState);
+	getJstkValsOnBTNDown(SPI_JSTK_LEFT_RIGHT,&jstkAxisBtn,PMODJSTK_BTN1,jystkLeftRightLedState);
 	xAxisMax = jstkAxisBtn.xAxis;
-	//Turn off LD1
-	PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,PMODJSTK_LD1_LD2_OFF,&jstkAxisBtn);	
 	
+	//Turn off LD1
+	jystkLeftRightLedState = PMODJSTK_LD1_LD2_OFF;
+	PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtn);	
+	
+	//Calculate axis range
 	yAxisRange = (yAxisMax - yAxisMin);
 	xAxisRange = (xAxisMax - xAxisMin);
 	
@@ -266,7 +489,7 @@ void initCLS()
 void initControllers()
 {
 	//Initialize PmodBTN2 UART
-	UARTInit(UART_BLUETOOTH_BITRATE,PB_CLOCK,UART_BLUETOOTH,UART_ENABLE_PINS_CTS_RTS | UART_RTS_WHEN_RX_NOT_FULL);
+	UARTInit(UART_BLUETOOTH_BITRATE,PB_CLOCK,UART_BLUETOOTH,UART_ENABLE_PINS_CTS_RTS );
 	//Initialize PmodCLS UART
 	UARTInit(UART_CLS_BITRATE,PB_CLOCK,UART_CLS,UART_ENABLE_PINS_TX_RX_ONLY);
 	//Initialize PmodJSTK for forward and reverse
@@ -286,7 +509,11 @@ void setPinIO()
 	PORTSetPinsDigitalOut(PORT_BIT_PMODBTN2_RESET);	
 	
 	//fix for SPI1 not initing correctly via Microchip Libraries
-	PORTSetPinsDigitalOut(IOPORT_D,BIT_0|BIT_9|BIT_10);
+	PORTSetPinsDigitalOut(SPI_1_PIC32_460_512L_TRIS);
+
+	//Allow toggling of board LED 1 for bluetooth connnection status;
+	PORTSetPinsDigitalOut(PORT_BIT_LED_1);
+	PORTClearBits(PORT_BIT_LED_1); //LED 1initially off
 }		
 
 void UARTInit(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID,UART_CONFIGURATION configParams)
@@ -394,9 +621,15 @@ void initPmodBTN2()
 	strcpy(params[1],"DEV_");
 	BTSendSetCommand(UART_BLUETOOTH,params,2);
 
+
+	//Optimize bluetooth for latency
+	strcpy(params[0],"SQ");
+	strcpy(params[1],"16");
+	BTSendSetCommand(UART_BLUETOOTH,params,2);
+
 	//Set mode to master
 	strcpy(params[0],"SM");
-	strcpy(params[1],"1");
+	strcpy(params[1],"0");
 	BTSendSetCommand(UART_BLUETOOTH,params,2);
 
 	//Exit local configuration
@@ -406,3 +639,11 @@ void initPmodBTN2()
 	//Reset to allow changes to take effect
 	resetBTModule();
 }	
+
+
+void __ISR(_TIMER_1_VECTOR, ipl2)Tmr1Handler_MainTaskLoop(void)
+{	
+	taskLoopTimerState = TASK_LOOP_TIMER_FIRED;		
+	pollBlueToothConnected();
+	INTClearFlag(INT_T1);
+}
