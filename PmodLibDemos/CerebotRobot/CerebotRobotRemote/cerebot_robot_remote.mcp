@@ -8,8 +8,8 @@ dir_src=
 dir_bin=
 dir_tmp=
 dir_sin=
-dir_inc=C:\Code\cpts421\PmodLibDemos\CerebotRobot\DataStructures;C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth;C:\Code\cpts421\PmodLibArchive\PmodLib\include
-dir_lib=C:\Code\cpts421\PmodLibArchive\PmodLib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib
+dir_inc=C:\Code\cpts421\PmodLibDemos\CerebotRobot\DataStructures;C:\Code\cpts421\PmodLibArchive\PmodLib\include;C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth
+dir_lib=C:\Code\cpts421\PmodLibArchive\PmodLib\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib
 dir_lkr=
 [CAT_FILTERS]
 filter_src=*.s;*.c
@@ -36,7 +36,7 @@ file_000=no
 file_001=no
 file_002=no
 [FILE_INFO]
-file_000=cerebot_robot.c
+file_000=cerebot_robot_remote.c
 file_001=C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth\pmodBT.c
 file_002=C:\Code\cpts421\PmodLibArchive\PmodLib\lib\pmodlib_460.a
 [SUITE_INFO]
@@ -45,7 +45,7 @@ suite_state=
 [TOOL_SETTINGS]
 TS{CB0AF4B8-4022-429D-8F99-8A56782B2C6D}=-gdwarf-2
 TS{9C698E0A-CBC9-4EFF-AE7D-B569F93E7322}=-g
-TS{77F59DA1-3C53-4677-AC5F-A03EB0125170}=-o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -Map="$(BINDIR_)$(TARGETBASE).map"
+TS{77F59DA1-3C53-4677-AC5F-A03EB0125170}=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -legacy-libc
 TS{0396C0A1-9052-4E4F-8B84-EF0162B1B4E9}=
 [INSTRUMENTED_TRACE]
 enable=0

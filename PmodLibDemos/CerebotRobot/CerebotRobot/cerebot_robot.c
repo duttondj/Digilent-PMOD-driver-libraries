@@ -27,16 +27,18 @@
 #include <plib.h>
 #include <pmodlib.h>
 #include <PmodBT.h>
-
+#include <cerebot_robot_remote_types.h>
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
 #define SYS_FREQ             		(80000000L)
 #define PB_DIV                 		 2
 #define PB_CLOCK					 SYS_FREQ/PB_DIV
-#define PRESCALE_T2_T3         		 8
+#define PRESCALE_T1_T2_T3         		 8
+#define TOGGLES_PER_SEC_T1			 2000
 #define TOGGLES_PER_SEC_T2_T3        1000
-#define T2_T3_TICK               	(SYS_FREQ/PB_DIV/PRESCALE_T2_T3/TOGGLES_PER_SEC_T2_T3)
+#define T1_TICK						(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T2_T3)
+#define T2_T3_TICK               	(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T2_T3)
 
 
 #define HB5_NUM_MODULES 				2
@@ -88,32 +90,14 @@
 // define setup parameters for OpenADC10
 // set AN4 and AN5 as analog inputs
 #define PARAM5    ENABLE_AN8_ANA
-uint16_t yAxisMin = 30;
-uint16_t xAxisMin = 30;
 
-typedef struct
-{
-	uint16_t fwdRevSpeed;
-	uint16_t leftRightSpeed;
-	uint8_t vehicleDirection;
-	uint8_t resetRobot;
-}CEREBOT_REMOTE_MSG;
-
-typedef struct
-{
-	uint16_t leftWheelRPM;
-	uint16_t rightWheelRPM;
-	uint16_t batteryVoltage;
-	uint8_t vehicleDirection;
-} __attribute__((__packed__)) CEREBOT_ROBOT_MSG;	
 
 //PmodHB5 state
 HBRIDGE hbridges[HB5_NUM_MODULES];
-//Range of duty cycles for each HB5 above
-uint16_t hbDutyCycleRange[HB5_NUM_MODULES ];
 
 uint8_t UART_BT_RxData  = 0;
-
+uint8_t directionChangeComplete = 0;
+uint8_t currentDirection = 0;
 uint8_t mainLoopState = STATE_WAITING_CONNECT;
 uint8_t taskLoopTimerState = TASK_LOOP_TIMER_RESET;
 CEREBOT_REMOTE_MSG cerebotRemoteMsg;
@@ -134,10 +118,12 @@ void sendMessage();
 uint8_t recieveConnect();
 void appTask();
 void initHbridge();
+void changeDirection();
 
 uint8_t main(void)
 {
 	initControllers();
+	initADC10();
 	configureTimers();
  	initHbridge();
 	setPortIO();
@@ -149,8 +135,10 @@ uint8_t main(void)
 
 void appTask()
 {
+	uint8_t hbIndex = 0;
 	while(1)
 	{
+
 		switch(mainLoopState)
 		{
 			 case STATE_WAIT_RECIEVE_MESSAGE: 
@@ -160,6 +148,11 @@ void appTask()
 			    UART_BT_RxData = 0;
 				recieveMessage();
 			 	sendMessage();
+				if(currentDirection != cerebotRemoteMsg.vehicleDirectionFwdRev)
+				{
+					currentDirection = cerebotRemoteMsg.vehicleDirectionFwdRev;
+					changeDirection();
+				}
 				setDutyCycle();
 			  	if(mainLoopState != STATE_DISCONNECTED)
 			 		mainLoopState = STATE_WAIT_RECIEVE_MESSAGE;
@@ -171,6 +164,15 @@ void appTask()
 	
 }
 
+void changeDirection()
+{
+	uint8_t hbIndex = 0;
+	for(hbIndex = 0;hbIndex < HB5_NUM_MODULES;hbIndex++)
+	{
+				//toggle direction on all HB5
+  		hbridges[hbIndex].newDirection ^= (1 << 0);
+	}
+}
 
 /*  
 ** <FUNCTION NAME>
@@ -216,9 +218,9 @@ void sendMessage()
 	uint8_t byteCount = 0;
 	uint8_t *msg = (uint8_t*)&cerebotRobotMsg;
 	uint8_t lrc = 0;
-	cerebotRobotMsg.leftWheelRPM = 200;
-	cerebotRobotMsg.rightWheelRPM = 100;
-	cerebotRobotMsg.batteryVoltage = 50;
+	cerebotRobotMsg.leftWheelRPM = hbridges[0].rpm;
+	cerebotRobotMsg.rightWheelRPM = hbridges[1].rpm;
+	cerebotRobotMsg.batteryVoltage = ReadADC10(8 * ((~ReadActiveBufferADC10() & 0x01)));
 	cerebotRobotMsg.vehicleDirection = 1;
 //	lrc = longitudinalRedunancyCheck(msg,sizeof(CEREBOT_ROBOT_MSG));
 	for(byteCount = 0;byteCount < sizeof(CEREBOT_ROBOT_MSG);byteCount++)
@@ -314,10 +316,31 @@ void UARTInit(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID,UART_CONFIGU
 */
 void setDutyCycle()
 {
-
-	PmodHB5SetDCPWMDutyCycle(PR2  * ((cerebotRemoteMsg.leftRightSpeed - yAxisMin) / 1024.0),hbridges[0].ocChannel);
-	PmodHB5SetDCPWMDutyCycle(PR3  * ((cerebotRemoteMsg.fwdRevSpeed - xAxisMin) / 1024.0),hbridges[1].ocChannel);		
+	double fwdRevDCScaleLeft = cerebotRemoteMsg.fwdRevSpeed/100.0;
+	double fwdRevDCScaleRight = fwdRevDCScaleLeft;
+	if(directionChangeComplete)
+	{
+		if(cerebotRemoteMsg.vehicleDirectionLeftRight == ROBOT_DIR_LEFT)
+		{
+			fwdRevDCScaleLeft -= (cerebotRemoteMsg.leftRightSpeed/1000.0);
+			if(fwdRevDCScaleLeft < 0)
+			{
+				fwdRevDCScaleLeft = fwdRevDCScaleRight;	
+			}
+		}
+		else
+		{
+			fwdRevDCScaleRight -= (cerebotRemoteMsg.leftRightSpeed/1000.0);
+			if(fwdRevDCScaleRight < 0)
+			{
+				fwdRevDCScaleRight = fwdRevDCScaleLeft;	
+			}
 	
+		}
+		
+		PmodHB5SetDCPWMDutyCycle(PR2 * fwdRevDCScaleLeft,hbridges[0].ocChannel);	
+		PmodHB5SetDCPWMDutyCycle(PR3 * fwdRevDCScaleRight,hbridges[1].ocChannel);		
+	}
 }
 
 
@@ -336,6 +359,11 @@ void setDutyCycle()
 */
 void configureTimers()
 {
+
+	//RPM/Quadrature encoding, direction change
+    OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_8, T1_TICK);
+    ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_2);
+
 	//HB5 LEFT
     //Enable OC | 32 bit Mode  | Timer2 is selected | Continuous O/P   | OC Pin High , S Compare value, Compare value
     OpenOC2(OC_ON | OC_TIMER2_SRC | OC_PWM_FAULT_PIN_DISABLE, 0, 0);
@@ -551,6 +579,23 @@ void enableInterrupts()
 
 	INTEnable(INT_U2RX,INT_ENABLED);
 	INTEnableInterrupts();
+}
+
+void getQuadEncoding()
+{
+	uint8_t hbIndex = 0;
+	directionChangeComplete = PmodHB5ChangeDirection(&(hbridges[0]));
+	for(hbIndex = 0;hbIndex < HB5_NUM_MODULES;hbIndex++)
+	{
+		PmodHB5getQEncRPM(&(hbridges[hbIndex]),TOGGLES_PER_SEC_T1,5);
+		directionChangeComplete &= PmodHB5ChangeDirection(&(hbridges[hbIndex]));
+	}	
+}
+
+void __ISR(_TIMER_1_VECTOR, ipl2) Timer1Handler(void)
+{	
+	getQuadEncoding();
+  	INTClearFlag(INT_T1);
 }
 
 void __ISR(_UART_2_VECTOR, ipl2) UARTIntHandler(void)

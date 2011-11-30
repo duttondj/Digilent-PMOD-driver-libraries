@@ -30,6 +30,7 @@
 #include <plib.h>
 #include <pmodlib.h>
 #include <PmodBT.h>
+#include <cerebot_robot_remote_types.h>
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
@@ -51,10 +52,13 @@
 #define PORT_BIT_PMODBTN2_CTS			IOPORT_F,BIT_12
 #define PORT_BIT_LED_1					IOPORT_B,BIT_10
 
+
+#define CLS_UPDATE_COUNT				3
+
 //BIT RATE DEFINITIONS
 #define UART_BLUETOOTH_BITRATE			115200
 #define UART_CLS_BITRATE				9600
-#define SPI_JSTK_BITRATE				625000
+#define SPI_JSTK_BITRATE				156250
 
 //BLUETOOTH PAIRING NAMES
 #define BLUETOOTH_NAME					"CEREBOTREMOTE"
@@ -65,6 +69,8 @@
 #define BLUETOOTH_CONNECTION_RETRIES	5
 #define BLUETOOTH_INQUIRY_TIMEOUT		"10"
 
+#define JSTK_AXIS_ABOVE_CENTER			1
+#define JSTK_AXIS_BELOW_CENTER		    0
 
 //MAIN APP TASK STATES
 #define STATE_CONNECT					0
@@ -79,23 +85,9 @@
 #define TASK_LOOP_TIMER_FIRED			1
 #define TASK_LOOP_TIMER_RESET			0
 
-#define CLS_DISPLAY_WIDTH 				17
+#define CLS_DISPLAY_WIDTH 				17 //includes null terminator
 
-typedef struct
-{
-	uint16_t fwdRevSpeed;
-	uint16_t leftRightSpeed;
-	uint8_t vehicleDirection;
-	uint8_t resetRobot;
-}CEREBOT_REMOTE_MSG;
 
-typedef struct
-{
-	uint16_t leftWheelRPM;
-	uint16_t rightWheelRPM;
-	uint16_t batteryVoltage;
-	uint8_t vehicleDirection;
-} __attribute__((__packed__)) CEREBOT_ROBOT_MSG;	
 
 
 /* ------------------------------------------------------------ */
@@ -111,23 +103,24 @@ uint8_t wrapLine[] = {27, '[', '0', 'h', '\0'}; //set display to "wrap"
 
 uint8_t clsDisplayLine[CLS_DISPLAY_WIDTH];
 
-PmodJSTKAxisButton jstkAxisBtnFwdRev;
-PmodJSTKAxisButton jstkAxisBtnLeftRight;
+uint8_t jystkFwdRevLedState;
+uint8_t jystkLeftRightLedState;
+uint8_t mainLoopState;
+uint8_t taskLoopTimerState;
+
+uint8_t clsUpdateCounter = 0;
 
 //Joystick calibration values
-uint16_t yAxisMin = 0;
-uint16_t yAxisMax = 0;
-uint16_t xAxisMin = 0;
-uint16_t xAxisMax = 0;
-uint16_t xAxisRange = 0;
-uint16_t yAxisRange = 0;
+JSTK_AXIS_RANGE jstkAxisRange;
 
-uint8_t jystkFwdRevLedState = PMODJSTK_LD1_LD2_OFF;
-uint8_t jystkLeftRightLedState = PMODJSTK_LD1_LD2_OFF;
-uint8_t mainLoopState = STATE_CONNECT;
-uint8_t taskLoopTimerState = TASK_LOOP_TIMER_RESET;
+//Message sent from remote
 CEREBOT_REMOTE_MSG cerebotRemoteMsg;
+//Message recieved from robot
 CEREBOT_ROBOT_MSG cerebotRobotMsg;
+
+
+PmodJSTKAxisButton jstkAxisBtnFwdRev;
+PmodJSTKAxisButton jstkAxisBtnLeftRight;
 
 void init();
 void initControllers();
@@ -148,10 +141,16 @@ void sendMessage();
 void enableTimers();
 void recieveMessage();
 void updateCLS();
+uint16_t calcAxisDutyCycle(uint16_t axisValue, uint16_t axisMin,uint16_t axisRange);
 
 uint8_t main(void)
 {
-	
+
+jystkFwdRevLedState = PMODJSTK_LD1_LD2_OFF;
+jystkLeftRightLedState = PMODJSTK_LD1_LD2_OFF;
+mainLoopState = STATE_CONNECT;
+taskLoopTimerState = TASK_LOOP_TIMER_RESET;
+
 	init();
 
 	return 0;	
@@ -188,6 +187,7 @@ void appTask()
 				 	mainLoopState = STATE_CONNECT;
 				 	break;
 				 case STATE_POLLDEV:
+					
 				 	pollJstkSetLEDState();
 				 	mainLoopState = STATE_SEND_MESSAGE;
 				 	break;
@@ -202,7 +202,11 @@ void appTask()
 				 	break;
 				 
 				 case STATE_UPDATE_CLS:
-				 	updateCLS();
+					if(clsUpdateCounter == CLS_UPDATE_COUNT)
+					{
+				 		updateCLS();
+						clsUpdateCounter = 0;
+					}
 				 	mainLoopState = STATE_POLLDEV;
 				 	taskLoopTimerState = TASK_LOOP_TIMER_RESET;
 				 	break;
@@ -234,15 +238,18 @@ void enableTimers()
 
 void sendMessage()
 {
+
 	uint8_t byteCount = 0;
 	uint8_t *msg = (uint8_t*)&cerebotRemoteMsg;
 	uint8_t lrc = 0;
-	cerebotRemoteMsg.fwdRevSpeed = jstkAxisBtnFwdRev.xAxis;
-	cerebotRemoteMsg.leftRightSpeed = jstkAxisBtnLeftRight.yAxis;
-	cerebotRemoteMsg.vehicleDirection = 1;
+	uint8_t numBytes = sizeof(CEREBOT_REMOTE_MSG);
+	cerebotRemoteMsg.fwdRevSpeed = calcAxisDutyCycle(jstkAxisBtnFwdRev.yAxis, jstkAxisRange.yAxisMin,jstkAxisRange.yAxisRange);
+	cerebotRemoteMsg.leftRightSpeed = calcAxisDutyCycle(jstkAxisBtnLeftRight.xAxis,jstkAxisRange.xAxisMin,jstkAxisRange.xAxisRange);
+	cerebotRemoteMsg.vehicleDirectionFwdRev = (jstkAxisBtnFwdRev.yAxis >= jstkAxisRange.yAxisCenter)?JSTK_AXIS_ABOVE_CENTER:JSTK_AXIS_BELOW_CENTER;
+	cerebotRemoteMsg.vehicleDirectionLeftRight = (jstkAxisBtnLeftRight.xAxis >= jstkAxisRange.xAxisCenter)?JSTK_AXIS_ABOVE_CENTER:JSTK_AXIS_BELOW_CENTER;
 	cerebotRemoteMsg.resetRobot = 0;
 	//lrc = longitudinalRedunancyCheck(msg,sizeof(CEREBOT_REMOTE_MSG));
-	for(byteCount = 0;byteCount < sizeof(CEREBOT_REMOTE_MSG);byteCount++)
+	for(byteCount = 0;byteCount < numBytes;byteCount++)
 	{
 		while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
 		UARTSendDataByte(UART_BLUETOOTH, *msg);
@@ -250,6 +257,30 @@ void sendMessage()
 	}
 //	while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
 //	UARTSendDataByte(UART_BLUETOOTH, lrc);
+}
+
+//Joystick duty cycle based on position
+//			   100
+//				*
+//				*
+//     	   100**0**100
+//				*
+//				*
+//			   100
+
+uint16_t calcAxisDutyCycle(uint16_t axisValue, uint16_t axisMin,uint16_t axisRange)
+{
+	uint16_t axisPos = (uint16_t)(((axisValue - axisMin)/(double)axisRange) * 100);
+	if(axisPos > 50)
+	{
+		return (axisPos % 50) * 2;
+	}
+	else if(axisPos < 50)
+	{
+		return (50 - axisPos) * 2;
+	}
+	//is in center
+	return 0;
 }
 
 void recieveMessage()
@@ -261,16 +292,11 @@ void recieveMessage()
 	while(byteCount < numBytes)
 	{
 		while(!UARTReceivedDataIsAvailable(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
-		oneByte = UARTGetDataByte(UART_BLUETOOTH);
-		//TODO: There are left over /r/n from a command somewhere, find and fix
-	//	if(oneByte != '\r' && oneByte != '\n')
-	//	{
-			*msg = oneByte;
-			msg++;
-			byteCount++;
-	//	}
+		*msg = UARTGetDataByte(UART_BLUETOOTH);
+		msg++;
+		byteCount++;
+
 	}
-	
 }		
 
 
@@ -279,11 +305,11 @@ void updateCLS()
 {
 	UARTPutS(homeCursor,UART_CLS);
 
-	sprintf(clsDisplayLine,"%d %d",cerebotRobotMsg.leftWheelRPM,
+	sprintf(clsDisplayLine,"LW: %3d RW: %3d",cerebotRobotMsg.leftWheelRPM,
 											cerebotRobotMsg.rightWheelRPM);
 	UARTPutS(clsDisplayLine,UART_CLS);
 	UARTPutS(homeRow2,UART_CLS);
-	sprintf(clsDisplayLine,"%d %d",cerebotRobotMsg.batteryVoltage,cerebotRobotMsg.vehicleDirection);
+	sprintf(clsDisplayLine,"V+: %1.2f Dir: %d",cerebotRobotMsg.batteryVoltage * 0.012890625 ,cerebotRobotMsg.vehicleDirection);
 	UARTPutS(clsDisplayLine,UART_CLS);
 										
 }	
@@ -363,47 +389,66 @@ void blockWhileBtnDown(SpiChannel chn,uint8_t button,uint8_t ledState)
 void calibrateJoySticks()
 {
 	
-	PmodJSTKAxisButton jstkAxisBtn;
-	//Turn on LD1
-	jystkFwdRevLedState = PMODJSTK_LD1_ON; //set joystick Fwd/Rev LED state
+	PmodJSTKAxisButton jstkAxisBtnCalibrate;
 
-	UARTPutS(homeCursor,UART_CLS);
-	UARTPutS("Calibrate Y-",UART_CLS);
-	blockWhileBtnDown(SPI_JSTK_FWD_REV,PMODJSTK_BTN1,jystkFwdRevLedState);
-	getJstkValsOnBTNDown(SPI_JSTK_FWD_REV,&jstkAxisBtn,PMODJSTK_BTN1,jystkFwdRevLedState);
-	yAxisMin = jstkAxisBtn.yAxis;
+	PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtnCalibrate);
+	jstkAxisRange.xAxisCenter = jstkAxisBtnCalibrate.xAxis;	
+	PmodJSTKDelay15us(0);
+	PmodJSTKSendRecv(SPI_JSTK_FWD_REV,jystkFwdRevLedState,&jstkAxisBtnCalibrate);
+	jstkAxisRange.yAxisCenter  = jstkAxisBtnCalibrate.yAxis;
+	PmodJSTKDelay15us(0);
 	
-	UARTPutS(homeCursor,UART_CLS);
-	UARTPutS("Calibrate Y+",UART_CLS);
-	blockWhileBtnDown(SPI_JSTK_FWD_REV,PMODJSTK_BTN1,jystkFwdRevLedState);
-	getJstkValsOnBTNDown(SPI_JSTK_FWD_REV,&jstkAxisBtn,PMODJSTK_BTN1,jystkFwdRevLedState);
-	yAxisMax = jstkAxisBtn.yAxis;
-	//Turn off LD1
-	jystkFwdRevLedState = PMODJSTK_LD1_LD2_OFF; //set joystick Fwd/Rev LED state
-	PmodJSTKSendRecv(SPI_JSTK_FWD_REV,jystkFwdRevLedState,&jstkAxisBtn);
+	do
+	{
+		//Turn on LD1
+		jystkFwdRevLedState = PMODJSTK_LD1_ON; //set joystick Fwd/Rev LED state
 	
+		UARTPutS(homeCursor,UART_CLS);
+		UARTPutS("Calibrate Y-",UART_CLS);
+		blockWhileBtnDown(SPI_JSTK_FWD_REV,PMODJSTK_BTN1,jystkFwdRevLedState);
+		PmodJSTKDelay15us(0);
+		getJstkValsOnBTNDown(SPI_JSTK_FWD_REV,&jstkAxisBtnCalibrate,PMODJSTK_BTN1,jystkFwdRevLedState);
+		PmodJSTKDelay15us(0);
+		jstkAxisRange.yAxisMin = jstkAxisBtnCalibrate.yAxis;
+		
+		UARTPutS(homeCursor,UART_CLS);
+		UARTPutS("Calibrate Y+",UART_CLS);
+		blockWhileBtnDown(SPI_JSTK_FWD_REV,PMODJSTK_BTN1,jystkFwdRevLedState);
+		PmodJSTKDelay15us(0);
+		getJstkValsOnBTNDown(SPI_JSTK_FWD_REV,&jstkAxisBtnCalibrate,PMODJSTK_BTN1,jystkFwdRevLedState);
+		PmodJSTKDelay15us(0);
+		jstkAxisRange.yAxisMax = jstkAxisBtnCalibrate.yAxis;
+		//Turn off LD1
+		jystkFwdRevLedState = PMODJSTK_LD1_LD2_OFF; //set joystick Fwd/Rev LED state
+		PmodJSTKSendRecv(SPI_JSTK_FWD_REV,jystkFwdRevLedState,&jstkAxisBtnCalibrate);
+		
+		
+		UARTPutS(homeCursor,UART_CLS);
+		UARTPutS("Calibrate X-",UART_CLS);
+		jystkLeftRightLedState = PMODJSTK_LD1_ON;
+		blockWhileBtnDown(SPI_JSTK_LEFT_RIGHT,PMODJSTK_BTN1,jystkLeftRightLedState);
+		PmodJSTKDelay15us(0);
+		getJstkValsOnBTNDown(SPI_JSTK_LEFT_RIGHT,&jstkAxisBtnCalibrate,PMODJSTK_BTN1,jystkLeftRightLedState);
+		PmodJSTKDelay15us(0);
+		jstkAxisRange.xAxisMin = 	jstkAxisBtnCalibrate.xAxis;
 	
-	UARTPutS(homeCursor,UART_CLS);
-	UARTPutS("Calibrate X-",UART_CLS);
-	jystkLeftRightLedState = PMODJSTK_LD1_ON;
-	blockWhileBtnDown(SPI_JSTK_LEFT_RIGHT,PMODJSTK_BTN1,jystkLeftRightLedState);
-	getJstkValsOnBTNDown(SPI_JSTK_LEFT_RIGHT,&jstkAxisBtn,PMODJSTK_BTN1,jystkLeftRightLedState);
-	xAxisMin = 	jstkAxisBtn.xAxis;
-
-	UARTPutS(homeCursor,UART_CLS);
-	UARTPutS("Calibrate X+",UART_CLS);
-	blockWhileBtnDown(SPI_JSTK_LEFT_RIGHT,PMODJSTK_BTN1,jystkLeftRightLedState);
-	getJstkValsOnBTNDown(SPI_JSTK_LEFT_RIGHT,&jstkAxisBtn,PMODJSTK_BTN1,jystkLeftRightLedState);
-	xAxisMax = jstkAxisBtn.xAxis;
+		UARTPutS(homeCursor,UART_CLS);
+		UARTPutS("Calibrate X+",UART_CLS);
+		blockWhileBtnDown(SPI_JSTK_LEFT_RIGHT,PMODJSTK_BTN1,jystkLeftRightLedState);
+		PmodJSTKDelay15us(0);
+		getJstkValsOnBTNDown(SPI_JSTK_LEFT_RIGHT,&jstkAxisBtnCalibrate,PMODJSTK_BTN1,jystkLeftRightLedState);
+		PmodJSTKDelay15us(0);
+		jstkAxisRange.xAxisMax = jstkAxisBtnCalibrate.xAxis;
+		
+		//Turn off LD1
+		jystkLeftRightLedState = PMODJSTK_LD1_LD2_OFF;
+		PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtnCalibrate);	
 	
-	//Turn off LD1
-	jystkLeftRightLedState = PMODJSTK_LD1_LD2_OFF;
-	PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtn);	
-	
-	//Calculate axis range
-	yAxisRange = (yAxisMax - yAxisMin);
-	xAxisRange = (xAxisMax - xAxisMin);
-	
+		//Calculate axis range
+		jstkAxisRange.yAxisRange = (jstkAxisRange.yAxisMax - jstkAxisRange.yAxisMin);
+		jstkAxisRange.xAxisRange = (jstkAxisRange.xAxisMax - jstkAxisRange.xAxisMin);
+		
+	}while(jstkAxisRange.yAxisRange < 500 || jstkAxisRange.xAxisRange < 500);
 }
 
 /*  
@@ -643,7 +688,11 @@ void initPmodBTN2()
 
 void __ISR(_TIMER_1_VECTOR, ipl2)Tmr1Handler_MainTaskLoop(void)
 {	
-	taskLoopTimerState = TASK_LOOP_TIMER_FIRED;		
+	taskLoopTimerState = TASK_LOOP_TIMER_FIRED;	
+	if(clsUpdateCounter < CLS_UPDATE_COUNT)
+	{
+		clsUpdateCounter++;	
+	}
 	pollBlueToothConnected();
 	INTClearFlag(INT_T1);
 }
