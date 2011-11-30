@@ -63,15 +63,9 @@
 //MAIN APP TASK STATES
 #define STATE_WAITING_CONNECT			0
 #define STATE_DISCONNECTED				1
-#define STATE_SEND_MESSAGE				3
-#define STATE_RECIEVE_MESSAGE			4
-#define STATE_WAIT_RECIEVE				6
-#define STATE_RECIEVE_CONNECT			7
-#define STATE_WAIT_RECIEVE_MESSAGE		8
-
-#define TASK_LOOP_TIMER_FIRED			1
-#define TASK_LOOP_TIMER_RESET			0
-
+#define STATE_RECIEVE_MESSAGE			2
+#define STATE_WAIT_RECIEVE				3
+#define STATE_WAIT_RECIEVE_MESSAGE		4
 
 
 //ADC - BATTERY VOLTAGE
@@ -97,9 +91,9 @@ HBRIDGE hbridges[HB5_NUM_MODULES];
 
 uint8_t UART_BT_RxData  = 0;
 uint8_t directionChangeComplete = 0;
-uint8_t currentDirection = 0;
+uint8_t currentDirection = ROBOT_DIR_FWD;
 uint8_t mainLoopState = STATE_WAITING_CONNECT;
-uint8_t taskLoopTimerState = TASK_LOOP_TIMER_RESET;
+
 CEREBOT_REMOTE_MSG cerebotRemoteMsg;
 CEREBOT_ROBOT_MSG cerebotRobotMsg;
 
@@ -110,7 +104,7 @@ void setPortIO();
 void resetBTModule();
 void initControllers();
 void enableInterrupts();
-void pollBlueToothConnected();
+uint8_t pollBlueToothConnected();
 void initPmodBTN2();
 void UARTInit(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID,UART_CONFIGURATION configParams);
 void recieveMessage();
@@ -154,7 +148,7 @@ void appTask()
 					changeDirection();
 				}
 				setDutyCycle();
-			  	if(mainLoopState != STATE_DISCONNECTED)
+			  	if(mainLoopState != STATE_WAITING_CONNECT)
 			 		mainLoopState = STATE_WAIT_RECIEVE_MESSAGE;
 			 	break;
 			 
@@ -169,7 +163,7 @@ void changeDirection()
 	uint8_t hbIndex = 0;
 	for(hbIndex = 0;hbIndex < HB5_NUM_MODULES;hbIndex++)
 	{
-				//toggle direction on all HB5
+		//toggle direction on all HB5
   		hbridges[hbIndex].newDirection ^= (1 << 0);
 	}
 }
@@ -221,16 +215,14 @@ void sendMessage()
 	cerebotRobotMsg.leftWheelRPM = hbridges[0].rpm;
 	cerebotRobotMsg.rightWheelRPM = hbridges[1].rpm;
 	cerebotRobotMsg.batteryVoltage = ReadADC10(8 * ((~ReadActiveBufferADC10() & 0x01)));
-	cerebotRobotMsg.vehicleDirection = 1;
-//	lrc = longitudinalRedunancyCheck(msg,sizeof(CEREBOT_ROBOT_MSG));
+	cerebotRobotMsg.vehicleDirection = currentDirection;
 	for(byteCount = 0;byteCount < sizeof(CEREBOT_ROBOT_MSG);byteCount++)
 	{
-		while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
+		while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_WAITING_CONNECT);
 		UARTSendDataByte(UART_BLUETOOTH, *msg);
 		msg++;
 	}	
-	//while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
-	//UARTSendDataByte(UART_BLUETOOTH, lrc);
+
 }
 
 void recieveMessage()
@@ -242,7 +234,7 @@ void recieveMessage()
 	
 	for(byteCount = 0;byteCount < numBytes;byteCount++)
 	{
-		while(!UARTReceivedDataIsAvailable(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
+		while(!UARTReceivedDataIsAvailable(UART_BLUETOOTH) && mainLoopState != STATE_WAITING_CONNECT);
 		oneByte = UARTGetDataByte(UART_BLUETOOTH);
 		*msg = oneByte;
 		msg++;
@@ -320,9 +312,9 @@ void setDutyCycle()
 	double fwdRevDCScaleRight = fwdRevDCScaleLeft;
 	if(directionChangeComplete)
 	{
-		if(cerebotRemoteMsg.vehicleDirectionLeftRight == ROBOT_DIR_LEFT)
+		if(cerebotRemoteMsg.vehicleDirectionLeftRight == ROBOT_TURN_LEFT)
 		{
-			fwdRevDCScaleLeft -= (cerebotRemoteMsg.leftRightSpeed/1000.0);
+			fwdRevDCScaleLeft -= (cerebotRemoteMsg.leftRightSpeed/500.0);
 			if(fwdRevDCScaleLeft < 0)
 			{
 				fwdRevDCScaleLeft = fwdRevDCScaleRight;	
@@ -330,7 +322,7 @@ void setDutyCycle()
 		}
 		else
 		{
-			fwdRevDCScaleRight -= (cerebotRemoteMsg.leftRightSpeed/1000.0);
+			fwdRevDCScaleRight -= (cerebotRemoteMsg.leftRightSpeed/500.0);
 			if(fwdRevDCScaleRight < 0)
 			{
 				fwdRevDCScaleRight = fwdRevDCScaleLeft;	
@@ -552,17 +544,23 @@ void initPmodBTN2()
 	resetBTModule();
 }	
 
-void pollBlueToothConnected()
+uint8_t pollBlueToothConnected()
 {
 	if(PORTReadBits(PORT_BIT_PMODBTN2_STATUS) == BIT_0)
 	{
 		PORTSetBits(PORT_BIT_LED_1); 
+		return mainLoopState;
 	}
 	else
 	{	
-		mainLoopState = STATE_DISCONNECTED;
+		//Connection lost, stop motors and processing loop
+
+		PmodHB5SetDCPWMDutyCycle(0,hbridges[0].ocChannel);	
+		PmodHB5SetDCPWMDutyCycle(0,hbridges[1].ocChannel);	
 		PORTClearBits(PORT_BIT_LED_1); 	
+		return STATE_WAITING_CONNECT;
 	}	
+
 }	
 
 
@@ -575,7 +573,7 @@ void enableInterrupts()
 	//configure multi vector interrupts
 	INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
 
-	INTSetVectorPriority(INT_UART_2_VECTOR, INT_PRIORITY_LEVEL_2);
+	INTSetVectorPriority(INT_UART_2_VECTOR, INT_PRIORITY_LEVEL_7);
 
 	INTEnable(INT_U2RX,INT_ENABLED);
 	INTEnableInterrupts();
@@ -595,10 +593,11 @@ void getQuadEncoding()
 void __ISR(_TIMER_1_VECTOR, ipl2) Timer1Handler(void)
 {	
 	getQuadEncoding();
+	mainLoopState = pollBlueToothConnected();
   	INTClearFlag(INT_T1);
 }
 
-void __ISR(_UART_2_VECTOR, ipl2) UARTIntHandler(void)
+void __ISR(_UART_2_VECTOR, ipl7) UARTIntHandler(void)
 {
 
 	if(INTGetFlag(INT_U2RX))

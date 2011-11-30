@@ -241,22 +241,20 @@ void sendMessage()
 
 	uint8_t byteCount = 0;
 	uint8_t *msg = (uint8_t*)&cerebotRemoteMsg;
-	uint8_t lrc = 0;
 	uint8_t numBytes = sizeof(CEREBOT_REMOTE_MSG);
+
 	cerebotRemoteMsg.fwdRevSpeed = calcAxisDutyCycle(jstkAxisBtnFwdRev.yAxis, jstkAxisRange.yAxisMin,jstkAxisRange.yAxisRange);
 	cerebotRemoteMsg.leftRightSpeed = calcAxisDutyCycle(jstkAxisBtnLeftRight.xAxis,jstkAxisRange.xAxisMin,jstkAxisRange.xAxisRange);
-	cerebotRemoteMsg.vehicleDirectionFwdRev = (jstkAxisBtnFwdRev.yAxis >= jstkAxisRange.yAxisCenter)?JSTK_AXIS_ABOVE_CENTER:JSTK_AXIS_BELOW_CENTER;
-	cerebotRemoteMsg.vehicleDirectionLeftRight = (jstkAxisBtnLeftRight.xAxis >= jstkAxisRange.xAxisCenter)?JSTK_AXIS_ABOVE_CENTER:JSTK_AXIS_BELOW_CENTER;
+	cerebotRemoteMsg.vehicleDirectionFwdRev = (jstkAxisBtnFwdRev.yAxis >= jstkAxisRange.yAxisCenter)?ROBOT_DIR_FWD:ROBOT_DIR_REV;
+	cerebotRemoteMsg.vehicleDirectionLeftRight = (jstkAxisBtnLeftRight.xAxis >= jstkAxisRange.xAxisCenter)?ROBOT_TURN_RIGHT:ROBOT_TURN_LEFT;
 	cerebotRemoteMsg.resetRobot = 0;
-	//lrc = longitudinalRedunancyCheck(msg,sizeof(CEREBOT_REMOTE_MSG));
+
 	for(byteCount = 0;byteCount < numBytes;byteCount++)
 	{
 		while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
 		UARTSendDataByte(UART_BLUETOOTH, *msg);
 		msg++;
 	}
-//	while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
-//	UARTSendDataByte(UART_BLUETOOTH, lrc);
 }
 
 //Joystick duty cycle based on position
@@ -309,7 +307,8 @@ void updateCLS()
 											cerebotRobotMsg.rightWheelRPM);
 	UARTPutS(clsDisplayLine,UART_CLS);
 	UARTPutS(homeRow2,UART_CLS);
-	sprintf(clsDisplayLine,"V+: %1.2f Dir: %d",cerebotRobotMsg.batteryVoltage * 0.012890625 ,cerebotRobotMsg.vehicleDirection);
+	sprintf(clsDisplayLine,"V+: %1.2f Dir: %c",cerebotRobotMsg.batteryVoltage * 0.012890625
+							 ,(cerebotRobotMsg.vehicleDirection == ROBOT_DIR_FWD)?'F':'R');
 	UARTPutS(clsDisplayLine,UART_CLS);
 										
 }	
