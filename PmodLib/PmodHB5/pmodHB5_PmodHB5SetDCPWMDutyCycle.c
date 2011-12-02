@@ -27,6 +27,7 @@
 
 //OCxRS register, used to set output comparator duty cycle, 
 //example: set duty cycle to 50% OC1RS: *DCOutPutCompare[1] = PR1/2
+
 static uint32_t *DCOutPutCompare[] = {(uint32_t*)0x0,
 #ifdef _OCMP1
 				(uint32_t*)(_OCMP1_BASE_ADDRESS + _OC1CON_OC32_MASK), //OCRS1
@@ -44,6 +45,7 @@ static uint32_t *DCOutPutCompare[] = {(uint32_t*)0x0,
 				(uint32_t*)(_OCMP5_BASE_ADDRESS + _OC5CON_OC32_MASK)  //OCRS5
 #endif
 };
+
 
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
