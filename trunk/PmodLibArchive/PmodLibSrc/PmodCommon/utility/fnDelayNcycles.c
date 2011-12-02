@@ -57,7 +57,7 @@
 */
 void fnPmodDelayNcycles(uint32_t systemClock,uint32_t numCycles)
 {
-//TODO: Fix this, need to mode and maybe fix the conditions in the loop
+//TODO: Fix this, need to mode and maybe fix the conditions in the loo
 	volatile uint32_t clockStart = _CP0_GET_COUNT();
 	volatile uint32_t clockStop =  clockStart + numCycles;
 	if(clockStop > clockStart)
