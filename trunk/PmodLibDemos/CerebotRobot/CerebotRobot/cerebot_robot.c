@@ -31,41 +31,66 @@
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
-#define SYS_FREQ             		(80000000L)
-#define PB_DIV                 		 2
-#define PB_CLOCK					 SYS_FREQ/PB_DIV
-#define PRESCALE_T1_T2_T3         		 8
-#define TOGGLES_PER_SEC_T1			 2000
-#define TOGGLES_PER_SEC_T2_T3        1000
-#define T1_TICK						(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T2_T3)
-#define T2_T3_TICK               	(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T2_T3)
 
+//SYSTEM CLOCK - PB_CLOCK VALUES
+#define SYS_FREQ             			(80000000L)
+#define PB_DIV                 		 	2
+#define PB_CLOCK					 	SYS_FREQ/PB_DIV
 
-#define HB5_NUM_MODULES 				2
+//TIMER SCALE/TICK DEFINITIONS
+#define PRESCALE_T1_T2_T3         		8
+#define TOGGLES_PER_SEC_T1				2000
+#define TOGGLES_PER_SEC_T2_T3       	1000
+#define T1_TICK							(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T2_T3)
+#define T2_T3_TICK               		(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T2_T3)
 
-
-//IO PORT DEFINITIONS
+//BLUETOOTH IO PORT DEFINITIONS
 #define UART_BLUETOOTH					UART2
 #define PORT_BIT_PMODBTN2_STATUS		IOPORT_B,BIT_0
 #define PORT_BIT_PMODBTN2_RESET			IOPORT_B,BIT_1
 #define PORT_BIT_PMODBTN2_CTS			IOPORT_F,BIT_12
+
+//BLUETOOTH CONNECTED LED IOPORT DEFITION
 #define PORT_BIT_LED_1					IOPORT_B,BIT_10
 
-//BLUETOOTH PAIRING NAMES
-#define BLUETOOTH_NAME					"CEREBOTROBOT"
-#define BLUETOOTH_REMOTE				"CEREBOTREMOTE"
+//HBRIDGE IO PORT DEFINITIONS
+#define PORT_HB_LEFT_WHEEL_DIR 			IOPORT_D		//HB5 Direction
+#define PORT_HB_LEFT_WHEEL_EN 			IOPORT_D		//HB5 Enable
+#define PORT_HB_LEFT_WHEEL_SA  			IOPORT_D		//HB5 Sensor A
+#define PORT_HB_LEFT_WHEEL_SB  			IOPORT_C 		//HB5 Sensor B
 
-#define BLUETOOTH_RESPONSE_CONNECT		"DEV_CONNECT\r\n"
+#define BIT_HB_LEFT_WHEEL_DIR 			BIT_7			//HB5 Direction
+#define BIT_HB_LEFT_WHEEL_EN 			BIT_1			//HB5 Enable
+#define BIT_HB_LEFT_WHEEL_SA  			BIT_9			//HB5 Sensor A
+#define BIT_HB_LEFT_WHEEL_SB  			BIT_1			//HB5 Sensor B
+
+#define PORT_HB_RIGHT_WHEEL_DIR 		IOPORT_D	
+#define PORT_HB_RIGHT_WHEEL_EN 			IOPORT_D
+#define PORT_HB_RIGHT_WHEEL_SA  		IOPORT_D	
+#define PORT_HB_RIGHT_WHEEL_SB  		IOPORT_C
+
+#define BIT_HB_RIGHT_WHEEL_DIR 			BIT_6
+#define BIT_HB_RIGHT_WHEEL_EN 			BIT_2
+#define BIT_HB_RIGHT_WHEEL_SA  			BIT_10
+#define BIT_HB_RIGHT_WHEEL_SB  			BIT_2
+
+//BLUETOOTH DEVICE NAME
+#define BLUETOOTH_NAME					"CEREBOTROBOT" 
+
+
+//Text recieved from remote on connect 
+#define BLUETOOTH_RESPONSE_CONNECT		"DEV_CONNECT\r\n" 
 
 //BIT RATE DEFINITIONS
 #define UART_BLUETOOTH_BITRATE			115200
 
 //MAIN APP TASK STATES
-#define STATE_WAITING_CONNECT			0
-#define STATE_DISCONNECTED				1
-#define STATE_RECIEVE_MESSAGE			2
-#define STATE_WAIT_RECIEVE				3
-#define STATE_WAIT_RECIEVE_MESSAGE		4
+//Wait for connect, do not receieve message, also serves as disconnected state
+#define STATE_WAITING_CONNECT			0 
+//Recieve message from remote, UART interrupt has fired
+#define STATE_RECIEVE_MESSAGE			1
+//connected, but waiting for UART interrupt to fire on data recieved
+#define STATE_WAIT_RECIEVE_MESSAGE		2
 
 
 //ADC - BATTERY VOLTAGE
@@ -76,25 +101,42 @@
 // ADC ref external    | disable offset test    | disable scan mode | perform 2 samples | use dual buffers | use alternate mode
 #define PARAM2  ADC_VREF_AVDD_AVSS | ADC_OFFSET_CAL_DISABLE | ADC_SCAN_OFF | ADC_SAMPLES_PER_INT_2 | ADC_ALT_BUF_ON | ADC_ALT_INPUT_ON
 // define setup parameters for OpenADC10
-//                   use ADC internal clock | set sample time
+// use ADC internal clock | set sample time
 #define PARAM3  ADC_CONV_CLK_INTERNAL_RC | ADC_SAMPLE_TIME_15
 // define setup parameters for OpenADC10
 // do not assign channels to scan
 #define PARAM4    SKIP_SCAN_ALL
 // define setup parameters for OpenADC10
-// set AN4 and AN5 as analog inputs
+// set AN8 as analog input
 #define PARAM5    ENABLE_AN8_ANA
 
+//HB5 array indexes
+#define HB_LEFT_WHEEL					0
+#define HB_RIGHT_WHEEL					1
+
+//Number of HB5 modules
+#define HB5_NUM_MODULES 				2
 
 //PmodHB5 state
 HBRIDGE hbridges[HB5_NUM_MODULES];
 
+//Bluetooth UART recieved data flag
 uint8_t UART_BT_RxData  = 0;
+
+//HB5 has changed motor direction
 uint8_t directionChangeComplete = 0;
+
+//Current FWD/REV direction of robot
 uint8_t currentDirection = ROBOT_DIR_FWD;
+
+//Processing loop state, initalize as waiting for a connection
 uint8_t mainLoopState = STATE_WAITING_CONNECT;
 
+
+
+//Message recieved from remote
 CEREBOT_REMOTE_MSG cerebotRemoteMsg;
+//Message sent from robot
 CEREBOT_ROBOT_MSG cerebotRobotMsg;
 
 void setDutyCycle();
@@ -113,8 +155,41 @@ uint8_t recieveConnect();
 void appTask();
 void initHbridge();
 void changeDirection();
+void init();
 
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 uint8_t main(void)
+{
+	init();
+	appTask();
+	return 0;	
+}	
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+void init()
 {
 	initControllers();
 	initADC10();
@@ -123,10 +198,21 @@ uint8_t main(void)
 	setPortIO();
 	initPmodBTN2();
 	enableInterrupts();
-	appTask();
-	return 0;	
-}	
 
+}
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void appTask()
 {
 	uint8_t hbIndex = 0;
@@ -158,6 +244,19 @@ void appTask()
 	
 }
 
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void changeDirection()
 {
 	uint8_t hbIndex = 0;
@@ -184,36 +283,48 @@ void changeDirection()
 void initHbridge()
 {
 	memset(hbridges,0,sizeof(HBRIDGE) * HB5_NUM_MODULES);
-	hbridges[0].sensorAport = IOPORT_D;
-	hbridges[0].sensorAportBit = BIT_9;
-	hbridges[0].sensorBport = IOPORT_C;
-	hbridges[0].sensorBportBit = BIT_1;
-	hbridges[0].directionPort = IOPORT_D;
-	hbridges[0].directionPortBit = BIT_7;
-	hbridges[0].currentDirection = PMOD_HB5_DIR_CW;
-	hbridges[0].newDirection = PMOD_HB5_DIR_CW;
-	hbridges[0].ocChannel = 2;
-	PORTSetBits(IOPORT_D,BIT_7); //set initial direction CW
+	hbridges[HB_LEFT_WHEEL].sensorAport = 		PORT_HB_LEFT_WHEEL_SA;
+	hbridges[HB_LEFT_WHEEL].sensorAportBit = 	BIT_HB_LEFT_WHEEL_SA;
+	hbridges[HB_LEFT_WHEEL].sensorBport = 		PORT_HB_LEFT_WHEEL_SB;
+	hbridges[HB_LEFT_WHEEL].sensorBportBit = 	BIT_HB_LEFT_WHEEL_SB;
+	hbridges[HB_LEFT_WHEEL].directionPort = 	PORT_HB_LEFT_WHEEL_DIR;
+	hbridges[HB_LEFT_WHEEL].directionPortBit = 	BIT_HB_LEFT_WHEEL_DIR;
+	hbridges[HB_LEFT_WHEEL].currentDirection = 	PMOD_HB5_DIR_CW;
+	hbridges[HB_LEFT_WHEEL].newDirection = 		PMOD_HB5_DIR_CW;
+	hbridges[HB_LEFT_WHEEL].ocChannel = 		2;
+	PORTSetBits(PORT_HB_LEFT_WHEEL_DIR,BIT_HB_LEFT_WHEEL_DIR); //set initial direction CW
 
-	hbridges[1].sensorAport = IOPORT_D;
-	hbridges[1].sensorAportBit = BIT_10;
-	hbridges[1].sensorBport = IOPORT_C;
-	hbridges[1].sensorBportBit = BIT_2;
-	hbridges[1].directionPort = IOPORT_D;
-	hbridges[1].directionPortBit = BIT_6;
-	hbridges[1].currentDirection = PMOD_HB5_DIR_CCW;
-	hbridges[1].newDirection = PMOD_HB5_DIR_CCW;
-	hbridges[1].ocChannel = 3;
-	PORTClearBits(IOPORT_D,BIT_6);//set inital direction CCW
+	hbridges[HB_RIGHT_WHEEL].sensorAport = 		PORT_HB_RIGHT_WHEEL_SA;
+	hbridges[HB_RIGHT_WHEEL].sensorAportBit = 	BIT_HB_RIGHT_WHEEL_SA;
+	hbridges[HB_RIGHT_WHEEL].sensorBport = 		PORT_HB_RIGHT_WHEEL_SB;
+	hbridges[HB_RIGHT_WHEEL].sensorBportBit = 	BIT_HB_RIGHT_WHEEL_SB;
+	hbridges[HB_RIGHT_WHEEL].directionPort = 	PORT_HB_RIGHT_WHEEL_DIR;
+	hbridges[HB_RIGHT_WHEEL].directionPortBit =	BIT_HB_RIGHT_WHEEL_DIR;
+	hbridges[HB_RIGHT_WHEEL].currentDirection = PMOD_HB5_DIR_CCW;
+	hbridges[HB_RIGHT_WHEEL].newDirection = 	PMOD_HB5_DIR_CCW;
+	hbridges[HB_RIGHT_WHEEL].ocChannel = 		3;
+	PORTClearBits(PORT_HB_RIGHT_WHEEL_DIR,BIT_HB_RIGHT_WHEEL_DIR); //set initial direction CCW
 }
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void sendMessage()
 {
 	uint8_t byteCount = 0;
 	uint8_t *msg = (uint8_t*)&cerebotRobotMsg;
 	uint8_t lrc = 0;
-	cerebotRobotMsg.leftWheelRPM = hbridges[0].rpm;
-	cerebotRobotMsg.rightWheelRPM = hbridges[1].rpm;
+	cerebotRobotMsg.leftWheelRPM = hbridges[HB_LEFT_WHEEL].rpm;
+	cerebotRobotMsg.rightWheelRPM = hbridges[HB_RIGHT_WHEEL].rpm;
 	cerebotRobotMsg.batteryVoltage = ReadADC10(8 * ((~ReadActiveBufferADC10() & 0x01)));
 	cerebotRobotMsg.vehicleDirection = currentDirection;
 	for(byteCount = 0;byteCount < sizeof(CEREBOT_ROBOT_MSG);byteCount++)
@@ -224,7 +335,19 @@ void sendMessage()
 	}	
 
 }
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void recieveMessage()
 {
 	uint8_t byteCount = 0;
@@ -272,13 +395,37 @@ void initADC10()
 
     while ( ! mAD1GetIntFlag() ) { } // wait for the first conversion to complete so there will be vaild data in ADC result registers
 }
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void initControllers()
 {
 	//Initialize PmodBTN2 UART
 	UARTInit(UART_BLUETOOTH_BITRATE,PB_CLOCK,UART_BLUETOOTH,UART_ENABLE_PINS_CTS_RTS | UART_RTS_WHEN_RX_NOT_FULL);	
 }	
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void UARTInit(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID,UART_CONFIGURATION configParams)
 {
 	UARTConfigure(uartID,configParams);
@@ -310,28 +457,45 @@ void setDutyCycle()
 {
 	double fwdRevDCScaleLeft = cerebotRemoteMsg.fwdRevSpeed/100.0;
 	double fwdRevDCScaleRight = fwdRevDCScaleLeft;
+	static int8_t cummulativeWheelScale = 0;
 	if(directionChangeComplete)
 	{
-		if(cerebotRemoteMsg.vehicleDirectionLeftRight == ROBOT_TURN_LEFT)
+		if(cerebotRemoteMsg.leftRightSpeed < 6 &&  hbridges[HB_LEFT_WHEEL].rpm > 0) 
 		{
-			fwdRevDCScaleLeft -= (cerebotRemoteMsg.leftRightSpeed/500.0);
+			
+			 if( hbridges[HB_LEFT_WHEEL].rpm > hbridges[HB_RIGHT_WHEEL].rpm)
+			{
+				cummulativeWheelScale+=1;
+			}
+			else if( hbridges[HB_LEFT_WHEEL].rpm < hbridges[HB_RIGHT_WHEEL].rpm)
+			{
+				cummulativeWheelScale-=1;
+			}
+			
+ 			fwdRevDCScaleRight += (cummulativeWheelScale / 200.0);
+	
+		}
+		else if(cerebotRemoteMsg.vehicleDirectionLeftRight == ROBOT_TURN_LEFT)
+		{
+			fwdRevDCScaleLeft -= (cerebotRemoteMsg.leftRightSpeed/250.0);
 			if(fwdRevDCScaleLeft < 0)
 			{
 				fwdRevDCScaleLeft = fwdRevDCScaleRight;	
 			}
+
 		}
-		else
+		else 
 		{
-			fwdRevDCScaleRight -= (cerebotRemoteMsg.leftRightSpeed/500.0);
+			fwdRevDCScaleRight -= (cerebotRemoteMsg.leftRightSpeed/250.0);
 			if(fwdRevDCScaleRight < 0)
 			{
 				fwdRevDCScaleRight = fwdRevDCScaleLeft;	
 			}
-	
+
 		}
 		
-		PmodHB5SetDCPWMDutyCycle(PR2 * fwdRevDCScaleLeft,hbridges[0].ocChannel);	
-		PmodHB5SetDCPWMDutyCycle(PR3 * fwdRevDCScaleRight,hbridges[1].ocChannel);		
+		PmodHB5SetDCPWMDutyCycle(PR2 * fwdRevDCScaleLeft,hbridges[HB_LEFT_WHEEL].ocChannel);	
+		PmodHB5SetDCPWMDutyCycle(PR3 * fwdRevDCScaleRight,hbridges[HB_RIGHT_WHEEL].ocChannel);		
 	}
 }
 
@@ -396,24 +560,35 @@ void setPortIO()
 	PORTSetPinsDigitalOut(PORT_BIT_PMODBTN2_RESET);	
 	
 	
-	//setup HB5 Y axis  JE (pins 7 - 12)
-	PORTSetPinsDigitalOut(IOPORT_D, BIT_7); //HB5 Direction
-	PORTSetPinsDigitalOut(IOPORT_D, BIT_1); //HB5 Enable
-	PORTSetPinsDigitalIn(IOPORT_D, BIT_9);  //HB5 Sensor A
-	PORTSetPinsDigitalIn(IOPORT_C, BIT_1);  //HB5 Sensor B
+	//setup HB5 PORT IO
+	PORTSetPinsDigitalOut(PORT_HB_LEFT_WHEEL_DIR, BIT_HB_LEFT_WHEEL_DIR); //HB5 Direction
+	PORTSetPinsDigitalOut(PORT_HB_LEFT_WHEEL_EN, BIT_HB_LEFT_WHEEL_EN); //HB5 Enable
+	PORTSetPinsDigitalIn(PORT_HB_LEFT_WHEEL_SA, BIT_HB_LEFT_WHEEL_SA);  //HB5 Sensor A
+	PORTSetPinsDigitalIn(PORT_HB_LEFT_WHEEL_SB, BIT_HB_LEFT_WHEEL_SB);  //HB5 Sensor B
 
-	//setup HB5 X axis JD (ping 7 - 12)
-	PORTSetPinsDigitalOut(IOPORT_D, BIT_6); //HB5 Direction
-	PORTSetPinsDigitalOut(IOPORT_D, BIT_2); //HB5 Enable
-	PORTSetPinsDigitalIn(IOPORT_D, BIT_10); //HB5 Sensor A
-	PORTSetPinsDigitalIn(IOPORT_C, BIT_2);  //HB5 Sensor B	
+	PORTSetPinsDigitalOut(PORT_HB_RIGHT_WHEEL_DIR, BIT_HB_RIGHT_WHEEL_DIR); //HB5 Direction
+	PORTSetPinsDigitalOut(PORT_HB_RIGHT_WHEEL_EN, BIT_HB_RIGHT_WHEEL_EN); //HB5 Enable
+	PORTSetPinsDigitalIn(PORT_HB_RIGHT_WHEEL_SA, BIT_HB_RIGHT_WHEEL_SA);  //HB5 Sensor A
+	PORTSetPinsDigitalIn(PORT_HB_RIGHT_WHEEL_SB, BIT_HB_RIGHT_WHEEL_SB);  //HB5 Sensor B
 	
 	//Allow toggling of board LED 1 for bluetooth connnection status;
 	PORTSetPinsDigitalOut(PORT_BIT_LED_1);
 	PORTClearBits(PORT_BIT_LED_1); //LED 1initially off
 }
 
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void resetBTModule()
 {
 	uint32_t delay = 0;
@@ -520,12 +695,6 @@ void initPmodBTN2()
 	strcpy(params[1],"0000");
 	BTSendSetCommand(UART_BLUETOOTH,params,2);
 
-	//Set connect prefix to DEV_, will send DEV_CONNECT to 
-	//remote host on connect
-/*	strcpy(params[0],"SO");
-	strcpy(params[1],"DEV_");
-	BTSendSetCommand(UART_BLUETOOTH,params,2);
-*/
 	//Optimize bluetooth for latency
 	strcpy(params[0],"SQ");
 	strcpy(params[1],"16");
@@ -543,7 +712,19 @@ void initPmodBTN2()
 	//Reset to allow changes to take effect
 	resetBTModule();
 }	
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 uint8_t pollBlueToothConnected()
 {
 	if(PORTReadBits(PORT_BIT_PMODBTN2_STATUS) == BIT_0)
@@ -555,15 +736,27 @@ uint8_t pollBlueToothConnected()
 	{	
 		//Connection lost, stop motors and processing loop
 
-		PmodHB5SetDCPWMDutyCycle(0,hbridges[0].ocChannel);	
-		PmodHB5SetDCPWMDutyCycle(0,hbridges[1].ocChannel);	
+		PmodHB5SetDCPWMDutyCycle(0,hbridges[HB_LEFT_WHEEL].ocChannel);	
+		PmodHB5SetDCPWMDutyCycle(0,hbridges[HB_RIGHT_WHEEL].ocChannel);	
 		PORTClearBits(PORT_BIT_LED_1); 	
 		return STATE_WAITING_CONNECT;
 	}	
 
 }	
 
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void enableInterrupts()
 {
 	// Configure the interrupt priority, level 5
@@ -578,25 +771,61 @@ void enableInterrupts()
 	INTEnable(INT_U2RX,INT_ENABLED);
 	INTEnableInterrupts();
 }
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void getQuadEncoding()
 {
 	uint8_t hbIndex = 0;
-	directionChangeComplete = PmodHB5ChangeDirection(&(hbridges[0]));
+	directionChangeComplete = PmodHB5ChangeDirection(&(hbridges[HB_LEFT_WHEEL]));
 	for(hbIndex = 0;hbIndex < HB5_NUM_MODULES;hbIndex++)
 	{
 		PmodHB5getQEncRPM(&(hbridges[hbIndex]),TOGGLES_PER_SEC_T1,5);
 		directionChangeComplete &= PmodHB5ChangeDirection(&(hbridges[hbIndex]));
 	}	
 }
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void __ISR(_TIMER_1_VECTOR, ipl2) Timer1Handler(void)
 {	
 	getQuadEncoding();
 	mainLoopState = pollBlueToothConnected();
   	INTClearFlag(INT_T1);
 }
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void __ISR(_UART_2_VECTOR, ipl7) UARTIntHandler(void)
 {
 

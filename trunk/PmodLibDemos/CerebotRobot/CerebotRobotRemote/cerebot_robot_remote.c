@@ -5,10 +5,61 @@
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
-/*  PmodJSTK (FWD-REV)   - JB(pins 1 - 6)                                           */
-/*  PmodJSTK (LEFT_RIGHT)-
-/*	PmodCLS -   											*/
-/*  PmodBT2 - 
+/*																		*/
+/*  --------------------------------------------------------------------*/
+/*  HARDWARE SETUP														*/
+/*  --------------------------------------------------------------------*/
+/*  PmodBTN2
+/*  --------------------------------------------------------------------*/
+/*  UART 2 (Pint 1 - 6) - A UART Crossover cable is required 
+/*  JH-01 U2CTS/RF12 
+/*  JH-02 U2RTS/RF13 
+/*  JH-03 U2RX/RF4 
+/*  JH-04 U2TX/RF5 
+/*  Pins(7-12)
+/*  JJ-01 RB0 //Connection Status
+/*  JJ-02 RB1 //Reset
+/*  JJ-03 RB2 
+/*  JJ-04 RB3
+/*  --------------------------------------------------------------------*/
+/*  
+/*  PmodCLS
+/*  --------------------------------------------------------------------*/
+/*  UART 1
+/*  JE-01 U1CTS/RD14 
+/*  JE-02 U1RTS/RD15 
+/*  JE-03 U1RX/RF2 
+/*  JE-04 U1TX/RF8 
+/*  --------------------------------------------------------------------*/
+/*  
+/*  PmodJSTK
+/*  --------------------------------------------------------------------*/
+/*  JstkFWD_REV - SPI1
+/*  JD-03 SS1/RD9 
+/*  JH-08 SDO1/RD0 
+/*  JK-10 SDI1/RC4 
+/*  JD-09 SCK1/RD10
+/*  
+/*  JstkLEFT_RIGHT - SPI2
+/*  JB-01 SS2/RG9
+/*  JB-02 SDO2/RG8 
+/*  JB-03 SDI2/RG7 RG7
+/*  JB-04 SCK2/RG6
+/*  --------------------------------------------------------------------*/
+/*  LED1 (Bluetooth Connection status)
+/*  RB-10
+/* 
+/*  PmodeLED8
+/*  --------------------------------------------------------------------*/
+/*  JC-01 RG12 
+/*  JC-02 RG13 
+/*  JC-03 RG14 
+/*  JC-04 RG15
+/*  JC-07 RG0 
+/*  JC-08 RG1 
+/*  JC-09 RF0 
+/*  JC-10 RF1
+/*
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
@@ -51,9 +102,14 @@
 #define PORT_BIT_PMODBTN2_RESET			IOPORT_B,BIT_1
 #define PORT_BIT_PMODBTN2_CTS			IOPORT_F,BIT_12
 #define PORT_BIT_LED_1					IOPORT_B,BIT_10
-
+#define PORT_BIT_LED8_0_5				IOPORT_G,BIT_0|BIT_1|BIT_12|BIT_13|BIT_14|BIT_15
+#define PORT_BIT_LED8_6_7				IOPORT_F,BIT_0|BIT_1
 
 #define CLS_UPDATE_COUNT				3
+
+//Set to 0 to use board LED1, 1 to use PmodLED8 for bluetooth
+//connection status, any other value for no LED status
+#define BLUETOOTH_STAT_LED				1
 
 //BIT RATE DEFINITIONS
 #define UART_BLUETOOTH_BITRATE			115200
@@ -64,11 +120,16 @@
 #define BLUETOOTH_NAME					"CEREBOTREMOTE"
 #define BLUETOOTH_REMOTE				"CEREBOTROBOT"
 
+//REPONSE RECIEVED ON CONNECT
 #define BLUETOOTH_RESPONSE_CONNECT		"DEV_CONNECT\r\n"
 
+//NUMEBR OF TIMES TO TRY A CONNECTION
 #define BLUETOOTH_CONNECTION_RETRIES	5
+
+//DURATION IN SECONDS FOR BLUETOOTH INQUIRY
 #define BLUETOOTH_INQUIRY_TIMEOUT		"10"
 
+//DEFINES JOYSTICK ABOVE CENTER OR BELOW CENTER
 #define JSTK_AXIS_ABOVE_CENTER			1
 #define JSTK_AXIS_BELOW_CENTER		    0
 
@@ -81,14 +142,11 @@
 #define STATE_UPDATE_CLS				5
 #define STATE_RESEND_MESSAGE			6
 
-
+//ISR FIRED, EXECUTE MAIN TASK LOOP
 #define TASK_LOOP_TIMER_FIRED			1
 #define TASK_LOOP_TIMER_RESET			0
 
 #define CLS_DISPLAY_WIDTH 				17 //includes null terminator
-
-
-
 
 /* ------------------------------------------------------------ */
 /*				Global Variables								*/
@@ -101,13 +159,20 @@ uint8_t homeRow2[] = {27,'[','1',';','0','H','\0'}; //set cursor to col 0, row 1
 uint8_t homeCursor[] = {27, '[', 'j', '\0'}; //set cursor to row 0, col 0, clear display
 uint8_t wrapLine[] = {27, '[', '0', 'h', '\0'}; //set display to "wrap"
 
+//one line of display for CLS
 uint8_t clsDisplayLine[CLS_DISPLAY_WIDTH];
 
-uint8_t jystkFwdRevLedState;
-uint8_t jystkLeftRightLedState;
-uint8_t mainLoopState;
-uint8_t taskLoopTimerState;
+//maintain stat of joystick LEDs
+uint8_t jystkFwdRevLedState = PMODJSTK_LD1_LD2_OFF;
+uint8_t jystkLeftRightLedState = PMODJSTK_LD1_LD2_OFF;
 
+//main task loop state
+uint8_t mainLoopState = STATE_CONNECT;
+
+//main task loop timer state
+uint8_t taskLoopTimerState = TASK_LOOP_TIMER_RESET;
+
+//cls updates when counter reaches CLS_UPDATE_COUNT
 uint8_t clsUpdateCounter = 0;
 
 //Joystick calibration values
@@ -118,7 +183,7 @@ CEREBOT_REMOTE_MSG cerebotRemoteMsg;
 //Message recieved from robot
 CEREBOT_ROBOT_MSG cerebotRobotMsg;
 
-
+//values recieved from joysticks
 PmodJSTKAxisButton jstkAxisBtnFwdRev;
 PmodJSTKAxisButton jstkAxisBtnLeftRight;
 
@@ -136,7 +201,6 @@ void resetJstkLedState();
 void appTask();
 void pollBlueToothConnected();
 void pollJstkSetLEDState();
-uint8_t longitudinalRedunancyCheck(uint8_t *bytes,uint16_t numBytes);
 void sendMessage();
 void enableTimers();
 void recieveMessage();
@@ -145,17 +209,24 @@ uint16_t calcAxisDutyCycle(uint16_t axisValue, uint16_t axisMin,uint16_t axisRan
 
 uint8_t main(void)
 {
-
-jystkFwdRevLedState = PMODJSTK_LD1_LD2_OFF;
-jystkLeftRightLedState = PMODJSTK_LD1_LD2_OFF;
-mainLoopState = STATE_CONNECT;
-taskLoopTimerState = TASK_LOOP_TIMER_RESET;
-
 	init();
 
 	return 0;	
 }	
 
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void init()
 {
 	initControllers();
@@ -170,7 +241,19 @@ void init()
 }	
 
 
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void appTask()
 {
 	while(1)
@@ -219,7 +302,19 @@ void appTask()
 	}	
 	
 }
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void enableTimers()
 {
 	INTDisableInterrupts();
@@ -235,7 +330,19 @@ void enableTimers()
     INTEnableInterrupts();	
 }	
 	
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void sendMessage()
 {
 
@@ -244,10 +351,12 @@ void sendMessage()
 	uint8_t numBytes = sizeof(CEREBOT_REMOTE_MSG);
 
 	cerebotRemoteMsg.fwdRevSpeed = calcAxisDutyCycle(jstkAxisBtnFwdRev.yAxis, jstkAxisRange.yAxisMin,jstkAxisRange.yAxisRange);
+
 	cerebotRemoteMsg.leftRightSpeed = calcAxisDutyCycle(jstkAxisBtnLeftRight.xAxis,jstkAxisRange.xAxisMin,jstkAxisRange.xAxisRange);
+
 	cerebotRemoteMsg.vehicleDirectionFwdRev = (jstkAxisBtnFwdRev.yAxis >= jstkAxisRange.yAxisCenter)?ROBOT_DIR_FWD:ROBOT_DIR_REV;
+
 	cerebotRemoteMsg.vehicleDirectionLeftRight = (jstkAxisBtnLeftRight.xAxis >= jstkAxisRange.xAxisCenter)?ROBOT_TURN_RIGHT:ROBOT_TURN_LEFT;
-	cerebotRemoteMsg.resetRobot = 0;
 
 	for(byteCount = 0;byteCount < numBytes;byteCount++)
 	{
@@ -256,7 +365,19 @@ void sendMessage()
 		msg++;
 	}
 }
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 //Joystick duty cycle based on position
 //			   100
 //				*
@@ -280,7 +401,19 @@ uint16_t calcAxisDutyCycle(uint16_t axisValue, uint16_t axisMin,uint16_t axisRan
 	//is in center
 	return 0;
 }
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void recieveMessage()
 {
 	uint8_t byteCount = 0;
@@ -297,7 +430,19 @@ void recieveMessage()
 	}
 }		
 
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 
 void updateCLS()
 {
@@ -313,35 +458,73 @@ void updateCLS()
 										
 }	
 
- uint8_t longitudinalRedunancyCheck(uint8_t *bytes,uint16_t numBytes)
- {
-  	uint8_t lrc = 0;
-  	uint16_t byteCount = 0;
-    for (byteCount = 0; byteCount < numBytes;byteCount++ )
-     {
-         lrc ^= bytes[byteCount];
-     }
-     return lrc;
- }
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void pollBlueToothConnected()
 {
 	if(PORTReadBits(PORT_BIT_PMODBTN2_STATUS) == BIT_0)
 	{
-		PORTSetBits(PORT_BIT_LED_1); 
+		#if(BLUETOOTH_STAT_LED == 0)
+		PORTSetBits(PORT_BIT_LED_1);
+		#elif(BLUETOOTH_STAT_LED == 1)
+		PORTSetBits(PORT_BIT_LED8_0_5);
+		PORTSetBits(PORT_BIT_LED8_6_7);
+	 	#endif
 	}
 	else
 	{	
 		mainLoopState = STATE_DISCONNECTED;
+		#if(BLUETOOTH_STAT_LED == 0)
 		PORTClearBits(PORT_BIT_LED_1); 	
+		#elif(BLUETOOTH_STAT_LED == 1)
+		PORTClearBits(PORT_BIT_LED8_0_5);
+		PORTClearBits(PORT_BIT_LED8_6_7);
+		#endif
 	}	
 }	
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void pollJstkSetLEDState()
 {
 	PmodJSTKSendRecv(SPI_JSTK_FWD_REV,jystkFwdRevLedState,&jstkAxisBtnFwdRev);	
 	PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtnLeftRight);	
 }	
 
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void resetJstkLedState()
 {
 	PmodJSTKAxisButton jstkAxisBtn;
@@ -350,7 +533,19 @@ void resetJstkLedState()
 	PmodJSTKSendRecv(SPI_JSTK_FWD_REV,jystkFwdRevLedState,&jstkAxisBtn);	
 	PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtn);
 }	
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void connectToRemoteHost()
 {
 	UARTPutS(homeCursor,UART_CLS);
@@ -373,7 +568,19 @@ void connectToRemoteHost()
 			while(1);//User must reset, can not continue 
 	}			
 }	
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void blockWhileBtnDown(SpiChannel chn,uint8_t button,uint8_t ledState)
 {
 	PmodJSTKAxisButton jstkAxisBtn;
@@ -384,7 +591,19 @@ void blockWhileBtnDown(SpiChannel chn,uint8_t button,uint8_t ledState)
 	}while(jstkAxisBtn.buttonState == button);
 }
 
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void calibrateJoySticks()
 {
 	
@@ -392,10 +611,9 @@ void calibrateJoySticks()
 
 	PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtnCalibrate);
 	jstkAxisRange.xAxisCenter = jstkAxisBtnCalibrate.xAxis;	
-	PmodJSTKDelay15us(0);
+
 	PmodJSTKSendRecv(SPI_JSTK_FWD_REV,jystkFwdRevLedState,&jstkAxisBtnCalibrate);
 	jstkAxisRange.yAxisCenter  = jstkAxisBtnCalibrate.yAxis;
-	PmodJSTKDelay15us(0);
 	
 	do
 	{
@@ -405,17 +623,13 @@ void calibrateJoySticks()
 		UARTPutS(homeCursor,UART_CLS);
 		UARTPutS("Calibrate Y-",UART_CLS);
 		blockWhileBtnDown(SPI_JSTK_FWD_REV,PMODJSTK_BTN1,jystkFwdRevLedState);
-		PmodJSTKDelay15us(0);
 		getJstkValsOnBTNDown(SPI_JSTK_FWD_REV,&jstkAxisBtnCalibrate,PMODJSTK_BTN1,jystkFwdRevLedState);
-		PmodJSTKDelay15us(0);
 		jstkAxisRange.yAxisMin = jstkAxisBtnCalibrate.yAxis;
 		
 		UARTPutS(homeCursor,UART_CLS);
 		UARTPutS("Calibrate Y+",UART_CLS);
 		blockWhileBtnDown(SPI_JSTK_FWD_REV,PMODJSTK_BTN1,jystkFwdRevLedState);
-		PmodJSTKDelay15us(0);
 		getJstkValsOnBTNDown(SPI_JSTK_FWD_REV,&jstkAxisBtnCalibrate,PMODJSTK_BTN1,jystkFwdRevLedState);
-		PmodJSTKDelay15us(0);
 		jstkAxisRange.yAxisMax = jstkAxisBtnCalibrate.yAxis;
 		//Turn off LD1
 		jystkFwdRevLedState = PMODJSTK_LD1_LD2_OFF; //set joystick Fwd/Rev LED state
@@ -426,17 +640,13 @@ void calibrateJoySticks()
 		UARTPutS("Calibrate X-",UART_CLS);
 		jystkLeftRightLedState = PMODJSTK_LD1_ON;
 		blockWhileBtnDown(SPI_JSTK_LEFT_RIGHT,PMODJSTK_BTN1,jystkLeftRightLedState);
-		PmodJSTKDelay15us(0);
 		getJstkValsOnBTNDown(SPI_JSTK_LEFT_RIGHT,&jstkAxisBtnCalibrate,PMODJSTK_BTN1,jystkLeftRightLedState);
-		PmodJSTKDelay15us(0);
 		jstkAxisRange.xAxisMin = 	jstkAxisBtnCalibrate.xAxis;
 	
 		UARTPutS(homeCursor,UART_CLS);
 		UARTPutS("Calibrate X+",UART_CLS);
 		blockWhileBtnDown(SPI_JSTK_LEFT_RIGHT,PMODJSTK_BTN1,jystkLeftRightLedState);
-		PmodJSTKDelay15us(0);
 		getJstkValsOnBTNDown(SPI_JSTK_LEFT_RIGHT,&jstkAxisBtnCalibrate,PMODJSTK_BTN1,jystkLeftRightLedState);
-		PmodJSTKDelay15us(0);
 		jstkAxisRange.xAxisMax = jstkAxisBtnCalibrate.xAxis;
 		
 		//Turn off LD1
@@ -472,7 +682,19 @@ void getJstkValsOnBTNDown(SpiChannel chn,PmodJSTKAxisButton *jstkAxisBtn,uint8_t
 	}while(jstkAxisBtn->buttonState != btn);
 }
 	
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void resetBTModule()
 {
 	uint32_t delay = 0;
@@ -542,7 +764,19 @@ void initControllers()
 	PmodJSTKInit(SPI_JSTK_LEFT_RIGHT,PB_CLOCK,SPI_JSTK_BITRATE,SYS_FREQ);
 
 }
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void setPinIO()
 {
 	//Set digital in for PmodBTN2 connection status pin
@@ -554,12 +788,34 @@ void setPinIO()
 	
 	//fix for SPI1 not initing correctly via Microchip Libraries
 	PORTSetPinsDigitalOut(SPI_1_PIC32_460_512L_TRIS);
-
+	
+	#if(BLUETOOTH_STAT_LED == 0)
 	//Allow toggling of board LED 1 for bluetooth connnection status;
 	PORTSetPinsDigitalOut(PORT_BIT_LED_1);
 	PORTClearBits(PORT_BIT_LED_1); //LED 1initially off
+	
+	#elif (BLUETOOTH_STAT_LED == 1)
+	
+	//Allow toggling of PmodLED8 for bluetooth connnection status;
+ 	PORTSetPinsDigitalOut(PORT_BIT_LED8_0_5);
+	PORTSetPinsDigitalOut(PORT_BIT_LED8_6_7);
+	PORTClearBits(PORT_BIT_LED8_0_5);
+	PORTClearBits(PORT_BIT_LED8_6_7);
+	#endif
 }		
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void UARTInit(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID,UART_CONFIGURATION configParams)
 {
 	UARTConfigure(uartID,configParams);
@@ -684,7 +940,19 @@ void initPmodBTN2()
 	resetBTModule();
 }	
 
-
+/*  
+** <FUNCTION NAME>
+**
+**	Synopsis:
+**
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
 void __ISR(_TIMER_1_VECTOR, ipl2)Tmr1Handler_MainTaskLoop(void)
 {	
 	taskLoopTimerState = TASK_LOOP_TIMER_FIRED;	
