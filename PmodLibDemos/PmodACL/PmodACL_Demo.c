@@ -35,43 +35,44 @@
 
 #if (__PIC32_FEATURE_SET__ == 460)
 
-#define PORT_BIT_BTN1 		IOPORT_A,BIT_6
-#define PORT_BIT_EXT_INT_0 	IOPORT_D,BIT_0
-#define PORT_BIT_SERVO 		IOPORT_G,BIT_12
-#define PMODACL_SPI			SPI_CHANNEL2
-#define CLS_MODULE_I2C		I2C1
+#define PORT_BIT_BTN1 					IOPORT_A,BIT_6
+#define PORT_BIT_EXT_INT_0 				IOPORT_D,BIT_0
+#define PORT_BIT_SERVO 					IOPORT_G,BIT_12
+#define PMODACL_SPI						SPI_CHANNEL2
+#define CLS_MODULE_I2C					I2C1
 
 #elif(__PIC32_FEATURE_SET__ == 795)
 
-#define PORT_BIT_BTN1 		IOPORT_G,BIT_6
-#define PORT_BIT_EXT_INT_0 	IOPORT_D,BIT_0  //JD-02
-#define PORT_BIT_SERVO 		IOPORT_E,BIT_0  //PmodCon3 Servo 1, JB-01
-#define PMODACL_SPI			SPI_CHANNEL3 //SPI1A JE 01-06
-#define CLS_MODULE_I2C		I2C1
-#define PMODSF_SPI			SPI_CHANNEL4
+#define PORT_BIT_BTN1 					IOPORT_G,BIT_6
+#define PORT_BIT_EXT_INT_0			 	IOPORT_D,BIT_0  //JD-02
+#define PORT_BIT_SERVO 					IOPORT_E,BIT_0  //PmodCon3 Servo 1, JB-01
+#define PMODACL_SPI						SPI_CHANNEL3 //SPI1A JE 01-06
+#define CLS_MODULE_I2C					I2C1
+#define PMODSF_SPI						SPI_CHANNEL4
 
 #endif
 
+#define ROLLING_AVG_NUM_POINTS			20
 
-#define CLS_I2C_ADDRESS		0x48   //I2C address of CLS
-#define ONE_DEGREE_RAD		.0174  //3.14/180 = .0174, number of radians in one degree
-#define UPDATE_CLS 			50     //update cls 20ms * 50 = 1000ms 
+#define CLS_I2C_ADDRESS					0x48   //I2C address of CLS
+#define ONE_DEGREE_RAD					.0174  //3.14/180 = .0174, number of radians in one degree
+#define UPDATE_CLS 						50     //update cls 20ms * 50 = 1000ms 
 
-#define CLS_DISPLAY_WIDTH 17 //width of CLS + null character
+#define CLS_DISPLAY_WIDTH 				17 //width of CLS + null character
 
-#define PULSE_STATE_HIGH  0x0 //Next servo pulse wil be high
-#define PULSE_STATE_LOW   0x1 //next servo pulse will be low
+#define PULSE_STATE_HIGH  				0x0 //Next servo pulse wil be high
+#define PULSE_STATE_LOW   				0x1 //next servo pulse will be low
 
-#define PULSE_SERVO_STOP_MIN  1500 //0.5ms pulse
-#define PULSE_SERVO_STOP_CENTER  1000  //1.0ms pulse 
-#define PULSE_SERVO_STOP_MAX  500  //1.5ms pulse
+#define PULSE_SERVO_STOP_MIN  			1500 //0.5ms pulse
+#define PULSE_SERVO_STOP_CENTER  		1000  //1.0ms pulse 
+#define PULSE_SERVO_STOP_MAX  			500  //1.5ms pulse
 
-#define PULSE_ONE_DEGREE 11 //Range 2ms - 1ms = 1ms = 1000us, 1000ms/90deg = 11
+#define PULSE_ONE_DEGREE 				11 //Range 2ms - 1ms = 1ms = 1000us, 1000ms/90deg = 11
 
-#define DEG_180 3.14
-#define DEG_90 1.57
-#define DEG_360 6.28
-#define DEG_270 4.71
+#define DEG_180 						3.14
+#define DEG_90 							1.57
+#define DEG_360 						6.28
+#define DEG_270 						4.71
 
 //ACL data ready interrupt fired
 uint8_t aclDataReady = 0;
@@ -94,6 +95,11 @@ uint16_t pulseRate = T1_TICK;
 //counter for updating the CLS
 uint8_t clsUpdateCount = 0;
 
+double rollAverageDataPoints[ROLLING_AVG_NUM_POINTS];
+uint8_t currentDataPoint = 0;
+//when the buffer is filled, the rolling average will give an accurate measurement
+uint8_t rollingAvgDataPointBufferFilled = 0;
+
 //PmodCLS commands, see PmodCLS manual for descriptions
 uint8_t enableDisplay[] = {27, '[', '3', 'e', '\0'}; //enable display
 uint8_t setCursor[] = {27, '[', '0', 'c', '\0'}; //turn off cursor
@@ -113,6 +119,9 @@ void initCLS();
 void I2CSetup(uint32_t bitRate,uint32_t pbClock,I2C_MODULE module);
 void I2CPutS(uint8_t *string,I2C_MODULE module,uint8_t address);
 void updateCls();
+double getDataPointRollingAverage(double newDataPoint);
+
+
 uint8_t main(void)
 {
    
@@ -131,14 +140,17 @@ uint8_t main(void)
 		{
 			aclDataReady = 0;
 			prevAclAngle = aclAngle;
-			aclAngle = getCurrentAngle();
+			aclAngle = getDataPointRollingAverage(getCurrentAngle());
 			clsUpdateCount++;	
 		}
 		if(servoPulseComplete)
 		{
 			if(aclAngle != prevAclAngle)
 			{
-				setPulseWidth();
+				if(rollingAvgDataPointBufferFilled)
+				{
+					setPulseWidth();
+				}
 			}
 			servoPulseComplete = 0;
 		}		
@@ -159,6 +171,30 @@ void setPulseWidth()
 		pulseRate = partialTick/togglesPerSec;
 	}		
 }	
+
+
+//Rolling average smoothes out the servo movements
+double getDataPointRollingAverage(double newDataPoint)
+{
+	uint8_t pointIndex = 0;
+	double rollingAvg = 0;
+	rollAverageDataPoints[currentDataPoint] = newDataPoint;
+	currentDataPoint++;
+	if(currentDataPoint ==  ROLLING_AVG_NUM_POINTS)
+	{	
+		rollingAvgDataPointBufferFilled = 1;
+	}
+	
+	currentDataPoint %= ROLLING_AVG_NUM_POINTS;
+	
+	for(pointIndex = 0;pointIndex <  ROLLING_AVG_NUM_POINTS;pointIndex++)
+	{
+		rollingAvg += rollAverageDataPoints[pointIndex];
+	}
+	
+	return rollingAvg / ROLLING_AVG_NUM_POINTS;
+
+}
 
 
 double getCurrentAngle()
@@ -196,7 +232,7 @@ double getCurrentAngle()
 			angle+= DEG_360;
 		}		
 	}
-	return (angle);
+	return angle;
 }	
 
 void blockUntilBtn1Press()
@@ -377,7 +413,7 @@ void initCLS()
 	uint32_t delay = 0;
 	I2CSetup(100000,PB_CLOCK,CLS_MODULE_I2C);
 	//allow for CLS initialization 
-	for(delay = 0;delay < 10000;delay++);
+	for(delay = 0;delay < 100000;delay++);
 	I2CPutS(enableDisplay,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
 	I2CPutS(setCursor,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
 	I2CPutS(homeCursor,CLS_MODULE_I2C,CLS_I2C_ADDRESS);
