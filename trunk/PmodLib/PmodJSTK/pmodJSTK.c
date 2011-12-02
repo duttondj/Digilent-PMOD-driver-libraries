@@ -58,8 +58,8 @@ void PmodJSTKInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,uint32_t syst
 	PmodSPISetSSHigh(chn);
 	//calculate number of processor cycles at the current system clock frequence for 10 and 15 microsecond delays
 	//(Desired Delay)/(Time Elapsed for 1 System Clock Cycle)
-	NumCycles10us = (((systemClock/4)/1000000) * 10);
-	NumCycles15us = (((systemClock/4)/1000000) * 15);
+	NumCycles10us = (((systemClock * 10)/4)/1000000);
+	NumCycles15us = (((systemClock * 15)/4)/1000000);
 }
 
 /*  
@@ -99,7 +99,7 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 {
 	int byteNum = 0;
 	uint8_t jystkOut[PMODJSTK_BYTES_PER_XFER];
-
+	
 	PmodSPISetSSLow(chn);
 	PmodJSTKDelay15us(0);
 
@@ -112,9 +112,11 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 
 	PmodSPISetSSHigh(chn);
 
-	jystkAxisButtons->xAxis = ((uint16_t)jystkOut[1] << 8) | (uint16_t)jystkOut[0];
-	jystkAxisButtons->yAxis = ((uint16_t)jystkOut[3] << 8) | (uint16_t)jystkOut[2];
+	jystkAxisButtons->xAxis = (((uint16_t)jystkOut[1] << 8) | (uint16_t)jystkOut[0]);
+	jystkAxisButtons->yAxis = (((uint16_t)jystkOut[3] << 8) | (uint16_t)jystkOut[2]);
 	jystkAxisButtons->buttonState = jystkOut[4];
+	
+	PmodJSTKDelay15us(0);
 }
 
 /*  
