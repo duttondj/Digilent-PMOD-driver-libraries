@@ -67,7 +67,7 @@ void PmodHB5getQEncRPM(HBRIDGE *hBridge,uint32_t pollsPerSec,uint32_t pollDiviso
 	if(hBridge->pollCount == pollsPerSec)
 	{
 		hBridge->prevRpm = hBridge->rpm;
-		hBridge->rpm = (hBridge->pulseCount/4) * pollDivisor;
+		hBridge->rpm = (hBridge->pulseCount * pollDivisor * 60) / 4;
 
 		hBridge->pulseCount = 0;
 		hBridge->pollCount = 0;
