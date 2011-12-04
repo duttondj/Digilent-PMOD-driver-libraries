@@ -33,7 +33,7 @@
 #include "./TestHarness/Common/test_harness_common.h"
 
 #define SYSTEM_CLOCK 80000000L  //system clock speed (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
-#define PB_DIV                 8
+#define PB_DIV 2
 #define PB_CLOCK (SYSTEM_CLOCK/PB_DIV) //peripheral bus clock
 
 /* ------------------------------------------------------------ */

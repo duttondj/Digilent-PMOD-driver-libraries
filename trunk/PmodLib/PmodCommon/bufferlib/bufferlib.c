@@ -49,9 +49,9 @@ uint8_t gBufLibWriteIndex = 0;
 **  Input: uint8_t BufCount - the number of buffers to create
 **		   uint16_t BufSize - the size of each buffer in bytes
 **
-**  Returns: 0 if successfully created the buffers, 1 if failed to create them
+**  Returns: 1 if successfully created the buffers, 0 if failed to create them
 **
-**	Errors:	1 is returend if failed to create buffers
+**	Errors:	0 is returned if failed to create buffers
 */
 uint8_t BufLibInitBuffers(uint8_t BufCount, uint16_t BufSize)
 {
