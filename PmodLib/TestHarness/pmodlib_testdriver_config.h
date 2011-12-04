@@ -28,13 +28,14 @@
 /*  on these values.                                            */
 /* ------------------------------------------------------------ */
 #define PMODSF 0   
-#define PMODJSTK 1
+#define PMODJSTK 0
 #define PMODHB5 0
 #define PMODACL 0
 #define BUFLIB 0
+#define PMODDA2 1
 
 //Test harness menu UART
-#define MENU_UART UART1
+#define MENU_UART UART2
 #define NUM_LINES_CONSOLE_PAGE 15
 /* ------------------------------------------------------------ */
 /*				Forward Declarations							*/
@@ -269,8 +270,10 @@ uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 /* ------------------------------------------------------------ */
 /*				PIC32 Configuration Settings					*/
 /* ------------------------------------------------------------ */
-#pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1, FWDTEN = OFF
-#pragma config POSCMOD = HS, FNOSC = PRIPLL, FPBDIV = DIV_8
+#pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1  //(8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
+#pragma config FWDTEN = OFF
+#pragma config POSCMOD = HS, FNOSC = PRIPLL
+#pragma config FPBDIV = DIV_2
 
 //Test function header for PmodHB5
 #include "./TestHarness/BuffLib/bufflib_test_driver.h"
@@ -298,7 +301,43 @@ char * pmodName = "BufLib";
 #define INITPMOD(UART) BufLib_INIT(UART)
 
 //Filter excluding specific tests from UNIT_Exec_All 
-uint8_t excludeFromExecAll[] = {0,0,0,0,0,0,0};
+uint8_t excludeFromExecAll[] = {0,0,0,0,0};
+
+/* ------------------------------------------------------------*/
+/*                            PmodDA2                          */
+/*                    Test setup for PmodDA2                   */
+/* ------------------------------------------------------------*/
+#elif(PMODDA2 == 1)
+
+/* ------------------------------------------------------------ */
+/*				PIC32 Configuration Settings					*/
+/* ------------------------------------------------------------ */
+#pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1  //(8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
+#pragma config FWDTEN = OFF
+#pragma config POSCMOD = HS, FNOSC = PRIPLL
+#pragma config FPBDIV = DIV_2
+
+//Test function header for PmodHB5
+#include "./TestHarness/PmodDA2/pmodDA2_test_driver.h"
+
+#define NUM_TEST_FUNCTIONS 2 //number of test functions for PmodHB5
+
+//Array of function pointers to tests for PmodHB5
+uint8_t (*testFunc[])(UART_MODULE) = {UNIT_PmodDA2PlaySound,
+									UNIT_Exec_All};
+
+//Menu Item text pssed into console menu
+uint8_t *menuItems[] = {"UNIT_PmodDA2PlaySound",
+						"UNIT_Exec_All"};
+
+//Name of module to display on console menu
+char * pmodName = "PmodDA2";
+
+//Pmod initialization macro for PmodHB5
+#define INITPMOD(UART) PmodDA2_INIT(UART)
+
+//Filter excluding specific tests from UNIT_Exec_All 
+uint8_t excludeFromExecAll[] = {0,0};
 
 #endif
 
