@@ -39,9 +39,9 @@
 
 //TIMER SCALE/TICK DEFINITIONS
 #define PRESCALE_T1_T2_T3         		8
-#define TOGGLES_PER_SEC_T1				2000
+#define TOGGLES_PER_SEC_T1				6000
 #define TOGGLES_PER_SEC_T2_T3       	1000
-#define T1_TICK							(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T2_T3)
+#define T1_TICK							(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T1)
 #define T2_T3_TICK               		(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T2_T3)
 
 //BLUETOOTH IO PORT DEFINITIONS
@@ -77,6 +77,8 @@
 //BLUETOOTH DEVICE NAME
 #define BLUETOOTH_NAME					"CEREBOTROBOT" 
 
+//DC MOTOR REDUCTION RATION  (divisor)
+#define DC_MOTOR_REDUCTION_RATIO		19
 
 //Text recieved from remote on connect 
 #define BLUETOOTH_RESPONSE_CONNECT		"DEV_CONNECT\r\n" 
@@ -323,8 +325,8 @@ void sendMessage()
 	uint8_t byteCount = 0;
 	uint8_t *msg = (uint8_t*)&cerebotRobotMsg;
 	uint8_t lrc = 0;
-	cerebotRobotMsg.leftWheelRPM = hbridges[HB_LEFT_WHEEL].rpm;
-	cerebotRobotMsg.rightWheelRPM = hbridges[HB_RIGHT_WHEEL].rpm;
+	cerebotRobotMsg.leftWheelRPM = hbridges[HB_LEFT_WHEEL].rpm/DC_MOTOR_REDUCTION_RATIO;
+	cerebotRobotMsg.rightWheelRPM = hbridges[HB_RIGHT_WHEEL].rpm/DC_MOTOR_REDUCTION_RATIO;
 	cerebotRobotMsg.batteryVoltage = ReadADC10(8 * ((~ReadActiveBufferADC10() & 0x01)));
 	cerebotRobotMsg.vehicleDirection = currentDirection;
 	for(byteCount = 0;byteCount < sizeof(CEREBOT_ROBOT_MSG);byteCount++)

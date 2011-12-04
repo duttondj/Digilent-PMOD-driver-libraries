@@ -24,7 +24,7 @@ typedef struct
 	uint16_t leftRightSpeed;
 	uint8_t vehicleDirectionFwdRev;
 	uint8_t vehicleDirectionLeftRight;
-}__attribute__((__packed__))CEREBOT_REMOTE_MSG;
+}__attribute__((__packed__)) CEREBOT_REMOTE_MSG;
 
 typedef struct
 {
