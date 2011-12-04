@@ -29,6 +29,5 @@
 #include <PmodSF/pmodsf.h>
 #include <PmodCommon/spi/pmod_spi_common.h>
 #include <PmodCommon/bufferlib/bufferlib.h>
-#include <PmodCommon/PmodDA2/pmodDA2.h>
-
+#include <PmodDA2/pmodDA2.h>
 #endif
