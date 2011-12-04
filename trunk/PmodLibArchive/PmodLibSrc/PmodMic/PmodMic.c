@@ -19,7 +19,6 @@
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
-#include "./PmodMic/pmodMic.h"
 #include "./PmodCommon/bufferlib/bufferlib.h"
 #include "./PmodSF/pmodsf.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
@@ -28,12 +27,45 @@
 /*				Global Variables								*/
 /* ------------------------------------------------------------ */
 
+#define SYSTEM_CLOCK		80000000
+#define SPI_BITRATE 		625000
 #define TICKRATE 8192
+
+#pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1  //(8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
+#pragma config FWDTEN = OFF
+#pragma config POSCMOD = HS, FNOSC = PRIPLL
+#pragma config FPBDIV = DIV_2
+
 SpiChannel chn;
 
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
+
+
+
+/*  PmodMicInit
+**
+**	Synopsis:
+**  Initializes the PmodMic module on the selected SPI channel. 
+**  
+**  Input: SpiChannel chn  - spi channel initialize
+**         uint32_t pbClock - peripheral bus clock in Hz
+**         uint32_t bitRate - bit rate desired in Hz
+**
+**  Returns: none
+**
+**  Description:
+**
+**  Opens the desired SPI channel in 8-bit mode as a master, enables the slave select bit,
+**  and sets the desired bit rate as a function of pbClock/bitRate.  Examples of peripheral bus
+**  bit rate combinations are available in the table labeld "Excerpt from PIC32 Familiy Reference 
+**  Manual Chapter 23 section 23.3.7" in pmodsf.h.
+*/
+void PmodMicInit(uint32_t pbClock,uint32_t bitRate)
+{
+    SpiChnOpen(chn, SPI_OPEN_MSTEN | SPI_OPEN_SSEN |  SPI_OPEN_MODE8 , pbClock/bitRate);
+}
 
 /*  
 **  fnInitPmodMic
@@ -58,34 +90,14 @@ SpiChannel chn;
 */
 void fnInitPmodMic(UART_MODULE uartID)
 {
+	unsigned int PB_CLOCK = 0;
+	PB_CLOCK = SYSTEMConfigPerformance (SYSTEM_CLOCK)/2;
 	UARTPutS("\r\nPmodMic SPI port=>",uartID);
 	chn =  getIntegerFromConsole(uartID); //SPI port PMODSF is connected to
-	PmodMicInit(chn,PB_CLOCK,SPI_BITRATE);
+	PmodMicInit(PB_CLOCK,SPI_BITRATE);
 
 }
 
-/*  PmodMicInit
-**
-**	Synopsis:
-**  Initializes the PmodMic module on the selected SPI channel. 
-**  
-**  Input: SpiChannel chn  - spi channel initialize
-**         uint32_t pbClock - peripheral bus clock in Hz
-**         uint32_t bitRate - bit rate desired in Hz
-**
-**  Returns: none
-**
-**  Description:
-**
-**  Opens the desired SPI channel in 8-bit mode as a master, enables the slave select bit,
-**  and sets the desired bit rate as a function of pbClock/bitRate.  Examples of peripheral bus
-**  bit rate combinations are available in the table labeld "Excerpt from PIC32 Familiy Reference 
-**  Manual Chapter 23 section 23.3.7" in pmodsf.h.
-*/
-void PmodMicInit(uint32_t pbClock,uint32_t bitRate)
-{
-    SpiChnOpen(chn, SPI_OPEN_MSTEN | SPI_OPEN_SSEN |  SPI_OPEN_MODE8 , pbClock/bitRate);
-}
 
 void PmodMicStartRecording()
 {
@@ -115,7 +127,9 @@ void PmodMicTakeSample()
 	oneByte & SpiChnGetC(chn);
 	
 	PmodSPISetSSHigh(chn); //SS to High
-	BufflibWriteBuffer(oneByte);
+	//BufflibWriteBuffer(oneByte);
+
+	
 	
 }
 unsigned char fnTimer1Setup ()
