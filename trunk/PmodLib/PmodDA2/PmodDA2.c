@@ -97,7 +97,9 @@ uint8_t PmodDA2Send(SpiChannel chn, uint16_t data)
 
 	PmodSPISetSSLow(chn);
 	SpiChnPutC(chn,dataPartA);
+	SpiChnGetC(chn);
 	SpiChnPutC(chn,dataPartB);
+	SpiChnGetC(chn);
 	PmodSPISetSSHigh(chn);
 
 	return 1;
