@@ -87,7 +87,8 @@
 #define PORT_BIT_PMODBTN2_CTS			IOPORT_F,BIT_12
 
 //BLUETOOTH CONNECTED LED IOPORT DEFITION
-#define PORT_BIT_LED_1					IOPORT_B,BIT_10
+#define PORT_BIT_LED_WAITING			IOPORT_B,BIT_10 //Waiting for connection
+#define PORT_BIT_LED_CONNECTED			IOPORT_B,BIT_10|BIT_11|BIT_12|BIT_13 //Connected
 
 //HBRIDGE IO PORT DEFINITIONS
 #define PORT_HB_LEFT_WHEEL_DIR 			IOPORT_D		//HB5 Direction
@@ -110,6 +111,7 @@
 #define BIT_HB_RIGHT_WHEEL_SA  			BIT_10
 #define BIT_HB_RIGHT_WHEEL_SB  			BIT_2
 
+//TIMER PERIOD REGISTERS
 #define TIMER_PR_LEFT					PR2
 #define TIMER_PR_RIGHT					PR3
 
@@ -275,20 +277,20 @@ void appTask()
 			 	break;
 			 case STATE_RECIEVE_MESSAGE:
 			    UART_BT_RxData = 0;
-				recieveMessage();
 				if(mainLoopState != STATE_WAITING_CONNECT)
 				{
-					mainLoopState = STATE_SEND_MESSAGE;
+					recieveMessage();
+					if(mainLoopState != STATE_WAITING_CONNECT)
+					{
+						mainLoopState = STATE_SEND_MESSAGE;	
+					}
 				}
 				break;
 			 case STATE_SEND_MESSAGE:
 			 	if(mainLoopState != STATE_WAITING_CONNECT)
 				{
 					sendMessage();
-					if(mainLoopState != STATE_WAITING_CONNECT)
-					{
-						mainLoopState = STATE_CHK_CHG_DIR;
-					}
+					mainLoopState = STATE_CHK_CHG_DIR;	
 				}
 				break;
 			 case STATE_CHK_CHG_DIR:
@@ -650,9 +652,9 @@ void setPortIO()
 	PORTSetPinsDigitalIn(PORT_HB_RIGHT_WHEEL_SA, BIT_HB_RIGHT_WHEEL_SA);  //HB5 Sensor A
 	PORTSetPinsDigitalIn(PORT_HB_RIGHT_WHEEL_SB, BIT_HB_RIGHT_WHEEL_SB);  //HB5 Sensor B
 	
-	//Allow toggling of board LED 1 for bluetooth connnection status;
-	PORTSetPinsDigitalOut(PORT_BIT_LED_1);
-	PORTClearBits(PORT_BIT_LED_1); //LED 1initially off
+	//Allow toggling of board LED 1-4 for bluetooth connnection status;
+	PORTSetPinsDigitalOut(PORT_BIT_LED_CONNECTED);
+	PORTClearBits(PORT_BIT_LED_CONNECTED); //All LEDs 1initially off
 }
 
 /*  
@@ -808,7 +810,7 @@ uint8_t pollBlueToothConnected()
 {
 	if(PORTReadBits(PORT_BIT_PMODBTN2_STATUS) == BIT_0)
 	{
-		PORTSetBits(PORT_BIT_LED_1); 
+		PORTSetBits(PORT_BIT_LED_CONNECTED);
 		return mainLoopState;
 	}
 	else
@@ -817,7 +819,8 @@ uint8_t pollBlueToothConnected()
 
 		PmodHB5SetDCPWMDutyCycle(0,hbridges[HB_LEFT_WHEEL].ocChannel);	
 		PmodHB5SetDCPWMDutyCycle(0,hbridges[HB_RIGHT_WHEEL].ocChannel);	
-		PORTClearBits(PORT_BIT_LED_1); 	
+		PORTClearBits(PORT_BIT_LED_CONNECTED);
+		PORTSetBits(PORT_BIT_LED_WAITING); 	
 		return STATE_WAITING_CONNECT;
 	}	
 
