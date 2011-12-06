@@ -37,7 +37,7 @@ LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLibDemos\CerebotRobot\DataStructures;C:\Code\cpts421\PmodLibArchive\PmodLib\include;C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth||$(LIBDIR)|C:\Code\cpts421\PmodLibArchive\PmodLib\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
 SOLK=<src>|cerebot_robot_remote.c|C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth\pmodBT.c||<obj>||<lib>|C:\Code\cpts421\PmodLibArchive\PmodLib\lib\pmodlib_460.a||<lkr>||
 SuiteArgsString=
-ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -legacy-libc
+ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
 DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PIC32MXSK=1
 [File003]
@@ -50,7 +50,7 @@ LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Code\cpts421\PmodLibDemos\CerebotRobot\DataStructures;C:\Code\cpts421\PmodLibArchive\PmodLib\include;C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth||$(LIBDIR)|C:\Code\cpts421\PmodLibArchive\PmodLib\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
 SOLK=<src>|cerebot_robot_remote.c|C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth\pmodBT.c||<obj>||<lib>|C:\Code\cpts421\PmodLibArchive\PmodLib\lib\pmodlib_460.a||<lkr>||
 SuiteArgsString=
-ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -legacy-libc
+ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
 DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PIC32MXSK=1
 [TOOL_LOC_STAMPS]

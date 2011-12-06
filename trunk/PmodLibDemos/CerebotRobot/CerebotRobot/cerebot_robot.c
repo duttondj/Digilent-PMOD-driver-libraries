@@ -1,11 +1,45 @@
 /************************************************************************/
-/*                                                                      */
+/*  cerebot_robot.c -- Cerebot robot implementation file                */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
-
+/*																		*/
+/*  ------------------------------------------------------------------- */
+/*  HARDWARE SETUP	- Cerebot32MX4										*/
+/*  ------------------------------------------------------------------- */
+/*																		*/
+/*  PmodBTN2															*/
+/*  ------------------------------------------------------------------- */
+/*  UART 2 (Pint 1 - 6) - A UART Crossover cable is required 			*/
+/*  JH-01 	RF12	U2CTS												*/
+/*  JH-02 	RF13	U2RTS												*/
+/*  JH-03 	RF4		U2RX												*/
+/*  JH-04 	RF5		U2TX												*/
+/*  Pins(7-12)															*/
+/*  JJ-01 	RB0     Connection Status									*/
+/*  JJ-02 	RB1     Reset												*/
+/*  JJ-03 	RB2 														*/
+/*  JJ-04 	RB3															*/
+/*																		*/
+/*  PmodHB5 (Fwd/Rev)													*/
+/*  ------------------------------------------------------------------- */
+/*  JD-01	RD7		 Direction 											*/
+/*  JD-02	RD1		 Enable												*/
+/*  JD-03 	RD9	     SensorA											*/
+/*  JD-04	RC1	     SensorB											*/
+/*																		*/
+/*  PmodHB5 (Left/Right)												*/
+/*  ------------------------------------------------------------------- */
+/*  JD-07 	RD6		 Direction											*/
+/*  JD-08   RD2		 Enable												*/
+/*  JD-09   RD10	 SensorA											*/
+/*  JD-10   RC2		 SensorB											*/
+/*																		*/
+/*  Voltage Monitor														*/
+/*  ------------------------------------------------------------------- */
+/*	JP4 - Shorting block installed										*/
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
@@ -23,11 +57,13 @@
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
+
 #include <stdint.h>
 #include <plib.h>
 #include <pmodlib.h>
 #include <PmodBT.h>
 #include <cerebot_robot_remote_types.h>
+
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
@@ -77,7 +113,7 @@
 //BLUETOOTH DEVICE NAME
 #define BLUETOOTH_NAME					"CEREBOTROBOT" 
 
-//DC MOTOR REDUCTION RATION  (divisor)
+//DC MOTOR REDUCTION RATIO  (divisor)
 #define DC_MOTOR_REDUCTION_RATIO		19
 
 //Text recieved from remote on connect 
@@ -119,6 +155,10 @@
 //Number of HB5 modules
 #define HB5_NUM_MODULES 				2
 
+/* ------------------------------------------------------------ */
+/*				Global Variables								*/
+/* ------------------------------------------------------------ */
+
 //PmodHB5 state
 HBRIDGE hbridges[HB5_NUM_MODULES];
 
@@ -134,12 +174,14 @@ uint8_t currentDirection = ROBOT_DIR_FWD;
 //Processing loop state, initalize as waiting for a connection
 uint8_t mainLoopState = STATE_WAITING_CONNECT;
 
-
-
 //Message recieved from remote
 CEREBOT_REMOTE_MSG cerebotRemoteMsg;
 //Message sent from robot
 CEREBOT_ROBOT_MSG cerebotRobotMsg;
+
+/* ------------------------------------------------------------ */
+/*				Forward Declarations							*/
+/* ------------------------------------------------------------ */
 
 void setDutyCycle();
 void configureTimers();
@@ -243,7 +285,6 @@ void appTask()
 		}
 	}
 		
-	
 }
 
 /*  
@@ -501,7 +542,6 @@ void setDutyCycle()
 	}
 }
 
-
 /*  
 ** <FUNCTION NAME>
 **
@@ -535,7 +575,6 @@ void configureTimers()
 	PmodHB5SetDCPWMDutyCycle(0,3);
 
 }
-
 
 /*  
 ** <FUNCTION NAME>

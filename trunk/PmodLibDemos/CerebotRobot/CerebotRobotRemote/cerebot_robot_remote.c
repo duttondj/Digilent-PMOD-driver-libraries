@@ -1,65 +1,69 @@
 /************************************************************************/
-/*                                                                      */
+/*  cerebot_robot_remote.c -- implementation file for the cerebot 		*/
+/*                            robot remote controller		            */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
 /*																		*/
+/*  ------------------------------------------------------------------- */
+/*  HARDWARE SETUP - Cerebot32MX4										*/
+/*  ------------------------------------------------------------------- */
+/*																		*/
+/*  PmodBTN2															*/
+/*  ------------------------------------------------------------------- */
+/*  UART 2 (Pint 1 - 6) - A UART Crossover cable is required 			*/
+/*  JH-01 	RF12	U2CTS												*/
+/*  JH-02 	RF13	U2RTS												*/
+/*  JH-03 	RF4		U2RX												*/
+/*  JH-04 	RF5		U2TX												*/
+/*  Pins(7-12)															*/
+/*  JJ-01 	RB0     Connection Status									*/
+/*  JJ-02 	RB1     Reset												*/
+/*  JJ-03 	RB2 														*/
+/*  JJ-04 	RB3															*/
+/*	(no jumpers installed on PmodBTN2)									*/
+/*																		*/
+/*  PmodCLS																*/
 /*  --------------------------------------------------------------------*/
-/*  HARDWARE SETUP														*/
+/*  UART 1																*/
+/*  JE-01 	RD14	U1CTS												*/
+/*  JE-02 	RD15	U1RTS 												*/
+/*  JE-03 	RF2		U1RX  												*/
+/*  JE-04 	RF8		U1TX  												*/
+/*  See jumper settings in PmodCLS ref. manual for baud rate jumper 	*/
+/*  positions (9600 baud)												*/
 /*  --------------------------------------------------------------------*/
-/*  PmodBTN2
+/*   																	*/
+/*  PmodJSTK 															*/
 /*  --------------------------------------------------------------------*/
-/*  UART 2 (Pint 1 - 6) - A UART Crossover cable is required 
-/*  JH-01 U2CTS/RF12 
-/*  JH-02 U2RTS/RF13 
-/*  JH-03 U2RX/RF4 
-/*  JH-04 U2TX/RF5 
-/*  Pins(7-12)
-/*  JJ-01 RB0 //Connection Status
-/*  JJ-02 RB1 //Reset
-/*  JJ-03 RB2 
-/*  JJ-04 RB3
+/*  JstkFWD_REV - SPI1 													*/
+/*  JD-03 	RD9		SS1 												*/
+/*  JH-08 	RD0		SDO1 												*/
+/*  JK-10 	RC4		SDI1 												*/
+/*  JD-09 	RD10	SCK1 												*/
+/*   																	*/
+/*  JstkLEFT_RIGHT - SPI2 												*/
+/*  JB-01 	RG9		SS2 												*/
+/*  JB-02 	RG8		SDO2  												*/
+/*  JB-03 	RG7		SDI2 												*/
+/*  JB-04 	RG6		SCK2 												*/
 /*  --------------------------------------------------------------------*/
-/*  
-/*  PmodCLS
+/*  LED1 (Bluetooth Connection status) 									*/
+/*  RB-10 																*/
+/*  																	*/
+/*  Pmode8LD (Bluetooth Connection status) 								*/
 /*  --------------------------------------------------------------------*/
-/*  UART 1
-/*  JE-01 U1CTS/RD14 
-/*  JE-02 U1RTS/RD15 
-/*  JE-03 U1RX/RF2 
-/*  JE-04 U1TX/RF8 
-/*  --------------------------------------------------------------------*/
-/*  
-/*  PmodJSTK
-/*  --------------------------------------------------------------------*/
-/*  JstkFWD_REV - SPI1
-/*  JD-03 SS1/RD9 
-/*  JH-08 SDO1/RD0 
-/*  JK-10 SDI1/RC4 
-/*  JD-09 SCK1/RD10
-/*  
-/*  JstkLEFT_RIGHT - SPI2
-/*  JB-01 SS2/RG9
-/*  JB-02 SDO2/RG8 
-/*  JB-03 SDI2/RG7 RG7
-/*  JB-04 SCK2/RG6
-/*  --------------------------------------------------------------------*/
-/*  LED1 (Bluetooth Connection status)
-/*  RB-10
-/* 
-/*  PmodeLED8
-/*  --------------------------------------------------------------------*/
-/*  JC-01 RG12 
-/*  JC-02 RG13 
-/*  JC-03 RG14 
-/*  JC-04 RG15
-/*  JC-07 RG0 
-/*  JC-08 RG1 
-/*  JC-09 RF0 
-/*  JC-10 RF1
-/*
+/*  JC-01 	RG12 	LD0 												*/
+/*  JC-02 	RG13 	LD1 												*/
+/*  JC-03 	RG14 	LD2 												*/
+/*  JC-04 	RG15	LD3 												*/
+/*  JC-07 	RG0 	LD4 												*/
+/*  JC-08 	RG1 	LD5 												*/
+/*  JC-09 	RF0 	LD6 												*/
+/*  JC-10 	RF1		LD7 												*/
+/* 																		*/
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
@@ -82,9 +86,11 @@
 #include <pmodlib.h>
 #include <PmodBT.h>
 #include <cerebot_robot_remote_types.h>
+
 /* ------------------------------------------------------------ */
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
+
 #define SYS_FREQ               (80000000L)
 #define PB_DIV                 2
 #define PB_CLOCK			   SYS_FREQ/PB_DIV
@@ -127,11 +133,11 @@
 #define BLUETOOTH_CONNECTION_RETRIES	5
 
 //DURATION IN SECONDS FOR BLUETOOTH INQUIRY
-#define BLUETOOTH_INQUIRY_TIMEOUT		"10"
+#define BLUETOOTH_INQUIRY_TIMEOUT		"5"
 
-//DEFINES JOYSTICK ABOVE CENTER OR BELOW CENTER
-#define JSTK_AXIS_ABOVE_CENTER			1
-#define JSTK_AXIS_BELOW_CENTER		    0
+//BATTERY VOLTAGE SCALE
+//3.3/(1024 bits/4(voltage divisor)) = 0.012890625, 6000 * 0.012890625 ~= 78
+#define BATTERY_SCALE  78
 
 //MAIN APP TASK STATES
 #define STATE_CONNECT					0
@@ -140,7 +146,6 @@
 #define STATE_SEND_MESSAGE				3
 #define STATE_RECIEVE_MESSAGE			4
 #define STATE_UPDATE_CLS				5
-#define STATE_RESEND_MESSAGE			6
 
 //ISR FIRED, EXECUTE MAIN TASK LOOP
 #define TASK_LOOP_TIMER_FIRED			1
@@ -154,10 +159,10 @@
 
 //PmodCLS commands, see PmodCLS manual for descriptions
 uint8_t enableDisplay[] = {27, '[', '3', 'e', '\0'}; //enable display
-uint8_t setCursor[] = {27, '[', '0', 'c', '\0'}; //turn off cursor
-uint8_t homeRow2[] = {27,'[','1',';','0','H','\0'}; //set cursor to col 0, row 1
-uint8_t homeCursor[] = {27, '[', 'j', '\0'}; //set cursor to row 0, col 0, clear display
-uint8_t wrapLine[] = {27, '[', '0', 'h', '\0'}; //set display to "wrap"
+uint8_t setCursor[] = {27, '[', '0', 'c', '\0'}; 	 //turn off cursor
+uint8_t homeRow2[] = {27,'[','1',';','0','H','\0'};  //set cursor to col 0, row 1
+uint8_t homeCursor[] = {27, '[', 'j', '\0'}; 		 //set cursor to row 0, col 0, clear display
+uint8_t wrapLine[] = {27, '[', '0', 'h', '\0'}; 	 //set display to "wrap"
 
 //one line of display for CLS
 uint8_t clsDisplayLine[CLS_DISPLAY_WIDTH];
@@ -187,6 +192,11 @@ CEREBOT_ROBOT_MSG cerebotRobotMsg;
 PmodJSTKAxisButton jstkAxisBtnFwdRev;
 PmodJSTKAxisButton jstkAxisBtnLeftRight;
 
+
+/* ------------------------------------------------------------ */
+/*				Forward Declarations							*/
+/* ------------------------------------------------------------ */
+
 void init();
 void initControllers();
 void UARTInit(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID,UART_CONFIGURATION configParams);
@@ -205,27 +215,37 @@ void sendMessage();
 void enableTimers();
 void recieveMessage();
 void updateCLS();
+void calculateAxisRange();
+void checkMinMax();
 uint16_t calcAxisDutyCycle(uint16_t axisValue, uint16_t axisMin,uint16_t axisRange);
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
+
 
 uint8_t main(void)
 {
 	init();
-
+	appTask();
 	return 0;	
 }	
 
 /*  
-** <FUNCTION NAME>
+** 	init()
 **
 **	Synopsis:
+**	Initializes all hardware
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**  Initializes all controllers, timers, interrupts and
+**  performs joystick calibration.
 */
 void init()
 {
@@ -236,23 +256,32 @@ void init()
 	initPmodBTN2();
 	calibrateJoySticks();
 	connectToRemoteHost();
-	enableTimers();
-	appTask();
+	enableTimers();	
 }	
 
 
 /*  
-** <FUNCTION NAME>
+**  appTask()
 **
 **	Synopsis:
+**	Primary application loop, device polling,send/recieve messages
+**  update CLS, connect to remote host on disconnect
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**
+**  To control the rate at which the task loop executes
+**  timer 1 sets the taskerLoopTimerState variable, when
+**  it is equal to TASK_LOOP_TIMER_FIRED, one full task
+**  sequence executes (see design reference for state
+**  transition diagram). Once the task loop completes without
+**  a bluetooth disconnect the timer state is set to 
+**  TASK_LOOP_TIMER_RESET 
 */
 void appTask()
 {
@@ -292,10 +321,6 @@ void appTask()
 					}
 				 	mainLoopState = STATE_POLLDEV;
 				 	taskLoopTimerState = TASK_LOOP_TIMER_RESET;
-				 	break;
-				 	
-				 case STATE_RESEND_MESSAGE:
-				 	mainLoopState =  STATE_SEND_MESSAGE;
 				 	break;			
 			}
 		}
@@ -303,17 +328,17 @@ void appTask()
 	
 }
 /*  
-** <FUNCTION NAME>
+**  enableTimers()
 **
 **	Synopsis:
+**	Enables T1 for CLS update counter, polling for Bluetooth connectivity
+**  Setting timer fired flag for appTask loop.
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
-**
-**  Description:
 */
 void enableTimers()
 {
@@ -331,7 +356,7 @@ void enableTimers()
 }	
 	
 /*  
-** <FUNCTION NAME>
+**  sendMessage()
 **
 **	Synopsis:
 **
@@ -358,11 +383,15 @@ void sendMessage()
 
 	cerebotRemoteMsg.vehicleDirectionLeftRight = (jstkAxisBtnLeftRight.xAxis >= jstkAxisRange.xAxisCenter)?ROBOT_TURN_RIGHT:ROBOT_TURN_LEFT;
 
-	for(byteCount = 0;byteCount < numBytes;byteCount++)
+	while(byteCount < numBytes && mainLoopState != STATE_DISCONNECTED)
 	{
 		while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
-		UARTSendDataByte(UART_BLUETOOTH, *msg);
-		msg++;
+		if(mainLoopState != STATE_DISCONNECTED)
+		{
+			UARTSendDataByte(UART_BLUETOOTH, *msg);
+			byteCount++;
+			msg++;
+		}
 	}
 }
 /*  
@@ -420,18 +449,21 @@ void recieveMessage()
 	uint8_t oneByte = 0;
 	uint8_t *msg = (uint8_t*)&cerebotRobotMsg;
 	uint8_t numBytes = sizeof(CEREBOT_ROBOT_MSG);
-	while(byteCount < numBytes)
+
+	while(byteCount < numBytes && mainLoopState != STATE_DISCONNECTED)
 	{
 		while(!UARTReceivedDataIsAvailable(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
-		*msg = UARTGetDataByte(UART_BLUETOOTH);
-		msg++;
-		byteCount++;
-
+		if(mainLoopState != STATE_DISCONNECTED)
+		{
+			*msg = UARTGetDataByte(UART_BLUETOOTH);
+			msg++;
+			byteCount++;
+		}
 	}
 }		
 
 /*  
-** <FUNCTION NAME>
+**  updateCLS()
 **
 **	Synopsis:
 **
@@ -452,8 +484,8 @@ void updateCLS()
 											cerebotRobotMsg.rightWheelRPM);
 	UARTPutS(clsDisplayLine,UART_CLS);
 	UARTPutS(homeRow2,UART_CLS);
-	sprintf(clsDisplayLine,"V+: %1.2f Dir: %c",cerebotRobotMsg.batteryVoltage * 0.012890625
-							 ,(cerebotRobotMsg.vehicleDirection == ROBOT_DIR_FWD)?'F':'R');
+	sprintf(clsDisplayLine,"V+: %d.%2d Dir: %c",cerebotRobotMsg.batteryVoltage / BATTERY_SCALE, cerebotRobotMsg.batteryVoltage % BATTERY_SCALE, 
+							 (cerebotRobotMsg.vehicleDirection == ROBOT_DIR_FWD)?'F':'R');
 	UARTPutS(clsDisplayLine,UART_CLS);
 										
 }	
@@ -510,7 +542,41 @@ void pollJstkSetLEDState()
 {
 	PmodJSTKSendRecv(SPI_JSTK_FWD_REV,jystkFwdRevLedState,&jstkAxisBtnFwdRev);	
 	PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtnLeftRight);	
+ 	checkMinMax();
 }	
+
+void checkMinMax()
+{
+	uint8_t rangeChanged = 0;
+	if(jstkAxisBtnFwdRev.yAxis > jstkAxisRange.yAxisMax)
+	{
+		jstkAxisRange.yAxisMax = jstkAxisBtnFwdRev.yAxis;
+		rangeChanged = 1;
+	}
+	else if(jstkAxisBtnFwdRev.yAxis < jstkAxisRange.yAxisMin)
+	{
+		jstkAxisRange.yAxisMin = jstkAxisBtnFwdRev.yAxis;
+		rangeChanged = 1;
+	}
+
+	if(jstkAxisBtnLeftRight.xAxis > jstkAxisRange.xAxisMax)
+	{
+		jstkAxisRange.xAxisMax = jstkAxisBtnLeftRight.xAxis;
+		rangeChanged = 1;
+	}
+	else if(jstkAxisBtnLeftRight.xAxis < jstkAxisRange.xAxisMin)
+	{
+		jstkAxisRange.xAxisMin = jstkAxisBtnLeftRight.xAxis;
+		rangeChanged = 1;
+	}
+
+	if(rangeChanged)
+	{
+		calculateAxisRange();
+	}
+	
+}
+
 
 /*  
 ** <FUNCTION NAME>
@@ -654,11 +720,17 @@ void calibrateJoySticks()
 		PmodJSTKSendRecv(SPI_JSTK_LEFT_RIGHT,jystkLeftRightLedState,&jstkAxisBtnCalibrate);	
 	
 		//Calculate axis range
-		jstkAxisRange.yAxisRange = (jstkAxisRange.yAxisMax - jstkAxisRange.yAxisMin);
-		jstkAxisRange.xAxisRange = (jstkAxisRange.xAxisMax - jstkAxisRange.xAxisMin);
+		calculateAxisRange();
 		
 	}while(jstkAxisRange.yAxisRange < 500 || jstkAxisRange.xAxisRange < 500);
 }
+
+void calculateAxisRange()
+{
+		jstkAxisRange.yAxisRange = (jstkAxisRange.yAxisMax - jstkAxisRange.yAxisMin);
+		jstkAxisRange.xAxisRange = (jstkAxisRange.xAxisMax - jstkAxisRange.xAxisMin);
+}
+
 
 /*  
 ** <FUNCTION NAME>
