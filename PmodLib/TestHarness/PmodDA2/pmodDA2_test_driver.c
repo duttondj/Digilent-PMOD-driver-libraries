@@ -34,13 +34,14 @@ void PmodDA2_INIT(UART_MODULE uartID)
 	INTEnableSystemMultiVectoredInt ();
 
 	PmodDA2Sound = 0xEFF;
-
+	PORTSetPinsDigitalOut(IOPORT_D,BIT_0|BIT_9|BIT_10);
 	PORTSetPinsDigitalOut (IOPORT_B, BIT_10 |  BIT_11 |  BIT_12 |  BIT_13);
 	PORTClearBits (IOPORT_B,  BIT_10 |  BIT_11 |  BIT_12 |  BIT_13);
 
 	UARTPutS("\r\nPmodDA2 SPI port=>",uartID);
 	chn =  getIntegerFromConsole(uartID); //SPI port PMODSF is connected to
 	PmodDA2Init(chn,PB_CLOCK,SPI_BITRATE);
+	PmodDA2Init(1,PB_CLOCK,12500000);
 }
 
 uint8_t UNIT_PmodDA2PlaySound(UART_MODULE uartID)
@@ -74,8 +75,24 @@ uint8_t UNIT_PmodDA2PlaySound(UART_MODULE uartID)
 
 void __ISR(_TIMER_2_VECTOR, ipl7) fnTimer1Int(void)
 {
+	uint16_t data;
 	// Clear the timer interrupt and call our handler function
 	mT2ClearIntFlag ();
-	PmodDA2Send(chn, PmodDA2Sound);
+	
+	PmodSPISetSSLow(1);
+	SpiChnPutC(1,0);
+	data = ((uint16_t)SpiChnGetC(1)) << 8;
+	SpiChnPutC(1,0);
+	data |= ((uint16_t)SpiChnGetC(1));
+	PmodSPISetSSHigh(1);	
+
+
+	PmodDA2Send(chn, data);
+/*	if(PmodDA2Sound == 0)
+	{
+		PmodDA2Sound = 0xEFF;
+	}
+	PmodDA2Sound--;
+*/
 	//PORTToggleBits (IOPORT_B, BIT_10 | BIT_11 | BIT_12 | BIT_13 );
 }
