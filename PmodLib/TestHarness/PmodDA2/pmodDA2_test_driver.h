@@ -25,8 +25,10 @@
 #include <string.h>
 #include <stdint.h>
 #include <plib.h>
+#include "./PmodSF/pmodsf.h"
 #include "./PmodDA2/pmodDA2.h"
 #include "./TestHarness/Common/test_harness_common.h"
+#include "./PmodCommon/bufferlib/bufferlib.h"
 
 #define SYSTEM_CLOCK 80000000L  //system clock speed (8 MHz Crystal/ FPLLIDIV * FPLLMUL / FPLLODIV)
 #define PB_CLOCK (SYSTEM_CLOCK/2) //peripheral bus clock
