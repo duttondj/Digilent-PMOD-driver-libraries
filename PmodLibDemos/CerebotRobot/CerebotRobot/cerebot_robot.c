@@ -110,6 +110,9 @@
 #define BIT_HB_RIGHT_WHEEL_SA  			BIT_10
 #define BIT_HB_RIGHT_WHEEL_SB  			BIT_2
 
+#define TIMER_PR_LEFT					PR2
+#define TIMER_PR_RIGHT					PR3
+
 //BLUETOOTH DEVICE NAME
 #define BLUETOOTH_NAME					"CEREBOTROBOT" 
 
@@ -123,12 +126,12 @@
 #define UART_BLUETOOTH_BITRATE			115200
 
 //MAIN APP TASK STATES
-//Wait for connect, do not receieve message, also serves as disconnected state
-#define STATE_WAITING_CONNECT			0 
-//Recieve message from remote, UART interrupt has fired
-#define STATE_RECIEVE_MESSAGE			1
-//connected, but waiting for UART interrupt to fire on data recieved
-#define STATE_WAIT_RECIEVE_MESSAGE		2
+#define STATE_WAITING_CONNECT			0
+#define STATE_WAIT_RECIEVE_MESSAGE		1
+#define STATE_RECIEVE_MESSAGE			2
+#define STATE_SEND_MESSAGE				3	
+#define STATE_CHK_CHG_DIR				4
+#define STATE_SET_DUTY_CYCLE			5
 
 
 //ADC - BATTERY VOLTAGE
@@ -265,21 +268,49 @@ void appTask()
 
 		switch(mainLoopState)
 		{
+			 case STATE_WAITING_CONNECT:
+				break;
 			 case STATE_WAIT_RECIEVE_MESSAGE: 
 				mainLoopState = (UART_BT_RxData)?STATE_RECIEVE_MESSAGE:STATE_WAIT_RECIEVE_MESSAGE;
 			 	break;
 			 case STATE_RECIEVE_MESSAGE:
 			    UART_BT_RxData = 0;
 				recieveMessage();
-			 	sendMessage();
-				if(currentDirection != cerebotRemoteMsg.vehicleDirectionFwdRev)
+				if(mainLoopState != STATE_WAITING_CONNECT)
+				{
+					mainLoopState = STATE_SEND_MESSAGE;
+				}
+				break;
+			 case STATE_SEND_MESSAGE:
+			 	if(mainLoopState != STATE_WAITING_CONNECT)
+				{
+					sendMessage();
+					if(mainLoopState != STATE_WAITING_CONNECT)
+					{
+						mainLoopState = STATE_CHK_CHG_DIR;
+					}
+				}
+				break;
+			 case STATE_CHK_CHG_DIR:
+				if(currentDirection != cerebotRemoteMsg.vehicleDirectionFwdRev && mainLoopState != STATE_WAITING_CONNECT)
 				{
 					currentDirection = cerebotRemoteMsg.vehicleDirectionFwdRev;
 					changeDirection();
 				}
-				setDutyCycle();
+				if(mainLoopState != STATE_WAITING_CONNECT)
+				{
+					mainLoopState = STATE_SET_DUTY_CYCLE;
+				}
+				break;
+			 case STATE_SET_DUTY_CYCLE:
+				if(directionChangeComplete)
+				{
+					setDutyCycle();
+				}
 			  	if(mainLoopState != STATE_WAITING_CONNECT)
+				{
 			 		mainLoopState = STATE_WAIT_RECIEVE_MESSAGE;
+				}
 			 	break;
 			 
 		}
@@ -365,19 +396,28 @@ void sendMessage()
 {
 	uint8_t byteCount = 0;
 	uint8_t *msg = (uint8_t*)&cerebotRobotMsg;
-	uint8_t lrc = 0;
+	uint8_t numBytes = sizeof(CEREBOT_ROBOT_MSG);
+	//Get left motor RPM, divide by reduction ratio to get shaft RMP
 	cerebotRobotMsg.leftWheelRPM = hbridges[HB_LEFT_WHEEL].rpm/DC_MOTOR_REDUCTION_RATIO;
+	//Get right motor RPM, divide by reduction ratio to get shaft RMP
 	cerebotRobotMsg.rightWheelRPM = hbridges[HB_RIGHT_WHEEL].rpm/DC_MOTOR_REDUCTION_RATIO;
+	//Read battery voltage from ADC10
 	cerebotRobotMsg.batteryVoltage = ReadADC10(8 * ((~ReadActiveBufferADC10() & 0x01)));
+	//Direction the robot is currently traveling in
 	cerebotRobotMsg.vehicleDirection = currentDirection;
-	for(byteCount = 0;byteCount < sizeof(CEREBOT_ROBOT_MSG);byteCount++)
+
+	while(byteCount < numBytes && mainLoopState != STATE_WAITING_CONNECT)
 	{
 		while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_WAITING_CONNECT);
-		UARTSendDataByte(UART_BLUETOOTH, *msg);
-		msg++;
+		if(mainLoopState != STATE_WAITING_CONNECT)
+		{
+			UARTSendDataByte(UART_BLUETOOTH, *msg);
+			msg++;
+			byteCount++;
+		}
 	}	
-
 }
+
 /*  
 ** <FUNCTION NAME>
 **
@@ -394,21 +434,20 @@ void sendMessage()
 void recieveMessage()
 {
 	uint8_t byteCount = 0;
-	uint8_t oneByte = 0;
 	uint8_t *msg = (uint8_t*)&cerebotRemoteMsg;
 	uint8_t numBytes = sizeof(CEREBOT_REMOTE_MSG);
 	
-	for(byteCount = 0;byteCount < numBytes;byteCount++)
+	while(byteCount < numBytes && mainLoopState != STATE_WAITING_CONNECT)
 	{
 		while(!UARTReceivedDataIsAvailable(UART_BLUETOOTH) && mainLoopState != STATE_WAITING_CONNECT);
-		oneByte = UARTGetDataByte(UART_BLUETOOTH);
-		*msg = oneByte;
-		msg++;
+		if(mainLoopState != STATE_WAITING_CONNECT)
+		{
+			*msg = UARTGetDataByte(UART_BLUETOOTH);
+			msg++;
+			byteCount++;
+		}
 	}
-	
-	
 }
-
 
 /*  
 ** <FUNCTION NAME>
@@ -453,7 +492,7 @@ void initADC10()
 */
 void initControllers()
 {
-	//Initialize PmodBTN2 UART
+	//Initialize PmodBT2 UART
 	UARTInit(UART_BLUETOOTH_BITRATE,PB_CLOCK,UART_BLUETOOTH,UART_ENABLE_PINS_CTS_RTS | UART_RTS_WHEN_RX_NOT_FULL);	
 }	
 /*  
@@ -501,8 +540,7 @@ void setDutyCycle()
 	double fwdRevDCScaleLeft = cerebotRemoteMsg.fwdRevSpeed/100.0;
 	double fwdRevDCScaleRight = fwdRevDCScaleLeft;
 	static int8_t cummulativeWheelScale = 0;
-	if(directionChangeComplete)
-	{
+
 		if(cerebotRemoteMsg.leftRightSpeed < 6 &&  hbridges[HB_LEFT_WHEEL].rpm > 0) 
 		{
 			
@@ -537,9 +575,9 @@ void setDutyCycle()
 
 		}
 		
-		PmodHB5SetDCPWMDutyCycle(PR2 * fwdRevDCScaleLeft,hbridges[HB_LEFT_WHEEL].ocChannel);	
-		PmodHB5SetDCPWMDutyCycle(PR3 * fwdRevDCScaleRight,hbridges[HB_RIGHT_WHEEL].ocChannel);		
-	}
+		PmodHB5SetDCPWMDutyCycle(TIMER_PR_LEFT * fwdRevDCScaleLeft,hbridges[HB_LEFT_WHEEL].ocChannel);	
+		PmodHB5SetDCPWMDutyCycle(TIMER_PR_LEFT * fwdRevDCScaleRight,hbridges[HB_RIGHT_WHEEL].ocChannel);		
+	
 }
 
 /*  
@@ -594,10 +632,10 @@ void setPortIO()
 	//Set digital in for PmodBTN2 connection status pin
 	PORTSetPinsDigitalIn(PORT_BIT_PMODBTN2_STATUS);
 
-	//Start PmodBTN2 RST high
+	//Start PmodBT2 RST high
 	PORTSetBits(PORT_BIT_PMODBTN2_RESET); 
 
-	//Set digital out for PmodBTN2 reset pin
+	//Set digital out for PmodBT2 reset pin
 	PORTSetPinsDigitalOut(PORT_BIT_PMODBTN2_RESET);	
 	
 	
@@ -640,7 +678,7 @@ void resetBTModule()
 	PORTClearBits(PORT_BIT_PMODBTN2_RESET);
  	while(PORTReadBits(PORT_BIT_PMODBTN2_CTS) == ctsPinState); //wait for CTS to go low, BT off
  
- 	delayN(1000000); //delay so PmodBTN2 has to se the state change
+ 	delayN(1000000); //delay so PmodBT2 has to se the state change
  
  	//Send reset high to finish reset
     PORTSetBits(PORT_BIT_PMODBTN2_RESET);
@@ -663,11 +701,11 @@ void resetBTModule()
 **	Errors:	none
 **
 **  Description:
-**  All commands and settings for the PmodBTN2 can be found in the
+**  All commands and settings for the PmodBT2 can be found in the
 **  Roving Networks RN-42 Advanced User Manual.
 **
 **  Notes:
-**  Unless otherwise set below, the PmodBTN2 will use its
+**  Unless otherwise set below, the PmodBT2 will use its
 **  default settings.
 */
 void initPmodBTN2()
