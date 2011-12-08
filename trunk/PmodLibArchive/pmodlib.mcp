@@ -1,14 +1,14 @@
 [HEADER]
 magic_cookie={66E99B07-E706-4689-9E80-9B2582898A13}
 file_version=1.0
-device=PIC32MX460F512L
+device=PIC32MX795F512L
 [PATH_INFO]
 BuildDirPolicy=BuildDirIsProjectDir
 dir_src=
-dir_bin=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibArchive\PmodLib\lib
+dir_bin=.\PmodLib\lib
 dir_tmp=
 dir_sin=
-dir_inc=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib;C:\Code\cpts421\PmodLib
+dir_inc=.\PmodLibSrc
 dir_lib=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib
 dir_lkr=
 [CAT_FILTERS]
