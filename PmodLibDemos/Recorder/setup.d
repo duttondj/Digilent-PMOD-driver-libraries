@@ -1,0 +1,1 @@
+setup.o: setup.c

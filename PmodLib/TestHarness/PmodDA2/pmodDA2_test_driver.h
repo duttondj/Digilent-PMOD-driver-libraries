@@ -25,8 +25,8 @@
 #include <string.h>
 #include <stdint.h>
 #include <plib.h>
-#include "./PmodSF/pmodsf.h"
 #include "./PmodDA2/pmodDA2.h"
+#include "./PmodMic/PmodMic.h"
 #include "./TestHarness/Common/test_harness_common.h"
 #include "./PmodCommon/bufferlib/bufferlib.h"
 

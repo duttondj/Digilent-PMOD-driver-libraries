@@ -47,7 +47,7 @@ void PmodDA2_INIT(UART_MODULE uartID)
 	UARTPutS("\r\nPmodDA2 SPI port=>",uartID);
 	chn =  getIntegerFromConsole(uartID); //SPI port PMODSF is connected to
 	PmodDA2Init(chn,PB_CLOCK,SPI_BITRATE);
-	PmodDA2Init(1,PB_CLOCK,12500000);
+	PmodMicInit(1,PB_CLOCK,12500000);
 }
 
 uint8_t UNIT_PmodDA2PlaySound(UART_MODULE uartID)
@@ -97,12 +97,7 @@ void __ISR(_TIMER_2_VECTOR, ipl7) fnTimer1Int(void)
 	
 	if(PmodDA2Sound == 0)
 	{
-		PmodSPISetSSLow(1);
-		SpiChnPutC(1,0);
-		data = ((uint16_t)SpiChnGetC(1)) << 8;
-		SpiChnPutC(1,0);
-		data |= ((uint16_t)SpiChnGetC(1));
-		PmodSPISetSSHigh(1);
+		data = PmodMicGetData(1);
 		
 		BufLibWriteBuffer(data);
 	}

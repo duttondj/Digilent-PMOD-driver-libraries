@@ -1,2 +1,2 @@
 fnDelayNcycles.o: PmodLibSrc\PmodCommon\utility\fnDelayNcycles.c \
- C:\Code\cpts421\PmodLib/./PmodCommon/utility/pmod_utility.h
+ C:\Users\Ross\Desktop\Digilent\ Pmod\ Library\PmodLib/./PmodCommon/utility/pmod_utility.h
