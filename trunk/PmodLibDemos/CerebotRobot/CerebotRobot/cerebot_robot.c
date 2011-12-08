@@ -208,18 +208,22 @@ void initHbridge();
 void changeDirection();
 void init();
 
-/*  
-** <FUNCTION NAME>
+/*
+** 	main()
 **
 **	Synopsis:
+**	Main for cerebot_robot_remote
 **
-**  Input: 
+**  Input: none
 **
-**  Returns: none
+**  Returns: 0
 **
 **	Errors:	none
 **
 **  Description:
+**
+**  Main function for application, runs init, the launches app task
+**  does not return.
 */
 uint8_t main(void)
 {
@@ -228,17 +232,20 @@ uint8_t main(void)
 	return 0;	
 }	
 /*  
-** <FUNCTION NAME>
+** 	init()
 **
 **	Synopsis:
+**	Initializes all hardware
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**  Initializes all controllers, timers, and interrupts.
+**
 */
 void init()
 {
@@ -498,19 +505,30 @@ void initControllers()
 {
 	//Initialize PmodBT2 UART
 	UARTInit(UART_BLUETOOTH_BITRATE,PB_CLOCK,UART_BLUETOOTH,UART_ENABLE_PINS_CTS_RTS | UART_RTS_WHEN_RX_NOT_FULL);	
-}	
+}
+	
 /*  
-** <FUNCTION NAME>
+**  UARTInit()
 **
 **	Synopsis:
+**	Initialize the specified UART
 **
 **  Input: 
+**		uint32_t baudRate - baud rate in bps
+**		uint32_t pbClock - peripheral bus clock in Hz
+**		UART_MODULE uartID - uart module ID (see plib docs)
+**		UART_CONFIGURATION configParams - UART configuration paramters (see plib docs)
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**	
+**	Initializes the specified UARt at the bit rate and configuation parameters specified,
+**  Line Control:8 bits, no parity, 1 stop bit
+**  Fifo: TX not full, RX not full
+**  Enable: RX/TX
 */
 void UARTInit(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID,UART_CONFIGURATION configParams)
 {
@@ -660,17 +678,23 @@ void setPortIO()
 }
 
 /*  
-** <FUNCTION NAME>
+** 	resetBTModule()
 **
 **	Synopsis:
+**	Performs a hardware reset of the PmodBT2
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**	Performs a hardware reset of the PmodBT2 by driving the
+**  the reset pin low, waiting for CTS to go low indicating the
+**  the module has reset, delay, drive rst high, wait for CTS 
+**  to go high indicating the module is powered on, delay to
+**  allow for initialization to complete.
 */
 void resetBTModule()
 {
@@ -694,9 +718,11 @@ void resetBTModule()
 
 
 /*  
-** <FUNCTION NAME>
+**  initPmodBT2()
 **
 **	Synopsis:
+**
+**	Initializes the PmodBT2
 **
 **  Input: 
 **
@@ -705,11 +731,15 @@ void resetBTModule()
 **	Errors:	none
 **
 **  Description:
-**  All commands and settings for the PmodBT2 can be found in the
-**  Roving Networks RN-42 Advanced User Manual.
+**	The module is initially reset, set to default settings,
+**  reset again, then conigurated as a SPP slave. See 
+**  comments in this section for a description of parameters 
+**  configured. All commands and settings for the PmodBTN2 
+**	can be found in the Roving Networks RN-42 Advanced User 
+**  Manual.
 **
 **  Notes:
-**  Unless otherwise set below, the PmodBT2 will use its
+**  Unless otherwise set below, the PmodBTN2 will use its
 **  default settings.
 */
 void initPmodBTN2()
@@ -795,18 +825,25 @@ void initPmodBTN2()
 	//Reset to allow changes to take effect
 	resetBTModule();
 }	
+
 /*  
-** <FUNCTION NAME>
+**  pollBlueToothConnected()
 **
 **	Synopsis:
+**	Polls PmodBT2 for connectivity, set state and LEDs
+**  according to connect/disconnect state.
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**	Polls PmodBT2 STATUS pin for connectivity, if LOW
+**  not connected, only LD1 will illuminate, main loop state is 
+**  set to STATE_WAITING_CONNECT, if HIGH state does not change
+**  LD1 - LD4 are illuminated.
 */
 uint8_t pollBlueToothConnected()
 {
