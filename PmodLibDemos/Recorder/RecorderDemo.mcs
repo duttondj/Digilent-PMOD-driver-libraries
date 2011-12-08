@@ -9,7 +9,7 @@ LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder\PmodLib\include||$(LIBDIR)|C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder\PmodLib\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
-SOLK=<src>|main.c|setup.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|setup.c||<obj>||<lib>|PmodLib\lib\pmodlib_460.a||<lkr>||
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
@@ -22,7 +22,7 @@ LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder\PmodLib\include||$(LIBDIR)|C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder\PmodLib\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
-SOLK=<src>|main.c|setup.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|setup.c||<obj>||<lib>|PmodLib\lib\pmodlib_460.a||<lkr>||
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
@@ -35,9 +35,9 @@ LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={C68E5105-1196-4333-A0BF-3DC57271E614}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ld.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder\PmodLib\include||$(LIBDIR)|C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder\PmodLib\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
-SOLK=<src>|main.c|setup.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|setup.c||<obj>||<lib>|PmodLib\lib\pmodlib_460.a||<lkr>||
 SuiteArgsString=
-ToolArgsString=-o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -Map="$(BINDIR_)$(TARGETBASE).map"
+ToolArgsString=--defsym=_min_heap_size=30000 -Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
 DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PIC32MXSK=1
 [File003]
@@ -48,9 +48,9 @@ LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={C68E5105-1196-4333-A0BF-3DC57271E614}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ld.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder\PmodLib\include||$(LIBDIR)|C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder\PmodLib\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib||$(LKRDIR)||
-SOLK=<src>|main.c|setup.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|setup.c||<obj>||<lib>|PmodLib\lib\pmodlib_460.a||<lkr>||
 SuiteArgsString=
-ToolArgsString=-o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -Map="$(BINDIR_)$(TARGETBASE).map"
+ToolArgsString=--defsym=_min_heap_size=30000 -Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
 DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PIC32MXSK=1
 [TOOL_LOC_STAMPS]
