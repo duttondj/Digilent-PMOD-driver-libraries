@@ -1,11 +1,12 @@
 /************************************************************************/
-/*                                                                      */
+/*  pmodBT.c -- implimentation file for pmodBT configurator             */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
-
+/*  This module contains funtions for configuring, connecting and       */
+/*  tranfering data with the PmodBT2 Bluetooth module
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
