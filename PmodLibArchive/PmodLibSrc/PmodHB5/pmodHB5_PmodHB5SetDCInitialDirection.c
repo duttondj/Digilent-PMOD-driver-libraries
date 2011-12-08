@@ -53,7 +53,7 @@ void PmodHB5SetDCInitialDirection(HBRIDGE *hBridge)
 
 	if(hBridge->newDirection == PMOD_HB5_DIR_CW)
 	{
-		PORTToggleBits(hBridge->directionPort,hBridge->directionPortBit);
+		PORTSetBits(hBridge->directionPort,hBridge->directionPortBit);
 	}
 	else
 	{
