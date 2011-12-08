@@ -5,7 +5,8 @@
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
-/*																		*/
+/*	See CerebotRobot.pdf for functional description and assembly		*/
+/*  instructions.														*/																		*/
 /*  ------------------------------------------------------------------- */
 /*  HARDWARE SETUP	- Cerebot32MX4										*/
 /*  ------------------------------------------------------------------- */
@@ -230,7 +231,8 @@ uint8_t main(void)
 	init();
 	appTask();
 	return 0;	
-}	
+}
+	
 /*  
 ** 	init()
 **
@@ -256,7 +258,6 @@ void init()
 	setPortIO();
 	initPmodBTN2();
 	enableInterrupts();
-
 }
 /*  
 ** <FUNCTION NAME>
@@ -276,15 +277,18 @@ void appTask()
 	uint8_t hbIndex = 0;
 	while(1)
 	{
-
 		switch(mainLoopState)
 		{
 			 case STATE_WAITING_CONNECT:
 				break;
+
 			 case STATE_WAIT_RECIEVE_MESSAGE: 
+
 				mainLoopState = (UART_BT_RxData)?STATE_RECIEVE_MESSAGE:STATE_WAIT_RECIEVE_MESSAGE;
 			 	break;
+
 			 case STATE_RECIEVE_MESSAGE:
+
 			    UART_BT_RxData = 0;
 				if(mainLoopState != STATE_WAITING_CONNECT)
 				{
@@ -295,6 +299,7 @@ void appTask()
 					}
 				}
 				break;
+
 			 case STATE_SEND_MESSAGE:
 			 	if(mainLoopState != STATE_WAITING_CONNECT)
 				{
@@ -302,31 +307,35 @@ void appTask()
 					mainLoopState = STATE_CHK_CHG_DIR;	
 				}
 				break;
+
 			 case STATE_CHK_CHG_DIR:
+
 				if(currentDirection != cerebotRemoteMsg.vehicleDirectionFwdRev && mainLoopState != STATE_WAITING_CONNECT)
 				{
 					currentDirection = cerebotRemoteMsg.vehicleDirectionFwdRev;
 					changeDirection();
 				}
+
 				if(mainLoopState != STATE_WAITING_CONNECT)
 				{
 					mainLoopState = STATE_SET_DUTY_CYCLE;
 				}
 				break;
+
 			 case STATE_SET_DUTY_CYCLE:
+
 				if(directionChangeComplete)
 				{
 					setDutyCycle();
 				}
+
 			  	if(mainLoopState != STATE_WAITING_CONNECT)
 				{
 			 		mainLoopState = STATE_WAIT_RECIEVE_MESSAGE;
 				}
-			 	break;
-			 
+			 	break;	 
 		}
-	}
-		
+	}		
 }
 
 /*  
@@ -390,6 +399,7 @@ void initHbridge()
 	hbridges[HB_RIGHT_WHEEL].ocChannel = 		3;
 	PORTClearBits(PORT_HB_RIGHT_WHEEL_DIR,BIT_HB_RIGHT_WHEEL_DIR); //set initial direction CCW
 }
+
 /*  
 ** <FUNCTION NAME>
 **
@@ -488,6 +498,7 @@ void initADC10()
 
     while ( ! mAD1GetIntFlag() ) { } // wait for the first conversion to complete so there will be vaild data in ADC result registers
 }
+
 /*  
 ** <FUNCTION NAME>
 **
@@ -541,7 +552,6 @@ void UARTInit(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID,UART_CONFIGU
     UARTSetDataRate(uartID, pbClock, baudRate);
 
     UARTEnable(uartID, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
-
 }
 
 /*  
@@ -564,8 +574,7 @@ void setDutyCycle()
 	static int8_t cummulativeWheelScale = 0;
 
 		if(cerebotRemoteMsg.leftRightSpeed < 6 &&  hbridges[HB_LEFT_WHEEL].rpm > 0) 
-		{
-			
+		{		
 			 if( hbridges[HB_LEFT_WHEEL].rpm > hbridges[HB_RIGHT_WHEEL].rpm)
 			{
 				cummulativeWheelScale+=1;
@@ -576,7 +585,6 @@ void setDutyCycle()
 			}
 			
  			fwdRevDCScaleRight += (cummulativeWheelScale / 200.0);
-	
 		}
 		else if(cerebotRemoteMsg.vehicleDirectionLeftRight == ROBOT_TURN_LEFT)
 		{
@@ -585,7 +593,6 @@ void setDutyCycle()
 			{
 				fwdRevDCScaleLeft = fwdRevDCScaleRight;	
 			}
-
 		}
 		else 
 		{
@@ -594,12 +601,10 @@ void setDutyCycle()
 			{
 				fwdRevDCScaleRight = fwdRevDCScaleLeft;	
 			}
-
 		}
 		
 		PmodHB5SetDCPWMDutyCycle(TIMER_PR_LEFT * fwdRevDCScaleLeft,hbridges[HB_LEFT_WHEEL].ocChannel);	
-		PmodHB5SetDCPWMDutyCycle(TIMER_PR_LEFT * fwdRevDCScaleRight,hbridges[HB_RIGHT_WHEEL].ocChannel);		
-	
+		PmodHB5SetDCPWMDutyCycle(TIMER_PR_LEFT * fwdRevDCScaleRight,hbridges[HB_RIGHT_WHEEL].ocChannel);			
 }
 
 /*  
