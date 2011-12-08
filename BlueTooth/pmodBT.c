@@ -34,7 +34,7 @@ uint8_t BTInquireAndConnect(UART_MODULE uartID,uint8_t *peerName,uint8_t *inquir
 
 			if(strcmp(RESPONSE_CONNECT,getCommandResponse[1]) == 0)
 			{
-				UARTPutS("CONNECTED\r\n",uartID);
+				UARTPutS(RESPONSE_CONNECT,uartID);
 				connectSuccess = 1;
 				break;
 			}	

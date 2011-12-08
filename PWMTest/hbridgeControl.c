@@ -1,14 +1,20 @@
 #include "hbridgeControl.h"
 
 static uint32_t *DCOutPutCompare[] = {(uint32_t*)0x0,
-#if (__PIC32_FEATURE_SET__ == 460)
-				(uint32_t*)0xBF803020, //OC1
-				(uint32_t*)0xBF803220, //OC2
-				(uint32_t*)0xBF803420, //OC3
-				(uint32_t*)0xBF803620, //OC4
-				(uint32_t*)0xBF803820  //OC5
-#else
-	#error ********hbridgeControl.h => PROCESSOR NOT SUPPORTED********
+#ifdef _OCMP1
+				(uint32_t*)(_OCMP1_BASE_ADDRESS + _OC1CON_OC32_MASK), //OC1
+#endif
+#ifdef _OCMP2
+				(uint32_t*)(_OCMP2_BASE_ADDRESS + _OC2CON_OC32_MASK), //OC2
+#endif
+#ifdef _OCMP3
+				(uint32_t*)(_OCMP3_BASE_ADDRESS + _OC3CON_OC32_MASK), //OC3
+#endif
+#ifdef _OCMP4
+				(uint32_t*)(_OCMP4_BASE_ADDRESS + _OC4CON_OC32_MASK), //OC4
+#endif
+#ifdef _OCMP5
+				(uint32_t*)(_OCMP5_BASE_ADDRESS + _OC5CON_OC32_MASK)  //OC5
 #endif
 };
 

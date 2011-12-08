@@ -6,7 +6,7 @@
 /************************************************************************/
 /*  Module Description: 												*/
 /*	See CerebotRobot.pdf for functional description and assembly		*/
-/*  instructions.														*/																		*/
+/*  instructions.														*/																		
 /*  ------------------------------------------------------------------- */
 /*  HARDWARE SETUP	- Cerebot32MX4										*/
 /*  ------------------------------------------------------------------- */
@@ -254,23 +254,33 @@ void init()
 	initControllers();
 	initADC10();
 	configureTimers();
- 	initHbridge();
 	setPortIO();
+ 	initHbridge();
 	initPmodBTN2();
 	enableInterrupts();
 }
+
 /*  
-** <FUNCTION NAME>
+** 	appTask()
 **
 **	Synopsis:
+**	Primary application loop, device polling,send/recieve messages
+**  set motor duty cycle
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**  Once a connection is made to the PmodBT2, and data is recieved
+**  from the remote, the task sequence begins. When a complete 
+**  sequence has been made, message processing will not occur until 
+**  data has been recieved and the UART interrupt handler sets the 
+**  UART_BT_RxData flag to 1.  (see design reference CerebotRobot.pdf
+**  for state transition diagram).
+**  
 */
 void appTask()
 {
@@ -309,7 +319,7 @@ void appTask()
 				break;
 
 			 case STATE_CHK_CHG_DIR:
-
+				//only execute if direction has changed
 				if(currentDirection != cerebotRemoteMsg.vehicleDirectionFwdRev && mainLoopState != STATE_WAITING_CONNECT)
 				{
 					currentDirection = cerebotRemoteMsg.vehicleDirectionFwdRev;
@@ -339,17 +349,19 @@ void appTask()
 }
 
 /*  
-** <FUNCTION NAME>
+**  changeDirection()
 **
 **	Synopsis:
+**	Toggles the newDirection field on all hbridges 
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**	Toggles the change direction bit on all hbridges
 */
 void changeDirection()
 {
@@ -362,17 +374,20 @@ void changeDirection()
 }
 
 /*  
-** <FUNCTION NAME>
+**  initHbridge()
 **
 **	Synopsis:
+**	Initialize hbridge struct array
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**  Initialize hbridge struct array using macros defined
+**  at the top of this file, set initial motor dirction
 */
 void initHbridge()
 {
@@ -386,7 +401,7 @@ void initHbridge()
 	hbridges[HB_LEFT_WHEEL].currentDirection = 	PMOD_HB5_DIR_CW;
 	hbridges[HB_LEFT_WHEEL].newDirection = 		PMOD_HB5_DIR_CW;
 	hbridges[HB_LEFT_WHEEL].ocChannel = 		2;
-	PORTSetBits(PORT_HB_LEFT_WHEEL_DIR,BIT_HB_LEFT_WHEEL_DIR); //set initial direction CW
+	PmodHB5SetDCInitialDirection(&hbridges[HB_LEFT_WHEEL]);
 
 	hbridges[HB_RIGHT_WHEEL].sensorAport = 		PORT_HB_RIGHT_WHEEL_SA;
 	hbridges[HB_RIGHT_WHEEL].sensorAportBit = 	BIT_HB_RIGHT_WHEEL_SA;
@@ -397,21 +412,25 @@ void initHbridge()
 	hbridges[HB_RIGHT_WHEEL].currentDirection = PMOD_HB5_DIR_CCW;
 	hbridges[HB_RIGHT_WHEEL].newDirection = 	PMOD_HB5_DIR_CCW;
 	hbridges[HB_RIGHT_WHEEL].ocChannel = 		3;
-	PORTClearBits(PORT_HB_RIGHT_WHEEL_DIR,BIT_HB_RIGHT_WHEEL_DIR); //set initial direction CCW
+	PmodHB5SetDCInitialDirection(&hbridges[HB_RIGHT_WHEEL]);
 }
 
 /*  
-** <FUNCTION NAME>
+**  sendMessage()
 **
 **	Synopsis:
+**	Send message to remote
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**	Populates CEREBOT_ROBOT struct with left/right motor shaft RPM,
+**	battery voltage and vehicle directions. Transmits to
+**  romete using PmodBT2
 */
 void sendMessage()
 {
@@ -440,10 +459,10 @@ void sendMessage()
 }
 
 /*  
-** <FUNCTION NAME>
+**  recieveMessage()
 **
 **	Synopsis:
-**
+**	
 **  Input: 
 **
 **  Returns: none
@@ -910,7 +929,7 @@ void enableInterrupts()
 **
 **  Description:
 */
-void getQuadEncoding()
+void getQuadEncodingChangeDir()
 {
 	uint8_t hbIndex = 0;
 	directionChangeComplete = PmodHB5ChangeDirection(&(hbridges[HB_LEFT_WHEEL]));
@@ -935,7 +954,7 @@ void getQuadEncoding()
 */
 void __ISR(_TIMER_1_VECTOR, ipl2) Timer1Handler(void)
 {	
-	getQuadEncoding();
+	getQuadEncodingChangeDir();
 	mainLoopState = pollBlueToothConnected();
   	INTClearFlag(INT_T1);
 }

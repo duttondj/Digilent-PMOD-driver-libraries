@@ -109,7 +109,6 @@ uint8_t main(void)
 	strcpy(params[1],"DEV_");
 	BTSendSetCommand(UART_BLUETOOTH,params,2);
 
-
 	strcpy(params[0],"SM");
 	strcpy(params[1],BT_SERIAL_MODE);
 	BTSendSetCommand(UART_BLUETOOTH,params,2);
