@@ -92,28 +92,19 @@ int main(void)
 
 void __ISR(_TIMER_1_VECTOR, ipl2) Timer1Handler(void)
 {	
-	INTEnable(INT_T1,INT_DISABLED);
-    
-	// clear the interrupt flag
-  	INTClearFlag(INT_T1);
-	
 	isr1Fire = 1;
 	updateBattery++;
-
-	INTEnable(INT_T1,INT_ENABLED);
+	// clear the interrupt flag
+  	INTClearFlag(INT_T1);
 }
 
 void displayVoltage()
 {
 	uint32_t newVoltage = ReadADC10(8 * ((~ReadActiveBufferADC10() & 0x01)));  
-	
-	if(newVoltage != voltage)
-	{
-		voltage = newVoltage;
-		UARTPutS(homeCursor,CLS_UART);
-		sprintf(displayLine,"Voltage: %1.2f",voltage * 0.012890625);
-		UARTPutS(displayLine,CLS_UART);
-	}
+	voltage = newVoltage;
+	UARTPutS(homeCursor,CLS_UART);
+	sprintf(displayLine,"Voltage: %1.2f",voltage * 0.012890625);
+	UARTPutS(displayLine,CLS_UART);
 }
 
 void initADC10()
@@ -134,6 +125,7 @@ void initADC10()
 void initCLS()
 {
 	SetupSerialLogging(9600,SYS_FREQ/PB_DIV,CLS_UART);
+	UARTPutS("\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0",CLS_UART);
 	UARTPutS(enableDisplay,CLS_UART);
 	UARTPutS(setCursor,CLS_UART);
 	UARTPutS(homeCursor,CLS_UART);
@@ -184,6 +176,7 @@ void setLedStateAndDirection()
 		displayBatteryOnCLS ^= (1 << 0); //toggle battery display on CLS
 		if(displayBatteryOnCLS)
 		{
+			updateBattery = TOGGLES_PER_SEC;
 			displayVoltage();
 		}
 		else
@@ -322,12 +315,12 @@ void appTask()
 	uint8_t hbIndex = 0;
 	uint8_t rpmChanged = 0;
 	uint8_t directionChangeComplete = 1;
-
-	initCLS();
 	
 	initADC10();
 
 	PmodJSTKInit(PMOD_JSTK_SPI_PORT,SYS_FREQ/PB_DIV,625000,SYS_FREQ);
+
+	initCLS();
 
 	CalibrateJstk();
 
@@ -354,7 +347,6 @@ void appTask()
 			
 				if(hbridges[hbIndex].rpm != hbridges[hbIndex].prevRpm)
 				{
-					
 					rpmChanged = 1;
 				}
 			}
@@ -362,8 +354,10 @@ void appTask()
 
 			if(displayBatteryOnCLS && updateBattery >= TOGGLES_PER_SEC)
 			{
+
 				displayVoltage();
 				updateBattery = 0;
+			
 			}
 			else if(rpmChanged && !displayBatteryOnCLS)
 			{	

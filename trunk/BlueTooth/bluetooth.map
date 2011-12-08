@@ -63,19 +63,19 @@ section                    address  length [bytes]      (dec)  Description
 .text.UARTSetAddress    0x9d001d18           0x3c          60   
 .text.strcat            0x9d001d54           0x38          56   
 .text.UARTWatchForAddre 0x9d001d8c           0x38          56   
-.rodata                 0x9d001dc4           0x34          52  Read-only const 
-.text.PORTReadBits      0x9d001df8           0x28          40   
-.text.PORTClearBits     0x9d001e20           0x28          40   
-.text.PORTSetBits       0x9d001e48           0x28          40   
-.text.UARTSetFifoMode   0x9d001e70           0x28          40   
-.text.UARTSetLineContro 0x9d001e98           0x28          40   
-.text                   0x9d001ec0           0x28          40  App's exec code 
-.dinit                  0x9d001ee8           0x10          16   
-.text._general_exceptio 0x9d001ef8            0xc          12   
-.text._bootstrap_except 0x9d001f04            0xc          12   
-.text._on_reset         0x9d001f10            0x8           8   
-.text._on_bootstrap     0x9d001f18            0x8           8   
-      Total kseg0_program_mem used  :      0x1f18        7960  1.5% of 0x80000
+.rodata                 0x9d001dc4           0x28          40  Read-only const 
+.text.PORTReadBits      0x9d001dec           0x28          40   
+.text.PORTClearBits     0x9d001e14           0x28          40   
+.text.PORTSetBits       0x9d001e3c           0x28          40   
+.text.UARTSetFifoMode   0x9d001e64           0x28          40   
+.text.UARTSetLineContro 0x9d001e8c           0x28          40   
+.text                   0x9d001eb4           0x28          40  App's exec code 
+.dinit                  0x9d001edc           0x10          16   
+.text._general_exceptio 0x9d001eec            0xc          12   
+.text._bootstrap_except 0x9d001ef8            0xc          12   
+.text._on_reset         0x9d001f04            0x8           8   
+.text._on_bootstrap     0x9d001f0c            0x8           8   
+      Total kseg0_program_mem used  :      0x1f0c        7948  1.5% of 0x80000
 
 kseg0 Boot-Memory Usage
 section                    address  length [bytes]      (dec)  Description
@@ -95,7 +95,7 @@ section                    address  length [bytes]      (dec)  Description
 .bev_excpt              0xbfc00380           0x10          16  BEV-Exception 
          Total kseg1_boot_mem used  :       0x204         516  44.2% of 0x490
         --------------------------------------------------------------------------
-         Total Program Memory used  :      0x212c        8492  1.6% of 0x81e00
+         Total Program Memory used  :      0x2120        8480  1.6% of 0x81e00
         --------------------------------------------------------------------------
 
 
@@ -1176,71 +1176,71 @@ LOAD data_init
                 0x9d001d8c       0x38 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
                 0x9d001d8c                UARTWatchForAddress
 
-.rodata         0x9d001dc4       0x34
- .rodata        0x9d001dc4       0x34 pmodBT.o
+.rodata         0x9d001dc4       0x28
+ .rodata        0x9d001dc4       0x28 pmodBT.o
 
 .text.PORTReadBits
-                0x9d001df8       0x28
+                0x9d001dec       0x28
  .text.PORTReadBits
-                0x9d001df8       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_read_bits_lib.o)
-                0x9d001df8                PORTReadBits
+                0x9d001dec       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_read_bits_lib.o)
+                0x9d001dec                PORTReadBits
 
 .text.PORTClearBits
-                0x9d001e20       0x28
+                0x9d001e14       0x28
  .text.PORTClearBits
-                0x9d001e20       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_clear_bits_lib.o)
-                0x9d001e20                PORTClearBits
+                0x9d001e14       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_clear_bits_lib.o)
+                0x9d001e14                PORTClearBits
 
 .text.PORTSetBits
-                0x9d001e48       0x28
+                0x9d001e3c       0x28
  .text.PORTSetBits
-                0x9d001e48       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_bits_lib.o)
-                0x9d001e48                PORTSetBits
+                0x9d001e3c       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_bits_lib.o)
+                0x9d001e3c                PORTSetBits
 
 .text.UARTSetFifoMode
-                0x9d001e70       0x28
+                0x9d001e64       0x28
  .text.UARTSetFifoMode
-                0x9d001e70       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
-                0x9d001e70                UARTSetFifoMode
+                0x9d001e64       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+                0x9d001e64                UARTSetFifoMode
 
 .text.UARTSetLineControl
-                0x9d001e98       0x28
+                0x9d001e8c       0x28
  .text.UARTSetLineControl
-                0x9d001e98       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
-                0x9d001e98                UARTSetLineControl
+                0x9d001e8c       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+                0x9d001e8c                UARTSetLineControl
 
-.text           0x9d001ec0       0x28
- .text          0x9d001ec0       0x18 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-nmi-handler.o)
-                0x9d001ec0                _nmi_handler
- .text          0x9d001ed8       0x10 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib/crt0.o
-                0x9d001ee0                __crt0_exit
+.text           0x9d001eb4       0x28
+ .text          0x9d001eb4       0x18 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-nmi-handler.o)
+                0x9d001eb4                _nmi_handler
+ .text          0x9d001ecc       0x10 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib/crt0.o
+                0x9d001ed4                __crt0_exit
 
-.dinit          0x9d001ee8       0x10
- .dinit         0x9d001ee8       0x10 data_init
+.dinit          0x9d001edc       0x10
+ .dinit         0x9d001edc       0x10 data_init
 
 .text._general_exception_handler
-                0x9d001ef8        0xc
+                0x9d001eec        0xc
  .text._general_exception_handler
-                0x9d001ef8        0xc c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
-                0x9d001ef8                _general_exception_handler
+                0x9d001eec        0xc c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
+                0x9d001eec                _general_exception_handler
 
 .text._bootstrap_exception_handler
-                0x9d001f04        0xc
+                0x9d001ef8        0xc
  .text._bootstrap_exception_handler
-                0x9d001f04        0xc c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
-                0x9d001f04                _bootstrap_exception_handler
+                0x9d001ef8        0xc c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
+                0x9d001ef8                _bootstrap_exception_handler
 
 .text._on_reset
-                0x9d001f10        0x8
+                0x9d001f04        0x8
  .text._on_reset
-                0x9d001f10        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
-                0x9d001f10                _on_reset
+                0x9d001f04        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
+                0x9d001f04                _on_reset
 
 .text._on_bootstrap
-                0x9d001f18        0x8
+                0x9d001f0c        0x8
  .text._on_bootstrap
-                0x9d001f18        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
-                0x9d001f18                _on_bootstrap
+                0x9d001f0c        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
+                0x9d001f0c                _on_bootstrap
 
 .text%z61       0x00000000        0x0
  .text          0x00000000        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib/./proc/32MX460F512L\processor.o
