@@ -7,8 +7,8 @@
 /************************************************************************/
 /*  Module Description: 												*/
 /*  Driver library for the Digilent PmodACL based on the ADXL345		*/
-/*  accelerometer.														*/
-/*																		*/
+/*  accelerometer. Please reference the Analog Devices ADXL345  		*/
+/*	reference manual for addition details.								*/
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
@@ -30,6 +30,9 @@
 /* ------------------------------------------------------------ */
 
 //************Register address definitions********//
+
+// Descriptions for register values defined in this section
+// are available in the Analog Devices ADXL345 reference manual.
 
 #define PMODACL_REG_DEVID  						0x00 
 #define PMODACL_REG_THRESH_TAP 					0x1D 
@@ -220,11 +223,12 @@
 #define PMODACL_CALIBRATE_Y_AXIS				0x01
 #define PMODACL_CALIBRATE_Z_AXIS				0x02
 
+//Use with axis read operations
 typedef struct
 {
-	int16_t xAxis;
-	int16_t yAxis;
-	int16_t zAxis;
+	int16_t xAxis; //xAxis register values
+	int16_t yAxis; //yAxis register values
+	int16_t zAxis; //zAxis register values
 }PMODACL_AXIS;
 
 /* ------------------------------------------------------------ */
@@ -1590,8 +1594,50 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 */
 #define PmodACLGetActInactCtl(CHN) PmodACLReadReg(CHN,PMODACL_REG_ACT_INACT_CTL)
 
-
+/*
+**  PmodACLSetThreshInact
+**
+**	Synopsis:
+**		Sets the contents of the PMODACL_REG_THRESH_INACT register
+**  Input: 
+**		SpiChannel CHN -  Spi channel
+**      uint8_t THRESH_INACT - Threshold for detecting inactivity
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+**
+**  (Taken from ADXL345 Reference Manual)
+**  The THRESH_INACT register is eight bits and holds the threshold value for detecting 
+**	inactivity. The data format is unsigned, so the magnitude of the inactivity event is 
+**	compared with the value in the THRESH_INACT register. The scale factor is 62.5 mg/LSB.
+**	A value of 0 may result in undesirable behavior if the inactivity interrupt is enabled.
+*/
 #define PmodACLSetThreshInact(CHN,THRESH_INACT) PmodACLWriteReg(CHN,PMODACL_REG_THRESH_INACT,THRESH_INACT)
+
+/*  
+**  PmodACLGetThreshInact
+**
+**	Synopsis:
+**
+**	Gets the contents of the PMODACL_REG_THRESH_INACT register
+**
+**  Input: 
+**   	SpiChannel CHN - spiChannel
+**
+**  Returns: 
+**      uint8_t - PMODACL_REG_THRESH_INACT register contents
+**
+**	Errors:	none
+**
+**  Description:
+**
+**  Returns the PMODACL_REG_THRESH_INACT register for a description of the contents 
+**  of this register see the ADXL345 refrence manual or the description for 
+**  PmodACLSetThreshInact.
+*/
 #define PmodACLGetThreshInact(CHN) PmodACLReadReg(CHN,PMODACL_REG_THRESH_INACT)
 
 #endif
