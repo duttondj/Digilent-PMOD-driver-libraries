@@ -16,7 +16,7 @@
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
-#include "PmodBT.h"
+#include "pmodBT.h"
 
 
 /* ------------------------------------------------------------ */
@@ -339,7 +339,7 @@ uint32_t BTSendCommand(UART_MODULE uartID,uint8_t params[][BLUETOOTH_MAX_PARAM_L
 **
 **  Description:
 **
-**	Builds a comma delimited command string with trailing /r/n accepted by the PmodBT2(RN-42),
+**	Builds a comma delimited command string with trailing \r\n accepted by the PmodBT2(RN-42),
 **  based on string values present in the params array. Command "$$$" will not recieve a 
 **  trailing \r\n since this command places the PmodBT2 in command mode.
 **
@@ -483,19 +483,22 @@ uint32_t BTGetUpToNLines(UART_MODULE uartID,uint8_t bytes[][BLUETOOTH_MAX_COMMAN
 	}while(lineCount < minNumLines || UARTReceivedDataIsAvailable(uartID));
 	
 	return lineCount;	
-}	
+}
+	
 /*  
-** <FUNCTION NAME>
+**  BTGetLine()
 **
 **	Synopsis:
+**	Gets one line of bytes from the PmodBT2 terminating with \n
 **
 **  Input: 
+**		UART_MODULE uartID - UART id
+**		uint8_t *bytes - array to fill with bytes from UART
 **
-**  Returns: none
+**  Returns: 
+**		uint32_t - number of bytes read into *bytes
 **
 **	Errors:	none
-**
-**  Description:
 */
 uint32_t BTGetLine(UART_MODULE uartID,uint8_t *bytes)	
 {
@@ -514,17 +517,17 @@ uint32_t BTGetLine(UART_MODULE uartID,uint8_t *bytes)
 }	
 
 /*  
-** <FUNCTION NAME>
+**  delayN()
 **
 **	Synopsis:
-**
+**	Creates delay by performing N number of "nop" commands 
+**	
 **  Input: 
+**		uint32_t delay - number of "nop" commands to perform
 **
 **  Returns: none
 **
 **	Errors:	none
-**
-**  Description:
 */
 void delayN(uint32_t delay)
 {
@@ -532,22 +535,23 @@ void delayN(uint32_t delay)
    for(delayCount = 0;delayCount < delay;delayCount++)
    {
 		asm("nop");	
-   }	
-	
+   }		
 }	
 
 /*  
-** <FUNCTION NAME>
+**  UARTPutBytes()
 **
 **	Synopsis:
+**	Writes a sequence of bytes to the specified UART
 **
 **  Input: 
+**		uint8_t *bytes - bytes to write to UART
+**		UART_MODULE uartID - UART id
+**		uint32_t numBytes - number of bytes to write to UART
 **
 **  Returns: none
 **
 **	Errors:	none
-**
-**  Description:
 */	
 void UARTPutBytes(uint8_t *bytes,UART_MODULE uartID,uint32_t numBytes)
 {
@@ -560,17 +564,18 @@ void UARTPutBytes(uint8_t *bytes,UART_MODULE uartID,uint32_t numBytes)
 	}
 }
 /*  
-** <FUNCTION NAME>
+**  UARTGetOneByte()
 **
 **	Synopsis:
+**	Gets one byte of data from UART, blocks until available
 **
 **  Input: 
+**		UART_MODULE uartID - UART id
 **
-**  Returns: none
-**
+**  Returns:
+**		uint8_t - byte retrieved from UART
+*
 **	Errors:	none
-**
-**  Description:
 */
 uint8_t UARTGetOneByte(UART_MODULE uartID)
 {
@@ -578,18 +583,20 @@ uint8_t UARTGetOneByte(UART_MODULE uartID)
 	
 	return UARTGetDataByte(uartID);
 }
+
 /*  
-** <FUNCTION NAME>
+**  UARTPutS()
 **
 **	Synopsis:
+**	Writes a null terminated string to the UART specified
 **
 **  Input: 
+**		uint8_t *string - null terminated string to write to UART
+**		UART_MODULE uartID - UART id
 **
 **  Returns: none
 **
 **	Errors:	none
-**
-**  Description:
 */
 void UARTPutS(uint8_t *string,UART_MODULE uartID)
 {
@@ -602,17 +609,20 @@ void UARTPutS(uint8_t *string,UART_MODULE uartID)
 	}
 }
 /*  
-** <FUNCTION NAME>
+**  UARTPutOneByte()
 **
 **	Synopsis:
+**	Writes one byte to the UART specified, only writes
+**	if transmitter is ready.
 **
 **  Input: 
+**		uint8_t oneByte - byte to write
+**		UART_MODULE uartID - UART id
 **
 **  Returns: none
 **
 **	Errors:	none
 **
-**  Description:
 */
 void UARTPutOneByte(uint8_t oneByte,UART_MODULE uartID)
 {
