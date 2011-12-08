@@ -61,7 +61,7 @@
 #include <stdint.h>
 #include <plib.h>
 #include <pmodlib.h>
-#include <PmodBT.h>
+#include <pmodBT.h>
 #include <cerebot_robot_remote_types.h>
 
 /* ------------------------------------------------------------ */
