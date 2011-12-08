@@ -1,11 +1,11 @@
 Archive member included because of file (symbol)
 
-C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
+C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
                               cerebot_robot_remote.o (PmodJSTKInit)
-C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
-                              C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o) (PmodSPISetSSLow)
-C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
-                              C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o) (fnPmodDelayNcycles)
+C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+                              C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o) (PmodSPISetSSLow)
+C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+                              C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o) (fnPmodDelayNcycles)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
                               cerebot_robot_remote.o (__floatunsisf)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(memcpy.o)
@@ -61,11 +61,11 @@ c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/..
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
                               cerebot_robot_remote.o (INTClearFlag)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(spi_chn_getc_lib.o)
-                              C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o) (SpiChnGetC)
+                              C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o) (SpiChnGetC)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(spi_chn_open_lib.o)
-                              C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o) (SpiChnOpen)
+                              C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o) (SpiChnOpen)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(spi_chn_putc_lib.o)
-                              C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o) (SpiChnPutC)
+                              C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o) (SpiChnPutC)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(spi_io_tbl_libp.o)
                               c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(spi_chn_open_lib.o) (_SpiIoTbl)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(spi_map_tbl_libp.o)
@@ -220,12 +220,12 @@ Discarded input sections
  .pdr           0x00000000      0x320 cerebot_robot_remote.o
  .reginfo       0x00000000       0x18 pmodBT.o
  .pdr           0x00000000      0x200 pmodBT.o
- .reginfo       0x00000000       0x18 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
- .pdr           0x00000000       0x80 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
- .reginfo       0x00000000       0x18 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
- .pdr           0x00000000       0x40 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
- .reginfo       0x00000000       0x18 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
- .pdr           0x00000000       0x20 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .reginfo       0x00000000       0x18 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .pdr           0x00000000       0x80 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .reginfo       0x00000000       0x18 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .pdr           0x00000000       0x40 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .reginfo       0x00000000       0x18 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .pdr           0x00000000       0x20 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .reginfo       0x00000000       0x18 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .pdr           0x00000000       0x20 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .reginfo       0x00000000       0x18 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(memcpy.o)
@@ -333,7 +333,7 @@ Linker script and memory map
 LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib/crt0.o
 LOAD cerebot_robot_remote.o
 LOAD pmodBT.o
-LOAD C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a
+LOAD C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a
                 0x00000001                __MPLAB_BUILD = 0x1
                 0x00000001                __MPLAB_DEBUG = 0x1
 LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a
@@ -761,7 +761,7 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
                 0xa0000069                taskLoopTimerState
                 0xa000006a                clsUpdateCounter
  *fill*         0xa000006b        0x1 00
- .sbss          0xa000006c        0x8 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .sbss          0xa000006c        0x8 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
  .sbss          0xa0000074        0x1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(_iob.o)
                 0xa0000074                _outdone
  *(.scommon)
@@ -819,9 +819,9 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .comment       0x00000000       0x51 cerebot_robot_remote.o
                                  0x52 (size before relaxing)
  .comment       0x00000000       0x52 pmodBT.o
- .comment       0x00000000       0x52 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
- .comment       0x00000000       0x52 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
- .comment       0x00000000       0x52 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .comment       0x00000000       0x52 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .comment       0x00000000       0x52 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .comment       0x00000000       0x52 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .comment       0x00000000       0x52 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .comment       0x00000051       0x55 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(memset.o)
                                  0x56 (size before relaxing)
@@ -886,11 +886,11 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .debug_aranges
                 0x00000020       0x20 pmodBT.o
  .debug_aranges
-                0x00000040       0x20 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
+                0x00000040       0x20 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
  .debug_aranges
-                0x00000060       0x20 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+                0x00000060       0x20 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
  .debug_aranges
-                0x00000080       0x20 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+                0x00000080       0x20 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .debug_aranges
                 0x000000a0       0x20 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .debug_aranges
@@ -954,11 +954,11 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .debug_pubnames
                 0x00000306      0x140 pmodBT.o
  .debug_pubnames
-                0x00000446       0x64 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
+                0x00000446       0x64 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
  .debug_pubnames
-                0x000004aa       0x3b C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+                0x000004aa       0x3b C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
  .debug_pubnames
-                0x000004e5       0x29 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+                0x000004e5       0x29 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .debug_pubnames
                 0x0000050e       0x24 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .debug_pubnames
@@ -1018,9 +1018,9 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x23b5 cerebot_robot_remote.o
  .debug_info    0x000023b5     0x1a92 pmodBT.o
- .debug_info    0x00003e47     0x132c C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
- .debug_info    0x00005173     0x10d7 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
- .debug_info    0x0000624a      0xfe4 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .debug_info    0x00003e47     0x132c C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .debug_info    0x00005173     0x10d7 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .debug_info    0x0000624a      0xfe4 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .debug_info    0x0000722e      0x188 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .debug_info    0x000073b6       0xd1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
  .debug_info    0x00007487       0xe4 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sprintf_cdnopuxX.eo)
@@ -1059,9 +1059,9 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x2e1 cerebot_robot_remote.o
  .debug_abbrev  0x000002e1      0x2c8 pmodBT.o
- .debug_abbrev  0x000005a9      0x1f2 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
- .debug_abbrev  0x0000079b      0x1c7 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
- .debug_abbrev  0x00000962      0x19b C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .debug_abbrev  0x000005a9      0x1f2 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .debug_abbrev  0x0000079b      0x1c7 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .debug_abbrev  0x00000962      0x19b C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .debug_abbrev  0x00000afd       0x61 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .debug_abbrev  0x00000b5e       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
  .debug_abbrev  0x00000b83       0x27 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sprintf_cdnopuxX.eo)
@@ -1100,9 +1100,9 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  *(.debug_line)
  .debug_line    0x00000000      0x56c cerebot_robot_remote.o
  .debug_line    0x0000056c      0x442 pmodBT.o
- .debug_line    0x000009ae      0x2c7 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
- .debug_line    0x00000c75      0x2c4 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
- .debug_line    0x00000f39      0x26a C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .debug_line    0x000009ae      0x2c7 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .debug_line    0x00000c75      0x2c4 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .debug_line    0x00000f39      0x26a C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .debug_line    0x000011a3       0x6d c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .debug_line    0x00001210       0x87 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
  .debug_line    0x00001297       0x31 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sprintf_cdnopuxX.eo)
@@ -1141,9 +1141,9 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  *(.debug_frame)
  .debug_frame   0x00000000      0x2d4 cerebot_robot_remote.o
  .debug_frame   0x000002d4      0x1b8 pmodBT.o
- .debug_frame   0x0000048c       0x80 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
- .debug_frame   0x0000050c       0x48 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
- .debug_frame   0x00000554       0x28 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .debug_frame   0x0000048c       0x80 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .debug_frame   0x0000050c       0x48 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .debug_frame   0x00000554       0x28 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .debug_frame   0x0000057c       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .debug_frame   0x000005a4       0x20 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
  .debug_frame   0x000005c4       0x2c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sprintf_cdnopuxX.eo)
@@ -1174,9 +1174,9 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  *(.debug_str)
  .debug_str     0x00000000      0x201 cerebot_robot_remote.o
  .debug_str     0x00000201      0x12e pmodBT.o
- .debug_str     0x0000032f       0xff C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
- .debug_str     0x0000042e       0xe2 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
- .debug_str     0x00000510       0xe2 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .debug_str     0x0000032f       0xff C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .debug_str     0x0000042e       0xe2 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .debug_str     0x00000510       0xe2 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .debug_str     0x000005f2        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .debug_str     0x000005f2        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
  .debug_str     0x000005f2        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sprintf_cdnopuxX.eo)
@@ -1240,11 +1240,11 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .debug_pubtypes
                 0x000001c0      0x125 pmodBT.o
  .debug_pubtypes
-                0x000002e5      0x10f C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
+                0x000002e5      0x10f C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
  .debug_pubtypes
-                0x000003f4       0xe9 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+                0x000003f4       0xe9 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
  .debug_pubtypes
-                0x000004dd       0xcc C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+                0x000004dd       0xcc C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .debug_pubtypes
                 0x000005a9       0x34 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .debug_pubtypes
@@ -1289,11 +1289,11 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .gnu.attributes
                 0x00000010       0x10 pmodBT.o
  .gnu.attributes
-                0x00000020       0x10 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
+                0x00000020       0x10 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
  .gnu.attributes
-                0x00000030       0x10 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+                0x00000030       0x10 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
  .gnu.attributes
-                0x00000040       0x10 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+                0x00000040       0x10 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
  .gnu.attributes
                 0x00000050       0x10 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(floatunsisf.o)
  .gnu.attributes
@@ -1756,33 +1756,33 @@ LOAD data_init
 
 .mdebug.abi32%z116
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
 
 .bss%z117       0x00000000        0x0
- .bss           0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .bss           0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
 
 .data%z118      0x00000000        0x0
- .data          0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .data          0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
 
 .mdebug.abi32%z119
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
 
 .bss%z120       0x00000000        0x0
- .bss           0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .bss           0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
 
 .data%z121      0x00000000        0x0
- .data          0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .data          0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
 
 .mdebug.abi32%z122
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
 
 .bss%z123       0x00000000        0x0
- .bss           0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .bss           0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
 
 .data%z124      0x00000000        0x0
- .data          0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .data          0x00000000        0x0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
 
 .mdebug.abi32%z125
                 0x00000000        0x0
@@ -1897,7 +1897,7 @@ LOAD data_init
                 0x9d00407c                __umoddi3
  .text          0x9d0044e8      0x448 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1\libgcc.a(_udivdi3.o)
                 0x9d0044e8                __udivdi3
- .text          0x9d004930      0x270 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodJSTK.o)
+ .text          0x9d004930      0x270 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmodJSTK.o)
                 0x9d004930                PmodJSTKInit
                 0x9d0049f0                PmodJSTKSendRecv
                 0x9d004b20                PmodJSTKDelay10us
@@ -1942,7 +1942,7 @@ LOAD data_init
                 0x9d005804                _ctype
 
 .text           0x9d005908       0xd8
- .text          0x9d005908       0xd8 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .text          0x9d005908       0xd8 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
                 0x9d005908                PmodSPISetSSLow
                 0x9d005974                PmodSPISetSSHigh
 
@@ -1964,7 +1964,7 @@ LOAD data_init
 .text           0x9d005c34      0x148
  .text          0x9d005c34       0xa8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(memset.o)
                 0x9d005c34                memset
- .text          0x9d005cdc       0xa0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
+ .text          0x9d005cdc       0xa0 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(fnDelayNcycles.o)
                 0x9d005cdc                fnPmodDelayNcycles
 
 .text.write     0x9d005d7c       0x88
@@ -2157,7 +2157,7 @@ LOAD data_init
                 0x9d0064e8                SpiChnBuffer
 
 .rodata         0x9d006504       0x18
- .rodata        0x9d006504       0x18 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmod_spi_common.o)
+ .rodata        0x9d006504       0x18 C:\Code\cpts421\PmodLibDemos\CerebotRobot\PmodLib\library\lib\pmodlib_460.a(pmod_spi_common.o)
 
 .text           0x9d00651c       0x28
  .text          0x9d00651c       0x18 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-nmi-handler.o)
