@@ -9,9 +9,9 @@
 #define PB_CLOCK (SYSTEM_CLOCK/2) // peripheral bus clock
 #define PMOD_DA2_BITRATE 20000000 // 20Mhz bit rate for PmodDA2
 #define PMOD_MIC_BITRATE 12500000 // 12.5Mhz bit rate for PmodMIC
+#define PMOD_DA2_SPI SPI_CHANNEL2
+#define PMOD_MIC_SPI SPI_CHANNEL1
 
-volatile SpiChannel PmodDA2chn;
-volatile SpiChannel PmodMICchn;
 volatile uint16_t InputSound;
 volatile uint16_t OutputSound;
 
