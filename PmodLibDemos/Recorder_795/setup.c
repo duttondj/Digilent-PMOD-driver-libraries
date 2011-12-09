@@ -2,12 +2,16 @@
 
 uint8_t RecorderInit(uint8_t BufferCount, uint16_t BufferSize)
 {
+	uint32_t pmodSFID = 0;
 	// Attempt to allocate buffers
 	if(!BufLibInitBuffers(BufferCount, BufferSize))
 	{
 		// If failed, return 0
 		return 0;
 	}
+
+	// Initalize the PmodSF
+	PmodSFInit(PMOD_SF_SPI,PB_CLOCK,PMOD_SF_BITRATE);
 
 	// bugfix for SPI 1, you can remove to test if its needed anymore
 	// IMPORTANT! Sound will not record without this at the moment!
@@ -24,20 +28,26 @@ uint8_t RecorderInit(uint8_t BufferCount, uint16_t BufferSize)
 
 	// Setup Timer1 for PmodDA2
 	// Period of 4000 gives a 10k sample rate
-	OpenTimer1 (T1_ON | T1_IDLE_CON | T1_PS_1_1, 4000);
+	OpenTimer1 (T1_ON | T1_IDLE_CON | T1_PS_1_1, PB_CLOCK/SAMPLE_RATE);
 
     // Configure interrupt for Timer1
     ConfigIntTimer1(T1_INT_ON | T1_INT_PRIOR_7);
 
 	// Setup Timer2 for PmodMIC
 	// Period of 4000 gives a 10k sample rate
-	OpenTimer2 (T2_ON | T2_IDLE_CON | T2_PS_1_1, 4000);
+	OpenTimer2 (T2_ON | T2_IDLE_CON | T2_PS_1_1, PB_CLOCK/SAMPLE_RATE);
     
 	// Configure interrupt for Timer2
     ConfigIntTimer2(T2_INT_ON | T2_INT_PRIOR_7);
 
 	// Configure BTN1 and BTN2 for use
-	PORTSetPinsDigitalIn (IOPORT_A, BIT_6 | BIT_7);
+	PORTSetPinsDigitalIn (IOPORT_G, BIT_6 | BIT_7);
+
+	// Configure BTN3 for use
+	PORTSetPinsDigitalIn (IOPORT_D, BIT_13);
+
+	// Configure LED1 and LED2 for use
+	PORTSetPinsDigitalOut (IOPORT_G, BIT_12 | BIT_13);
 	
 	// Start with the timer interrupts disabled
 	mT1IntEnable(0);
