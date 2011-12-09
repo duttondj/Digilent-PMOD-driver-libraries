@@ -2,10 +2,6 @@
 
 uint8_t RecorderInit(uint8_t BufferCount, uint16_t BufferSize)
 {
-	// Set SPI channels for each of the Pmods
-	PmodDA2chn = 2;
-	PmodMICchn = 1;
-
 	// Attempt to allocate buffers
 	if(!BufLibInitBuffers(BufferCount, BufferSize))
 	{
@@ -18,10 +14,10 @@ uint8_t RecorderInit(uint8_t BufferCount, uint16_t BufferSize)
 	PORTSetPinsDigitalOut(IOPORT_D,BIT_0|BIT_9|BIT_10);
 
 	// Initalize the PmodDA2
-	PmodDA2Init(PmodDA2chn,PB_CLOCK,PMOD_DA2_BITRATE);
+	PmodDA2Init(PMOD_DA2_SPI,PB_CLOCK,PMOD_DA2_BITRATE);
 	
 	// Initialize the PmodMIC
-	PmodMicInit(PmodMICchn,PB_CLOCK,PMOD_MIC_BITRATE);
+	PmodMicInit(PMOD_MIC_SPI,PB_CLOCK,PMOD_MIC_BITRATE);
 
 	// Enable Interrupt Vectors
 	INTEnableSystemMultiVectoredInt ();
@@ -86,9 +82,9 @@ void __ISR(_TIMER_1_VECTOR, ipl7) fnTimer1Int(void)
 	mT1ClearIntFlag ();
 	
 	// If there is valid sound to play, play it
-	if(BufLibReadBuffer(&OutputSound))
+	if(BufLibReadBuffer((uint16_t*)&OutputSound))
 	{
-		PmodDA2Send(PmodDA2chn, OutputSound);
+		PmodDA2Send(PMOD_DA2_SPI, OutputSound);
 	}
 }
 
@@ -98,8 +94,8 @@ void __ISR(_TIMER_2_VECTOR, ipl7) fnTimer2Int(void)
 	mT2ClearIntFlag ();
 	
 	// Poll the PmodMIC for sound data
-	InputSound = PmodMicGetData(PmodMICchn);
-		
+	InputSound = PmodMicGetData(PMOD_MIC_SPI);
+	
 	// Put it into the buffer
 	BufLibWriteBuffer(InputSound);
 }
