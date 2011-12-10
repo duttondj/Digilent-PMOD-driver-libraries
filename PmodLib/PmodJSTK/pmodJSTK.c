@@ -1,7 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*                           pmodJSTK.c                                 */
-/*                                                                      */
+/* pmodJSTK.c -- implementation for common PmodJSTK functions           */
 /*                                                                      */
 /* -------------------------------------------------------------------- */
 /*	Author: 	Ryan Hoffman											*/
@@ -25,15 +24,14 @@
 /* ------------------------------------------------------------ */
 /*				Global Variables								*/
 /* ------------------------------------------------------------ */
-
+//Values calculed during PmodJSTKInit(), number of cycles to delay
+//10us and 15us
 static uint32_t NumCycles10us = 0;
 static uint32_t NumCycles15us = 0;
 
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
-
-
 
 /*  PmodJSTKInit
 **
@@ -101,13 +99,13 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 	uint8_t jystkOut[PMODJSTK_BYTES_PER_XFER];
 	
 	PmodSPISetSSLow(chn);
-	PmodJSTKDelay15us(0);
+	PmodJSTKDelay15us();
 
     for(byteNum = 0;byteNum < PMODJSTK_BYTES_PER_XFER;byteNum++)
 	{
 		SpiChnPutC(chn,cmdIn);
 		jystkOut[byteNum] = SpiChnGetC(chn);	
-		PmodJSTKDelay10us(0);
+		PmodJSTKDelay10us();
 	}
 
 	PmodSPISetSSHigh(chn);
@@ -116,7 +114,23 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 	jystkAxisButtons->yAxis = (((uint16_t)jystkOut[3] << 8) | (uint16_t)jystkOut[2]);
 	jystkAxisButtons->buttonState = jystkOut[4];
 	
-	PmodJSTKDelay15us(0);
+	PmodJSTKDelay15us();
+}
+
+/*  
+**	Synopsis:
+**	
+**  Input: 
+**
+**  Returns: none
+**
+**	Errors:	none
+**
+**  Description:
+*/
+void PmodJSTKDelay10us()
+{ 
+	fnPmodDelayNcycles(NumCycles10us);
 }
 
 /*  
@@ -131,24 +145,7 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 **
 **  Description:
 */
-void PmodJSTKDelay10us(uint32_t systemClock)
+void PmodJSTKDelay15us()
 { 
-	fnPmodDelayNcycles(systemClock,NumCycles10us);
-}
-
-/*  
-**
-**	Synopsis:
-**
-**  Input: 
-**
-**  Returns: none
-**
-**	Errors:	none
-**
-**  Description:
-*/
-void PmodJSTKDelay15us(uint32_t systemClock)
-{ 
-	fnPmodDelayNcycles(systemClock,NumCycles15us);
+	fnPmodDelayNcycles(NumCycles15us);
 }

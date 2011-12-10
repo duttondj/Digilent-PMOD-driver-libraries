@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*   pmodsf.c -- Library to manipulate the Digilent PMODSF              */
+/*   pmodsf.c -- Library to manipulate the Digilent PmodSF              */
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/

@@ -1,14 +1,13 @@
 /* -------------------------------------------------------------------- */
-/*                                                                      */
-/*                           pmodJSTK.h                                 */
-/*                                                                      */
-/*                                                                      */
+/* pmodJSTK.h -- header file for Digilent PmodJSTK	manipulation        */
+/*               public API                                             */
 /* -------------------------------------------------------------------- */
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*	Copyright (C) 2011 Ryan Hoffman    									*/
 /************************************************************************/
 /*  Module Description: 												*/
-/*                                                                      */
+/*  Header file for Digilent PmodJSTK manimputation, see data PmodJSTK  */
+/*  data sheet for details.												*/
 /* -------------------------------------------------------------------- */
 /*  Revision History:													*/
 /*                                                                      */
@@ -124,7 +123,7 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 **
 **  Description:
 */
-void PmodJSTKDelay10us(uint32_t systemClock);
+void PmodJSTKDelay10us();
 
 /*  
 **
@@ -138,7 +137,7 @@ void PmodJSTKDelay10us(uint32_t systemClock);
 **
 **  Description:
 */
-void PmodJSTKDelay15us(uint32_t systemClock);
+void PmodJSTKDelay15us();
 
 
 #endif
