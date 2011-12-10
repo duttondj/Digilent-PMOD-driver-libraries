@@ -1,15 +1,14 @@
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 /*                                                                      */
-/*  pmod_spi_common.c -- Implimentation for common Pmod Spi functions   */
+/*  pmod_spi_common.c -- implementation for common Pmod Spi functions   */
 /*                                                                      */
-/*                                                                      */
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
-/*  Commnon SPI IO tables and functions are defined in this module.     */
-/* -------------------------------------------------------------------- */
+/*  Common SPI IO tables and functions are defined in this module.      */
+/************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
 /*  10/18/2011(RyanH):                                                  */

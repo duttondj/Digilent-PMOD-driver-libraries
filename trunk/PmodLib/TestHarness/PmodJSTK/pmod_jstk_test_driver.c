@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/* pmod_jstk_test_driver.c -- test driver implimentation                */
+/* pmod_jstk_test_driver.c -- test driver implementation                */
 /*                            file for PmodJSTK                         */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/

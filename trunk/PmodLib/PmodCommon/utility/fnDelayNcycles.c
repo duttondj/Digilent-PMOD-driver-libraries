@@ -1,14 +1,14 @@
 /************************************************************************/
 /*                                                                      */
-/*        fnPmodDelayNcycles.c --  Implementation file for                  */
-/*                                   fnPmodGetByteFromUint32            */
+/* fnPmodDelayNcycles.c --  Implementation file for                     */
+/*                          fnPmodGetByteFromUint32                     */
 /*                                                                      */
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
-/*  Implimentation for fnPmodDelayNcycles	                                */
+/*  implementation for fnPmodDelayNcycles	                            */
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
@@ -40,10 +40,6 @@
 **
 **	Errors:	none
 **
-**  Notes:
-**  This function is not part of the public API therefore a function
-**  prototype is not present in pmodJSTK.h and the function is given 
-**  a storage class of static.
 ** 
 **  Description:
 **  Intruduces a blocking delay based on the "numCycles" which is the minumum
@@ -55,7 +51,7 @@
 **  cycle count.
 ** 
 */
-void fnPmodDelayNcycles(uint32_t systemClock,uint32_t numCycles)
+void fnPmodDelayNcycles(uint32_t numCycles)
 {
 //TODO: Fix this, need to mode and maybe fix the conditions in the loo
 	volatile uint32_t clockStart = _CP0_GET_COUNT();

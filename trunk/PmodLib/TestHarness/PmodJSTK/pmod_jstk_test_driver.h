@@ -1,5 +1,4 @@
 /************************************************************************/
-/*                                                                      */
 /*                     pmod_jstk_test_driver.h                          */
 /*              test driver head file for PmodJSTK                      */   
 /*                Copyright (C) 2011 Ryan Hoffman                       */

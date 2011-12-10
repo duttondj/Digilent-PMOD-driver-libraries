@@ -1,7 +1,7 @@
 /************************************************************************/
 /*                                                                      */
 /*                     pmodHB5_test_driver.c                            */
-/*              test driver implimentation file for PmodHB5             */   
+/*              test driver implementation file for PmodHB5             */   
 /*                Copyright (C) 2011 Ryan Hoffman                       */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
@@ -9,7 +9,7 @@
 /************************************************************************/
 /*  Module Description: 												*/
 /*                                                                      */
-/*  This file contains function implimentations for use with            */
+/*  This file contains function implementations for use with            */
 /*  the  Digilent PMODHB5 on Digilent Pic32 based boards                */
 /************************************************************************/
 /*  Revision History:													*/

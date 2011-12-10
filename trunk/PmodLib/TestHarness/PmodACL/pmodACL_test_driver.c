@@ -1,5 +1,5 @@
 /************************************************************************/
-/*	pmodACL_test_driver.c -- pmodACL test driver implimentation file	*/
+/*	pmodACL_test_driver.c -- pmodACL test driver implementation file	*/
 /*																		*/
 /************************************************************************/
 /*	Author: 	Ryan Hoffman 											*/
