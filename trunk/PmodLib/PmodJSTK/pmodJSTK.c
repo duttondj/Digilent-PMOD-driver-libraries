@@ -117,16 +117,21 @@ void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxis
 	PmodJSTKDelay15us();
 }
 
-/*  
+/* 
+**	PmodJSTKDelay10us
+** 
 **	Synopsis:
-**	
-**  Input: 
+**	Creates a 10 microsecond delay
+**
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**  Creates a 10 microsecond delay by blocking for
+**  the number of cycles calculated in PmodJSTKInit. 
 */
 void PmodJSTKDelay10us()
 { 
@@ -134,16 +139,20 @@ void PmodJSTKDelay10us()
 }
 
 /*  
+**	PmodJSTKDelay15us
 **
 **	Synopsis:
+**	Creates a 15 microsecond delay
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**  Creates a 15 microsecond delay by blocking for
+**  the number of cycles calculated in PmodJSTKInit.
 */
 void PmodJSTKDelay15us()
 { 
