@@ -1,5 +1,5 @@
 /************************************************************************/
-/*  pmodBT.c -- implimentation file for pmodBT configurator             */
+/*  pmodBT.c -- implementation file for pmodBT configurator             */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
 /*              Copyright (C) 2011 Ryan Hoffman                         */
