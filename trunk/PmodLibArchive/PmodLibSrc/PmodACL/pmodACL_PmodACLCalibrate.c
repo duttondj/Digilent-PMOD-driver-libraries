@@ -1,12 +1,12 @@
 /************************************************************************/
-/*	pmodACLCalibrate.c	-- PmodACLCalibrate() implimentation file		*/
+/*	pmodACLCalibrate.c	-- PmodACLCalibrate() implementation file		*/
 /*																		*/
 /************************************************************************/
 /*	Author: 	Ryan Hoffman 											*/
 /*	Copyright (C) 2011 Ryan Hoffman										*/
 /************************************************************************/
 /*  Module Description: 												*/
-/*  PmodACL PmodACLCalibrate implimenation file							*/
+/*  PmodACL PmodACLCalibrate implementation file						*/
 /*																		*/
 /************************************************************************/
 /*  Revision History:													*/

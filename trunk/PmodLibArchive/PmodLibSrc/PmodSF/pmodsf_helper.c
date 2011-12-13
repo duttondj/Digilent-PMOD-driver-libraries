@@ -9,7 +9,6 @@
 /*  Module Description: 												*/
 /*  Implementation file for PmodSF helper functions                     */
 /*                           fnPmodSFSendCommand  						*/
-/*                           fnGetByteFromUint32                        */
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
@@ -41,6 +40,7 @@
 **  SS is driven low, the 8 bit command is shifted out, 1 dummy byte
 **  is shifted in, SS is driven high 
 */
+
 void fnPmodSFSendCommand(SpiChannel chn,uint8_t command)
 {
 	PmodSPISetSSLow(chn); //SS to low 

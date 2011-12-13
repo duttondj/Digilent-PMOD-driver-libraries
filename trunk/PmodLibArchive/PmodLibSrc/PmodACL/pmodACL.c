@@ -1,5 +1,5 @@
 /************************************************************************/
-/*	pmodACL.c	-- PmodACL implimentation file   						*/
+/*	pmodACL.c	-- PmodACL implementation file   						*/
 /*																		*/
 /************************************************************************/
 /*	Author: 	Ryan Hoffman 											*/

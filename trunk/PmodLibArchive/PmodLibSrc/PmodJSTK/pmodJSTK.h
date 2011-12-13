@@ -1,20 +1,19 @@
-/* -------------------------------------------------------------------- */
-/*                                                                      */
-/*                           pmodJSTK.h                                 */
-/*                                                                      */
-/*                                                                      */
-/* -------------------------------------------------------------------- */
+/************************************************************************/
+/* pmodJSTK.h -- header file for Digilent PmodJSTK	manipulation        */
+/*               public API                                             */
+/************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*	Copyright (C) 2011 Ryan Hoffman    									*/
 /************************************************************************/
 /*  Module Description: 												*/
-/*                                                                      */
-/* -------------------------------------------------------------------- */
+/*  Header file for Digilent PmodJSTK manimputation, see PmodJSTK       */
+/*  data sheet for details.												*/
+/************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
 /*  10/18/2011(RyanH):                                                  */
 /*                                                                      */
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 #ifndef _PMODJSTK_H_
 #define _PMODJSTK_H_
 
@@ -112,33 +111,40 @@ void PmodJSTKInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate,uint32_t syst
 */
 void PmodJSTKSendRecv(SpiChannel chn,uint8_t cmdIn,PmodJSTKAxisButton *jystkAxisButtons);
 
-/*  
-**
+/* 
+**	PmodJSTKDelay10us
+** 
 **	Synopsis:
+**	Creates a 10 microsecond delay
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**  Creates a 10 microsecond delay by blocking for
+**  the number of cycles calculated in PmodJSTKInit. 
 */
-void PmodJSTKDelay10us(uint32_t systemClock);
+void PmodJSTKDelay10us();
 
 /*  
+**	PmodJSTKDelay15us
 **
 **	Synopsis:
+**	Creates a 15 microsecond delay
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**  Creates a 15 microsecond delay by blocking for
+**  the number of cycles calculated in PmodJSTKInit.
 */
-void PmodJSTKDelay15us(uint32_t systemClock);
-
+void PmodJSTKDelay15us();
 
 #endif

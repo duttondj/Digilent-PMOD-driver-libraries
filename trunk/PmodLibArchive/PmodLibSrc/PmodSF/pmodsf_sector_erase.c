@@ -4,7 +4,7 @@
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
 /*  Implementation file for PmodSFSectorErase for PmodSF                */
