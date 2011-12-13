@@ -1,6 +1,6 @@
 /* -------------------------------------------------------------------- */
 /*                                                                      */
-/* pmodHB5_pmodHB5getQEncRMP.c --implimentation for PmodHB5getQEncRMP   */
+/* pmodHB5_pmodHB5getQEncRMP.c --implementation for PmodHB5getQEncRMP   */
 /*                                                                      */
 /* -------------------------------------------------------------------- */
 /*	Author: 	Ryan Hoffman											*/

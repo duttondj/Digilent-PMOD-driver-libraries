@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*   pmodsf.h -- Library to manipulate the Digilent PMODSF	            */
+/* pmodsf.h -- header file for Digilent PmodSF manipulation, public API */
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/

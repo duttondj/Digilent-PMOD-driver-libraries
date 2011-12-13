@@ -1,9 +1,8 @@
 /* -------------------------------------------------------------------- */
 /*                                                                      */
-/*            pmodHB5.h - Header file for manipulating PmodHB5          */
-/*                        with DC motors and output comparators         */
-/*                        utilizing pulse width modulation              */
-/*                                                                      */
+/*  pmodHB5.h -- Header file for manipulating PmodHB5 with DC motors 	*/
+/*			    and output comparators uilizing pulse width modulation, */
+/*              public API                                              */
 /* -------------------------------------------------------------------- */
 /*	Author: 	Ryan Hoffman											*/
 /*	Copyright (C) 2011 Ryan Hoffman    									*/

@@ -1,20 +1,19 @@
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 /*                                                                      */
-/*                           pmod_utility.h                             */
+/* pmod_utility.h -- utility functions used by pmodlib                  */
 /*                                                                      */
-/*                                                                      */
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
-/*	                                									*/
+/*	Copyright (C) 2011 Ryan Hoffman    									*/
 /************************************************************************/
 /*  Module Description: 												*/
-/*                                                                      */
-/* -------------------------------------------------------------------- */
+/*  Common utility functions used by multiple pmodlib drivers           */
+/************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
 /*  10/18/2011(RyanH):                                                  */
 /*                                                                      */
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 
 #ifndef _PMOD_UTILITY_H_
 #define _PMOD_UTILITY_H_
@@ -51,18 +50,12 @@ uint8_t fnPmodGetByteFromUint32(uint32_t value,uint8_t bytePos);
 **  Block program execution for a minimum number of cpu cycles
 **  
 **  Input: 
-**  	uint32_t systemClock - cpu system clock in Hz
 **      uint32_t numCycles - minimum number of cpu cycles
 **
 **  Returns: none
 **
 **	Errors:	none
 **
-**  Notes:
-**  This function is not part of the public API therefore a function
-**  prototype is not present in pmodJSTK.h and the function is given 
-**  a storage class of static.
-** 
 **  Description:
 **  Intruduces a blocking delay based on the "numCycles" which is the minumum
 **  number cpu cycles which must pass before returning. The number
@@ -73,6 +66,6 @@ uint8_t fnPmodGetByteFromUint32(uint32_t value,uint8_t bytePos);
 **  cycle count.
 ** 
 */
-void fnPmodDelayNcycles(uint32_t systemClock,uint32_t numCycles);
+void fnPmodDelayNcycles(uint32_t numCycles);
 
 #endif

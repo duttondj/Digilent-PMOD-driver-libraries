@@ -1,6 +1,6 @@
 /************************************************************************/
 /*                                                                      */
-/*   pmodsf.c -- Library to manipulate the Digilent PMODSF              */
+/*   pmodsf.c -- Library to manipulate the Digilent PmodSF              */
 /*                                                                      */
 /************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
@@ -27,6 +27,7 @@
 /* ------------------------------------------------------------ */
 
 #include "./PmodSF/pmodsf.h"
+#include "./PmodSF/pmodsf_helper.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
 
 

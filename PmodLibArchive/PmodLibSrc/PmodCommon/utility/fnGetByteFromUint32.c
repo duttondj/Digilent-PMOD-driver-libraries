@@ -1,14 +1,14 @@
 /************************************************************************/
 /*                                                                      */
-/*        fnPmodGetByteFromUint32.c --  Implimentation file for             */
-/*                                   fnPmodGetByteFromUint32                */
+/*        fnPmodGetByteFromUint32.c --  implementation file for         */
+/*                                   fnPmodGetByteFromUint32            */
 /*                                                                      */
-/* -------------------------------------------------------------------- */
+/************************************************************************/
 /*	Author: 	Ryan Hoffman											*/
 /*              Copyright (C) 2011 Ryan Hoffman                         */
 /************************************************************************/
 /*  Module Description: 												*/
-/*  Implimentation for fnPmodGetByteFromUint32                              */
+/*  implementation for fnPmodGetByteFromUint32                          */
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */

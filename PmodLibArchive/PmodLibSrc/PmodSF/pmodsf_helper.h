@@ -26,6 +26,5 @@
 #include "pmodsf.h"
 
 void fnPmodSFSendCommand(SpiChannel chn,uint8_t command);
-uint8_t fnPMODGetByteFromUint32(uint32_t value,uint8_t bytePos);
 
 #endif
