@@ -622,7 +622,7 @@ void setDutyCycle()
 		else if(cerebotRemoteMsg.vehicleDirectionLeftRight == ROBOT_TURN_LEFT)
 		{
 			fwdRevDCScaleLeft -= (cerebotRemoteMsg.leftRightSpeed/WHEELSCALE_LEFT_RIGHT_DIV);
-			if(fwdRevDCScaleLeft < 0)
+			if(fwdRevDCScaleLeft > 100) //we have rolled over/under
 			{
 				fwdRevDCScaleLeft = fwdRevDCScaleRight;	
 			}
@@ -630,7 +630,7 @@ void setDutyCycle()
 		else 
 		{
 			fwdRevDCScaleRight -= (cerebotRemoteMsg.leftRightSpeed/WHEELSCALE_LEFT_RIGHT_DIV);
-			if(fwdRevDCScaleRight < 0)
+			if(fwdRevDCScaleRight > 100) //we have rolled over/under
 			{
 				fwdRevDCScaleRight = fwdRevDCScaleLeft;	
 			}

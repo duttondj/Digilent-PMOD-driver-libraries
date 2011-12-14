@@ -67,8 +67,8 @@
 #define PULSE_SERVO_STOP_CENTER  		1000  //1.0ms pulse 
 #define PULSE_SERVO_STOP_MAX  			500  //1.5ms pulse
 
-#define PULSE_ONE_DEGREE 				11 //Range 2ms - 1ms = 1ms = 1000us, 1000ms/90deg = 11
-
+#define PULSE_ONE_DEGREE 				11 //Range 1.5ms - .5ms = 1ms = 1000us, 1000us/90deg = 11
+#define PULSE_20_DEG					20 * PULSE_ONE_DEGREE 
 #define DEG_180 						3.14
 #define DEG_90 							1.57
 #define DEG_360 						6.28
@@ -130,9 +130,8 @@ uint8_t main(void)
 	initPmodACL();
 	initCLS();
 	calibrate();
-	configureInterrupts();
 	setSurfaceNormal();
-	
+	configureInterrupts();
 
     while(1)
     {
@@ -165,7 +164,8 @@ uint8_t main(void)
 
 void setPulseWidth()
 {
-	uint16_t togglesPerSec = (uint16_t) (((surfaceNormal + (surfaceNormal - aclAngle))/ONE_DEGREE_RAD) * PULSE_ONE_DEGREE);
+	uint16_t togglesPerSec = (uint16_t) (((surfaceNormal + (surfaceNormal - aclAngle))/ONE_DEGREE_RAD) * PULSE_ONE_DEGREE) - PULSE_20_DEG;
+
 	if(togglesPerSec < PULSE_SERVO_STOP_MIN && togglesPerSec > PULSE_SERVO_STOP_MAX)
 	{
 		pulseRate = partialTick/togglesPerSec;
@@ -180,7 +180,7 @@ double getDataPointRollingAverage(double newDataPoint)
 	double rollingAvg = 0;
 	rollAverageDataPoints[currentDataPoint] = newDataPoint;
 	currentDataPoint++;
-	if(currentDataPoint ==  ROLLING_AVG_NUM_POINTS)
+	if(currentDataPoint == ROLLING_AVG_NUM_POINTS)
 	{	
 		rollingAvgDataPointBufferFilled = 1;
 	}
@@ -202,8 +202,13 @@ double getCurrentAngle()
 	PMODACL_AXIS pmodACLAxis;
 
 	double angle = 0.0;
-	PmodACLGetAxisData(PMODACL_SPI,&pmodACLAxis);
 	
+	do{
+
+		PmodACLGetAxisData(PMODACL_SPI,&pmodACLAxis);
+
+	}while(pmodACLAxis.xAxis == 0 && pmodACLAxis.yAxis == 0);
+
 	if(pmodACLAxis.yAxis == 0)
 	{
 		if(pmodACLAxis.xAxis > 0)
@@ -218,7 +223,7 @@ double getCurrentAngle()
 	else
 	{	 
 	
-		angle =atan(pmodACLAxis.xAxis/(double)pmodACLAxis.yAxis);
+		angle = atan(pmodACLAxis.xAxis/(double)pmodACLAxis.yAxis);
 		if(pmodACLAxis.xAxis >= 0 && pmodACLAxis.yAxis < 0) //Quadrant 2
 		{
 			angle += DEG_180;	
@@ -318,7 +323,7 @@ void configureInterrupts()
 	INTEnableInterrupts();
 }	
 
-	
+
 
 void __ISR(_TIMER_1_VECTOR, ipl2)Tmr1Handler_PulseWidth(void)
 {	
@@ -352,8 +357,7 @@ void __ISR(_TIMER_2_VECTOR, ipl2) Tmr2Handler_PulsePeriod(void)
 
 void __ISR(_EXTERNAL_0_VECTOR, ipl7) Ext0Handler_PmodACLInt1(void)
 {	
-	aclDataReady = 1;
-			
+	aclDataReady = 1;			
 	INTClearFlag(INT_INT0);
 }
 
