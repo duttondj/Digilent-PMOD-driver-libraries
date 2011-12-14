@@ -21,6 +21,7 @@
 /* ------------------------------------------------------------ */
 
 #include "./PmodSF/pmodsf.h"
+#include "./PmodSF/pmodsf_helper.h"
 #include "./PmodCommon/spi/pmod_spi_common.h"
 
 /* ------------------------------------------------------------ */

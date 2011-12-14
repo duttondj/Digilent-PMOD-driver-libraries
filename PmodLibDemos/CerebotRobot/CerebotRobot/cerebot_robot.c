@@ -138,6 +138,9 @@
 #define STATE_CHK_CHG_DIR				4
 #define STATE_SET_DUTY_CYCLE			5
 
+#define WHEELSCALE_DRIFT_DIV			2
+#define WHEELSCALE_LEFT_RIGHT_DIV		3
+#define WHEELSCALE_CENTER_AXIS_THRESH	6
 
 //ADC - BATTERY VOLTAGE
 // define setup parameters for OpenADC10
@@ -401,7 +404,7 @@ void initHbridge()
 	hbridges[HB_LEFT_WHEEL].currentDirection = 	PMOD_HB5_DIR_CW;
 	hbridges[HB_LEFT_WHEEL].newDirection = 		PMOD_HB5_DIR_CW;
 	hbridges[HB_LEFT_WHEEL].ocChannel = 		2;
-	PmodHB5SetDCInitialDirection(&hbridges[HB_LEFT_WHEEL]);
+	PORTSetBits(hbridges[0].directionPort,hbridges[0].directionPortBit);
 
 	hbridges[HB_RIGHT_WHEEL].sensorAport = 		PORT_HB_RIGHT_WHEEL_SA;
 	hbridges[HB_RIGHT_WHEEL].sensorAportBit = 	BIT_HB_RIGHT_WHEEL_SA;
@@ -412,7 +415,7 @@ void initHbridge()
 	hbridges[HB_RIGHT_WHEEL].currentDirection = PMOD_HB5_DIR_CCW;
 	hbridges[HB_RIGHT_WHEEL].newDirection = 	PMOD_HB5_DIR_CCW;
 	hbridges[HB_RIGHT_WHEEL].ocChannel = 		3;
-	PmodHB5SetDCInitialDirection(&hbridges[HB_RIGHT_WHEEL]);
+	PORTClearBits(hbridges[1].directionPort,hbridges[1].directionPortBit);
 }
 
 /*  
@@ -430,7 +433,7 @@ void initHbridge()
 **  Description:
 **	Populates CEREBOT_ROBOT struct with left/right motor shaft RPM,
 **	battery voltage and vehicle directions. Transmits to
-**  romete using PmodBT2
+**  remote using PmodBT2
 */
 void sendMessage()
 {
@@ -574,25 +577,36 @@ void UARTInit(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID,UART_CONFIGU
 }
 
 /*  
-** <FUNCTION NAME>
+**  setDutyCycle()
 **
 **	Synopsis:
+**	Set duty cycle for left and right wheels
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**	Sets the duty cycle for the left and right wheel based
+**  on values recieved from the remote. If the if the direction is
+**  left, then the duty cycle for the left wheel is reduced by
+**  the cerebotRemoteMsg.vehicleDirectionLeftRight/WHEELSCALE_LEFT_RIGHT_DIV,
+**  for right turns the right wheel duty cycle is reduced by this value.
+**  In an attempt to maintain the same rpm for the left and right wheels
+**  the when the left/right axis value is < WHEELSCALE_CENTER_AXIS_THRESH
+**  on either side of the axis, a cummulative wheel scale value
+**  is kept, adding or subtracting cummulativeWheelScale/WHEELSCALE_DRIFT_DIV
+**  from the right wheel depending the current RPM of the left wheel.
 */
 void setDutyCycle()
 {
-	double fwdRevDCScaleLeft = cerebotRemoteMsg.fwdRevSpeed/100.0;
-	double fwdRevDCScaleRight = fwdRevDCScaleLeft;
+	uint8_t fwdRevDCScaleLeft = cerebotRemoteMsg.fwdRevSpeed;
+	uint8_t fwdRevDCScaleRight = cerebotRemoteMsg.fwdRevSpeed;
 	static int8_t cummulativeWheelScale = 0;
 
-		if(cerebotRemoteMsg.leftRightSpeed < 6 &&  hbridges[HB_LEFT_WHEEL].rpm > 0) 
+		if(cerebotRemoteMsg.leftRightSpeed < WHEELSCALE_CENTER_AXIS_THRESH &&  hbridges[HB_LEFT_WHEEL].rpm > 0) 
 		{		
 			 if( hbridges[HB_LEFT_WHEEL].rpm > hbridges[HB_RIGHT_WHEEL].rpm)
 			{
@@ -603,11 +617,11 @@ void setDutyCycle()
 				cummulativeWheelScale-=1;
 			}
 			
- 			fwdRevDCScaleRight += (cummulativeWheelScale / 200.0);
+ 			fwdRevDCScaleRight += (cummulativeWheelScale/WHEELSCALE_DRIFT_DIV);
 		}
 		else if(cerebotRemoteMsg.vehicleDirectionLeftRight == ROBOT_TURN_LEFT)
 		{
-			fwdRevDCScaleLeft -= (cerebotRemoteMsg.leftRightSpeed/250.0);
+			fwdRevDCScaleLeft -= (cerebotRemoteMsg.leftRightSpeed/WHEELSCALE_LEFT_RIGHT_DIV);
 			if(fwdRevDCScaleLeft < 0)
 			{
 				fwdRevDCScaleLeft = fwdRevDCScaleRight;	
@@ -615,29 +629,31 @@ void setDutyCycle()
 		}
 		else 
 		{
-			fwdRevDCScaleRight -= (cerebotRemoteMsg.leftRightSpeed/250.0);
+			fwdRevDCScaleRight -= (cerebotRemoteMsg.leftRightSpeed/WHEELSCALE_LEFT_RIGHT_DIV);
 			if(fwdRevDCScaleRight < 0)
 			{
 				fwdRevDCScaleRight = fwdRevDCScaleLeft;	
 			}
 		}
-		
-		PmodHB5SetDCPWMDutyCycle(TIMER_PR_LEFT * fwdRevDCScaleLeft,hbridges[HB_LEFT_WHEEL].ocChannel);	
-		PmodHB5SetDCPWMDutyCycle(TIMER_PR_LEFT * fwdRevDCScaleRight,hbridges[HB_RIGHT_WHEEL].ocChannel);			
+		//Set the duty cycle based on (MAXTIMER_VALUE * WHEEL_SCALE)/100
+		PmodHB5SetDCPWMDutyCycle((TIMER_PR_LEFT * fwdRevDCScaleLeft)/100,hbridges[HB_LEFT_WHEEL].ocChannel);	
+		PmodHB5SetDCPWMDutyCycle((TIMER_PR_LEFT * fwdRevDCScaleRight)/100,hbridges[HB_RIGHT_WHEEL].ocChannel);			
 }
 
 /*  
-** <FUNCTION NAME>
+**  configureTimers()
 **
 **	Synopsis:
+**	Configures timers for interrupts and  OCs
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**	Configures timers, output comparers, sets duty cycle for both wheels to 0%;
 */
 void configureTimers()
 {

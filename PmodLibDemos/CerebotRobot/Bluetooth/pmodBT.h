@@ -35,13 +35,15 @@
 #define BLUETOOTH_COMMAND_RESPONSE_END_STR		"END\r\n"
 #define BLUETOOTH_COMMAND_UNRECOGNIZED_STR		"?\r\n"
 
+#define BLUETOOTH_INQUIRY_RESPONSE_NO_DEV		"No Devices Found/r/n"
+
 #define BLUETOOTH_MAX_NUM_COMMAND_RESPONSE		10
 #define BLUETOOTH_MAX_COMMAND_LENGTH			128
-#define BLUETOOTH_MAX_COMMAND_RESPONSE_LEN		40
+#define BLUETOOTH_MAX_COMMAND_RESPONSE_LEN		128
 
 #define BLUETOOTH_MAX_PARAMS					3
 #define BLUETOOTH_MAX_PARAM_LEN					15
-#define BLUETOOTH_MAX_ADDRESS_LEN				18
+#define BLUETOOTH_MAX_ADDRESS_LEN				20
 
 typedef enum
 {
@@ -71,8 +73,8 @@ void delayN(uint32_t delay);
 uint32_t BTGetUpToNLines(UART_MODULE uartID,uint8_t bytes[][BLUETOOTH_MAX_COMMAND_RESPONSE_LEN],uint32_t maxNumLines,uint32_t minNumLines);
 uint32_t BTSendCommand(UART_MODULE uartID,uint8_t params[][BLUETOOTH_MAX_PARAM_LEN],uint8_t numParams,uint8_t commandResponse[][BLUETOOTH_MAX_COMMAND_RESPONSE_LEN],
 						uint32_t maxLinesReturned,uint32_t minNumLinesReturned);
-void BTGetParam(const uint8_t* parameters,uint8_t* oneParameter,uint8_t paramNum);
-uint8_t BTGetAddressFromName(const uint8_t addressNamePairs[][BLUETOOTH_MAX_COMMAND_RESPONSE_LEN],const uint8_t *name,uint8_t *address,uint8_t numEntries);
+void BTGetParam( uint8_t* parameters,uint8_t* oneParameter,uint8_t paramNum);
+uint8_t BTGetAddressFromName(uint8_t addressNamePairs[][BLUETOOTH_MAX_COMMAND_RESPONSE_LEN],uint8_t *name,uint8_t *address,uint8_t numEntries);
 uint8_t BTInquireAndConnect(UART_MODULE uartID,uint8_t *peerName,uint8_t *inquiryTimeOut,uint8_t numInquiryTries,uint8_t *connectResponse);
 uint8_t BTRecieveConnect(UART_MODULE uartID,uint8_t* responseString);
 

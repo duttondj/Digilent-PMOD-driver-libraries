@@ -30,9 +30,9 @@
 #define PMODSF 0   
 #define PMODJSTK 0
 #define PMODHB5 0
-#define PMODACL 0
+#define PMODACL 1
 #define BUFLIB 0
-#define PMODDA2 1
+#define PMODDA2 0
 
 //Test harness menu UART
 #define MENU_UART UART2

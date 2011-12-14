@@ -13,7 +13,7 @@ SOLK=<src>|PmodACL_Demo.c||<obj>||<lib>|C:\Code\cpts421\PmodLibArchive\PmodLib\l
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+DebugOptions=
 [File001]
 Location=C:\Code\cpts421\PmodLibDemos\PmodACL\PmodACL.elf
 Folder=Output
@@ -26,7 +26,7 @@ SOLK=<src>|PmodACL_Demo.c||<obj>||<lib>|C:\Code\cpts421\PmodLibArchive\PmodLib\l
 SuiteArgsString=
 ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -legacy-libc
 TraceCmdString=
-DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PK3=1 --defsym=__ICD2RAM=1
+DebugOptions=
 [File002]
 Location=C:\Code\cpts421\PmodLibDemos\PmodACL\PmodACL.hex
 Folder=Output
@@ -39,7 +39,7 @@ SOLK=<src>|PmodACL_Demo.c||<obj>||<lib>|C:\Code\cpts421\PmodLibArchive\PmodLib\l
 SuiteArgsString=
 ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)" -legacy-libc
 TraceCmdString=
-DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PK3=1 --defsym=__ICD2RAM=1
+DebugOptions=
 [TOOL_LOC_STAMPS]
 tool_loc{430F471F-7ECB-4852-A80D-DEF9A5C8E751}=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
 tool_loc{C68E5105-1196-4333-A0BF-3DC57271E614}=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ld.exe

@@ -317,7 +317,9 @@ void appTask()
 					 break;
 
 				 case STATE_DISCONNECTED:
+					UARTEnable(UART_BLUETOOTH, UART_DISABLE);
 				 	mainLoopState = STATE_CONNECT;
+					UARTEnable(UART_BLUETOOTH, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
 				 	break;
 
 				 case STATE_POLLDEV:
@@ -451,10 +453,10 @@ void sendMessage()
 */
 uint8_t calcAxisDutyCycle(uint16_t axisValue, uint16_t axisMin,uint16_t axisRange)
 {
-	uint16_t axisPos = (uint16_t)(((axisValue - axisMin)/(double)axisRange) * 100);
+	uint16_t axisPos = (uint16_t)(((axisValue - axisMin) * 100)/axisRange);
 	if(axisPos > 50) //positive axis
-	{
-		return (axisPos % 50) * 2;
+	{	//mod 51 keeps 100% from turning into 0%
+		return (axisPos % 51) * 2;
 	}
 	else if(axisPos < 50) //negative axis
 	{
@@ -529,7 +531,7 @@ void updateCLS()
 											cerebotRobotMsg.rightWheelRPM);
 	UARTPutS(clsDisplayLine,UART_CLS);
 	UARTPutS(homeRow2,UART_CLS);
-	sprintf(clsDisplayLine,"V+: %d.%2d Dir: %c",cerebotRobotMsg.batteryVoltage / BATTERY_SCALE, cerebotRobotMsg.batteryVoltage % BATTERY_SCALE, 
+	sprintf(clsDisplayLine,"V+: %d.%1d Dir: %c",cerebotRobotMsg.batteryVoltage / BATTERY_SCALE, ((cerebotRobotMsg.batteryVoltage % BATTERY_SCALE) * 10 )/BATTERY_SCALE , 
 							 (cerebotRobotMsg.vehicleDirection == ROBOT_DIR_FWD)?'F':'R');
 	UARTPutS(clsDisplayLine,UART_CLS);									
 }	
@@ -666,7 +668,6 @@ void checkMinMax()
 	}
 	
 }
-
 
 /*  
 **  resetJstkLedState()
