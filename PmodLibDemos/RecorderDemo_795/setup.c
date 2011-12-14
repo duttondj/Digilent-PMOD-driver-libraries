@@ -48,6 +48,7 @@ uint8_t RecorderInit(uint8_t BufferCount, uint16_t BufferSize)
 
 	// Configure LED1 and LED2 for use
 	PORTSetPinsDigitalOut (IOPORT_G, BIT_12 | BIT_13);
+	PORTClearBits(IOPORT_G, BIT_12 | BIT_13);
 	
 	// Start with the timer interrupts disabled
 	mT1IntEnable(0);
