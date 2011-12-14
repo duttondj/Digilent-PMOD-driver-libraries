@@ -1,29 +1,29 @@
 Archive member included because of file (symbol)
 
-C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
                               setup.o (PmodSFInit)
-C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
                               main.o (PmodSFBulkErase)
-C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
-                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o) (fnPmodSFSendCommand)
-C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o) (fnPmodSFSendCommand)
+C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
                               main.o (PmodSFPageProgram)
-C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
                               main.o (PmodSFReadBytes)
-C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
                               setup.o (BufLibInitBuffers)
-C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
-                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o) (PmodSPISetSSLow)
-C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
-                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o) (fnPmodGetByteFromUint32)
-C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o) (PmodSPISetSSLow)
+C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o) (fnPmodGetByteFromUint32)
+C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
                               setup.o (PmodDA2Init)
-C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
                               setup.o (PmodMicInit)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(general-exception.o)
                               c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib/crt0.o (_general_exception_context)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
-                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o) (malloc)
+                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o) (malloc)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sbrk.o)
                               c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o) (sbrk)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
@@ -43,13 +43,13 @@ c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/..
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(int_enable_mv_int_lib.o)
                               setup.o (INTEnableSystemMultiVectoredInt)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_getc_lib.o)
-                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o) (SpiChnGetC)
+                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o) (SpiChnGetC)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_open_lib.o)
-                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o) (SpiChnOpen)
+                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o) (SpiChnOpen)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_putc_lib.o)
-                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o) (SpiChnPutC)
+                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o) (SpiChnPutC)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_enable_lib.o)
-                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o) (SpiChnEnable)
+                              C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o) (SpiChnEnable)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_io_tbl_libp.o)
                               c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_open_lib.o) (_SpiIoTbl)
 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_map_tbl_libp.o)
@@ -75,7 +75,7 @@ Allocating common symbols
 Common symbol       size              file
 
 OutputSound         0x2               main.o
-gBufLibBufferArray  0x4               C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+gBufLibBufferArray  0x4               C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
 InputSound          0x2               main.o
 
 Microchip PIC32 Memory-Usage Report
@@ -184,26 +184,26 @@ Discarded input sections
  .pdr           0x00000000       0x20 main.o
  .reginfo       0x00000000       0x18 setup.o
  .pdr           0x00000000       0xe0 setup.o
- .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
- .pdr           0x00000000       0xa0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
- .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
- .pdr           0x00000000       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
- .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
- .pdr           0x00000000       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
- .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
- .pdr           0x00000000       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
- .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
- .pdr           0x00000000       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
- .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
- .pdr           0x00000000       0xa0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
- .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
- .pdr           0x00000000       0x40 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
- .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
- .pdr           0x00000000       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
- .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
- .pdr           0x00000000       0x80 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
- .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
- .pdr           0x00000000       0x40 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .pdr           0x00000000       0xa0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .pdr           0x00000000       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .pdr           0x00000000       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .pdr           0x00000000       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .pdr           0x00000000       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .pdr           0x00000000       0xa0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .pdr           0x00000000       0x40 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .pdr           0x00000000       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .pdr           0x00000000       0x80 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .reginfo       0x00000000       0x18 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .pdr           0x00000000       0x40 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
  .reginfo       0x00000000       0x18 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(general-exception.o)
  .pdr           0x00000000       0x20 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(general-exception.o)
  .reginfo       0x00000000       0x18 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
@@ -280,7 +280,7 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
                 0x00000001                _DEBUGGER = 0x1
 LOAD main.o
 LOAD setup.o
-LOAD C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a
+LOAD C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a
                 0x00000001                __MPLAB_BUILD = 0x1
                 0x00000001                __MPLAB_DEBUG = 0x1
                 0x00000001                __MPLAB_DEBUGGER_PK3 = 0x1
@@ -695,7 +695,7 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
                 0xa0000200                _sbss_begin = .
  *(.dynsbss)
  *(.sbss .sbss.* .gnu.linkonce.sb.*)
- .sbss          0xa0000200        0x8 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .sbss          0xa0000200        0x8 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
                 0xa0000200                gBufLibMaxSize
                 0xa0000202                gBufLibNumBuffers
                 0xa0000204                gBufLibBufferSize
@@ -711,7 +711,7 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
                 0xa0000214                OutputSound
                 0xa0000216                InputSound
  .scommon       0xa0000218        0x0 setup.o
- .scommon       0xa0000218        0x4 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .scommon       0xa0000218        0x4 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
                 0xa0000218                gBufLibBufferArray
                 0xa000021c                _sbss_end = .
 
@@ -758,16 +758,16 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .comment       0x00000000       0x51 main.o
                                  0x52 (size before relaxing)
  .comment       0x00000000       0x52 setup.o
- .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
- .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
- .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
- .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
- .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
- .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
- .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
- .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
- .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
- .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .comment       0x00000000       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
  .comment       0x00000051       0x51 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
                                  0x52 (size before relaxing)
  .comment       0x000000a2       0x4b c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sbrk.o)
@@ -815,25 +815,25 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .debug_aranges
                 0x00000020       0x20 setup.o
  .debug_aranges
-                0x00000040       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+                0x00000040       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
  .debug_aranges
-                0x00000060       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+                0x00000060       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
  .debug_aranges
-                0x00000080       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+                0x00000080       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
  .debug_aranges
-                0x000000a0       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+                0x000000a0       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
  .debug_aranges
-                0x000000c0       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+                0x000000c0       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
  .debug_aranges
-                0x000000e0       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+                0x000000e0       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
  .debug_aranges
-                0x00000100       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+                0x00000100       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
  .debug_aranges
-                0x00000120       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+                0x00000120       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
  .debug_aranges
-                0x00000140       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+                0x00000140       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
  .debug_aranges
-                0x00000160       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+                0x00000160       0x20 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
  .debug_aranges
                 0x00000180       0x30 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
  .debug_aranges
@@ -879,25 +879,25 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .debug_pubnames
                 0x0000003a       0x80 setup.o
  .debug_pubnames
-                0x000000ba       0x96 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+                0x000000ba       0x96 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
  .debug_pubnames
-                0x00000150       0x26 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+                0x00000150       0x26 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
  .debug_pubnames
-                0x00000176       0x2a C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+                0x00000176       0x2a C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
  .debug_pubnames
-                0x000001a0       0x28 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+                0x000001a0       0x28 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
  .debug_pubnames
-                0x000001c8       0x26 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+                0x000001c8       0x26 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
  .debug_pubnames
-                0x000001ee      0x101 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+                0x000001ee      0x101 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
  .debug_pubnames
-                0x000002ef       0x3b C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+                0x000002ef       0x3b C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
  .debug_pubnames
-                0x0000032a       0x2e C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+                0x0000032a       0x2e C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
  .debug_pubnames
-                0x00000358       0x57 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+                0x00000358       0x57 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
  .debug_pubnames
-                0x000003af       0x35 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+                0x000003af       0x35 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
  .debug_pubnames
                 0x000003e4       0x32 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
  .debug_pubnames
@@ -935,57 +935,57 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .debug_pubnames
                 0x000006ee       0xca c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(int_tbl_lib.o)
 
-.debug_info     0x00000000     0xde5b
+.debug_info     0x00000000     0xde63
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000     0x13a8 main.o
- .debug_info    0x000013a8     0x1587 setup.o
- .debug_info    0x0000292f     0x1665 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
- .debug_info    0x00003f94     0x1229 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
- .debug_info    0x000051bd     0x122d C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
- .debug_info    0x000063ea     0x12d1 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
- .debug_info    0x000076bb     0x12db C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
- .debug_info    0x00008996      0x41b C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
- .debug_info    0x00008db1     0x131d C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
- .debug_info    0x0000a0ce      0x1ba C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
- .debug_info    0x0000a288     0x15fc C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
- .debug_info    0x0000b884     0x1565 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
- .debug_info    0x0000cde9      0x100 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
- .debug_info    0x0000cee9      0x139 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sbrk.o)
- .debug_info    0x0000d022      0x102 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
- .debug_info    0x0000d124      0x106 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
- .debug_info    0x0000d22a       0xe0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
- .debug_info    0x0000d30a       0xe8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
- .debug_info    0x0000d3f2        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(errno.o)
- .debug_info    0x0000d3f2       0xd1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(int_enable_mv_int_lib.o)
- .debug_info    0x0000d4c3       0xe4 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_getc_lib.o)
- .debug_info    0x0000d5a7       0xb7 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_open_lib.o)
- .debug_info    0x0000d65e      0x100 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_putc_lib.o)
- .debug_info    0x0000d75e       0xbb c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_enable_lib.o)
- .debug_info    0x0000d819        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_io_tbl_libp.o)
- .debug_info    0x0000d819        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_map_tbl_libp.o)
- .debug_info    0x0000d819       0xcf c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(port_set_pins_digital_in_lib.o)
- .debug_info    0x0000d8e8       0xd1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(port_set_pins_digital_out_lib.o)
- .debug_info    0x0000d9b9       0xbf c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(port_clear_bits_lib.o)
- .debug_info    0x0000da78       0xbb c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(port_set_bits_lib.o)
- .debug_info    0x0000db33       0xb4 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(port_read_lib.o)
- .debug_info    0x0000dbe7        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(_ports_tbl_libp.o)
- .debug_info    0x0000dbe7       0xc9 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(int_enable_interrupts_lib.o)
- .debug_info    0x0000dcb0      0x1ab c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(int_tbl_lib.o)
+ .debug_info    0x00000000     0x13ac main.o
+ .debug_info    0x000013ac     0x158b setup.o
+ .debug_info    0x00002937     0x1665 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .debug_info    0x00003f9c     0x1229 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .debug_info    0x000051c5     0x122d C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .debug_info    0x000063f2     0x12d1 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .debug_info    0x000076c3     0x12db C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .debug_info    0x0000899e      0x41b C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .debug_info    0x00008db9     0x131d C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .debug_info    0x0000a0d6      0x1ba C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .debug_info    0x0000a290     0x15fc C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .debug_info    0x0000b88c     0x1565 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .debug_info    0x0000cdf1      0x100 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
+ .debug_info    0x0000cef1      0x139 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sbrk.o)
+ .debug_info    0x0000d02a      0x102 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
+ .debug_info    0x0000d12c      0x106 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
+ .debug_info    0x0000d232       0xe0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
+ .debug_info    0x0000d312       0xe8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
+ .debug_info    0x0000d3fa        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(errno.o)
+ .debug_info    0x0000d3fa       0xd1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(int_enable_mv_int_lib.o)
+ .debug_info    0x0000d4cb       0xe4 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_getc_lib.o)
+ .debug_info    0x0000d5af       0xb7 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_open_lib.o)
+ .debug_info    0x0000d666      0x100 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_putc_lib.o)
+ .debug_info    0x0000d766       0xbb c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_chn_enable_lib.o)
+ .debug_info    0x0000d821        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_io_tbl_libp.o)
+ .debug_info    0x0000d821        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(spi_map_tbl_libp.o)
+ .debug_info    0x0000d821       0xcf c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(port_set_pins_digital_in_lib.o)
+ .debug_info    0x0000d8f0       0xd1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(port_set_pins_digital_out_lib.o)
+ .debug_info    0x0000d9c1       0xbf c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(port_clear_bits_lib.o)
+ .debug_info    0x0000da80       0xbb c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(port_set_bits_lib.o)
+ .debug_info    0x0000db3b       0xb4 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(port_read_lib.o)
+ .debug_info    0x0000dbef        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(_ports_tbl_libp.o)
+ .debug_info    0x0000dbef       0xc9 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(int_enable_interrupts_lib.o)
+ .debug_info    0x0000dcb8      0x1ab c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX795F512L.a(int_tbl_lib.o)
 
 .debug_abbrev   0x00000000     0x1675
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x1cb main.o
  .debug_abbrev  0x000001cb      0x213 setup.o
- .debug_abbrev  0x000003de      0x224 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
- .debug_abbrev  0x00000602      0x1b8 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
- .debug_abbrev  0x000007ba      0x1a2 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
- .debug_abbrev  0x0000095c      0x1d0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
- .debug_abbrev  0x00000b2c      0x1db C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
- .debug_abbrev  0x00000d07       0xd6 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
- .debug_abbrev  0x00000ddd      0x1c7 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
- .debug_abbrev  0x00000fa4       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
- .debug_abbrev  0x00000ff6      0x1ca C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
- .debug_abbrev  0x000011c0      0x1ca C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .debug_abbrev  0x000003de      0x224 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .debug_abbrev  0x00000602      0x1b8 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .debug_abbrev  0x000007ba      0x1a2 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .debug_abbrev  0x0000095c      0x1d0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .debug_abbrev  0x00000b2c      0x1db C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .debug_abbrev  0x00000d07       0xd6 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .debug_abbrev  0x00000ddd      0x1c7 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .debug_abbrev  0x00000fa4       0x52 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .debug_abbrev  0x00000ff6      0x1ca C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .debug_abbrev  0x000011c0      0x1ca C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
  .debug_abbrev  0x0000138a       0x41 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
  .debug_abbrev  0x000013cb       0x38 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sbrk.o)
  .debug_abbrev  0x00001403       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
@@ -1013,16 +1013,16 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  *(.debug_line)
  .debug_line    0x00000000      0x29d main.o
  .debug_line    0x0000029d      0x2ae setup.o
- .debug_line    0x0000054b      0x295 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
- .debug_line    0x000007e0      0x1f0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
- .debug_line    0x000009d0      0x26e C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
- .debug_line    0x00000c3e      0x287 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
- .debug_line    0x00000ec5      0x282 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
- .debug_line    0x00001147      0x1bf C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
- .debug_line    0x00001306      0x2e4 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
- .debug_line    0x000015ea       0xe8 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
- .debug_line    0x000016d2      0x286 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
- .debug_line    0x00001958      0x277 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .debug_line    0x0000054b      0x295 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .debug_line    0x000007e0      0x1f0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .debug_line    0x000009d0      0x26e C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .debug_line    0x00000c3e      0x287 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .debug_line    0x00000ec5      0x282 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .debug_line    0x00001147      0x1bf C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .debug_line    0x00001306      0x2e4 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .debug_line    0x000015ea       0xe8 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .debug_line    0x000016d2      0x286 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .debug_line    0x00001958      0x277 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
  .debug_line    0x00001bcf       0x87 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
  .debug_line    0x00001c56       0x87 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sbrk.o)
  .debug_line    0x00001cdd       0xa4 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
@@ -1050,16 +1050,16 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  *(.debug_frame)
  .debug_frame   0x00000000       0x2c main.o
  .debug_frame   0x0000002c       0x9c setup.o
- .debug_frame   0x000000c8       0x9c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
- .debug_frame   0x00000164       0x2c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
- .debug_frame   0x00000190       0x2c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
- .debug_frame   0x000001bc       0x2c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
- .debug_frame   0x000001e8       0x2c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
- .debug_frame   0x00000214       0x8c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
- .debug_frame   0x000002a0       0x48 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
- .debug_frame   0x000002e8       0x28 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
- .debug_frame   0x00000310       0x80 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
- .debug_frame   0x00000390       0x48 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .debug_frame   0x000000c8       0x9c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .debug_frame   0x00000164       0x2c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .debug_frame   0x00000190       0x2c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .debug_frame   0x000001bc       0x2c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .debug_frame   0x000001e8       0x2c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .debug_frame   0x00000214       0x8c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .debug_frame   0x000002a0       0x48 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .debug_frame   0x000002e8       0x28 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .debug_frame   0x00000310       0x80 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .debug_frame   0x00000390       0x48 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
  .debug_frame   0x000003d8       0x68 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
  .debug_frame   0x00000440       0x8c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sbrk.o)
  .debug_frame   0x000004cc       0x20 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
@@ -1083,16 +1083,16 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  *(.debug_str)
  .debug_str     0x00000000      0x12f main.o
  .debug_str     0x0000012f      0x158 setup.o
- .debug_str     0x00000287      0x139 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
- .debug_str     0x000003c0      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
- .debug_str     0x000004ef      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
- .debug_str     0x0000061e      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
- .debug_str     0x0000074d      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
- .debug_str     0x0000087c       0x69 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
- .debug_str     0x000008e5      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
- .debug_str     0x00000a14        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
- .debug_str     0x00000a14      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
- .debug_str     0x00000b43      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .debug_str     0x00000287      0x139 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .debug_str     0x000003c0      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .debug_str     0x000004ef      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .debug_str     0x0000061e      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .debug_str     0x0000074d      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .debug_str     0x0000087c       0x69 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .debug_str     0x000008e5      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .debug_str     0x00000a14        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .debug_str     0x00000a14      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .debug_str     0x00000b43      0x12f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
  .debug_str     0x00000c72        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
  .debug_str     0x00000c72        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(sbrk.o)
  .debug_str     0x00000c72        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
@@ -1142,25 +1142,25 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .debug_pubtypes
                 0x00000113      0x113 setup.o
  .debug_pubtypes
-                0x00000226      0x113 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+                0x00000226      0x113 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
  .debug_pubtypes
-                0x00000339       0xf6 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+                0x00000339       0xf6 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
  .debug_pubtypes
-                0x0000042f      0x104 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+                0x0000042f      0x104 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
  .debug_pubtypes
-                0x00000533      0x121 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+                0x00000533      0x121 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
  .debug_pubtypes
-                0x00000654      0x121 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+                0x00000654      0x121 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
  .debug_pubtypes
-                0x00000775       0x3d C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+                0x00000775       0x3d C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
  .debug_pubtypes
-                0x000007b2      0x113 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+                0x000007b2      0x113 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
  .debug_pubtypes
-                0x000008c5       0x2f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+                0x000008c5       0x2f C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
  .debug_pubtypes
-                0x000008f4      0x122 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+                0x000008f4      0x122 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
  .debug_pubtypes
-                0x00000a16      0x114 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+                0x00000a16      0x114 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
 
 .debug_ranges   0x00000000      0x1a8
  *(.debug_ranges)
@@ -1191,25 +1191,25 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .gnu.attributes
                 0x00000010       0x10 setup.o
  .gnu.attributes
-                0x00000020       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+                0x00000020       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
  .gnu.attributes
-                0x00000030       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+                0x00000030       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
  .gnu.attributes
-                0x00000040       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+                0x00000040       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
  .gnu.attributes
-                0x00000050       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+                0x00000050       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
  .gnu.attributes
-                0x00000060       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+                0x00000060       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
  .gnu.attributes
-                0x00000070       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+                0x00000070       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
  .gnu.attributes
-                0x00000080       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+                0x00000080       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
  .gnu.attributes
-                0x00000090       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+                0x00000090       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
  .gnu.attributes
-                0x000000a0       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+                0x000000a0       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
  .gnu.attributes
-                0x000000b0       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+                0x000000b0       0x10 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
  .gnu.attributes
                 0x000000c0       0x10 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(malloc.o)
  .gnu.attributes
@@ -1505,103 +1505,103 @@ LOAD data_init
 
 .mdebug.abi32%z73
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
 
 .bss%z74        0x00000000        0x0
- .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
 
 .data%z75       0x00000000        0x0
- .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
 
 .mdebug.abi32%z76
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
 
 .bss%z77        0x00000000        0x0
- .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
 
 .data%z78       0x00000000        0x0
- .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
 
 .mdebug.abi32%z79
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
 
 .bss%z80        0x00000000        0x0
- .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
 
 .data%z81       0x00000000        0x0
- .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
 
 .mdebug.abi32%z82
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
 
 .bss%z83        0x00000000        0x0
- .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
 
 .data%z84       0x00000000        0x0
- .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
 
 .mdebug.abi32%z85
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
 
 .bss%z86        0x00000000        0x0
- .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
 
 .data%z87       0x00000000        0x0
- .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
 
 .mdebug.abi32%z88
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
 
 .bss%z89        0x00000000        0x0
- .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
 
 .data%z90       0x00000000        0x0
- .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
 
 .mdebug.abi32%z91
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
 
 .bss%z92        0x00000000        0x0
- .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
 
 .data%z93       0x00000000        0x0
- .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
 
 .mdebug.abi32%z94
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
 
 .bss%z95        0x00000000        0x0
- .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
 
 .data%z96       0x00000000        0x0
- .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
 
 .mdebug.abi32%z97
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
 
 .bss%z98        0x00000000        0x0
- .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
 
 .data%z99       0x00000000        0x0
- .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
 
 .mdebug.abi32%z100
                 0x00000000        0x0
- .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .mdebug.abi32  0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
 
 .bss%z101       0x00000000        0x0
- .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .bss           0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
 
 .data%z102      0x00000000        0x0
- .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .data          0x00000000        0x0 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
 
 .mdebug.abi32%z103
                 0x00000000        0x0
@@ -1630,7 +1630,7 @@ LOAD data_init
  .data          0x00000000        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib/crt0.o
 
 .text           0x9d0008e4      0xa8c
- .text          0x9d0008e4      0x668 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
+ .text          0x9d0008e4      0x668 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(bufferlib.o)
                 0x9d0008e4                BufLibInitBuffers
                 0x9d000a94                BufLibReadBuffer
                 0x9d000c50                BufLibWriteBuffer
@@ -1656,7 +1656,7 @@ LOAD data_init
                 0x9d001838                realloc
 
 .text           0x9d001a58      0x218
- .text          0x9d001a58      0x218 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
+ .text          0x9d001a58      0x218 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf.o)
                 0x9d001a58                PmodSFInit
                 0x9d001ab8                PmodSFWriteStatusRegister
                 0x9d001b58                PmodSFBlockWhileWriteInProgress
@@ -1670,7 +1670,7 @@ LOAD data_init
                 0x9d001c70                _sbrk_init
 
 .text           0x9d001e04      0x180
- .text          0x9d001e04      0x180 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
+ .text          0x9d001e04      0x180 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodDA2.o)
                 0x9d001e04                PmodDA2Init
                 0x9d001e64                PmodDA2Enable
                 0x9d001ea0                PmodDA2Disable
@@ -1683,14 +1683,14 @@ LOAD data_init
                 0x9d001f84                SpiChnOpen
 
 .text           0x9d0020d4      0x458
- .text          0x9d0020d4      0x148 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
+ .text          0x9d0020d4      0x148 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_page_program.o)
                 0x9d0020d4                PmodSFPageProgram
- .text          0x9d00221c      0x138 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
+ .text          0x9d00221c      0x138 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_read_bytes.o)
                 0x9d00221c                PmodSFReadBytes
- .text          0x9d002354      0x100 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
+ .text          0x9d002354      0x100 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(PmodMic.o)
                 0x9d002354                PmodMicInit
                 0x9d0023b4                PmodMicGetData
- .text          0x9d002454       0xd8 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .text          0x9d002454       0xd8 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
                 0x9d002454                PmodSPISetSSLow
                 0x9d0024c0                PmodSPISetSSHigh
 
@@ -1707,7 +1707,7 @@ LOAD data_init
 .text           0x9d0026c0      0x114
  .text          0x9d0026c0       0xa8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(memset.o)
                 0x9d0026c0                memset
- .text          0x9d002768       0x6c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
+ .text          0x9d002768       0x6c C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_helper.o)
                 0x9d002768                fnPmodSFSendCommand
 
 .text.SpiChnGetC
@@ -1729,7 +1729,7 @@ LOAD data_init
                 0x9d002894                INTEnable
 
 .text           0x9d0028ec       0x54
- .text          0x9d0028ec       0x54 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
+ .text          0x9d0028ec       0x54 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmodsf_bulk_erase.o)
                 0x9d0028ec                PmodSFBulkErase
 
 .text.sbrk      0x9d002940       0x50
@@ -1737,7 +1737,7 @@ LOAD data_init
                 0x9d002940                sbrk
 
 .text           0x9d002990       0x40
- .text          0x9d002990       0x40 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
+ .text          0x9d002990       0x40 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(fnGetByteFromUint32.o)
                 0x9d002990                fnPmodGetByteFromUint32
 
 .text.PORTSetPinsDigitalIn
@@ -1823,7 +1823,7 @@ LOAD data_init
                 0x9d002c84                INTGetEnable
 
 .rodata         0x9d002cb0       0x28
- .rodata        0x9d002cb0       0x28 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\Recorder_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
+ .rodata        0x9d002cb0       0x28 C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLibDemos\RecorderDemo_795\PmodLib\lib\pmodlib_795.a(pmod_spi_common.o)
 
 .text.PORTClearBits
                 0x9d002cd8       0x28
