@@ -13,7 +13,7 @@ SOLK=<src>|cerebot_robot.c|C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth\p
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
 [File001]
 Location=C:\Code\cpts421\PmodLibDemos\CerebotRobot\CerebotRobot\pmodBT.o
 Folder=Intermediary
