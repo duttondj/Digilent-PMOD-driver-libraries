@@ -68,46 +68,46 @@ kseg0 Program-Memory Usage
 section                    address  length [bytes]      (dec)  Description
 -------                 ----------  -------------------------  -----------
 .rodata                 0x9d000000          0x584        1412  Read-only const 
-.text                   0x9d00058c         0x2a8c       10892  App's exec code 
-.text.general_exception 0x9d003018           0xd0         208   
-.text                   0x9d0030e8          0x164         356  App's exec code 
-.rodata                 0x9d00324c           0x98         152  Read-only const 
-.text.UARTEnable        0x9d0032e4           0x80         128   
-.text.UARTSetDataRate   0x9d003364           0x5c          92   
-.text.INTEnable         0x9d0033c0           0x58          88   
-.text                   0x9d003418           0x50          80  App's exec code 
-.dinit                  0x9d003468           0x50          80   
-.text.PORTSetPinsDigita 0x9d0034b8           0x40          64   
-.text.PORTSetPinsDigita 0x9d0034f8           0x40          64   
-.text.UARTGetDataRate   0x9d003538           0x40          64   
-.text.INTSetVectorPrior 0x9d003578           0x3c          60   
-.text.INTSetVectorSubPr 0x9d0035b4           0x3c          60   
-.text.UARTConfigure     0x9d0035f0           0x3c          60   
-.text.UARTSetAddress    0x9d00362c           0x3c          60   
-.text.strcat            0x9d003668           0x38          56   
-.text.UARTWatchForAddre 0x9d0036a0           0x38          56   
-.rodata                 0x9d0036d8           0x34          52  Read-only const 
-.text.INTConfigureSyste 0x9d00370c           0x30          48   
-.text.INTGetVectorPrior 0x9d00373c           0x30          48   
-.text.INTGetVectorSubPr 0x9d00376c           0x30          48   
-.text.INTClearFlag      0x9d00379c           0x2c          44   
-.text.INTSetFlag        0x9d0037c8           0x2c          44   
-.text.INTGetFlag        0x9d0037f4           0x2c          44   
-.text.INTGetEnable      0x9d003820           0x2c          44   
-.text.PORTReadBits      0x9d00384c           0x28          40   
-.text.PORTClearBits     0x9d003874           0x28          40   
-.text.PORTSetBits       0x9d00389c           0x28          40   
-.text.PORTToggleBits    0x9d0038c4           0x28          40   
-.text.UARTSetFifoMode   0x9d0038ec           0x28          40   
-.text.UARTSetLineContro 0x9d003914           0x28          40   
-.text                   0x9d00393c           0x28          40  App's exec code 
-.text._general_exceptio 0x9d003964            0xc          12   
-.text._bootstrap_except 0x9d003970            0xc          12   
-.text._on_reset         0x9d00397c            0x8           8   
-.text._on_bootstrap     0x9d003984            0x8           8   
-.text.INTEnableInterrup 0x9d00398c            0x8           8   
-.text.INTDisableInterru 0x9d003994            0x8           8   
-      Total kseg0_program_mem used  :      0x3994       14740  2.8% of 0x80000
+.text                   0x9d00058c         0x2ac0       10944  App's exec code 
+.text.general_exception 0x9d00304c           0xd0         208   
+.text                   0x9d00311c          0x164         356  App's exec code 
+.rodata                 0x9d003280           0x98         152  Read-only const 
+.text.UARTEnable        0x9d003318           0x80         128   
+.text.UARTSetDataRate   0x9d003398           0x5c          92   
+.text.INTEnable         0x9d0033f4           0x58          88   
+.text                   0x9d00344c           0x50          80  App's exec code 
+.dinit                  0x9d00349c           0x50          80   
+.rodata                 0x9d0034ec           0x4c          76  Read-only const 
+.text.PORTSetPinsDigita 0x9d003538           0x40          64   
+.text.PORTSetPinsDigita 0x9d003578           0x40          64   
+.text.UARTGetDataRate   0x9d0035b8           0x40          64   
+.text.INTSetVectorPrior 0x9d0035f8           0x3c          60   
+.text.INTSetVectorSubPr 0x9d003634           0x3c          60   
+.text.UARTConfigure     0x9d003670           0x3c          60   
+.text.UARTSetAddress    0x9d0036ac           0x3c          60   
+.text.strcat            0x9d0036e8           0x38          56   
+.text.UARTWatchForAddre 0x9d003720           0x38          56   
+.text.INTConfigureSyste 0x9d003758           0x30          48   
+.text.INTGetVectorPrior 0x9d003788           0x30          48   
+.text.INTGetVectorSubPr 0x9d0037b8           0x30          48   
+.text.INTClearFlag      0x9d0037e8           0x2c          44   
+.text.INTSetFlag        0x9d003814           0x2c          44   
+.text.INTGetFlag        0x9d003840           0x2c          44   
+.text.INTGetEnable      0x9d00386c           0x2c          44   
+.text.PORTReadBits      0x9d003898           0x28          40   
+.text.PORTClearBits     0x9d0038c0           0x28          40   
+.text.PORTSetBits       0x9d0038e8           0x28          40   
+.text.PORTToggleBits    0x9d003910           0x28          40   
+.text.UARTSetFifoMode   0x9d003938           0x28          40   
+.text.UARTSetLineContro 0x9d003960           0x28          40   
+.text                   0x9d003988           0x28          40  App's exec code 
+.text._general_exceptio 0x9d0039b0            0xc          12   
+.text._bootstrap_except 0x9d0039bc            0xc          12   
+.text._on_reset         0x9d0039c8            0x8           8   
+.text._on_bootstrap     0x9d0039d0            0x8           8   
+.text.INTEnableInterrup 0x9d0039d8            0x8           8   
+.text.INTDisableInterru 0x9d0039e0            0x8           8   
+      Total kseg0_program_mem used  :      0x39e0       14816  2.8% of 0x80000
 
 kseg0 Boot-Memory Usage
 section                    address  length [bytes]      (dec)  Description
@@ -129,7 +129,7 @@ section                    address  length [bytes]      (dec)  Description
 .bev_excpt              0xbfc00380           0x10          16  BEV-Exception 
          Total kseg1_boot_mem used  :       0x204         516  44.2% of 0x490
         --------------------------------------------------------------------------
-         Total Program Memory used  :      0x3bb8       15288  2.9% of 0x81e00
+         Total Program Memory used  :      0x3c04       15364  2.9% of 0x81e00
         --------------------------------------------------------------------------
 
 
@@ -835,80 +835,80 @@ LOAD c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5
  .debug_pubnames
                 0x000006b0       0xb1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
 
-.debug_info     0x00000000     0x8903
+.debug_info     0x00000000     0x88dc
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x2d29 cerebot_robot.o
- .debug_info    0x00002d29     0x1a92 pmodBT.o
- .debug_info    0x000047bb     0x111e C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5ChangeDirection.o)
- .debug_info    0x000058d9     0x1151 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_pmodHB5getQEncRMP.o)
- .debug_info    0x00006a2a     0x1010 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5SetDCPWMDutyCycle.o)
- .debug_info    0x00007a3a       0xd1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
- .debug_info    0x00007b0b      0x102 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
- .debug_info    0x00007c0d      0x106 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
- .debug_info    0x00007d13       0xe0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
- .debug_info    0x00007df3       0xe8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
- .debug_info    0x00007edb       0xc7 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_configure_system_lib.o)
- .debug_info    0x00007fa2       0xc9 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_enable_interrupts_lib.o)
- .debug_info    0x0000806b       0xcb c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_disable_interrupts_lib.o)
- .debug_info    0x00008136      0x1ab c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
- .debug_info    0x000082e1       0xcf c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_in_lib.o)
- .debug_info    0x000083b0       0xd1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_out_lib.o)
- .debug_info    0x00008481       0xbd c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_read_bits_lib.o)
- .debug_info    0x0000853e       0xbf c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_clear_bits_lib.o)
- .debug_info    0x000085fd       0xbb c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_bits_lib.o)
- .debug_info    0x000086b8       0xc1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_toggle_bits_lib.o)
- .debug_info    0x00008779        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(_ports_tbl_libp.o)
- .debug_info    0x00008779      0x18a c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+ .debug_info    0x00002d29     0x1a6b pmodBT.o
+ .debug_info    0x00004794     0x111e C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5ChangeDirection.o)
+ .debug_info    0x000058b2     0x1151 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_pmodHB5getQEncRMP.o)
+ .debug_info    0x00006a03     0x1010 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5SetDCPWMDutyCycle.o)
+ .debug_info    0x00007a13       0xd1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
+ .debug_info    0x00007ae4      0x102 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
+ .debug_info    0x00007be6      0x106 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
+ .debug_info    0x00007cec       0xe0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
+ .debug_info    0x00007dcc       0xe8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
+ .debug_info    0x00007eb4       0xc7 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_configure_system_lib.o)
+ .debug_info    0x00007f7b       0xc9 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_enable_interrupts_lib.o)
+ .debug_info    0x00008044       0xcb c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_disable_interrupts_lib.o)
+ .debug_info    0x0000810f      0x1ab c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+ .debug_info    0x000082ba       0xcf c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_in_lib.o)
+ .debug_info    0x00008389       0xd1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_out_lib.o)
+ .debug_info    0x0000845a       0xbd c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_read_bits_lib.o)
+ .debug_info    0x00008517       0xbf c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_clear_bits_lib.o)
+ .debug_info    0x000085d6       0xbb c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_bits_lib.o)
+ .debug_info    0x00008691       0xc1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_toggle_bits_lib.o)
+ .debug_info    0x00008752        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(_ports_tbl_libp.o)
+ .debug_info    0x00008752      0x18a c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
 
-.debug_abbrev   0x00000000      0xcd8
+.debug_abbrev   0x00000000      0xcc1
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x2df cerebot_robot.o
- .debug_abbrev  0x000002df      0x2c8 pmodBT.o
- .debug_abbrev  0x000005a7      0x18e C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5ChangeDirection.o)
- .debug_abbrev  0x00000735      0x19b C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_pmodHB5getQEncRMP.o)
- .debug_abbrev  0x000008d0      0x1a4 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5SetDCPWMDutyCycle.o)
- .debug_abbrev  0x00000a74       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
- .debug_abbrev  0x00000a99       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
- .debug_abbrev  0x00000abe       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
- .debug_abbrev  0x00000ae3       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
- .debug_abbrev  0x00000b08       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
- .debug_abbrev  0x00000b2d       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_configure_system_lib.o)
- .debug_abbrev  0x00000b52       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_enable_interrupts_lib.o)
- .debug_abbrev  0x00000b77       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_disable_interrupts_lib.o)
- .debug_abbrev  0x00000b9c       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
- .debug_abbrev  0x00000bc1       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_in_lib.o)
- .debug_abbrev  0x00000be6       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_out_lib.o)
- .debug_abbrev  0x00000c0b       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_read_bits_lib.o)
- .debug_abbrev  0x00000c30       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_clear_bits_lib.o)
- .debug_abbrev  0x00000c55       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_bits_lib.o)
- .debug_abbrev  0x00000c7a       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_toggle_bits_lib.o)
- .debug_abbrev  0x00000c9f        0x1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(_ports_tbl_libp.o)
- .debug_abbrev  0x00000ca0       0x38 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+ .debug_abbrev  0x000002df      0x2b1 pmodBT.o
+ .debug_abbrev  0x00000590      0x18e C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5ChangeDirection.o)
+ .debug_abbrev  0x0000071e      0x19b C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_pmodHB5getQEncRMP.o)
+ .debug_abbrev  0x000008b9      0x1a4 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5SetDCPWMDutyCycle.o)
+ .debug_abbrev  0x00000a5d       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
+ .debug_abbrev  0x00000a82       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
+ .debug_abbrev  0x00000aa7       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
+ .debug_abbrev  0x00000acc       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
+ .debug_abbrev  0x00000af1       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
+ .debug_abbrev  0x00000b16       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_configure_system_lib.o)
+ .debug_abbrev  0x00000b3b       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_enable_interrupts_lib.o)
+ .debug_abbrev  0x00000b60       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_disable_interrupts_lib.o)
+ .debug_abbrev  0x00000b85       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+ .debug_abbrev  0x00000baa       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_in_lib.o)
+ .debug_abbrev  0x00000bcf       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_out_lib.o)
+ .debug_abbrev  0x00000bf4       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_read_bits_lib.o)
+ .debug_abbrev  0x00000c19       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_clear_bits_lib.o)
+ .debug_abbrev  0x00000c3e       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_bits_lib.o)
+ .debug_abbrev  0x00000c63       0x25 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_toggle_bits_lib.o)
+ .debug_abbrev  0x00000c88        0x1 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(_ports_tbl_libp.o)
+ .debug_abbrev  0x00000c89       0x38 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
 
-.debug_line     0x00000000     0x18b8
+.debug_line     0x00000000     0x18bd
  *(.debug_line)
- .debug_line    0x00000000      0x509 cerebot_robot.o
- .debug_line    0x00000509      0x442 pmodBT.o
- .debug_line    0x0000094b      0x2a2 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5ChangeDirection.o)
- .debug_line    0x00000bed      0x2a4 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_pmodHB5getQEncRMP.o)
- .debug_line    0x00000e91      0x26b C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5SetDCPWMDutyCycle.o)
- .debug_line    0x000010fc       0x87 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
- .debug_line    0x00001183       0xa4 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
- .debug_line    0x00001227       0xa6 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
- .debug_line    0x000012cd       0x93 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
- .debug_line    0x00001360       0x97 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
- .debug_line    0x000013f7       0x71 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_configure_system_lib.o)
- .debug_line    0x00001468       0x72 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_enable_interrupts_lib.o)
- .debug_line    0x000014da       0x73 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_disable_interrupts_lib.o)
- .debug_line    0x0000154d       0x64 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
- .debug_line    0x000015b1       0x77 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_in_lib.o)
- .debug_line    0x00001628       0x78 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_out_lib.o)
- .debug_line    0x000016a0       0x6d c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_read_bits_lib.o)
- .debug_line    0x0000170d       0x6e c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_clear_bits_lib.o)
- .debug_line    0x0000177b       0x6c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_bits_lib.o)
- .debug_line    0x000017e7       0x6f c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_toggle_bits_lib.o)
- .debug_line    0x00001856        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(_ports_tbl_libp.o)
- .debug_line    0x00001856       0x62 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+ .debug_line    0x00000000      0x50d cerebot_robot.o
+ .debug_line    0x0000050d      0x443 pmodBT.o
+ .debug_line    0x00000950      0x2a2 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5ChangeDirection.o)
+ .debug_line    0x00000bf2      0x2a4 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_pmodHB5getQEncRMP.o)
+ .debug_line    0x00000e96      0x26b C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5SetDCPWMDutyCycle.o)
+ .debug_line    0x00001101       0x87 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
+ .debug_line    0x00001188       0xa4 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
+ .debug_line    0x0000122c       0xa6 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
+ .debug_line    0x000012d2       0x93 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
+ .debug_line    0x00001365       0x97 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
+ .debug_line    0x000013fc       0x71 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_configure_system_lib.o)
+ .debug_line    0x0000146d       0x72 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_enable_interrupts_lib.o)
+ .debug_line    0x000014df       0x73 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_disable_interrupts_lib.o)
+ .debug_line    0x00001552       0x64 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+ .debug_line    0x000015b6       0x77 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_in_lib.o)
+ .debug_line    0x0000162d       0x78 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_out_lib.o)
+ .debug_line    0x000016a5       0x6d c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_read_bits_lib.o)
+ .debug_line    0x00001712       0x6e c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_clear_bits_lib.o)
+ .debug_line    0x00001780       0x6c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_bits_lib.o)
+ .debug_line    0x000017ec       0x6f c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_toggle_bits_lib.o)
+ .debug_line    0x0000185b        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(_ports_tbl_libp.o)
+ .debug_line    0x0000185b       0x62 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
 
 .debug_frame    0x00000000      0x784
  *(.debug_frame)
@@ -1338,8 +1338,8 @@ LOAD data_init
 .data%z83       0x00000000        0x0
  .data          0x00000000        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib/crt0.o
 
-.text           0x9d00058c     0x2a8c
- .text          0x9d00058c     0x1684 cerebot_robot.o
+.text           0x9d00058c     0x2ac0
+ .text          0x9d00058c     0x16b4 cerebot_robot.o
                 0x9d00058c                main
                 0x9d0005c8                init
                 0x9d000628                appTask
@@ -1351,257 +1351,257 @@ LOAD data_init
                 0x9d000d58                initControllers
                 0x9d000da0                UARTInit
                 0x9d000e2c                setDutyCycle
-                0x9d00105c                configureTimers
-                0x9d0011b0                setPortIO
-                0x9d0012a8                resetBTModule
-                0x9d001380                initPmodBTN2
-                0x9d00182c                pollBlueToothConnected
-                0x9d0018ec                enableInterrupts
-                0x9d00195c                getQuadEncodingChangeDir
-                0x9d001a20                Timer1Handler
-                0x9d001b48                UARTIntHandler
- .text          0x9d001c10      0xd20 pmodBT.o
-                0x9d001c10                BTInquireAndConnect
-                0x9d001e7c                BTRecieveConnect
-                0x9d001f1c                BTGetAddressFromName
-                0x9d002014                BTSendSetCommand
-                0x9d00209c                BTGetParam
-                0x9d0021c4                BTSendCommand
-                0x9d002250                BTBuildCommand
-                0x9d002388                BTGetSetResponseVal
-                0x9d002468                BTGetByteSequence
-                0x9d0024f4                BTGetUpToNLines
-                0x9d0025d0                BTGetLine
-                0x9d002650                delayN
-                0x9d0026a0                UARTPutBytes
-                0x9d002770                UARTGetOneByte
-                0x9d0027ec                UARTPutS
-                0x9d0028a0                UARTPutOneByte
- .text          0x9d002930      0x1a0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcpy.o)
-                0x9d002930                strcpy
- .text          0x9d002ad0      0x168 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(memcpy.o)
-                0x9d002ad0                memcpy
- .text          0x9d002c38      0x168 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strlen.o)
-                0x9d002c38                strlen
- .text          0x9d002da0      0x158 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_pmodHB5getQEncRMP.o)
-                0x9d002da0                PmodHB5getQEncRPM
- .text          0x9d002ef8      0x120 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcmp.o)
-                0x9d002ef8                strcmp
+                0x9d00108c                configureTimers
+                0x9d0011e0                setPortIO
+                0x9d0012d8                resetBTModule
+                0x9d0013b0                initPmodBTN2
+                0x9d00185c                pollBlueToothConnected
+                0x9d00191c                enableInterrupts
+                0x9d00198c                getQuadEncodingChangeDir
+                0x9d001a50                Timer1Handler
+                0x9d001b78                UARTIntHandler
+ .text          0x9d001c40      0xd24 pmodBT.o
+                0x9d001c40                BTInquireAndConnect
+                0x9d001ed0                BTRecieveConnect
+                0x9d001f70                BTGetAddressFromName
+                0x9d002058                BTSendSetCommand
+                0x9d0020e0                BTGetParam
+                0x9d002208                BTSendCommand
+                0x9d002294                BTBuildCommand
+                0x9d0023cc                BTGetSetResponseVal
+                0x9d0024ac                BTGetByteSequence
+                0x9d002538                BTGetUpToNLines
+                0x9d002604                BTGetLine
+                0x9d002684                delayN
+                0x9d0026d4                UARTPutBytes
+                0x9d0027a4                UARTGetOneByte
+                0x9d002820                UARTPutS
+                0x9d0028d4                UARTPutOneByte
+ .text          0x9d002964      0x1a0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcpy.o)
+                0x9d002964                strcpy
+ .text          0x9d002b04      0x168 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(memcpy.o)
+                0x9d002b04                memcpy
+ .text          0x9d002c6c      0x168 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strlen.o)
+                0x9d002c6c                strlen
+ .text          0x9d002dd4      0x158 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_pmodHB5getQEncRMP.o)
+                0x9d002dd4                PmodHB5getQEncRPM
+ .text          0x9d002f2c      0x120 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcmp.o)
+                0x9d002f2c                strcmp
 
 .text.general_exception
-                0x9d003018       0xd0
+                0x9d00304c       0xd0
  .text.general_exception
-                0x9d003018       0xd0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(general-exception.o)
-                0x9d003018                _general_exception_context
+                0x9d00304c       0xd0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(general-exception.o)
+                0x9d00304c                _general_exception_context
 
-.text           0x9d0030e8      0x164
- .text          0x9d0030e8       0xbc C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5ChangeDirection.o)
-                0x9d0030e8                PmodHB5ChangeDirection
- .text          0x9d0031a4       0xa8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(memset.o)
-                0x9d0031a4                memset
+.text           0x9d00311c      0x164
+ .text          0x9d00311c       0xbc C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5ChangeDirection.o)
+                0x9d00311c                PmodHB5ChangeDirection
+ .text          0x9d0031d8       0xa8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(memset.o)
+                0x9d0031d8                memset
 
-.rodata         0x9d00324c       0x98
- .rodata        0x9d00324c       0x98 cerebot_robot.o
+.rodata         0x9d003280       0x98
+ .rodata        0x9d003280       0x98 cerebot_robot.o
 
 .text.UARTEnable
-                0x9d0032e4       0x80
+                0x9d003318       0x80
  .text.UARTEnable
-                0x9d0032e4       0x80 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
-                0x9d0032e4                UARTEnable
+                0x9d003318       0x80 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+                0x9d003318                UARTEnable
 
 .text.UARTSetDataRate
-                0x9d003364       0x5c
+                0x9d003398       0x5c
  .text.UARTSetDataRate
-                0x9d003364       0x5c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
-                0x9d003364                UARTSetDataRate
+                0x9d003398       0x5c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+                0x9d003398                UARTSetDataRate
 
 .text.INTEnable
-                0x9d0033c0       0x58
+                0x9d0033f4       0x58
  .text.INTEnable
-                0x9d0033c0       0x58 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
-                0x9d0033c0                INTEnable
+                0x9d0033f4       0x58 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+                0x9d0033f4                INTEnable
 
-.text           0x9d003418       0x50
- .text          0x9d003418       0x50 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5SetDCPWMDutyCycle.o)
-                0x9d003418                PmodHB5SetDCPWMDutyCycle
+.text           0x9d00344c       0x50
+ .text          0x9d00344c       0x50 C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\lib\pmodlib_460.a(pmodHB5_PmodHB5SetDCPWMDutyCycle.o)
+                0x9d00344c                PmodHB5SetDCPWMDutyCycle
 
-.dinit          0x9d003468       0x50
- .dinit         0x9d003468       0x50 data_init
+.dinit          0x9d00349c       0x50
+ .dinit         0x9d00349c       0x50 data_init
+
+.rodata         0x9d0034ec       0x4c
+ .rodata        0x9d0034ec       0x4c pmodBT.o
 
 .text.PORTSetPinsDigitalIn
-                0x9d0034b8       0x40
+                0x9d003538       0x40
  .text.PORTSetPinsDigitalIn
-                0x9d0034b8       0x40 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_in_lib.o)
-                0x9d0034b8                PORTSetPinsDigitalIn
+                0x9d003538       0x40 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_in_lib.o)
+                0x9d003538                PORTSetPinsDigitalIn
 
 .text.PORTSetPinsDigitalOut
-                0x9d0034f8       0x40
+                0x9d003578       0x40
  .text.PORTSetPinsDigitalOut
-                0x9d0034f8       0x40 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_out_lib.o)
-                0x9d0034f8                PORTSetPinsDigitalOut
+                0x9d003578       0x40 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_pins_digital_out_lib.o)
+                0x9d003578                PORTSetPinsDigitalOut
 
 .text.UARTGetDataRate
-                0x9d003538       0x40
+                0x9d0035b8       0x40
  .text.UARTGetDataRate
-                0x9d003538       0x40 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
-                0x9d003538                UARTGetDataRate
+                0x9d0035b8       0x40 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+                0x9d0035b8                UARTGetDataRate
 
 .text.INTSetVectorPriority
-                0x9d003578       0x3c
+                0x9d0035f8       0x3c
  .text.INTSetVectorPriority
-                0x9d003578       0x3c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
-                0x9d003578                INTSetVectorPriority
+                0x9d0035f8       0x3c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+                0x9d0035f8                INTSetVectorPriority
 
 .text.INTSetVectorSubPriority
-                0x9d0035b4       0x3c
+                0x9d003634       0x3c
  .text.INTSetVectorSubPriority
-                0x9d0035b4       0x3c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
-                0x9d0035b4                INTSetVectorSubPriority
+                0x9d003634       0x3c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+                0x9d003634                INTSetVectorSubPriority
 
 .text.UARTConfigure
-                0x9d0035f0       0x3c
+                0x9d003670       0x3c
  .text.UARTConfigure
-                0x9d0035f0       0x3c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
-                0x9d0035f0                UARTConfigure
+                0x9d003670       0x3c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+                0x9d003670                UARTConfigure
 
 .text.UARTSetAddress
-                0x9d00362c       0x3c
+                0x9d0036ac       0x3c
  .text.UARTSetAddress
-                0x9d00362c       0x3c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
-                0x9d00362c                UARTSetAddress
+                0x9d0036ac       0x3c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+                0x9d0036ac                UARTSetAddress
 
-.text.strcat    0x9d003668       0x38
- .text.strcat   0x9d003668       0x38 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
-                0x9d003668                strcat
+.text.strcat    0x9d0036e8       0x38
+ .text.strcat   0x9d0036e8       0x38 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(strcat.o)
+                0x9d0036e8                strcat
 
 .text.UARTWatchForAddress
-                0x9d0036a0       0x38
+                0x9d003720       0x38
  .text.UARTWatchForAddress
-                0x9d0036a0       0x38 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
-                0x9d0036a0                UARTWatchForAddress
-
-.rodata         0x9d0036d8       0x34
- .rodata        0x9d0036d8       0x34 pmodBT.o
+                0x9d003720       0x38 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+                0x9d003720                UARTWatchForAddress
 
 .text.INTConfigureSystem
-                0x9d00370c       0x30
+                0x9d003758       0x30
  .text.INTConfigureSystem
-                0x9d00370c       0x30 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_configure_system_lib.o)
-                0x9d00370c                INTConfigureSystem
+                0x9d003758       0x30 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_configure_system_lib.o)
+                0x9d003758                INTConfigureSystem
 
 .text.INTGetVectorPriority
-                0x9d00373c       0x30
+                0x9d003788       0x30
  .text.INTGetVectorPriority
-                0x9d00373c       0x30 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
-                0x9d00373c                INTGetVectorPriority
+                0x9d003788       0x30 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+                0x9d003788                INTGetVectorPriority
 
 .text.INTGetVectorSubPriority
-                0x9d00376c       0x30
+                0x9d0037b8       0x30
  .text.INTGetVectorSubPriority
-                0x9d00376c       0x30 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
-                0x9d00376c                INTGetVectorSubPriority
+                0x9d0037b8       0x30 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+                0x9d0037b8                INTGetVectorSubPriority
 
 .text.INTClearFlag
-                0x9d00379c       0x2c
+                0x9d0037e8       0x2c
  .text.INTClearFlag
-                0x9d00379c       0x2c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
-                0x9d00379c                INTClearFlag
+                0x9d0037e8       0x2c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+                0x9d0037e8                INTClearFlag
 
 .text.INTSetFlag
-                0x9d0037c8       0x2c
+                0x9d003814       0x2c
  .text.INTSetFlag
-                0x9d0037c8       0x2c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
-                0x9d0037c8                INTSetFlag
+                0x9d003814       0x2c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+                0x9d003814                INTSetFlag
 
 .text.INTGetFlag
-                0x9d0037f4       0x2c
+                0x9d003840       0x2c
  .text.INTGetFlag
-                0x9d0037f4       0x2c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
-                0x9d0037f4                INTGetFlag
+                0x9d003840       0x2c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+                0x9d003840                INTGetFlag
 
 .text.INTGetEnable
-                0x9d003820       0x2c
+                0x9d00386c       0x2c
  .text.INTGetEnable
-                0x9d003820       0x2c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
-                0x9d003820                INTGetEnable
+                0x9d00386c       0x2c c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_tbl_lib.o)
+                0x9d00386c                INTGetEnable
 
 .text.PORTReadBits
-                0x9d00384c       0x28
+                0x9d003898       0x28
  .text.PORTReadBits
-                0x9d00384c       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_read_bits_lib.o)
-                0x9d00384c                PORTReadBits
+                0x9d003898       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_read_bits_lib.o)
+                0x9d003898                PORTReadBits
 
 .text.PORTClearBits
-                0x9d003874       0x28
+                0x9d0038c0       0x28
  .text.PORTClearBits
-                0x9d003874       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_clear_bits_lib.o)
-                0x9d003874                PORTClearBits
+                0x9d0038c0       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_clear_bits_lib.o)
+                0x9d0038c0                PORTClearBits
 
 .text.PORTSetBits
-                0x9d00389c       0x28
+                0x9d0038e8       0x28
  .text.PORTSetBits
-                0x9d00389c       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_bits_lib.o)
-                0x9d00389c                PORTSetBits
+                0x9d0038e8       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_set_bits_lib.o)
+                0x9d0038e8                PORTSetBits
 
 .text.PORTToggleBits
-                0x9d0038c4       0x28
+                0x9d003910       0x28
  .text.PORTToggleBits
-                0x9d0038c4       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_toggle_bits_lib.o)
-                0x9d0038c4                PORTToggleBits
+                0x9d003910       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(port_toggle_bits_lib.o)
+                0x9d003910                PORTToggleBits
 
 .text.UARTSetFifoMode
-                0x9d0038ec       0x28
+                0x9d003938       0x28
  .text.UARTSetFifoMode
-                0x9d0038ec       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
-                0x9d0038ec                UARTSetFifoMode
+                0x9d003938       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+                0x9d003938                UARTSetFifoMode
 
 .text.UARTSetLineControl
-                0x9d003914       0x28
+                0x9d003960       0x28
  .text.UARTSetLineControl
-                0x9d003914       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
-                0x9d003914                UARTSetLineControl
+                0x9d003960       0x28 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(uart_lib.o)
+                0x9d003960                UARTSetLineControl
 
-.text           0x9d00393c       0x28
- .text          0x9d00393c       0x18 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-nmi-handler.o)
-                0x9d00393c                _nmi_handler
- .text          0x9d003954       0x10 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib/crt0.o
-                0x9d00395c                __crt0_exit
+.text           0x9d003988       0x28
+ .text          0x9d003988       0x18 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-nmi-handler.o)
+                0x9d003988                _nmi_handler
+ .text          0x9d0039a0       0x10 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib/crt0.o
+                0x9d0039a8                __crt0_exit
 
 .text._general_exception_handler
-                0x9d003964        0xc
+                0x9d0039b0        0xc
  .text._general_exception_handler
-                0x9d003964        0xc c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
-                0x9d003964                _general_exception_handler
+                0x9d0039b0        0xc c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-general-exception-handler.o)
+                0x9d0039b0                _general_exception_handler
 
 .text._bootstrap_exception_handler
-                0x9d003970        0xc
+                0x9d0039bc        0xc
  .text._bootstrap_exception_handler
-                0x9d003970        0xc c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
-                0x9d003970                _bootstrap_exception_handler
+                0x9d0039bc        0xc c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-bootstrap-exception-handler.o)
+                0x9d0039bc                _bootstrap_exception_handler
 
 .text._on_reset
-                0x9d00397c        0x8
+                0x9d0039c8        0x8
  .text._on_reset
-                0x9d00397c        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
-                0x9d00397c                _on_reset
+                0x9d0039c8        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-reset.o)
+                0x9d0039c8                _on_reset
 
 .text._on_bootstrap
-                0x9d003984        0x8
+                0x9d0039d0        0x8
  .text._on_bootstrap
-                0x9d003984        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
-                0x9d003984                _on_bootstrap
+                0x9d0039d0        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libc.a(default-on-bootstrap.o)
+                0x9d0039d0                _on_bootstrap
 
 .text.INTEnableInterrupts
-                0x9d00398c        0x8
+                0x9d0039d8        0x8
  .text.INTEnableInterrupts
-                0x9d00398c        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_enable_interrupts_lib.o)
-                0x9d00398c                INTEnableInterrupts
+                0x9d0039d8        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_enable_interrupts_lib.o)
+                0x9d0039d8                INTEnableInterrupts
 
 .text.INTDisableInterrupts
-                0x9d003994        0x8
+                0x9d0039e0        0x8
  .text.INTDisableInterrupts
-                0x9d003994        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_disable_interrupts_lib.o)
-                0x9d003994                INTDisableInterrupts
+                0x9d0039e0        0x8 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib\libmchp_peripheral_32MX460F512L.a(int_disable_interrupts_lib.o)
+                0x9d0039e0                INTDisableInterrupts
 
 .text%z84       0x00000000        0x0
  .text          0x00000000        0x0 c:/program files (x86)/microchip/mplab c32 suite/bin/../lib/gcc/pic32mx/4.5.1/../../../../pic32mx/lib/./proc/32MX460F512L\processor.o
