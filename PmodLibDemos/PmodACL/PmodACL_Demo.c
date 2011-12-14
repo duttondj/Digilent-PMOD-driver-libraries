@@ -1,13 +1,31 @@
+
+/************************************************************************/
+/*																		*/
+/*	PmodACL_Demo.c --	<BRIEF DESCRIPTION>         					*/
+/*																		*/
+/************************************************************************/
+/*	Author: 	Ryan Hoffman											*/
+/*	Copyright (C) 2011 Ryan Hoffman										*/
+/************************************************************************/
+/*  Module Description: 												*/
+/*  <MODULE DESCRIPTION>												*/
+/*																		*/
+/************************************************************************/
+/*  Revision History:													*/
+/*																		*/
+/* <MM/DD/YY>(<FIRST NAME><LAST INITIAL): <NOTES>						*/
+/*																		*/
+/************************************************************************/
+
 /* ------------------------------------------------------------ */
 /*				PIC32 Configuration Settings					*/
 /* ------------------------------------------------------------ */
-//
 
 #pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1, FWDTEN = OFF
 #pragma config POSCMOD = HS, FNOSC = PRIPLL, FPBDIV = DIV_2
 
 #if(__PIC32_FEATURE_SET__ == 795)
-#pragma config ICESEL = ICS_PGx1 //debug mode on Pic32 795
+#pragma config ICESEL = ICS_PGx1 //sets debug mode on CEREBOT32MX7
 #endif
 
 
@@ -48,7 +66,6 @@
 #define PORT_BIT_SERVO 					IOPORT_E,BIT_0  //PmodCon3 Servo 1, JB-01
 #define PMODACL_SPI						SPI_CHANNEL3 //SPI1A JE 01-06
 #define CLS_MODULE_I2C					I2C1
-#define PMODSF_SPI						SPI_CHANNEL4
 
 #endif
 
