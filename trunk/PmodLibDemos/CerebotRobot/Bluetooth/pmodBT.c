@@ -75,32 +75,36 @@ uint8_t BTInquireAndConnect(UART_MODULE uartID,uint8_t *peerName,uint8_t *inquir
 	{
 		//Perform inquiry, get the first two response lines
 		BTSendCommand(uartID,params1,2,getCommandResponse,2,2);
-		//The second line contains the number of devices found, returns up to 9, grab the
-		//ascii representation if the 7th character and convert to decimal, this is the 
-		//number of devices found plus trailing inquiry done 
-		numLinesForInquiry = (getCommandResponse[1][6] - '0') + 1;
-		//Get the remaining lines containing the Name:Address of the device
-		BTGetUpToNLines(uartID,getCommandResponse,numLinesForInquiry,numLinesForInquiry);
-		//numLinesForInquiry <= 1, we found no visible devices, no need to continue
-		if(numLinesForInquiry > 1)
+		//continue only if we found devices
+		if(strcmp(getCommandResponse[1],BLUETOOTH_INQUIRY_RESPONSE_NO_DEV) != 0)
 		{
-			//Since there was at least one device found, attempt to find the address of the device found, ignore last line ("Inquiry Done")
-			if(BTGetAddressFromName((const uint8_t(*)[BLUETOOTH_MAX_COMMAND_RESPONSE_LEN])getCommandResponse,peerName,address,numLinesForInquiry - 1))
+			//The second line contains the number of devices found, returns up to 9, grab the
+			//ascii representation if the 7th character and convert to decimal, this is the 
+			//number of devices found plus trailing inquiry done 
+			numLinesForInquiry = (getCommandResponse[1][6] - '0') + 1;
+			//Get the remaining lines containing the Name:Address of the device
+			BTGetUpToNLines(uartID,getCommandResponse,numLinesForInquiry,numLinesForInquiry);
+			//numLinesForInquiry <= 1, we found no visible devices, no need to continue
+			if(numLinesForInquiry > 1)
 			{
-				strcpy(params2[0],"C");
-				strcpy(params2[1],address);
-				//attempt to connect to the remote device, expect 2 lines 
-				BTSendCommand(uartID,params2,2,getCommandResponse,2,2);
-				//check for connect string recieved, if connect response echoed back	
-				if(strcmp(connectResponse,getCommandResponse[1]) == 0)
+				//Since there was at least one device found, attempt to find the address of the device found, ignore last line ("Inquiry Done")
+				if(BTGetAddressFromName(getCommandResponse,peerName,address,numLinesForInquiry - 1))
 				{
-					//connect sucessful, send connectResponse to remote	
-					UARTPutS(connectResponse,uartID);
-					connectSuccess = 1;
-					break;
+					strcpy(params2[0],"C");
+					strcpy(params2[1],address);
+					//attempt to connect to the remote device, expect 2 lines 
+					BTSendCommand(uartID,params2,2,getCommandResponse,2,2);
+					//check for connect string recieved, if connect response echoed back	
+					if(strcmp(connectResponse,getCommandResponse[1]) == 0)
+					{
+						//connect sucessful, send connectResponse to remote	
+						UARTPutS(connectResponse,uartID);
+						connectSuccess = 1;
+						break;
+					}	
+						
 				}	
-					
-			}	
+			}
 		}
 	}
 	//if connection was unsuccessful exit command mode
@@ -173,10 +177,10 @@ uint8_t BTRecieveConnect(UART_MODULE uartID,uint8_t* responseString)
 **  the name passed in *name and returns 1 and the address found in *address, if no match is found
 **  the contents of *address remain unchanged and 0 is returned.
 */
-uint8_t BTGetAddressFromName(const uint8_t addressNamePairs[][BLUETOOTH_MAX_COMMAND_RESPONSE_LEN],const uint8_t *name,uint8_t *address,uint8_t numEntries)
+uint8_t BTGetAddressFromName(uint8_t addressNamePairs[][BLUETOOTH_MAX_COMMAND_RESPONSE_LEN],uint8_t *name,uint8_t *address,uint8_t numEntries)
 {
 	uint8_t entryCount = 0;
-	uint8_t nameAddress[20];
+	uint8_t nameAddress[BLUETOOTH_MAX_COMMAND_RESPONSE_LEN];
 	for(entryCount = 0;entryCount < numEntries;entryCount++)
 	{
 		BTGetParam(addressNamePairs[entryCount],nameAddress,1);
@@ -250,10 +254,10 @@ BLUETOOTH_COMMAND_RESPONSE BTSendSetCommand(UART_MODULE uartID,uint8_t params[][
 **  Only values between commas are copied into *oneParameter, value
 **  returned is null terminated.
 */
-void BTGetParam(const uint8_t* parameters,uint8_t* oneParameter,uint8_t paramNum)
+void BTGetParam(uint8_t* parameters,uint8_t* oneParameter,uint8_t paramNum)
 {
 	uint8_t paramCount = 0;
-	
+
 	if(paramNum != 0)
 	{
 		while(*parameters != ',' && *parameters != '\r' && paramCount < paramNum)
