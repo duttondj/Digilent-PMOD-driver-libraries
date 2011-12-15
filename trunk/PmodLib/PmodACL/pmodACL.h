@@ -472,7 +472,7 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Errors:	none
 **
 **  Description:
-**  DATA_FORMAT Register
+**  DATA_FORMAT Register (VALUES PREFIXED WITH PMODACL_BIT_DATA_FORMAT)
 **  ----------------------------------------------------------------
 **  |D7        |D6  |D5         |D4 |D3       |D2      |D1    |   D0|
 **  -----------------------------------------------------------------
@@ -530,7 +530,7 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  POWER_CTL Register
+**  POWER_CTL Register  (VALUES PREFIXED WITH PMODACL_BIT_POWER_CTL)
 **  --------------------------------------------------------
 **  |D7 |D6 |D5    |D4          |D3       |D2      |D1 |D0 |
 **  --------------------------------------------------------
@@ -606,7 +606,7 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  FIFO_CTL Register
+**  FIFO_CTL Register (VALUES PREFIXED WITH PMODACL_BIT_FIFO_CTL)
 **  -------------------------------------------
 **  |D7    |D6  |D5       |D4 |D3 |D2 |D1 |D0 |
 **  -------------------------------------------
@@ -646,12 +646,15 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **   	SpiChannel CHN - spiChannel
 **
 **  Returns: 
-**      uint8_t - PMODACL_REG_FIFO_CTL register contents
+**      uint8_t - Combination of ORed values prefixed with 
+**                            PMODACL_BIT_FIFO_CTL defined in
+**							  "Local Type Definitions"
 **
 **	Errors:	none
 **
 **  Description:
-**  FIFO_CTL Register
+**
+**  FIFO_CTL Register (VALUES PREFIXED WITH PMODACL_BIT_FIFO_CTL)
 **  -------------------------------------------
 **  |D7    |D6  |D5       |D4 |D3 |D2 |D1 |D0 |
 **  -------------------------------------------
@@ -1345,8 +1348,8 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Synopsis:
 **		Sets the contents of the PMODACL_REG_TIME_INACT register
 **  Input: 
-**		SpiChannel CHN -  Spi channel
-**      uint8_t TIME_INACT- amount of time acceleration is less than THRESH_INACT
+**		SpiChannel CHN -  Spi Channel
+**      uint8_t TIME_INACT- amount of time acceleration is less than THRESH_INACT (1sec/LSB)
 **
 **  Returns: none
 **
@@ -1354,16 +1357,13 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  The TIME_INACT register is eight bits and contains an unsigned time value representing 
-**  the amount of time that acceleration must be less than the value in the THRESH_INACT 
-**  register for inactivity to be declared. The scale factor is 1 sec/LSB. Unlike the other
-**  interrupt functions, which use unfiltered data (see the Threshold section), the 
-**  inactivity function uses filtered output data. At least one output sample must be generated
-**  for the inactivity interrupt to be triggered. This results in the function appearing 
-**  unresponsive if the TIME_INACT register is set to a value less than the time constant of 
-**  the output data rate. A value of 0 results in an interrupt when the output data is less 
-**  than the value in the THRESH_INACT register.
+**  Sets the amount of time acceleration is less than THRESH_INACT (1sec/LSB) before a
+**  state of inactivity is detected.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x26—TIME_INACT (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLSetTimeInact(CHN,TIME_INACT) PmodACLWriteReg(CHN,PMODACL_REG_TIME_INACT,TIME_INACT)
 
@@ -1375,17 +1375,22 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Gets the contents of the PMODACL_REG_TIME_INACT register
 **
 **  Input: 
-**   	SpiChannel CHN - spiChannel
+**   	SpiChannel CHN - Spi Channel
 **
 **  Returns: 
-**      uint8_t - PMODACL_REG_TIME_INACT register contents
+**      uint8_t - mount of time acceleration is less than THRESH_INACT (1sec/LSB)
 **
 **	Errors:	none
 **
 **  Description:
-**  Returns the PMODACL_REG_TIME_INACT register for a description of the contents 
-**  of this register see the ADXL345 refrence manual or the description for 
-**  PmodACLSetTimeInact
+**
+**  Returns the amount of time acceleration is less than THRESH_INACT (1sec/LSB) before a
+**  state of inactivity is detected.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x26—TIME_INACT (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLGetTimeInact(CHN) PmodACLReadReg(CHN,PMODACL_REG_TIME_INACT)
 
@@ -1406,24 +1411,20 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
+**  Status of FIFO trigger events and number of data values
+**  available for collection from the FIFO.
+**
+**  FIFO_STATUS register 
 **  ---------------------------------------
 **  |D7       |D6 |D5 |D4 |D3 |D2 |D1 |D0 |
 **  ---------------------------------------
 **  |FIFO_TRIG| 0 | Entries               |
 **  ---------------------------------------
 **
-**  FIFO_TRIG Bit
-**  A 1 in the FIFO_TRIG bit corresponds to a trigger event occurring, and a 0 means
-**  that a FIFO trigger event has not occurred. 
-**  
-**  Entries Bits
-**  These bits report how many data values are stored in FIFO. Access to collect the 
-**  data from FIFO is provided through the DATAX, DATAY, and DATAZ registers. FIFO 
-**  reads must be done in burst or multiple-byte mode because each FIFO level is 
-**  cleared after any read (single- or multiple-byte) of FIFO. FIFO stores a maximum
-**  of 32 entries, which equates to a maximum of 33 entries available at any given 
-**  time because an additional entry is available at the output filter of the device
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> 0x39—FIFO_STATUS (Read Only)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLGetFIFOStatus(CHN) PmodACLReadReg(CHN,PMODACL_REG_FIFO_STATUS)
 
@@ -1433,8 +1434,8 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Synopsis:
 **		Sets the contents of the PMODACL_REG_THRESH_ACT register
 **  Input: 
-**		SpiChannel CHN -  Spi channel
-**      uint8_t THRESH_ACT - Threshold for detecting activity
+**		SpiChannel CHN -  Spi Channel
+**      uint8_t THRESH_ACT - Threshold for detecting activity (62.5 mg/LSB)
 **
 **  Returns: none
 **
@@ -1442,16 +1443,12 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  The TIME_INACT register is eight bits and contains an unsigned time value representing 
-**  the amount of time that acceleration must be less than the value in the THRESH_INACT 
-**  register for inactivity to be declared. The scale factor is 1 sec/LSB. Unlike the other
-**  interrupt functions, which use unfiltered data (see the Threshold section), the 
-**  inactivity function uses filtered output data. At least one output sample must be generated
-**  for the inactivity interrupt to be triggered. This results in the function appearing 
-**  unresponsive if the TIME_INACT register is set to a value less than the time constant of 
-**  the output data rate. A value of 0 results in an interrupt when the output data is less 
-**  than the value in the THRESH_INACT register.
+**  Sets the threshold for detecting activity.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> THRESH_ACT (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLSetThreshAct(CHN,THRESH_ACT) PmodACLWriteReg(CHN,PMODACL_REG_THRESH_ACT,THRESH_ACT)
 
@@ -1466,15 +1463,18 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **   	SpiChannel CHN - spiChannel
 **
 **  Returns: 
-**      uint8_t -PMODACL_REG_THRESH_ACT register contents
+**      uint8_t - Threshold for detecting activity (62.5 mg/LSB)
 **
 **	Errors:	none
 **
 **  Description:
 **
-**  Returns the PMODACL_REG_THRESH_ACT register for a description of the contents 
-**  of this register see the ADXL345 refrence manual or the description for 
-**  PmodACLSetThreshAct
+**  Gets the threshold for detecting activity.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> THRESH_ACT (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLGetThreshAct(CHN) PmodACLReadReg(CHN,PMODACL_REG_THRESH_ACT)
 
@@ -1496,8 +1496,10 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  ACT_INACT_CTL register
+**  Enables or disables activity or inactivity detection for individual axes,
+**  set ac/dc coupled operations. 
+**
+**  ACT_INACT_CTL register (VALUES PREFIXED WITH PMODACL_BIT_ACT_INACT_CTL)
 **  -------------------------------------------------------------
 **  |D7 		|D6             |D5             |D4             |
 **  -------------------------------------------------------------
@@ -1508,34 +1510,10 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  |INACT ac/dc|INACT_X enable |INACT_Y enable |INACT_Z enable |
 **  -------------------------------------------------------------
 **  
-**  ACT AC/DC and INACT AC/DC Bits
+**  Notes:
 **
-**  A setting of 0 selects dc-coupled operation, and a setting of 1 enables ac-coupled
-**  operation. In dc-coupled operation, the current acceleration magnitude is compared 
-**  directly with THRESH_ACT and THRESH_INACT to determine whether activity or inactivity
-**  is detected. 
-**  
-**  In ac-coupled operation for activity detection, the acceleration value 
-**  at the start of activity detection is taken as a reference value. New samples of 
-**  acceleration are then compared to this reference value, and if the magnitude of the 
-**  difference exceeds the THRESH_ACT value, the device triggers an activity interrupt.
-**  
-**  Similarly, in ac-coupled operation for inactivity detection, a reference value is used
-**  for comparison and is updated whenever the device exceeds the inactivity threshold. 
-**  After the reference value is selected, the device compares the magnitude of the 
-**  difference between the reference value and the current acceleration with THRESH_INACT.
-**  If the difference is less than the value in THRESH_INACT for the time in TIME_INACT, 
-**  the device is considered inactive and the inactivity interrupt is triggered.
-**
-**  ACT_x Enable Bits and INACT_x Enable Bits
-**
-**  A setting of 1 enables x-, y-, or z-axis participation in detecting activity or 
-**  inactivity. A setting of 0 excludes the selected axis from participation. If all axes
-**  are excluded, the function is disabled. For activity detection, all participating axes 
-**  are logically OR’ed, causing the activity function to trigger when any of the partici-pating 
-**  axes exceeds the threshold. For inactivity detection, all participating axes are logically 
-**  AND’ed, causing the inactivity function to trigger only if all participating axes are below 
-**  the threshold for the specified time.
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x27—ACT_INACT_CTL (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLSetActInactCtl(CHN,ACT_INACT_CTL) PmodACLWriteReg(CHN,PMODACL_REG_ACT_INACT_CTL,ACT_INACT_CTL)
 
@@ -1556,9 +1534,24 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  Returns the PMODACL_REG_ACT_INACT_CTL register for a description of the contents 
-**  of this register see the ADXL345 refrence manual or the description for 
-**  PmodACLSetActInactCtl
+**  Resturs state of activity or inactivity detection for individual axes,
+**  ac/dc coupled operations. 
+**
+**  ACT_INACT_CTL register (VALUES PREFIXED WITH PMODACL_BIT_ACT_INACT_CTL)
+**  -------------------------------------------------------------
+**  |D7 		|D6             |D5             |D4             |
+**  -------------------------------------------------------------
+**  |ACT ac/dc  |ACT_X enable   |ACT_Y enable   |ACT_Z enable   |
+**  -------------------------------------------------------------
+**  |D3 		|D2             |D1             |D0             |
+**  -------------------------------------------------------------
+**  |INACT ac/dc|INACT_X enable |INACT_Y enable |INACT_Z enable |
+**  -------------------------------------------------------------
+**  
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x27—ACT_INACT_CTL (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLGetActInactCtl(CHN) PmodACLReadReg(CHN,PMODACL_REG_ACT_INACT_CTL)
 
@@ -1569,7 +1562,7 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **		Sets the contents of the PMODACL_REG_THRESH_INACT register
 **  Input: 
 **		SpiChannel CHN -  Spi channel
-**      uint8_t THRESH_INACT - Threshold for detecting inactivity
+**      uint8_t THRESH_INACT - Threshold for detecting inactivity (62.5 mg/LSB)
 **
 **  Returns: none
 **
@@ -1577,11 +1570,12 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  The THRESH_INACT register is eight bits and holds the threshold value for detecting 
-**	inactivity. The data format is unsigned, so the magnitude of the inactivity event is 
-**	compared with the value in the THRESH_INACT register. The scale factor is 62.5 mg/LSB.
-**	A value of 0 may result in undesirable behavior if the inactivity interrupt is enabled.
+**  Threshold for detecting inactivity. 
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x25—THRESH_INACT (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLSetThreshInact(CHN,THRESH_INACT) PmodACLWriteReg(CHN,PMODACL_REG_THRESH_INACT,THRESH_INACT)
 
@@ -1596,15 +1590,18 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **   	SpiChannel CHN - spiChannel
 **
 **  Returns: 
-**      uint8_t - PMODACL_REG_THRESH_INACT register contents
+**      uint8_t - Threshold for detecting inactivity (62.5 mg/LSB)
 **
 **	Errors:	none
 **
 **  Description:
 **
-**  Returns the PMODACL_REG_THRESH_INACT register for a description of the contents 
-**  of this register see the ADXL345 refrence manual or the description for 
-**  PmodACLSetThreshInact.
+**  Threshold for detecting inactivity. 
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x25—THRESH_INACT (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLGetThreshInact(CHN) PmodACLReadReg(CHN,PMODACL_REG_THRESH_INACT)
 
