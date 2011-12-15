@@ -81,10 +81,13 @@
 #define T1_TICK							(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T1)
 #define T2_T3_TICK               		(SYS_FREQ/PB_DIV/PRESCALE_T1_T2_T3/TOGGLES_PER_SEC_T2_T3)
 
+//BLUETOOTH UART ISR HANDLER VECTOR
+#define BLUETOOTH_UART_ISR _UART_2_VECTOR  //Must be vector for UART_BLUETOOTH
+
 //IO PORT/CHANNEL DEFINITIONS
 
 //BLUETOOTH IO PORT/BIT DEFINITIONS
-#define UART_BLUETOOTH					UART2
+#define UART_BLUETOOTH					UART2 //Must be UART for BLUETOOTH_UART_ISR
 #define PORT_BIT_PMODBTN2_STATUS		IOPORT_B,BIT_0
 #define PORT_BIT_PMODBTN2_RESET			IOPORT_B,BIT_1
 #define PORT_BIT_PMODBTN2_CTS			IOPORT_F,BIT_12
@@ -131,16 +134,23 @@
 #define UART_BLUETOOTH_BITRATE			115200
 
 //MAIN APP TASK STATES
-#define STATE_WAITING_CONNECT			0
-#define STATE_WAIT_RECIEVE_MESSAGE		1
-#define STATE_RECIEVE_MESSAGE			2
-#define STATE_SEND_MESSAGE				3	
-#define STATE_CHK_CHG_DIR				4
-#define STATE_SET_DUTY_CYCLE			5
+typedef enum
+{
+ 	STATE_WAITING_CONNECT,
+ 	STATE_WAIT_RECIEVE_MESSAGE,
+ 	STATE_RECIEVE_MESSAGE,		
+	STATE_SEND_MESSAGE,				
+ 	STATE_CHK_CHG_DIR,				
+ 	STATE_SET_DUTY_CYCLE,
+	STATE_DISCONNECTED		
+}MAIN_APP_TASK_STATES;
 
+//Scale the wheel scale drift value (cummulativeWheelScaleDrift)
 #define WHEELSCALE_DRIFT_DIV			2
+//Scale the the input for left/right
 #define WHEELSCALE_LEFT_RIGHT_DIV		3
-#define WHEELSCALE_CENTER_AXIS_THRESH	6
+//Axis values less than this value are considered 0 (center)
+#define WHEELSCALE_CENTER_AXIS_THRESH	8
 
 //ADC - BATTERY VOLTAGE
 // define setup parameters for OpenADC10
@@ -160,8 +170,11 @@
 #define PARAM5    ENABLE_AN8_ANA
 
 //HB5 array indexes
-#define HB_LEFT_WHEEL					0
-#define HB_RIGHT_WHEEL					1
+typedef enum
+{
+	HB_LEFT_WHEEL = 0, //ensure we start at 0 since these are array index positions
+	HB_RIGHT_WHEEL					
+}HB_WHEEL_INDEX;
 
 //Number of HB5 modules
 #define HB5_NUM_MODULES 				2
@@ -303,10 +316,10 @@ void appTask()
 			 case STATE_RECIEVE_MESSAGE:
 
 			    UART_BT_RxData = 0;
-				if(mainLoopState != STATE_WAITING_CONNECT)
+				if(mainLoopState != STATE_DISCONNECTED)
 				{
 					recieveMessage();
-					if(mainLoopState != STATE_WAITING_CONNECT)
+					if(mainLoopState != STATE_DISCONNECTED)
 					{
 						mainLoopState = STATE_SEND_MESSAGE;	
 					}
@@ -314,7 +327,7 @@ void appTask()
 				break;
 
 			 case STATE_SEND_MESSAGE:
-			 	if(mainLoopState != STATE_WAITING_CONNECT)
+			 	if(mainLoopState != STATE_DISCONNECTED)
 				{
 					sendMessage();
 					mainLoopState = STATE_CHK_CHG_DIR;	
@@ -323,13 +336,13 @@ void appTask()
 
 			 case STATE_CHK_CHG_DIR:
 				//only execute if direction has changed
-				if(currentDirection != cerebotRemoteMsg.vehicleDirectionFwdRev && mainLoopState != STATE_WAITING_CONNECT)
+				if(currentDirection != cerebotRemoteMsg.vehicleDirectionFwdRev && mainLoopState != STATE_DISCONNECTED)
 				{
 					currentDirection = cerebotRemoteMsg.vehicleDirectionFwdRev;
 					changeDirection();
 				}
 
-				if(mainLoopState != STATE_WAITING_CONNECT)
+				if(mainLoopState != STATE_DISCONNECTED)
 				{
 					mainLoopState = STATE_SET_DUTY_CYCLE;
 				}
@@ -342,11 +355,17 @@ void appTask()
 					setDutyCycle();
 				}
 
-			  	if(mainLoopState != STATE_WAITING_CONNECT)
+			  	if(mainLoopState != STATE_DISCONNECTED)
 				{
 			 		mainLoopState = STATE_WAIT_RECIEVE_MESSAGE;
 				}
-			 	break;	 
+			 	break;	
+			 case STATE_DISCONNECTED:
+					//Disabling and enabling UART flushes FIFO
+					UARTEnable(UART_BLUETOOTH, UART_DISABLE);
+					UARTEnable(UART_BLUETOOTH, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX)); 
+					mainLoopState = STATE_WAITING_CONNECT;
+				break;
 		}
 	}		
 }
@@ -449,10 +468,10 @@ void sendMessage()
 	//Direction the robot is currently traveling in
 	cerebotRobotMsg.vehicleDirection = currentDirection;
 
-	while(byteCount < numBytes && mainLoopState != STATE_WAITING_CONNECT)
+	while(byteCount < numBytes && mainLoopState != STATE_DISCONNECTED)
 	{
-		while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_WAITING_CONNECT);
-		if(mainLoopState != STATE_WAITING_CONNECT)
+		while(!UARTTransmitterIsReady(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
+		if(mainLoopState != STATE_DISCONNECTED)
 		{
 			UARTSendDataByte(UART_BLUETOOTH, *msg);
 			msg++;
@@ -466,13 +485,18 @@ void sendMessage()
 **
 **	Synopsis:
 **	
-**  Input: 
+**	Recieives a message from the remote.
+**
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**
+**  Recieves a message from the remote, populates
+**  global state variable cerebotRemoteMsg.
 */
 void recieveMessage()
 {
@@ -480,10 +504,10 @@ void recieveMessage()
 	uint8_t *msg = (uint8_t*)&cerebotRemoteMsg;
 	uint8_t numBytes = sizeof(CEREBOT_REMOTE_MSG);
 	
-	while(byteCount < numBytes && mainLoopState != STATE_WAITING_CONNECT)
+	while(byteCount < numBytes && mainLoopState != STATE_DISCONNECTED)
 	{
-		while(!UARTReceivedDataIsAvailable(UART_BLUETOOTH) && mainLoopState != STATE_WAITING_CONNECT);
-		if(mainLoopState != STATE_WAITING_CONNECT)
+		while(!UARTReceivedDataIsAvailable(UART_BLUETOOTH) && mainLoopState != STATE_DISCONNECTED);
+		if(mainLoopState != STATE_DISCONNECTED)
 		{
 			*msg = UARTGetDataByte(UART_BLUETOOTH);
 			msg++;
@@ -493,9 +517,10 @@ void recieveMessage()
 }
 
 /*  
-** <FUNCTION NAME>
+**  initADC10()
 **
 **	Synopsis:
+**	Initialize the Analog to Digital converter
 **
 **  Input: 
 **
@@ -504,6 +529,9 @@ void recieveMessage()
 **	Errors:	none
 **
 **  Description:
+**	
+**  Initialize the Analog to Digital converter to sample AN8, which is the baterry 
+**  voltage monitor on the Cerebot32MX4
 */
 void initADC10()
 {      
@@ -522,17 +550,21 @@ void initADC10()
 }
 
 /*  
-** <FUNCTION NAME>
+**  initControllers()
 **
 **	Synopsis:
+** 
+**  Initialize peripheral controllers.
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**
+**	Initialize peripheral controllers, currently only the Bluetooth UART needs initializing 
 */
 void initControllers()
 {
@@ -597,32 +629,41 @@ void UARTInit(uint32_t baudRate,uint32_t pbClock,UART_MODULE uartID,UART_CONFIGU
 **  In an attempt to maintain the same rpm for the left and right wheels
 **  the when the left/right axis value is < WHEELSCALE_CENTER_AXIS_THRESH
 **  on either side of the axis, a cummulative wheel scale value
-**  is kept, adding or subtracting cummulativeWheelScale/WHEELSCALE_DRIFT_DIV
+**  is kept, adding or subtracting cummulativeWheelScaleDrift/WHEELSCALE_DRIFT_DIV
 **  from the right wheel depending the current RPM of the left wheel.
 */
 void setDutyCycle()
 {
-	uint8_t fwdRevDCScaleLeft = cerebotRemoteMsg.fwdRevSpeed;
-	uint8_t fwdRevDCScaleRight = cerebotRemoteMsg.fwdRevSpeed;
-	static int8_t cummulativeWheelScale = 0;
+	uint8_t fwdRevDCScaleLeft = 0;
+	uint8_t fwdRevDCScaleRight = 0;
+	static int8_t cummulativeWheelScaleDrift = 0;
 
+	//If fwd/rev > WHEELSCALE_CENTER_AXIS_THRESH then we should set duty cycle, otherwise we are still stopped
+	//this is nessecary since center axis does not always report 0
+	if(cerebotRemoteMsg.fwdRevSpeed > WHEELSCALE_CENTER_AXIS_THRESH)
+	{ 
+		fwdRevDCScaleLeft = cerebotRemoteMsg.fwdRevSpeed;
+		fwdRevDCScaleRight = cerebotRemoteMsg.fwdRevSpeed;
+		
+		//If left/right < WHEELSCALE_CENTER_AXIS_THRESH then we are traveling in a straight line
+		//this is nessecary since center axis does not always report 0
 		if(cerebotRemoteMsg.leftRightSpeed < WHEELSCALE_CENTER_AXIS_THRESH &&  hbridges[HB_LEFT_WHEEL].rpm > 0) 
 		{		
 			 if( hbridges[HB_LEFT_WHEEL].rpm > hbridges[HB_RIGHT_WHEEL].rpm)
 			{
-				cummulativeWheelScale+=1;
+				cummulativeWheelScaleDrift+=1;
 			}
 			else if( hbridges[HB_LEFT_WHEEL].rpm < hbridges[HB_RIGHT_WHEEL].rpm)
 			{
-				cummulativeWheelScale-=1;
+				cummulativeWheelScaleDrift-=1;
 			}
 			
- 			fwdRevDCScaleRight += (cummulativeWheelScale/WHEELSCALE_DRIFT_DIV);
+ 			fwdRevDCScaleRight += (cummulativeWheelScaleDrift/WHEELSCALE_DRIFT_DIV);
 		}
 		else if(cerebotRemoteMsg.vehicleDirectionLeftRight == ROBOT_TURN_LEFT)
 		{
 			fwdRevDCScaleLeft -= (cerebotRemoteMsg.leftRightSpeed/WHEELSCALE_LEFT_RIGHT_DIV);
-			if(fwdRevDCScaleLeft > 100) //we have rolled over/under
+			if(fwdRevDCScaleLeft > 100) //we have rolled the uint8_t over/under, probably tried to set scale to negative value
 			{
 				fwdRevDCScaleLeft = fwdRevDCScaleRight;	
 			}
@@ -630,14 +671,15 @@ void setDutyCycle()
 		else 
 		{
 			fwdRevDCScaleRight -= (cerebotRemoteMsg.leftRightSpeed/WHEELSCALE_LEFT_RIGHT_DIV);
-			if(fwdRevDCScaleRight > 100) //we have rolled over/under
+			if(fwdRevDCScaleRight > 100)  //we have rolled the uint8_t over/under, probably tried to set scale to negative value
 			{
 				fwdRevDCScaleRight = fwdRevDCScaleLeft;	
 			}
 		}
-		//Set the duty cycle based on (MAXTIMER_VALUE * WHEEL_SCALE)/100
-		PmodHB5SetDCPWMDutyCycle((TIMER_PR_LEFT * fwdRevDCScaleLeft)/100,hbridges[HB_LEFT_WHEEL].ocChannel);	
-		PmodHB5SetDCPWMDutyCycle((TIMER_PR_LEFT * fwdRevDCScaleRight)/100,hbridges[HB_RIGHT_WHEEL].ocChannel);			
+	}
+	//Set the duty cycle based on (MAXTIMER_VALUE * WHEEL_SCALE)/100 (percentage of max duty cycle)
+	PmodHB5SetDCPWMDutyCycle((TIMER_PR_LEFT * fwdRevDCScaleLeft)/100,hbridges[HB_LEFT_WHEEL].ocChannel);	
+	PmodHB5SetDCPWMDutyCycle((TIMER_PR_LEFT * fwdRevDCScaleRight)/100,hbridges[HB_RIGHT_WHEEL].ocChannel);			
 }
 
 /*  
@@ -677,17 +719,23 @@ void configureTimers()
 }
 
 /*  
-** <FUNCTION NAME>
+**  setPortIO()
 **
 **	Synopsis:
 **
-**  Input: 
+**	Configures digital port IO
+**
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**
+**	Configure digital port IO for PmodBT2,
+**	both PmodHB5, and LD 1-4. Set PmodBT2 reset high,
+**  turn LD1-4 off. 
 */
 void setPortIO()
 {
@@ -774,12 +822,12 @@ void resetBTModule()
 **	The module is initially reset, set to default settings,
 **  reset again, then conigurated as a SPP slave. See 
 **  comments in this section for a description of parameters 
-**  configured. All commands and settings for the PmodBTN2 
+**  configured. All commands and settings for the PmodBT2 
 **	can be found in the Roving Networks RN-42 Advanced User 
 **  Manual.
 **
 **  Notes:
-**  Unless otherwise set below, the PmodBTN2 will use its
+**  Unless otherwise set below, the PmodBT2 will use its
 **  default settings.
 */
 void initPmodBTN2()
@@ -882,7 +930,7 @@ void initPmodBTN2()
 **  Description:
 **	Polls PmodBT2 STATUS pin for connectivity, if LOW
 **  not connected, only LD1 will illuminate, main loop state is 
-**  set to STATE_WAITING_CONNECT, if HIGH state does not change
+**  set to STATE_DISCONNECTED, if HIGH state does not change
 **  LD1 - LD4 are illuminated.
 */
 uint8_t pollBlueToothConnected()
@@ -900,50 +948,61 @@ uint8_t pollBlueToothConnected()
 		PmodHB5SetDCPWMDutyCycle(0,hbridges[HB_RIGHT_WHEEL].ocChannel);	
 		PORTClearBits(PORT_BIT_LED_CONNECTED);
 		PORTSetBits(PORT_BIT_LED_WAITING); 	
-		return STATE_WAITING_CONNECT;
+		return STATE_DISCONNECTED;
 	}	
 
 }	
 
 /*  
-** <FUNCTION NAME>
+**  enableInterrupts()
 **
 **	Synopsis:
+**	
+**	Enables interrupts.
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**
+**  Enables the UART RX interupt for the PmodBT2
+**  UART.
 */
 void enableInterrupts()
 {
 	// Configure the interrupt priority, level 5
 	INTDisableInterrupts();
-	INTClearFlag(INT_U2RX);//make sure interrupt flag is cleared
+	INTClearFlag(INT_SOURCE_UART_RX(UART_BLUETOOTH));//make sure interrupt flag is cleared
 
 	//configure multi vector interrupts
 	INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
 
-	INTSetVectorPriority(INT_UART_2_VECTOR, INT_PRIORITY_LEVEL_7);
+	INTSetVectorPriority(INT_VECTOR_UART(UART_BLUETOOTH), INT_PRIORITY_LEVEL_7);
 
-	INTEnable(INT_U2RX,INT_ENABLED);
+	INTEnable(INT_SOURCE_UART_RX(UART_BLUETOOTH),INT_ENABLED);
 	INTEnableInterrupts();
 }
 /*  
-** <FUNCTION NAME>
+**  getQuadEncodingChangeDir()
 **
 **	Synopsis:
 **
-**  Input: 
+**	Gets the quadrature encoding from both wheels, 
+**  and changes direction if needed
+**
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**  Checks for direction change completion on the left wheel(RPM went to 0
+**  and direction bit toggled), calculates RPM for each wheel in 
+**  PmodHB5getQEncRPM, state is maintained in HBRIDGE struct for each wheel.
 */
 void getQuadEncodingChangeDir()
 {
@@ -956,17 +1015,22 @@ void getQuadEncodingChangeDir()
 	}	
 }
 /*  
-** <FUNCTION NAME>
+**  Timer1Handler
 **
 **	Synopsis:
 **
-**  Input: 
+**	Interrupt handler for Timer1	
+**
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**
+**  Interrupt handler for Timer1, gets quadrature encoding/RPM
+**  check for Bluetooth connectivity
 */
 void __ISR(_TIMER_1_VECTOR, ipl2) Timer1Handler(void)
 {	
@@ -975,30 +1039,34 @@ void __ISR(_TIMER_1_VECTOR, ipl2) Timer1Handler(void)
   	INTClearFlag(INT_T1);
 }
 /*  
-** <FUNCTION NAME>
+**  UARTIntHandler
 **
 **	Synopsis:
-**
-**  Input: 
+** 
+**  Interrupt handler for Bluetooth UART RX
+*
+**  Input: none
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
+**
+**	Interrupt handler for Bluetooth UART RX, sets flag
+**  used in main loop to signify Bluetooth data
+**  recieved, sets main loop to STATE_RECIEVE_MESSAGE
+**  when the first conection is made.
 */
-void __ISR(_UART_2_VECTOR, ipl7) UARTIntHandler(void)
+void __ISR(BLUETOOTH_UART_ISR, ipl7) UARTIntHandler(void)
 {
-
-	if(INTGetFlag(INT_U2RX))
+	if(INTGetFlag(INT_SOURCE_UART_RX(UART_BLUETOOTH)))
 	{	
 		UART_BT_RxData = 1;
 		if(mainLoopState == STATE_WAITING_CONNECT)
 		{
-			mainLoopState = (BTRecieveConnect(UART_BLUETOOTH,BLUETOOTH_RESPONSE_CONNECT))?STATE_RECIEVE_MESSAGE:STATE_WAITING_CONNECT;
-			UART_BT_RxData = 0;
+			mainLoopState = (BTRecieveConnect(UART_BLUETOOTH,BLUETOOTH_RESPONSE_CONNECT))?STATE_WAIT_RECIEVE_MESSAGE:STATE_WAITING_CONNECT;
 		}
-		INTClearFlag(INT_U2RX);
-			
+		INTClearFlag(INT_SOURCE_UART_RX(UART_BLUETOOTH));			
 	}	
 }

@@ -132,30 +132,36 @@
 #define BLUETOOTH_REMOTE_NAME			"CEREBOTREMOTE"
 #define BLUETOOTH_ROBOT_NAME			"CEREBOTROBOT"
 
-//REPONSE RECIEVED ON CONNECT
+//RESPONSE RECIEVED ON CONNECT
 #define BLUETOOTH_RESPONSE_CONNECT		"DEV_CONNECT\r\n"
 
-//NUMEBR OF TIMES TO TRY A CONNECTION
+//NUMBER OF TIMES TO TRY A CONNECTION
 #define BLUETOOTH_CONNECTION_RETRIES	5
 
 //DURATION IN SECONDS FOR BLUETOOTH INQUIRY
 #define BLUETOOTH_INQUIRY_TIMEOUT		"5"
 
 //BATTERY VOLTAGE SCALE
-//3.3/(1024 bits/4(voltage divisor)) = 0.012890625, 6000 * 0.012890625 ~= 78
+//3.3/(1024 bits/4(voltage divisor)) = 0.012890625, 6000mv * 0.012890625 ~= 78
 #define BATTERY_SCALE  78
 
 //MAIN APP TASK STATES
-#define STATE_CONNECT					0
-#define STATE_DISCONNECTED				1
-#define STATE_POLLDEV					2
-#define STATE_SEND_MESSAGE				3
-#define STATE_RECIEVE_MESSAGE			4
-#define STATE_UPDATE_CLS				5
+typedef enum
+{
+	STATE_CONNECT,
+	STATE_DISCONNECTED,				
+	STATE_POLLDEV,					
+	STATE_SEND_MESSAGE,
+	STATE_RECIEVE_MESSAGE,			
+	STATE_UPDATE_CLS				
+}MAIN_APP_TASK_STATES;
 
 //ISR FIRED, EXECUTE MAIN TASK LOOP
-#define TASK_LOOP_TIMER_FIRED			1
-#define TASK_LOOP_TIMER_RESET			0
+typedef enum
+{
+	TASK_LOOP_TIMER_FIRED,
+	TASK_LOOP_TIMER_RESET
+}TASK_LOOP_TIMER_STATE;
 
 #define CLS_DISPLAY_WIDTH 				17 //includes null terminator
 
@@ -317,6 +323,7 @@ void appTask()
 					 break;
 
 				 case STATE_DISCONNECTED:
+					//Disabling and enabling UART flushes FIFO
 					UARTEnable(UART_BLUETOOTH, UART_DISABLE);
 				 	mainLoopState = STATE_CONNECT;
 					UARTEnable(UART_BLUETOOTH, UART_ENABLE_FLAGS(UART_PERIPHERAL | UART_RX | UART_TX));
@@ -1001,7 +1008,7 @@ void initControllers()
 **	Synopsis:
 **	Sets pin IO direction
 **
-**  Input: 
+**  Input: none
 **
 **  Returns: none
 **
@@ -1207,7 +1214,7 @@ void initPmodBT2()
 **  Description:
 **	
 **	Set taskLoopTimerState to TASK_LOOP_TIMER_FIRED,
-**  incrents the CLS update counter and checks
+**  increments the CLS update counter and checks
 **  if Bluetooth is connected.
 */
 void __ISR(_TIMER_1_VECTOR, ipl2)Tmr1Handler_MainTaskLoop(void)
