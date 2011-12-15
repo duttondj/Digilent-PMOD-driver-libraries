@@ -27,10 +27,10 @@
 /*  conditional compiling will occur in main.c based            */
 /*  on these values.                                            */
 /* ------------------------------------------------------------ */
-#define PMODSF 0   
+#define PMODSF 1   
 #define PMODJSTK 0
 #define PMODHB5 0
-#define PMODACL 1
+#define PMODACL 0
 #define BUFLIB 0
 #define PMODDA2 0
 
