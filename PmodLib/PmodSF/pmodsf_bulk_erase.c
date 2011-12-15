@@ -53,5 +53,5 @@ void PmodSFBulkErase(SpiChannel chn)
 
 	PmodSFWriteEnable(chn);
 	
-	fnPmodSFSendCommand(chn,PMODSF_BULK_ERASE);
+	PmodSFSendCommand(chn,PMODSF_BULK_ERASE);
 }

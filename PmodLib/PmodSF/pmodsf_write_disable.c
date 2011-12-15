@@ -46,5 +46,5 @@
 */
 void PmodSFWriteDisable(SpiChannel chn)
 {
-	fnPmodSFSendCommand(chn,PMODSF_WRITE_DISABLE);
+	PmodSFSendCommand(chn,PMODSF_WRITE_DISABLE);
 }

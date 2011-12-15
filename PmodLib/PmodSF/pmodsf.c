@@ -175,10 +175,10 @@ uint8_t PmodSFReadStatusRegister(SpiChannel chn)
 */
 void PmodSFWriteEnable(SpiChannel chn)
 {
-	fnPmodSFSendCommand(chn,PMODSF_WRITE_ENABLE);
+	PmodSFSendCommand(chn,PMODSF_WRITE_ENABLE);
 }
 
-/* fnPmodSFSendCommand
+/* PmodSFSendCommand
 **
 **	Synopsis:
 **
@@ -197,7 +197,7 @@ void PmodSFWriteEnable(SpiChannel chn)
 **  SS is driven low, the 8 bit command is shifted out, 1 dummy byte
 **  is shifted in, SS is driven high 
 */
-void fnPmodSFSendCommand(SpiChannel chn,uint8_t command)
+void PmodSFSendCommand(SpiChannel chn,uint8_t command)
 {
 	PmodSPISetSSLow(chn); //SS to low 
     SpiChnPutC(chn,command); //send read status register command
