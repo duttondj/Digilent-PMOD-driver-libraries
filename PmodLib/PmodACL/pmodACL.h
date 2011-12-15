@@ -258,16 +258,8 @@ typedef struct
 **  (SPI Mode 3 -> CKP-1 CKE-0)
 **   
 **  Notes:
-**
-**  (Taken from ADXL345 Reference Manual)
-**  Use of the 3200 Hz and 1600 Hz output data rates is only recommended
-**  with SPI communication rates greater than or equal to 2 MHz. 
-**  The 800 Hz output data rate is recommended only for communication speeds 
-**  greater than or equal to 400 kHz, and the remaining data rates scale proportionally.
-**  For example, the minimum recommended communication speed for a 200 Hz output data 
-**  rate is 100 kHz. Operation at an output data rate above the recommended maximum may 
-**  result in undesirable effects on the acceleration data, including missing samples 
-**  or additional noise.
+**	See SERIAL COMMUNICATIONS->SPI in the ADXL345 reference manual for
+**  additional information.
 */
 void PmodACLInitSpi(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 
@@ -276,7 +268,7 @@ void PmodACLInitSpi(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 **
 **	Synopsis:
 **
-**	Reads the values from the axis values and writes them
+**	Reads the values from the axis values and writes 
 **  to a PMODACL_AXIS struct 
 **
 **  Input: 
@@ -290,23 +282,16 @@ void PmodACLInitSpi(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 **
 **  Description:
 **	A multibyte read of the axis registers is performed, low and high
-**  are shifted and combined to create 16 bit signed values then
+**  bytes are shifted and combined to create 16 bit signed values then
 **  stored in the corresponding axis field in pmodACLAxis.
-**  (Taken from ADXL345 Reference Manual)
-**  These six bytes (Register 0x32 to Register 0x37) are eight bits 
-**  each and hold the output data for each axis. Register 0x32 and 
-**  Register 0x33 hold the output data for the x-axis, Register 0x34 
-**  and Register 0x35 hold the output data for the y-axis, and Register 
-**  0x36 and Register 0x37 hold the output data for the z-axis. 
-**  The output data is twos complement, with DATAx0 as the least 
-**  significant byte and DATAx1 as the most significant byte, where 
-**  x represent X, Y, or Z. The DATA_FORMAT register (Address 0x31)
-**  controls the format of the data. It is recommended that a multiple-byte
-**  read of all registers be performed to prevent a change in data between 
-**  reads of sequential registers.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x32 to Register 0x37—
+**  DATAX0, DATAX1, DATAY0, DATAY1, DATAZ0, DATAZ1 in the ADXL345 reference 
+**  manual for additional information.
 */
 void PmodACLGetAxisData(SpiChannel chn, PMODACL_AXIS *pmodACLAxis);
-
 
 /*  
 **  PmodACLReadReg
@@ -371,9 +356,8 @@ void PmodACLReadRegMultiByte(SpiChannel chn,uint8_t startAddress,uint8_t *data,u
 **
 **	Synopsis:
 **
-**  Performs a calibration of the PmodACL axis
-**  by utilizing the OFFSET register
-**
+**  Performs a calibration of the PmodACL axis utilizing the OFFSET register
+**  
 **  Input: 
 **  SpiChannel chn - Spi Channel
 **	uint8_t numSamples -number of samples to take 
@@ -403,7 +387,7 @@ void PmodACLReadRegMultiByte(SpiChannel chn,uint8_t startAddress,uint8_t *data,u
 **
 **  Notes:
 **
-**  For a full description of the calibration proceedure see 
+**  For a full description of the calibration procedure see 
 **  "Offset Calibration" in the ADXL345 reference manual.
 */
 int32_t PmodACLCalibrate(SpiChannel chn,uint8_t numSamples,uint8_t oneGaxisOrienatation);
@@ -495,31 +479,10 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  |SELF_TEST |SPI |INT_INVERT |0  |FULL_RES |JUSTIFY |RANGE BITS  |
 **  -----------------------------------------------------------------
 **
-**  (Taken from ADXL345 Reference Manual)
-**  The DATA_FORMAT register controls the presentation of data to Register 
-**  0x32 through Register 0x37. All data, except that for the ±16 g range, 
-**  must be clipped to avoid rollover. 
-**  SELF_TEST Bit 
-**	A setting of 1 in the SELF_TEST bit applies a self-test force to the 
-**	sensor, causing a shift in the output data. A value of 0 disables the 
-**  self-test force.
-**  SPI Bit
-**  A value of 1 in the SPI bit sets the device to 3-wire SPI mode, and a 
-**  value of 0 sets the device to 4-wire SPI mode.
-**  INT_INVERT Bit
-**  A value of 0 in the INT_INVERT bit sets the interrupts to active high, 
-**  and a value of 1 sets the interrupts to active low.
-**  FULL_RES Bit
-**  When this bit is set to a value of 1, the device is in full resolution 
-**  mode, where the output resolution increases with the g range set by the 
-**  range bits to maintain a 4 mg/LSB scale factor. When the FULL_RES bit is 
-**  set to 0, the device is in 10-bit mode, and the range bits determine the 
-**  maximum g range and scale factor.
-**  JUSTIFY BIT
-**  A setting of 1 in the justify bit selects left-justified (MSB) mode, 
-**  and a setting of 0 selects right-justified mode with sign extension.
-**  RANGE BITS
-**  Reference DATA_FORMAT constansts begining with PMODACL_BIT_DATA_FORMAT_RANGE
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x31—DATA_FORMAT (Read/Write) 
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLSetDataFormat(CHN,DATA_FORMAT) PmodACLWriteReg(CHN,PMODACL_REG_DATA_FORMAT,DATA_FORMAT)
 
@@ -541,8 +504,11 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  Description:
 **
 **  Returns the DATA_FORMAT register (defined in PMODACL_REG_DATA_FORMAT),
-**  for a description of the contents of this register see the ADXL345 refrence
-**  manual or the description for PmodACLSetDataFormat
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x31—DATA_FORMAT (Read/Write) 
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLGetDataFormat(CHN) PmodACLReadReg(CHN,PMODACL_REG_DATA_FORMAT)
 
@@ -570,67 +536,10 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  --------------------------------------------------------
 **  | 0 | 0 | LINK | AUTO_SLEEP | MEASURE | SLEEP |WAKEUP  |
 **  --------------------------------------------------------
-**  (Taken from ADXL345 Reference Manual)
-**  LINK
-**  A setting of 1 in the link bit with both the activity and inactivity 
-**  functions enabled delays the start of the activity function until 
-**  inactivity is detected. After activity is detected, inactivity 
-**  detection begins, preventing the detection of activity. This bit 
-**  serially links the activity and inactivity functions. When this bit 
-**  is set to 0, the inactivity and activity functions are concurrent.
-**  Additional information can be found in the Link Mode section.
-**  When clearing the link bit, it is recommended that the part be placed 
-**  into standby mode and then set back to measurement mode with a subsequent
-**  write. This is done to ensure that the device is properly biased if sleep
-**  mode is manually disabled; otherwise, the first few samples of data after
-**  the link bit is cleared may have additional noise, especially if the 
-**  device was asleep when the bit was cleared.
+**  Notes:
 **
-**  AUTO_SLEEP Bit
-**  If the link bit is set, a setting of 1 in the AUTO_SLEEP bit enables the 
-**  auto-sleep functionality. In this mode, the ADXL345 auto-matically switches 
-**  to sleep mode if the inactivity function is enabled and inactivity is 
-**  detected (that is, when acceleration is below the THRESH_INACT value for
-**  at least the time indicated by TIME_INACT). If activity is also enabled,
-**  the ADXL345 automatically wakes up from sleep after detecting activity
-**  and returns to operation at the output data rate set in the BW_RATE register.
-**  A setting of 0 in the AUTO_SLEEP bit disables automatic switching to sleep 
-**  mode. See the description of the Sleep Bit in this section for more 
-**  information on sleep mode.
-**  If the link bit is not set, the AUTO_SLEEP feature is disabled and setting 
-**  the AUTO_SLEEP bit does not have an impact on device operation. Refer to the 
-**  Link Bit section or the Link Mode section for more information on utilization
-**  of the link feature.
-**  When clearing the AUTO_SLEEP bit, it is recommended that the part be placed 
-**  into standby mode and then set back to measure-ment mode with a subsequent 
-**  write. This is done to ensure that the device is properly biased if sleep
-**  mode is manually disabled; otherwise, the first few samples of data after 
-**  the AUTO_SLEEP bit is cleared may have additional noise, especially if the 
-**  device was asleep when the bit was cleared.
-**
-**  MEASURE Bit
-**  A setting of 0 in the measure bit places the part into standby mode, and a 
-**  setting of 1 places the part into measurement mode. The ADXL345 powers up 
-**  in standby mode with minimum power consumption.
-**
-**  SLEEP Bit
-**  A setting of 0 in the sleep bit puts the part into the normal mode of operation,
-**  and a setting of 1 places the part into sleep mode. Sleep mode suppresses 
-**  DATA_READY, stops transmission of data to FIFO, and switches the sampling rate 
-**  to one specified by the wakeup bits. In sleep mode, only the activity function 
-**  can be used. When the DATA_READY interrupt is suppressed, the output data 
-**  registers (Register 0x32 to Register 0x37) are still updated at the sampling 
-**  rate set by the wakeup bits (D1:D0).
-**  When clearing the sleep bit, it is recommended that the part be placed into 
-**  standby mode and then set back to measurement mode with a subsequent write. 
-**  This is done to ensure that the device is properly biased if sleep mode is
-**  manually disabled; otherwise, the first few samples of data after the sleep 
-**  bit is cleared may have additional noise, especially if the device was asleep 
-**  when the bit was cleared.
-**
-**  WAKEUP Bits
-**  These bits control the frequency of readings in sleep mode and are prefixed with
-**  PMODACL_BIT_POWER_CTL_WAKEUP
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2D—POWER_CTL (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLSetPowerCtl(CHN,POWER_CTL) PmodACLWriteReg(CHN,PMODACL_REG_POWER_CTL,POWER_CTL)
 
@@ -652,8 +561,11 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  Description:
 **
 **  Returns the POWER_CTL register (defined in PMODACL_REG_POWER_CTL),
-**  for a description of the contents of this register see the ADXL345 refrence
-**  manual or the description for PmodACLSetPowerCtl
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2D—POWER_CTL (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLGetPowerCtl(CHN) PmodACLReadReg(CHN,PMODACL_REG_POWER_CTL)
 
@@ -694,7 +606,6 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
 **  FIFO_CTL Register
 **  -------------------------------------------
 **  |D7    |D6  |D5       |D4 |D3 |D2 |D1 |D0 |
@@ -703,58 +614,24 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  -------------------------------------------
 **  
 **  FIFO Modes
-**  ---------------------------------------------------------------------------
-**  |          Setting            |											  |
-**  ---------------------------------------------------------------------------
-**  |D7           |D6             |Mode       |Function						  |
-**  ---------------------------------------------------------------------------
-**  |PMODACL_BIT_FIFO_CTL_BYPASS  |Bypass     |FIFO is bypassed.              |
-**  ---------------------------------------------------------------------------
-**  |PMODACL_BIT_FIFO_CTL_FIFO    |FIFO       |FIFO collects up to 32 values  |
-**  |							  |           |and then stops collecting data,|
-**  |                             |           |collecting new data only when  |
-**  |                             |           |FIFO is not full.              |
-**  ---------------------------------------------------------------------------
-**  |PMODACL_BIT_FIFO_CTL_STREAM  |Stream     |FIFO holds the last 32 data    |
-**  |                             |           |values. When FIFO is full, the |
-**  |                             |           |oldest data is overwritten with|
-**  |                             |           |newer data.                    |
-**  ---------------------------------------------------------------------------
-**  |PMODACL_BIT_FIFO_CTL_TRIGGER |Trigger    |When triggered by the trigger  |
-**  |                             |           |bit, FIFO holds the last data  |
-**  |                             |           |samples before the trigger     |
-**  |                             |           |event and then continues to    |
-**  |                             |           |collect data until full. New   |
-**  |                             |           |data is collected only when    |
-**  |                             |           |FIFO is not full.              |
-**  ---------------------------------------------------------------------------
-**  Trigger Bit
-**  A value of 0 in the trigger bit links the trigger event of trigger mode to 
-**  INT1, and a value of 1 links the trigger event to INT2.
-
-**  Samples Bits
-**  The function of these bits depends on the FIFO mode selected  
-**  Entering a value of 0 in the samples bits immediately sets the watermark 
-**  status bit in the INT_SOURCE register, regardless of which FIFO mode is 
-**  selected. Undesirable operation may occur if a value of 0 is used for the 
-**  samples bits when trigger mode is used.
+**  -------------------------------------------
+**  |          Setting            |			  |								  
+**  -------------------------------------------
+**  |D7           |D6             |Mode       |
+**  -------------------------------------------
+**  |PMODACL_BIT_FIFO_CTL_BYPASS  |Bypass     |
+**  -------------------------------------------
+**  |PMODACL_BIT_FIFO_CTL_FIFO    |FIFO       |
+**  -------------------------------------------
+**  |PMODACL_BIT_FIFO_CTL_STREAM  |Stream     |
+**  -------------------------------------------
+**  |PMODACL_BIT_FIFO_CTL_TRIGGER |Trigger    | 
+**  -------------------------------------------
 **
-**  Samples Bits Functions
-**  --------------------------------------------------------------
-**  |FIFO Mode  | Samples Bits Funtions 				         |
-**  --------------------------------------------------------------
-**  |Bypass     |None                                            |
-**  --------------------------------------------------------------
-**  |FIFO       |Specifies how many FIFO entries are needed to   |
-**  |           |trigger a watermark interrupt.                  |
-**  --------------------------------------------------------------
-**  |Stream     |Specifies how many FIFO entries are needed to   |
-**  |           |trigger a watermark interrupt.                  |
-**  --------------------------------------------------------------
-**  |Trigger    |Specifies how many FIFO samples are retained in |
-**  |           |the FIFO buffer before a trigger event.         |
-**  --------------------------------------------------------------
-** 
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x38—FIFO_CTL (Read/Write)
+**  in the ADXL345 reference manual for additional information.
  */
 #define PmodACLSetFIFOCtl(CHN,FIFO_CTL) PmodACLWriteReg(CHN,PMODACL_REG_FIFO_CTL,FIFO_CTL)
 
@@ -774,10 +651,32 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Errors:	none
 **
 **  Description:
+**  FIFO_CTL Register
+**  -------------------------------------------
+**  |D7    |D6  |D5       |D4 |D3 |D2 |D1 |D0 |
+**  -------------------------------------------
+**  | FIFO_MODE | TRIGGER | Samples           |
+**  -------------------------------------------
+**  
+**  FIFO Modes
+**  -------------------------------------------
+**  |          Setting            |			  |								  
+**  -------------------------------------------
+**  |D7           |D6             |Mode       |
+**  -------------------------------------------
+**  |PMODACL_BIT_FIFO_CTL_BYPASS  |Bypass     |
+**  -------------------------------------------
+**  |PMODACL_BIT_FIFO_CTL_FIFO    |FIFO       |
+**  -------------------------------------------
+**  |PMODACL_BIT_FIFO_CTL_STREAM  |Stream     |
+**  -------------------------------------------
+**  |PMODACL_BIT_FIFO_CTL_TRIGGER |Trigger    | 
+**  -------------------------------------------
 **
-**  Returns the FIFO_CTL register (defined in PMODACL_REG_FIFO_CTL),
-**  for a description of the contents of this register see the ADXL345 refrence
-**  manual or the description for PmodACLSetFIFOCtl
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x38—FIFO_CTL (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLGetFIFOCtl(CHN) PmodACLReadReg(CHN,PMODACL_REG_FIFO_CTL)
 
@@ -800,16 +699,13 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  Sets the offset registers starting at PMODACL_REG_OFSX and ending at 
 **  PMODACL_REG_OFSX
 **
-**  (Taken from ADXL345 Reference Manual)
-**  The OFSX, OFSY, and OFSZ registers are each eight bits and offer 
-**  user-set offset adjustments in twos complement format with a 
-**  scale factor of 15.6 mg/LSB (that is, 0x7F = 2 g). The value stored 
-**  in the offset registers is automatically added to the acceleration data,
-**  and the resulting value is stored in the output data registers. For 
-**  additional information regarding offset calibration and the use of the 
-**  offset registers, refer to the Offset Calibration section in the ADXL345
-**  reference manual. Function PmodACLCalibrate supplied in this library 
-**  will perform the calibration caclculations and set the OFFSET registers
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x1E, Register 0x1F, Register 0x20—OFSX, OFSY, OFSZ (Read/Write)
+**  in the ADXL345 reference manual for additional information.
+**
+**	Function PmodACLCalibrate supplied in this library will perform the calibration calculations 
+**  and set the OFFSET registers
 */
 #define PmodACLSetOffset(CHN,OFFSET_BYTES) PmodACLWriteRegMultiByte(CHN,PMODACL_REG_OFSX,OFFSET_BYTES,PMODACL_NUM_OFFSET_BYTES);
 
@@ -831,6 +727,11 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  Description:
 **
 **  Fills a 3 byte array with the contents of the PMODACL_REG_OFSX,PMODACL_REG_OFSY, and PMODACL_REG_OFSZ 
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x1E, Register 0x1F, Register 0x20—OFSX, OFSY, OFSZ (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLGetOffset(CHN,OFFSET_BYTES) PmodACLReadRegMultiByte(CHN,PMODACL_REG_OFSX,OFFSET_BYTES,PMODACL_NUM_OFFSET_BYTES)
 
@@ -849,15 +750,14 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  The THRESH_TAP register is eight bits and holds the threshold value for tap interrupts. 
-**  The data format is unsigned, therefore, the magnitude of the tap event is compared with 
-**  the value in THRESH_TAP for normal tap detection. The scale factor is 62.5 mg/LSB 
-**  (that is, 0xFF = 16 g). A value of 0 may result in undesirable behavior if single tap/double 
-**  tap interrupts are enabled.
+**	Sets threshold value for interrupts.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x1D—THRESH_TAP (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLSetThreshTap(CHN,THRESH_TAP) PmodACLWriteReg(CHN,PMODACL_REG_THRESH_TAP,THRESH_TAP)
-
 
 /*  
 **  PmodACLGetThreshTap
@@ -875,9 +775,13 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  Returns the THRESH_TAP register (defined in PMODACL_REG_THRESH_TAP),
-**  for a description of the contents of this register see the ADXL345 refrence
-**  manual or the description for PmodACLSetThreshTap
+**  Returns the THRESH_TAP register (defined in PMODACL_REG_THRESH_TAP)
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x1D—THRESH_TAP (Read/Write)
+**  in the ADXL345 reference manual for additional information.
+*/
 */
 #define PmodACLGetThreshTap(CHN) PmodACLReadReg(CHN,PMODACL_REG_THRESH_TAP)
 
@@ -898,19 +802,20 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  INT_ENABLE Register
+**  Setting bits in this register enable their responctive functions to generate
+**  interrupts, clearing bits disables them.
+**
+**  INT_ENABLE Register (VALUES PREFIXED WITH MODACL_BIT_INT_ENABLE_)
 **  ----------------------------------------------------------------------------------
 **  |D7        |D6        |D5        |D4      |D3        |D2        |D1      |D0     |
 **  ----------------------------------------------------------------------------------
 **  |DATA_READY|SINGLE_TAP|DOUBLE_TAP|ACTIVITY|INACTIVITY|FREE_FALL|WATERMARK|OVERRUN|
 **  ----------------------------------------------------------------------------------
-**  Setting bits in this register to a value of 1 enables their respective 
-**  functions to generate interrupts, whereas a value of 0 prevents the 
-**  functions from generating interrupts. The DATA_READY, watermark, and
-**  overrun bits enable only the interrupt output; the functions are always
-**  enabled. It is recommended that interrupts be configured before enabling
-**  their outputs.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2E—INT_ENABLE (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLSetIntEnable(CHN,INT_ENABLE) PmodACLWriteReg(CHN,PMODACL_REG_INT_ENABLE,INT_ENABLE)
 
@@ -930,9 +835,19 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Errors:	none
 **
 **  Description:
-**  Returns the INT_ENABLE register (defined in PMODACL_REG_INT_ENABLE),
-**  for a description of the contents of this register see the ADXL345 refrence
-**  manual or the description for PmodACLSetIntEnable
+**  Returns the INT_ENABLE register (defined in PMODACL_REG_INT_ENABLE)
+**
+**  INT_ENABLE Register (VALUES PREFIXED WITH PMODACL_BIT_INT_ENABLE_)
+**  ----------------------------------------------------------------------------------
+**  |D7        |D6        |D5        |D4      |D3        |D2        |D1      |D0     |
+**  ----------------------------------------------------------------------------------
+**  |DATA_READY|SINGLE_TAP|DOUBLE_TAP|ACTIVITY|INACTIVITY|FREE_FALL|WATERMARK|OVERRUN|
+**  ----------------------------------------------------------------------------------
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2E—INT_ENABLE (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLGetIntEnable(CHN) PmodACLReadReg(CHN,PMODACL_REG_INT_ENABLE)
 
@@ -953,16 +868,21 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  INT_MAP Register
+**  INT_MAP Register (VALUES PREFIXED WITH PMODACL_BIT_INT_MAP_)
 **  ----------------------------------------------------------------------------------
 **  |D7        |D6        |D5        |D4      |D3        |D2        |D1      |D0     |
 **  ----------------------------------------------------------------------------------
 **  |DATA_READY|SINGLE_TAP|DOUBLE_TAP|ACTIVITY|INACTIVITY|FREE_FALL|WATERMARK|OVERRUN|
 **  ----------------------------------------------------------------------------------
-**  Any bits set to 0 in this register send their respective interrupts to the INT1
-**  pin, whereas bits set to 1 send their respective interrupts to the INT2 pin. All 
-**  selected interrupts for a given pin are OR’ed.
+**
+**	Bits set to 0 map their interrupt events to the INT1 pin, bits set to 1
+**  map their interrupt events to the INT2 pin. Interrupts set for any given
+**  pin are OR'ed.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2F—INT_MAP (R/W)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLSetIntMap(CHN,INT_MAP) PmodACLWriteReg(CHN,PMODACL_REG_INT_MAP,INT_MAP)
 
@@ -974,7 +894,7 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Gets the contents of the PMODACL_REG_INT_MAP register
 **
 **  Input: 
-**   	SpiChannel CHN - spiChannel
+**   	SpiChannel CHN - Spi Channel
 **
 **  Returns: 
 **      uint8_t - PMODACL_REG_INT_MAP register contents
@@ -982,9 +902,19 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Errors:	none
 **
 **  Description:
-**  Returns the INT_MAP register (defined in PMODACL_REG_INT_MAP),
-**  for a description of the contents of this register see the ADXL345 refrence
-**  manual or the description for PmodACLSetIntMap
+**  Returns the INT_MAP register (defined in PMODACL_REG_INT_MAP)
+**
+**  INT_MAP Register (VALUES PREFIXED WITH PMODACL_BIT_INT_MAP_)
+**  ----------------------------------------------------------------------------------
+**  |D7        |D6        |D5        |D4      |D3        |D2        |D1      |D0     |
+**  ----------------------------------------------------------------------------------
+**  |DATA_READY|SINGLE_TAP|DOUBLE_TAP|ACTIVITY|INACTIVITY|FREE_FALL|WATERMARK|OVERRUN|
+**  ----------------------------------------------------------------------------------
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2F—INT_MAP (R/W)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLGetIntMap(CHN) PmodACLReadReg(CHN,PMODACL_REG_INT_MAP)
 
@@ -992,7 +922,7 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **  PmodACLGetIntSource
 **
 **	Synopsis:
-**	Gets the contents of the PMODACL_REG_INT_SOURCEregister
+**	Gets the contents of the PMODACL_REG_INT_SOURCE register
 **
 **  Input: 
 **		SpiChannel CHN -  Spi channel
@@ -1005,26 +935,23 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  INT_SOURCE Register
+**  INT_SOURCE Register (VALUES PREFIXED WITH PMODACL_BIT_INT_SOURCE)
 **  ----------------------------------------------------------------------------------
 **  |D7        |D6        |D5        |D4      |D3        |D2        |D1      |D0     |
 **  ----------------------------------------------------------------------------------
 **  |DATA_READY|SINGLE_TAP|DOUBLE_TAP|ACTIVITY|INACTIVITY|FREE_FALL|WATERMARK|OVERRUN|
 **  ----------------------------------------------------------------------------------
-**  Bits set to 1 in this register indicate that their respective functions have 
-**  triggered an event, whereas a value of 0 indicates that the corresponding event has
-**  not occurred. The DATA_READY, watermark, and overrun bits are always set if the 
-**  corresponding events occur, regardless of the INT_ENABLE register settings, and 
-**  are cleared by reading data from the DATAX, DATAY, and DATAZ registers. The 
-**  DATA_READY and watermark bits may require multiple reads, as indicated in the FIFO 
-**  mode descriptions in the FIFO section. Other bits, and the corresponding interrupts,
-**  are cleared by reading the INT_SOURCE register.
+**
+**  Bits set to 1 indicate an event of this type occurred. Reading this register will
+**  clear the interrupt bits.
 **
 **  Notes:
 **
 **  A double tap will set the SINGLE_TAP and DOUBLE_TAP bits, this value is provided
 **  as PMODACL_BIT_INT_SOURCE_DOUBLE_TAP defined in "Local Type Definitions"
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x30—INT_SOURCE (Read Only)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLGetIntSource(CHN) PmodACLReadReg(CHN,PMODACL_REG_INT_SOURCE)
 
@@ -1046,21 +973,18 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Errors:	none
 **
 **  Description:
-**  (Taken from ADXL345 Reference Manual)
-**  TAP_AXES Register
+**  Enables/Disable Axes for tap dectection
+**
+**  TAP_AXES Register (VALUES PREFIXED WITH PMODACL_BIT_TAP_AXES)
 **  ---------------------------------------------------------------------
 **  |D7 |D6 |D5 |D4 |D3       |D2           |D1           |D0           |
 **  ---------------------------------------------------------------------
 **  | 0 | 0 | 0 | 0 |SUPPRESS |TAP_X_ENABLE |TAP_Y_ENABLE |TAP_Z_ENABLE |
 **  ---------------------------------------------------------------------
-**  SUPRESS Bit
-**  Setting the suppress bit suppresses double tap detection if acceleration 
-**  greater than the value in THRESH_TAP is present between taps. See the Tap 
-**  Detection section for more details.
-**  TAP_x Enable Bits
-**  A setting of 1 in the TAP_X enable, TAP_Y enable, or TAP_Z enable bit 
-**  enables x-, y-, or z-axis participation in tap detection. A setting of 0 
-**  excludes the selected axis from participation in tap detection.
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2A—TAP_AXES (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLSetTapAxes(CHN,TAP_AXES) PmodACLWriteReg(CHN,PMODACL_REG_TAP_AXES,TAP_AXES)
  
@@ -1080,9 +1004,18 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Errors:	none
 **
 **  Description:
-**  Returns the TAP_AXES register (defined in PMODACL_REG_TAP_AXES),
-**  for a description of the contents of this register see the ADXL345 refrence
-**  manual or the description for PmodACLSetTapAxes
+**  Returns the TAP_AXES register (defined in PMODACL_REG_TAP_AXES)
+**
+**  TAP_AXES Register (VALUES PREFIXED WITH PMODACL_BIT_TAP_AXES)
+**  ---------------------------------------------------------------------
+**  |D7 |D6 |D5 |D4 |D3       |D2           |D1           |D0           |
+**  ---------------------------------------------------------------------
+**  | 0 | 0 | 0 | 0 |SUPPRESS |TAP_X_ENABLE |TAP_Y_ENABLE |TAP_Z_ENABLE |
+**  ---------------------------------------------------------------------
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2A—TAP_AXES (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLGetTapAxes(CHN) PmodACLReadReg(CHN,PMODACL_REG_TAP_AXES)
 
@@ -1091,20 +1024,24 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **	Synopsis:
 **		Sets the contents of the PMODACL_REG_DUR register
+*(
 **  Input: 
-**		SpiChannel CHN -  Spi channel
-**      uint8_t DUR - tap duration
+**		SpiChannel CHN -  Spi Channel
+**      uint8_t DUR - tap duration (625 microseconds/LSB)
+**
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  The DUR register is eight bits and contains an unsigned time value representing 
-**  the maximum time that an event must be above the THRESH_TAP threshold to qualify as
-**  a tap event. The scale factor is 625 µs/LSB. A value of 0 disables the single tap/ 
-**  double tap functions.
+**  Set the amouint of time the an event moust be above THRESH_TAP to 
+**  trigger a tap event.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x21—DUR (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLSetTapDuration(CHN,DUR) PmodACLWriteReg(CHN,PMODACL_REG_DUR,DUR)
 
@@ -1119,14 +1056,17 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **   	SpiChannel CHN - spiChannel
 **
 **  Returns: 
-**      uint8_t - PMODACL_REG_DUR register contents
+**      uint8_t - tap duration (625 microseconds/LSB)
 **
 **	Errors:	none
 **
 **  Description:
-**  Returns the DUR register (defined in PMODACL_REG_DUR),
-**  for a description of the contents of this register see the ADXL345 refrence
-**  manual or the description for PmodACLSetTapDuration
+**  Returns the DUR register (defined in PMODACL_REG_DUR)
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x21—DUR (Read/Write)
+**  in the ADXL345 reference manual for additional information.
 */
 #define PmodACLGetTapDuration(CHN) PmodACLReadReg(CHN,PMODACL_REG_DUR)
 
@@ -1137,19 +1077,21 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **		Sets the contents of the PMODACL_REG_LATENT register
 **  Input: 
 **		SpiChannel CHN -  Spi channel
-**      uint8_t TAP_LATENCY - time between tap detection and start of the time window 
+**      uint8_t TAP_LATENCY - time between tap detection and start of the time window (1.25ms/LSB)
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
-**  (Taken from ADXL345 Reference Manual)
-**  The latent register is eight bits and contains an unsigned time value representing 
-**  the wait time from the detection of a tap event to the start of the time window 
-**  (defined by the PMODACL_REG_WINDOW register) during which a possible second tap 
-**  event can be **  detected. The scale factor is 1.25 ms/LSB. A value of 0 disables 
-**  the double tap function.
+**
+**	Defines the amount of time to wait from a tap detection to the start of the time window
+**  as defined in the PMODACL_REG_WINDOW register.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x22—Latent (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLSetTapLatency(CHN,TAP_LATENCY) PmodACLWriteReg(CHN,PMODACL_REG_LATENT,TAP_LATENCY)
 
@@ -1164,14 +1106,19 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **   	SpiChannel CHN - spiChannel
 **
 **  Returns: 
-**      uint8_t - PMODACL_REG_LATENT register contents
+**      uint8_t - time between tap detection and start of the time window (1.25ms/LSB)
 **
 **	Errors:	none
 **
 **  Description:
-**  Returns the LATENT register (defined in PMODACL_REG_LATENT),
-**  for a description of the contents of this register see the ADXL345 refrence
-**  manual or the description for PmodACLSetTapLatency
+**
+**	Defines the amount of time to wait from a tap detection to the start of the time window
+**  as defined in the PMODACL_REG_WINDOW register.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x22—Latent (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLGetTapLatency(CHN) PmodACLReadReg(CHN,PMODACL_REG_LATENT)
 
@@ -1182,18 +1129,21 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **		Sets the contents of the PMODACL_REG_WINDOW register
 **  Input: 
 **		SpiChannel CHN -  Spi channel
-**      uint8_t TAP_WINDOW - tap window
+**      uint8_t TAP_WINDOW - tap window (1.25ms/LSB)
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
-**  (Taken from ADXL345 Reference Manual)
-**  The window register is eight bits and contains an unsigned time value representing
-**  the amount of time after the expiration of the latency time (determined by the latent 
-**  register) during which a second valid tap can begin. The scale factor is 1.25 ms/LSB.
-**  A value of 0 disables the double tap function.
+**  
+**  Represents the amount of time after the latency time (PMODACL_REG_LATENT) expires 
+**  that a second tap can occur. Setting this register to 0 disables double taps.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x23—Window (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLSetTapWindow(CHN,TAP_WINDOW) PmodACLWriteReg(CHN,PMODACL_REG_WINDOW,TAP_WINDOW)
 
@@ -1205,17 +1155,23 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Gets the contents of the PMODACL_REG_WINDOW register
 **
 **  Input: 
-**   	SpiChannel CHN - spiChannel
+**   	SpiChannel CHN - Spi Channel
 **
 **  Returns: 
-**      uint8_t - PMODACL_REG_WINDOW register contents
+**      uint8_t - tap window (1.25ms/LSB)
 **
 **	Errors:	none
 **
 **  Description:
-**  Returns the PMODACL_REG_WINDOW register for a description of the contents 
-**  of this register see the ADXL345 refrence manual or the description for 
-**  PmodACLSetTapWindow
+**
+**  Represents the amount of time after the latency time (PMODACL_REG_LATENT) expires 
+**  that a second tap can occur. Return value of 0 indicates that double taps are 
+**  disabled.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x23—Window (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLGetTapWindow(CHN) PmodACLReadReg(CHN,PMODACL_REG_WINDOW)
 
@@ -1238,24 +1194,20 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  ACT_TAP_STATUS Register
+**  Bits set to 1 indicate the tap or activity source of an event, this
+**  register should be read before interrupts are cleared.
+**
+**  ACT_TAP_STATUS Register (VALUES PREFIXED WITH PMODACL_BIT_ACT_TAP_STATUS)
 **  ------------------------------------------------------------------------------------------------
 **  |D7 |D6           |D5           |D4           |D3     |D2           |D1           |D0          |
 **  ------------------------------------------------------------------------------------------------
 **  |0  |ACT_X_SOURCE |ACT_Y_SOURCE |ACT_Z_SOURCE |ALSEEP |TAP_X_SOURCE |TAP_Y_SOURCE |TAP_Z_SOURCE|
 **  ------------------------------------------------------------------------------------------------
-**  ACT_x Source and TAP_x Source Bits
-**  These bits indicate the first axis involved in a tap or activity event. A setting 
-**  of 1 corresponds to involvement in the event, and a setting of 0 corresponds to no 
-**  involvement. When new data is available, these bits are not cleared but are overwritten 
-**  by the new data. The ACT_TAP_STATUS register should be read before clearing the interrupt.
-**  Disabling an axis from participation clears the corresponding source bit when the next 
-**  activity or single tap/double tap event occurs.
-**  Asleep Bit
-**  A setting of 1 in the asleep bit indicates that the part is asleep, and a setting of 0 
-**  indicates that the part is not asleep. This bit toggles only if the device is configured
-**  for auto sleep. See the AUTO_SLEEP Bit section for more information on autosleep mode.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2B—ACT_TAP_STATUS (Read Only)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLGetActTapStatus(CHN) PmodACLReadReg(CHN,PMODACL_REG_ACT_TAP_STATUS)
 
@@ -1265,20 +1217,23 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Synopsis:
 **		Sets the contents of the PMODACL_REG_THRESH_FF register
 **  Input: 
-**		SpiChannel CHN -  Spi channel
-**      uint8_t THRESH_FF- free fall threshold
+**		SpiChannel CHN -  Spi Channel
+**      uint8_t THRESH_FF- free fall threshold (62.5mg/LSB)
 **
 **  Returns: none
 **
 **	Errors:	none
 **
 **  Description:
-**  (Taken from ADXL345 Reference Manual)
-**  The THRESH_FF register is eight bits and holds the threshold value, in unsigned format, 
-**  for free-fall detection. The acceleration on all axes is compared with the value in 
-**  THRESH_FF to determine if a free-fall event occurred. The scale factor is 62.5 mg/LSB. 
-**  Note that a value of 0 mg may result in undesirable behavior if the free-fall interrupt 
-**  is enabled. Values between 300 mg and 600 mg (0x05 to 0x09) are recommended.
+**
+**  Sets the threshold for free fall detection, acceleration on all
+**  axes is compared to this register, value range should be between
+**  300mg and 600mg. 
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x28—THRESH_FF (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLSetThreshFF(CHN,THRESH_FF)  PmodACLWriteReg(CHN,PMODACL_REG_THRESH_FF,THRESH_FF)
 
@@ -1293,14 +1248,19 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **   	SpiChannel CHN - spiChannel
 **
 **  Returns: 
-**      uint8_t - PMODACL_REG_THRESH_FF register contents
+**      uint8_t - free fall threshold (62.5mg/LSB)
 **
 **	Errors:	none
 **
 **  Description:
-**  Returns the PMODACL_REG_THRESH_FF register for a description of the contents 
-**  of this register see the ADXL345 refrence manual or the description for 
-**  PmodACLSetThreshFF
+**  Returns threshold for free fall detection, acceleration on all
+**  axes is compared to this register, value range should be between
+**  300mg and 600mg. 
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x28—THRESH_FF (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLGetThreshFF(CHN) PmodACLReadReg(CHN,PMODACL_REG_THRESH_FF)
 
@@ -1309,10 +1269,10 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **	Synopsis:
 **
-**	Gets the contents of the PMODACL_REG_ACT_TAP_STATUS register
+**	Sets the contents of the PMODACL_BIT_BW_RATE register
 **
 **  Input: 
-**   	SpiChannel CHN - spiChannel
+**   	SpiChannel CHN - Spi Channel
 **
 **  Returns: 
 **      uint8_t - contents of PMODACL_REG_BW_RATE register, which is a combination 
@@ -1322,30 +1282,23 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **
 **  Description:
 **
-**  (Taken from ADXL345 Reference Manual)
-**  BW_RATE Register
+**  Register defines low/normal power modes, device bandwidth and data output rate.
+**
+**  BW_RATE Register (VALUES PREFIXED WITH PMODACL_BIT_BW_RATE)
 **  ---------------------------------------
 **  |D7 |D6 |D5 |D4 	   |D3 |D2 |D1 |D0|
 **  ---------------------------------------
 **  | 0 | 0 | 0 |LOW_POWER | RATE         |
 **  ---------------------------------------
-**  LOW_POWER Bit
-**  A setting of 0 in the LOW_POWER bit selects normal operation, and a setting of 1 selects 
-**  reduced power operation, which has somewhat higher noise (see the Power Modes section 
-**  for details).
-**  
-**  Rate Bits
-**  These bits select the device bandwidth and output data rate (see Table 7 and Table 8 for 
-**  details). The default value is 0x0A, which translates to a 100 Hz output data rate. An 
-**  output data rate should be selected that is appropriate for the communication protocol and
-**  frequency selected. Selecting too high of an output data rate with a low communication speed
-**  results in samples being discarded.
 **
 **	Notes:
 **
 **  Values for tables 7 and 8 are defined in "Local Type Definitions" and following the
 **  following format PMODACL_BIT_BW_RATE_<OUTPUT_BIT_RATE>_HZ, the bandwidth is half
 **  of the value defined.
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2C—BW_RATE (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLSetBwRate(CHN,BW_RATE) PmodACLWriteReg(CHN,PMODACL_REG_BW_RATE,BW_RATE)
 
@@ -1357,7 +1310,7 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Gets the contents of the PMODACL_REG_BW_RATE register
 **
 **  Input: 
-**   	SpiChannel CHN - spiChannel
+**   	SpiChannel CHN - Spi Channel
 **
 **  Returns: 
 **      uint8_t - PMODACL_REG_BW_RATE register contents
@@ -1365,9 +1318,24 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	Errors:	none
 **
 **  Description:
-**  Returns the PMODACL_REG_BW_RATE register for a description of the contents 
-**  of this register see the ADXL345 refrence manual or the description for 
-**  PmodACLSetBwRate
+**
+**  Register defines low/normal power modes, device bandwidth and data output rate.
+**
+**  BW_RATE Register (VALUES PREFIXED WITH PMODACL_BIT_BW_RATE)
+**  ---------------------------------------
+**  |D7 |D6 |D5 |D4 	   |D3 |D2 |D1 |D0|
+**  ---------------------------------------
+**  | 0 | 0 | 0 |LOW_POWER | RATE         |
+**  ---------------------------------------
+**
+**	Notes:
+**
+**  Values for tables 7 and 8 are defined in "Local Type Definitions" and following the
+**  following format PMODACL_BIT_BW_RATE_<OUTPUT_BIT_RATE>_HZ, the bandwidth is half
+**  of the value defined.
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x2C—BW_RATE (Read/Write)
+**  in the ADXL345 reference manual for additional information. 
 */
 #define PmodACLGetBwRate(CHN) PmodACLReadReg(CHN,PMODACL_REG_BW_RATE)
 
