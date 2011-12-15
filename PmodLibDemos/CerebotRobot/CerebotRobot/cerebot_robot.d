@@ -1,11 +1,11 @@
 cerebot_robot.o: cerebot_robot.c \
- C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\include/pmodlib.h \
- C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\include/PmodJSTK/pmodJSTK.h \
- C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\include/PmodACL/pmodACL.h \
- C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\include/PmodHB5/pmodHB5.h \
- C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\include/PmodSF/pmodsf.h \
- C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\include/PmodCommon/spi/pmod_spi_common.h \
- C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\include/PmodCommon/bufferlib/bufferlib.h \
- C:\Code\cpts421\PmodLibDemos\CerebotRobot\Pmodlib\library\include/PmodDA2/pmodDA2.h \
- C:\Code\cpts421\PmodLibDemos\CerebotRobot\Bluetooth/pmodBT.h \
- C:\Code\cpts421\PmodLibDemos\CerebotRobot\DataStructures/cerebot_robot_remote_types.h
+ ..\PmodLibArchive\PmodLib\include/pmodlib.h \
+ ..\PmodLibArchive\PmodLib\include/PmodJSTK/pmodJSTK.h \
+ ..\PmodLibArchive\PmodLib\include/PmodACL/pmodACL.h \
+ ..\PmodLibArchive\PmodLib\include/PmodHB5/pmodHB5.h \
+ ..\PmodLibArchive\PmodLib\include/PmodSF/pmodsf.h \
+ ..\PmodLibArchive\PmodLib\include/PmodCommon/spi/pmod_spi_common.h \
+ ..\PmodLibArchive\PmodLib\include/PmodCommon/bufferlib/bufferlib.h \
+ ..\PmodLibArchive\PmodLib\include/PmodDA2/pmodDA2.h \
+ ..\PmodLibArchive\PmodLib\include/PmodMic/PmodMic.h \
+ ..\Bluetooth/pmodBT.h ..\DataStructures/cerebot_robot_remote_types.h
