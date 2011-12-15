@@ -8,8 +8,41 @@
 /*	Copyright (C) 2011 Ryan Hoffman										*/
 /************************************************************************/
 /*  Module Description: 												*/
-/*  <MODULE DESCRIPTION>												*/
+/*	See PmodACL_Demo.pdf for functional description and assembly		*/
+/*  instructions.														*/																		
+/*  ------------------------------------------------------------------- */
+/*  HARDWARE SETUP	- Cerebot32MX7										*/
+/*  ------------------------------------------------------------------- */
 /*																		*/
+/*  PmodACL																*/
+/*  ------------------------------------------------------------------- */
+/*  SPI Channel 2	Pins(1-6)											*/
+/*  JE-01 	RG9		SS2 												*/
+/*  JE-02 	RG8		SDO2  												*/
+/*  JE-03 	RG7		SDI2 												*/
+/*  JE-04 	RG6		SCK2 												*/
+/*  Pins (8)															*/
+/*  J8-SCL1 RA14    INT1				 								*/
+/*																		*/
+/*  PmodCON3															*/
+/*  ------------------------------------------------------------------- */
+/*  Pins(1-6) 															*/
+/*  JB-01	RE0		J2 													*/
+/*  JB-02	RE1		J3 													*/
+/*  JB-03	RE2		J3 													*/
+/*	JB-04	RE2		J5 													*/
+/* 																		*/
+/*  PmodCLS																*/
+/*  ------------------------------------------------------------------- */
+/* 	I2C Channel 2	Pins(1-2)											*/
+/* 	J7-SCL2		RA2		J2-SC											*/
+/* 	J7-SDA2		RA3		J2-SD											*/
+/* 	Pins(5-6)															*/
+/* 	J7-GND				J2-G											*/
+/* 	J7-3V3				J2-V											*/
+/* 																		*/
+/* 																		*/
+
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
@@ -51,21 +84,21 @@
 #define T1_TICK              (SYS_FREQ/PB_DIV/PRESCALE_T1/TOGGLES_PER_SEC_T1)
 #define T2_TICK              (SYS_FREQ/PB_DIV/PRESCALE_T2/TOGGLES_PER_SEC_T2)
 
-#if (__PIC32_FEATURE_SET__ == 460)
+#if (__PIC32_FEATURE_SET__ == 460) //CEREBOT32MX4
 
 #define PORT_BIT_BTN1 					IOPORT_A,BIT_6
-#define PORT_BIT_EXT_INT_0 				IOPORT_D,BIT_0
+#define PORT_BIT_EXT_INT 				IOPORT_D,BIT_0
 #define PORT_BIT_SERVO 					IOPORT_G,BIT_12
 #define PMODACL_SPI						SPI_CHANNEL2
-#define CLS_MODULE_I2C					I2C1
+#define CLS_MODULE_I2C					I2C2
 
-#elif(__PIC32_FEATURE_SET__ == 795)
+#elif(__PIC32_FEATURE_SET__ == 795) //CEREBOT32MX7
 
 #define PORT_BIT_BTN1 					IOPORT_G,BIT_6
-#define PORT_BIT_EXT_INT_0			 	IOPORT_D,BIT_0  //JD-02
+#define PORT_BIT_EXT_INT			 	IOPORT_A,BIT_14  //J8-SCL1
 #define PORT_BIT_SERVO 					IOPORT_E,BIT_0  //PmodCon3 Servo 1, JB-01
 #define PMODACL_SPI						SPI_CHANNEL3 //SPI1A JE 01-06
-#define CLS_MODULE_I2C					I2C1
+#define CLS_MODULE_I2C					I2C2
 
 #endif
 
@@ -77,9 +110,6 @@
 
 #define CLS_DISPLAY_WIDTH 				17 //width of CLS + null character
 
-#define PULSE_STATE_HIGH  				0x0 //Next servo pulse wil be high
-#define PULSE_STATE_LOW   				0x1 //next servo pulse will be low
-
 #define PULSE_SERVO_STOP_MIN  			1500 //0.5ms pulse
 #define PULSE_SERVO_STOP_CENTER  		1000  //1.0ms pulse 
 #define PULSE_SERVO_STOP_MAX  			500  //1.5ms pulse
@@ -90,6 +120,12 @@
 #define DEG_90 							1.57
 #define DEG_360 						6.28
 #define DEG_270 						4.71
+
+typedef enum 
+{
+	PULSE_STATE_HIGH,  					 //Next servo pulse wil be high
+	PULSE_STATE_LOW   				     //Next servo pulse will be low
+}PULSE_STATE;
 
 //ACL data ready interrupt fired
 uint8_t aclDataReady = 0;
@@ -124,6 +160,8 @@ uint8_t homeRow2[] = {27,'[','1',';','0','H','\0'}; //set cursor to col 0, row 1
 uint8_t homeCursor[] = {27, '[', 'j', '\0'}; //set cursor to row 0, col 0, clear display
 uint8_t wrapLine[] = {27, '[', '0', 'h', '\0'}; //set display to "wrap"
 
+void init();
+void appTask();
 void initPmodACL();
 void configureInterrupts();
 void setSurfaceNormal();
@@ -140,16 +178,14 @@ double getDataPointRollingAverage(double newDataPoint);
 
 
 uint8_t main(void)
-{
-   
-	pulseState = PULSE_STATE_HIGH;
-	configurePortIO();
-	initPmodACL();
-	initCLS();
-	calibrate();
-	setSurfaceNormal();
-	configureInterrupts();
+{   
+	init();
+	appTask();
+	return 0;
+}
 
+void appTask()
+{
     while(1)
     {
 		if(aclDataReady)
@@ -174,9 +210,19 @@ uint8_t main(void)
 		{
 			clsUpdateCount = 0;	
 			updateCls();
-		}	
-	    
+		}	    
 	} 
+
+}
+
+void init()
+{
+	configurePortIO();
+	initPmodACL();
+	initCLS();
+	calibrate();
+	setSurfaceNormal();
+	configureInterrupts();
 }
 
 void setPulseWidth()
@@ -220,11 +266,7 @@ double getCurrentAngle()
 
 	double angle = 0.0;
 	
-	do{
-
-		PmodACLGetAxisData(PMODACL_SPI,&pmodACLAxis);
-
-	}while(pmodACLAxis.xAxis == 0 && pmodACLAxis.yAxis == 0);
+	PmodACLGetAxisData(PMODACL_SPI,&pmodACLAxis);
 
 	if(pmodACLAxis.yAxis == 0)
 	{
@@ -288,7 +330,7 @@ void setSurfaceNormal()
 void configurePortIO()
 {
 	//setup external interrupt pin for external int 0 to recivieve input
-	PORTSetPinsDigitalIn(PORT_BIT_EXT_INT_0); //CEREBOT32MX4 PIN JH-08	
+	PORTSetPinsDigitalIn(PORT_BIT_EXT_INT); //CEREBOT32MX4 PIN JH-08	
 	//Servo S1
 	PORTSetPinsDigitalOut(PORT_BIT_SERVO);
     //BTN1
@@ -315,14 +357,14 @@ void initPmodACL()
 void configureInterrupts()
 {
 	INTDisableInterrupts();
-	INTClearFlag(INT_INT0);//make sure interrupt flag is cleared
+	INTClearFlag(INT_INT3);//make sure interrupt flag is cleared
 	INTClearFlag(INT_T1);
 	INTClearFlag(INT_T2);
 	//configure multi vector interrupts
 	INTConfigureSystem(INT_SYSTEM_CONFIG_MULT_VECTOR);
 
 	//configure INT0 to trigger on rising edge transition with priority 7
-	ConfigINT0(EXT_INT_PRI_7 | FALLING_EDGE_INT | EXT_INT_ENABLE); 
+	ConfigINT3(EXT_INT_PRI_7 | FALLING_EDGE_INT | EXT_INT_ENABLE); 
 	
 	OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_8, T1_TICK);
     ConfigIntTimer1(T1_INT_OFF | T1_INT_PRIOR_2);
@@ -372,10 +414,10 @@ void __ISR(_TIMER_2_VECTOR, ipl2) Tmr2Handler_PulsePeriod(void)
 	INTClearFlag(INT_T2);
 }	
 
-void __ISR(_EXTERNAL_0_VECTOR, ipl7) Ext0Handler_PmodACLInt1(void)
+void __ISR(_EXTERNAL_3_VECTOR, ipl7) Ext3Handler_PmodACLInt1(void)
 {	
 	aclDataReady = 1;			
-	INTClearFlag(INT_INT0);
+	INTClearFlag(INT_INT3);
 }
 
 
