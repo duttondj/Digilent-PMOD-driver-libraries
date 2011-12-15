@@ -53,7 +53,6 @@
 */
 void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask)
 {
-//	PmodSFBlockWhileWriteInProgress(chn); 
 	PmodSFWriteStatusRegister(chn,PmodSFReadStatusRegister(chn)| bitMask); //write new status register
 }
 

@@ -50,16 +50,8 @@
 **  (SPI Mode 3 -> CKP-1 CKE-0)
 **   
 **  Notes:
-**
-**  (Taken from ADXL345 Reference Manual)
-**  Use of the 3200 Hz and 1600 Hz output data rates is only recommended
-**  with SPI communication rates greater than or equal to 2 MHz. 
-**  The 800 Hz output data rate is recommended only for communication speeds 
-**  greater than or equal to 400 kHz, and the remaining data rates scale proportionally.
-**  For example, the minimum recommended communication speed for a 200 Hz output data 
-**  rate is 100 kHz. Operation at an output data rate above the recommended maximum may 
-**  result in undesirable effects on the acceleration data, including missing samples 
-**  or additional noise.
+**	See SERIAL COMMUNICATIONS->SPI in the ADXL345 reference manual for
+**  additional information.
 */
 void PmodACLInitSpi(SpiChannel chn,uint32_t pbClock,uint32_t bitRate)
 {
@@ -74,7 +66,7 @@ void PmodACLInitSpi(SpiChannel chn,uint32_t pbClock,uint32_t bitRate)
 **
 **	Synopsis:
 **
-**	Reads the values from the axis values and writes them
+**	Reads the values from the axis values and writes 
 **  to a PMODACL_AXIS struct 
 **
 **  Input: 
@@ -88,20 +80,14 @@ void PmodACLInitSpi(SpiChannel chn,uint32_t pbClock,uint32_t bitRate)
 **
 **  Description:
 **	A multibyte read of the axis registers is performed, low and high
-**  are shifted and combined to create 16 bit signed values then
+**  bytes are shifted and combined to create 16 bit signed values then
 **  stored in the corresponding axis field in pmodACLAxis.
-**  (Taken from ADXL345 Reference Manual)
-**  These six bytes (Register 0x32 to Register 0x37) are eight bits 
-**  each and hold the output data for each axis. Register 0x32 and 
-**  Register 0x33 hold the output data for the x-axis, Register 0x34 
-**  and Register 0x35 hold the output data for the y-axis, and Register 
-**  0x36 and Register 0x37 hold the output data for the z-axis. 
-**  The output data is twos complement, with DATAx0 as the least 
-**  significant byte and DATAx1 as the most significant byte, where 
-**  x represent X, Y, or Z. The DATA_FORMAT register (Address 0x31)
-**  controls the format of the data. It is recommended that a multiple-byte
-**  read of all registers be performed to prevent a change in data between 
-**  reads of sequential registers.
+**
+**  Notes:
+**
+**	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x32 to Register 0x37—
+**  DATAX0, DATAX1, DATAY0, DATAY1, DATAZ0, DATAZ1 in the ADXL345 reference 
+**  manual for additional information.
 */
 void PmodACLGetAxisData(SpiChannel chn, PMODACL_AXIS *pmodACLAxis)
 {
