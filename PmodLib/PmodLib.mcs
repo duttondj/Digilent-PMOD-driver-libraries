@@ -2,7 +2,7 @@
 MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
 Version=1.0
 [File000]
-Location=C:\Code\cpts421\PmodLib\pmodsf.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodsf.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -13,9 +13,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File001]
-Location=C:\Code\cpts421\PmodLib\pmodsf_bulk_erase.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodsf_bulk_erase.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -26,9 +26,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File002]
-Location=C:\Code\cpts421\PmodLib\pmodsf_dpd_rel.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodsf_dpd_rel.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -39,9 +39,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File003]
-Location=C:\Code\cpts421\PmodLib\pmodsf_page_program.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodsf_page_program.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -52,9 +52,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File004]
-Location=C:\Code\cpts421\PmodLib\pmodsf_read_bytes.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodsf_read_bytes.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -65,9 +65,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File005]
-Location=C:\Code\cpts421\PmodLib\pmodsf_read_id.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodsf_read_id.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -78,9 +78,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File006]
-Location=C:\Code\cpts421\PmodLib\pmodsf_sector_erase.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodsf_sector_erase.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -91,9 +91,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File007]
-Location=C:\Code\cpts421\PmodLib\pmodsf_set_clear_status_reg_bits.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodsf_set_clear_status_reg_bits.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -104,9 +104,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File008]
-Location=C:\Code\cpts421\PmodLib\pmodsf_write_disable.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodsf_write_disable.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -117,9 +117,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File009]
-Location=C:\Code\cpts421\PmodLib\pmodJSTK.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodJSTK.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -130,9 +130,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File010]
-Location=C:\Code\cpts421\PmodLib\pmodsf_testDriver.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodsf_testDriver.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -143,9 +143,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File011]
-Location=C:\Code\cpts421\PmodLib\pmod_jstk_test_driver.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmod_jstk_test_driver.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -156,9 +156,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File012]
-Location=C:\Code\cpts421\PmodLib\fnGetByteFromUint32.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\fnGetByteFromUint32.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -169,9 +169,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File013]
-Location=C:\Code\cpts421\PmodLib\test_harness_common.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\test_harness_common.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -182,9 +182,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File014]
-Location=C:\Code\cpts421\PmodLib\pmod_spi_common.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmod_spi_common.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -195,9 +195,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File015]
-Location=C:\Code\cpts421\PmodLib\pmodhb5_test_driver.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodhb5_test_driver.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -208,9 +208,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File016]
-Location=C:\Code\cpts421\PmodLib\pmodHB5_pmodHB5getQEncRMP.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodHB5_pmodHB5getQEncRMP.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -221,9 +221,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File017]
-Location=C:\Code\cpts421\PmodLib\pmodHB5_PmodHB5SetDCPWMDutyCycle.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodHB5_PmodHB5SetDCPWMDutyCycle.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -234,9 +234,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File018]
-Location=C:\Code\cpts421\PmodLib\pmodHB5_PmodHB5SetDCInitialDirection.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodHB5_PmodHB5SetDCInitialDirection.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -247,9 +247,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File019]
-Location=C:\Code\cpts421\PmodLib\pmodHB5_PmodHB5ChangeDirection.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodHB5_PmodHB5ChangeDirection.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -260,9 +260,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File020]
-Location=C:\Code\cpts421\PmodLib\pmodACL.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodACL.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -273,9 +273,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File021]
-Location=C:\Code\cpts421\PmodLib\pmodACL_test_driver.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodACL_test_driver.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -286,9 +286,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File022]
-Location=C:\Code\cpts421\PmodLib\pmodACL_PmodACLCalibrate.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodACL_PmodACLCalibrate.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -299,9 +299,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File023]
-Location=C:\Code\cpts421\PmodLib\fnDelayNcycles.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\fnDelayNcycles.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -312,9 +312,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File024]
-Location=C:\Code\cpts421\PmodLib\bufflib_test_driver.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\bufflib_test_driver.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -325,9 +325,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File025]
-Location=C:\Code\cpts421\PmodLib\bufferlib.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\bufferlib.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -338,9 +338,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File026]
-Location=C:\Code\cpts421\PmodLib\pmodllib_testdriver_main.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodllib_testdriver_main.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -351,9 +351,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File027]
-Location=C:\Code\cpts421\PmodLib\PmodDA2.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\PmodDA2.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -364,9 +364,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File028]
-Location=C:\Code\cpts421\PmodLib\pmodDA2_test_driver.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\pmodDA2_test_driver.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -377,9 +377,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File029]
-Location=C:\Code\cpts421\PmodLib\PmodMic.o
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\PmodMic.o
 Folder=Intermediary
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -390,9 +390,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=-g
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=-D__DEBUG
 [File030]
-Location=C:\Code\cpts421\PmodLib\PmodLib.elf
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\PmodLib.elf
 Folder=Output
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -403,9 +403,9 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=--defsym=_min_heap_size=30000 -Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
-DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=--defsym=__MPLAB_DEBUG=1
 [File031]
-Location=C:\Code\cpts421\PmodLib\PmodLib.hex
+Location=C:\Users\Ross\Desktop\Digilent Pmod Library\PmodLib\PmodLib.hex
 Folder=Output
 DeviceName=PIC32MX460F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
@@ -416,7 +416,7 @@ SOLK=<src>|PmodSF\pmodsf.c|PmodSF\pmodsf_bulk_erase.c|PmodSF\pmodsf_dpd_rel.c|Pm
 SuiteArgsString=
 ToolArgsString=--defsym=_min_heap_size=30000 -Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
-DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_PIC32MXSK=1
+DebugOptions=--defsym=__MPLAB_DEBUG=1
 [TOOL_LOC_STAMPS]
 tool_loc{430F471F-7ECB-4852-A80D-DEF9A5C8E751}=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
 tool_loc{C68E5105-1196-4333-A0BF-3DC57271E614}=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ld.exe
