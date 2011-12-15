@@ -785,7 +785,6 @@ void PmodACLWriteReg(SpiChannel chn,uint8_t address,uint8_t dataBits);
 **	See REGISTER MAP->REGISTER DEFINITIONS-> Register 0x1D—THRESH_TAP (Read/Write)
 **  in the ADXL345 reference manual for additional information.
 */
-*/
 #define PmodACLGetThreshTap(CHN) PmodACLReadReg(CHN,PMODACL_REG_THRESH_TAP)
 
 /*  
