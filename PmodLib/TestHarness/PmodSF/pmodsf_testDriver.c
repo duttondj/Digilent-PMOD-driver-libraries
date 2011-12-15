@@ -43,7 +43,7 @@ uint8_t UNIT_spfPMOD_DPD_Release(UART_MODULE uartID)
 	if(pmodFlashCapacity == PMODSF_128_MBIT)
 	{
 		UARTPutS("Not Supported on PMODSF-128\r\n",uartID);
-		return 0;
+		return 1;
 	}
 	UARTPutS("Entering Deep Power Down\n\r",uartID);
 	PmodSFDeepPowerDown(chn);
