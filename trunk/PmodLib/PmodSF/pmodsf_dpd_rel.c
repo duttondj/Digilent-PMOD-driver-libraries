@@ -53,7 +53,7 @@
 void PmodSFDeepPowerDown(SpiChannel chn)
 {
 	PmodSFBlockWhileWriteInProgress(chn); 
-	fnPmodSFSendCommand(chn,PMODSF_DEEP_POWER_DOWN);
+	PmodSFSendCommand(chn,PMODSF_DEEP_POWER_DOWN);
 }
 
 /*  PmodSFDeepPowerDownRelease (PmodSF-16 only)
