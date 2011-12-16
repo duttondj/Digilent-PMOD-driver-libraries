@@ -9,7 +9,8 @@
 /************************************************************************/
 /*  Module Description: 												*/
 /*	See PmodACL_Demo.pdf for functional description and assembly		*/
-/*  instructions.														*/																		
+/*  instructions. Legacy libc library should be used with this project  */
+/*  to support floating point string formatting.						*/																		
 /*  ------------------------------------------------------------------- */
 /*  HARDWARE SETUP	- Cerebot32MX7										*/
 /*  ------------------------------------------------------------------- */
@@ -22,7 +23,7 @@
 /*  JE-03 	RG7		SDI2 												*/
 /*  JE-04 	RG6		SCK2 												*/
 /*  Pins (8)															*/
-/*  J8-SCL1 RA14    INT1				 								*/
+/*  J8-SCL1 RA14    INT1(pmodACL)		 								*/
 /*																		*/
 /*  PmodCON3															*/
 /*  ------------------------------------------------------------------- */
@@ -34,19 +35,40 @@
 /* 																		*/
 /*  PmodCLS																*/
 /*  ------------------------------------------------------------------- */
-/* 	I2C Channel 2	Pins(1-2)											*/
-/* 	J7-SCL2		RA2		J2-SC											*/
-/* 	J7-SDA2		RA3		J2-SD											*/
-/* 	Pins(5-6)															*/
-/* 	J7-GND				J2-G											*/
-/* 	J7-3V3				J2-V											*/
+/*  UART3A (UART5) (Pins 1 - 6) 										*/
+/*  JF-01 	RF12	U3ACTS												*/
+/*  JF-02 	RF5		U3ARTS												*/
+/*  JF-03 	RF4		U3ARX												*/
+/*  JF-04 	RF13	U3ATX												*/
 /* 																		*/
 /* 																		*/
-
+/*  ------------------------------------------------------------------- */
+/*  HARDWARE SETUP	- Cerebot32MX4										*/
+/*  ------------------------------------------------------------------- */
+/*																		*/
+/*  PmodACL																*/
+/*  ------------------------------------------------------------------- */
+/*  SPI Channel 2	Pins(1-6)											*/
+/*  JB-01 	RG9		SS2 												*/
+/*  JB-02 	RG8		SDO2  												*/
+/*  JB-03 	RG7		SDI2 												*/
+/*  JB-04 	RG6		SCK2 												*/
+/*  Pins (8)															*/
+/*  J6-SCL1 RA14    INT1(pmodACL)		 								*/
+/*																		*/
+/*  PmodCLS																*/
+/*  ------------------------------------------------------------------- */
+/*  UART 2 (Pint 1 - 6)													*/
+/*  JH-01 	RF12	U2CTS												*/
+/*  JH-02 	RF13	U2RTS												*/
+/*  JH-03 	RF4		U2RX												*/
+/*  JH-04 	RF5		U2TX												*/
+/* 																		*/
+/*																		*/
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
-/* <MM/DD/YY>(<FIRST NAME><LAST INITIAL): <NOTES>						*/
+/* <12/16/11>(RyanH): Initial Release									*/
 /*																		*/
 /************************************************************************/
 
@@ -89,12 +111,14 @@
 #define T1_TICK              (SYS_FREQ/PB_DIV/PRESCALE_T1/TOGGLES_PER_SEC_T1)
 #define T2_TICK              (SYS_FREQ/PB_DIV/PRESCALE_T2/TOGGLES_PER_SEC_T2)
 
+//NUMBER OF SUMPLES TO TAKE DURING CALIBRATION
 #define PMOD_ACL_NUM_CALIBRATION_SAMPLES	100
+
+//IO PORT/CHANNEL DEFINITIONS
 
 #if (__PIC32_FEATURE_SET__ == 460) //CEREBOT32MX4
 #define UART_CLS						UART2
 #define PORT_BIT_BTN1 					IOPORT_A,BIT_6
-#define PORT_BIT_EXT_INT 				IOPORT_D,BIT_0
 #define PORT_BIT_SERVO 					IOPORT_G,BIT_12
 #define PMODACL_SPI						SPI_CHANNEL2
 
@@ -102,11 +126,12 @@
 
 #define UART_CLS						UART5			//UART3A
 #define PORT_BIT_BTN1 					IOPORT_G,BIT_6
-#define PORT_BIT_EXT_INT			 	IOPORT_A,BIT_14  //J8-SCL1
 #define PORT_BIT_SERVO 					IOPORT_E,BIT_0  //PmodCon3 Servo 1, JB-01
 #define PMODACL_SPI						SPI_CHANNEL3 //SPI1A JE 01-06
 
 #endif
+
+#define PORT_BIT_EXT_INT			 	IOPORT_A,BIT_14  //Same for MX4/MX7
 
 #define PMODACL_SPI_BIT_RATE			625000
 
@@ -288,7 +313,7 @@ void appTask()
 **  Description:
 **
 **  Initialize hardware: set port IO,init ACL, init CLS, 
-**  calibrate PmodACL, get surface normal configure interupts.
+**  calibrate PmodACL, get surface normal configure interrupts.
 */
 void init()
 {
@@ -574,7 +599,7 @@ void initPmodACL()
 		asm("nop");	
 	}
 	//G range 4G,Interrupt active low 
-    PmodACLSetDataFormat(PMODACL_SPI,PMODACL_BIT_DATA_FORMAT_RANGE_4G|PMODACL_BIT_DATA_FORMAT_INT_INVERT);
+    PmodACLSetDataFormat(PMODACL_SPI,PMODACL_BIT_DATA_FORMAT_RANGE_2G|PMODACL_BIT_DATA_FORMAT_INT_INVERT);
 	//Bypass FIFO
 	PmodACLSetFIFOCtl(PMODACL_SPI,PMODACL_BIT_FIFO_CTL_BYPASS);
 	//Normal power mode, Output data rate 100Hz
