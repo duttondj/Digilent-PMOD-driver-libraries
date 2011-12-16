@@ -1,15 +1,15 @@
 [HEADER]
 magic_cookie={66E99B07-E706-4689-9E80-9B2582898A13}
 file_version=1.0
-device=PIC32MX795F512L
+device=PIC32MX460F512L
 [PATH_INFO]
 BuildDirPolicy=BuildDirIsProjectDir
 dir_src=
 dir_bin=
 dir_tmp=
 dir_sin=
-dir_inc=C:\Code\cpts421\PmodLibArchive\PmodLib\include
-dir_lib=C:\Code\cpts421\PmodLibArchive\PmodLib\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib
+dir_inc=.\PmodLibArchive\PmodLib\include
+dir_lib=.\PmodLibArchive\PmodLib\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\lib;C:\Program Files (x86)\Microchip\MPLAB C32 Suite\pic32mx\lib
 dir_lkr=
 [CAT_FILTERS]
 filter_src=*.s;*.c
@@ -37,8 +37,8 @@ file_001=no
 file_002=no
 [FILE_INFO]
 file_000=PmodACL_Demo.c
-file_001=C:\Code\cpts421\PmodLibArchive\PmodLib\lib\pmodlib_795.a
-file_002=C:\Code\cpts421\PmodLibArchive\PmodLib\lib\pmodlib_460.a
+file_001=PmodLibArchive\PmodLib\lib\pmodlib_460.a
+file_002=PmodLibArchive\PmodLib\lib\pmodlib_795.a
 [SUITE_INFO]
 suite_guid={14495C23-81F8-43F3-8A44-859C583D7760}
 suite_state=

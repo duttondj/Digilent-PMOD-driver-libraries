@@ -15,7 +15,7 @@
 /*																		*/
 /*  PmodBTN2															*/
 /*  ------------------------------------------------------------------- */
-/*  UART 2 (Pint 1 - 6) - A UART Crossover cable is required 			*/
+/*  UART 2 (Pins 1 - 6) - A UART Crossover cable is required 			*/
 /*  JH-01 	RF12	U2CTS												*/
 /*  JH-02 	RF13	U2RTS												*/
 /*  JH-03 	RF4		U2RX												*/
