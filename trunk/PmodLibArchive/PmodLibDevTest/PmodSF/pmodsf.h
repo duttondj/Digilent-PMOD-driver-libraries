@@ -170,24 +170,6 @@
 ** |    0   | 000000h | 03FFFFh |
 ** ------------------------------
 **
-** --------------------------------------------------------------------------------------------------
-** | Excerpt from PIC32 Familiy Reference Manual Chapter 23 section 23.3.7                          |
-** --------------------------------------------------------------------------------------------------
-** | The following equation defines the SCKx clock frequency as a function of SPIxBRG settings      |
-** |  Fsck = (Fpb) / 2 * (SPIxBRK + 1)                                                              |
-** |                                                                                                |
-** --------------------------------------------------------------------------------------------------
-** |                                       Sample SCKx Frequencies                                  |
-** --------------------------------------------------------------------------------------------------
-** | SPIxBRG Setting   |    0      |    15      |     31     |     63     |     85     |     127    |
-** --------------------------------------------------------------------------------------------------
-** | FPB = 50 MHz      | 25.00 MHz | 1.56 MHz   | 781.25 kHz | 390.63 kHz | 290.7 kHz  | 195.31 kHz |
-** | FPB = 40 MHz      | 20.00 MHz | 1.25 MHz   | 625.00 kHz | 312.50 kHz | 232.56 kHz | 156.25 kHz |
-** | FPB = 25 MHz      | 12.50 MHz | 781.25 kHz | 390.63 kHz | 195.31 kHz | 145.35 kHz | 97.66 kHz  |
-** | FPB = 20 MHz      | 10.00 MHz | 625.00 kHz | 312.50 kHz | 156.25 kHz | 116.28 kHz | 78.13 kHz  |
-** | FPB = 10 MHZ      | 5.00 MHz  | 312.50 kHz | 156.25 kHz | 78.13 kHz  | 58.14 kHz  | 39.06 kHz  |
-** --------------------------------------------------------------------------------------------------
-**
 ** ----------------------------------------------------------------------------------------------------------------------------
 ** |                                                    PMODSF INSTRUCTION SET                                                |
 ** ----------------------------------------------------------------------------------------------------------------------------
@@ -210,7 +192,6 @@
 ** |                           |--------------------------------------------|           |              |----------------------- 
 ** |                           | Release from Deep Power-down               |           |              |   0   |  0  |   0    |
 ** ----------------------------------------------------------------------------------------------------------------------------
-**   Items marked with a '#' have not been implimented 
 **   Items marked with a '*' are for the PmodSF-16 only
 */
 
@@ -263,12 +244,6 @@
 #define	PMODSD_MEM_TYPE_BYTE 1
 #define	PMODSD_MFID_BYTE 2
 
-//feature set definitions used in conditional compiling for processor type
-#define PIC32_300_400_SERIES ((__PIC32_FEATURE_SET__ >= 300) && (__PIC32_FEATURE_SET__ <= 499))
-#define PIC32_500_600_700_SERIES ((__PIC32_FEATURE_SET__ >= 500) && (__PIC32_FEATURE_SET__ <= 799))
-
-
-
 /*  PmodSFInit
 **
 **	Synopsis:
@@ -284,8 +259,7 @@
 **
 **  Opens the desired SPI channel in 8-bit mode as a master, enables the slave select bit,
 **  and sets the desired bit rate as a function of pbClock/bitRate.  Examples of peripheral bus
-**  bit rate combinations are available in the table labeld "Excerpt from PIC32 Familiy Reference 
-**  Manual Chapter 23 section 23.3.7" in pmodsf.h.
+**  bit rate combinations are available in the PIC32 Family Reference Manual.
 */
 void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 
@@ -337,7 +311,7 @@ void PmodSFBlockWhileWriteInProgress(SpiChannel chn);
 **
 **	Synopsis:
 **  Enables writing to flash by setting the Write Enable Latch(WEL)
-**  bit on the selected chanel
+**  bit on the selected channel
 **
 **	Input: SpiChannel chn - Spi channel
 **
@@ -374,8 +348,8 @@ uint8_t PmodSFReadStatusRegister(SpiChannel chn);
 /*  PmodSFWriteDisable
 **
 **	Synopsis:
-**  Disable writing by resetting the Write Enable Latch(WEL)
-**  bit on the selected chanel
+**  Disable writing to flash by resetting the Write Enable Latch(WEL)
+**  bit on the selected channel
 **
 **	Input:  SpiChannel chn - Spi channel
 **
@@ -393,13 +367,13 @@ void PmodSFWriteDisable(SpiChannel chn);
 /*  PmodSFReadID
 **
 **	Synopsis:
-**  The Read Identification (RDID) instruction allows
-**  the 24-bit device identification to be read
-**  into a 32 bit unsigned integer 
+**  The Read Identification (RDID) reads the
+**  24-bit device identification to into a 32 bit 
+**  unsigned integer 
 **
 **	Input: SpiChannel chn - Spi channel
 **
-**  Returns: uin32_t => Bits 0 - 7:   Memory Capacity
+**  Returns: uint32_t => Bits 0 - 7:   Memory Capacity
 **                      Bits 8 - 15:  Memory Type
 **                      Bits 16- 23 : Manufacturer ID
 **	Errors: none
@@ -457,14 +431,13 @@ void PmodSFDeepPowerDown(SpiChannel chn);
 /*  PmodSFPageProgram
 **
 **	Synopsis:
-**  The Page Program (PP) instruction allows bytes to
-**  be programmed in the memory (changing bits from
-**  1 to 0).
+**  The Page Program (PP) instruction programs bytes into a single
+**  page of flash memory (changing bits from 1 to 0).
 **
 **	Input: SpiChannel chn - Spi channel
 **         uint32_t numBytes - number of bytes to write 
 **         uint8_t *data - data to write
-**         uint32_t address - 24bit repsresentation of the page address
+**         uint32_t address - 24bit representation of the page address
 **
 **  Returns: none
 **
@@ -483,14 +456,14 @@ void PmodSFPageProgram(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t a
 /*  PmodSFReadBytes
 **
 **	Synopsis:
-**  The Read Data bytes  instruction allows bytes to
-**  be read from memory into a buffer from the specified
-**  24-bit address on the SPI channel selected.
+**  The Read Data bytes  reads N number of bytes from flash memory 
+**  into a buffer from the specified 24-bit address on the SPI channel 
+**  selected.
 **
 **	Input: SpiChannel chn - Spi channel
 **         uint32_t numBytes - number of bytes to read
 **         uint8_t *data - buffer to store data read 
-**         uint32_t address - 24bit repsresentation of the page address
+**         uint32_t address - 24bit representation of the page address
 **
 **  Returns: none
 **
@@ -544,7 +517,7 @@ void PmodSFBulkErase(SpiChannel chn);
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
 **
-**  Decription: 
+**  Description: 
 **
 **  Status register is read in, a bitwise OR is performed on the bitmask passed in,
 **  an AND operation is performed on the value of the status register and the bitmask,
