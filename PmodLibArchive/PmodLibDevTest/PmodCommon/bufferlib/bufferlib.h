@@ -24,7 +24,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-typedef struct
+/* ------------------------------------------------------------ */
+/*				Local Type Definitions							*/
+/* ------------------------------------------------------------ */
+#define BUFLIB_MAX_ARRAY_MEM 25000
+
+typedef struct appBuffer
 {
 	uint16_t space_used;
 	uint16_t *buffer;
