@@ -12,9 +12,7 @@
 /*  PMODSF on the Digilent PIC32 based microcontrollers                 */
 /* 	                                                                    */
 /*  For details on the operation or the PMODSF see the  instruction     */
-/*  manual for the ST MP25P16/MP25P128 flash memory chip,               */
-/*  some excerpts have been provided for functions provided             */
-/*  in this library                                                     */
+/*  manual for the ST MP25P16/MP25P128 flash memory chip.				*/
 /************************************************************************/
 /*  Revision History:													*/
 /*                                                                      */
@@ -49,8 +47,7 @@
 **
 **  Opens the desired SPI channel in 8-bit mode as a master, enables the slave select bit,
 **  and sets the desired bit rate as a function of pbClock/bitRate.  Examples of peripheral bus
-**  bit rate combinations are available in the table labeld "Excerpt from PIC32 Familiy Reference 
-**  Manual Chapter 23 section 23.3.7" in pmodsf.h.
+**  bit rate combinations are available in the PIC32 Family Reference Manual.
 */
 void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate)
 {
@@ -160,7 +157,7 @@ uint8_t PmodSFReadStatusRegister(SpiChannel chn)
 **
 **	Synopsis:
 **  Enables writing to flash by setting the Write Enable Latch(WEL)
-**  bit on the selected chanel
+**  bit on the selected channel
 **
 **	Input: SpiChannel chn - Spi channel
 **

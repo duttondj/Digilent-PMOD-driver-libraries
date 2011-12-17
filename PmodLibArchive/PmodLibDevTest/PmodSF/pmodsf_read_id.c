@@ -30,13 +30,13 @@
 /*  PmodSFReadID
 **
 **	Synopsis:
-**  The Read Identification (RDID) instruction allows
-**  the 24-bit device identification to be read
-**  into a 32 bit unsigned integer 
+**  The Read Identification (RDID) reads the
+**  24-bit device identification to into a 32 bit 
+**  unsigned integer 
 **
 **	Input: SpiChannel chn - Spi channel
 **
-**  Returns: uin32_t => Bits 0 - 7:   Memory Capacity
+**  Returns: uint32_t => Bits 0 - 7:   Memory Capacity
 **                      Bits 8 - 15:  Memory Type
 **                      Bits 16- 23 : Manufacturer ID
 **	Errors: none
