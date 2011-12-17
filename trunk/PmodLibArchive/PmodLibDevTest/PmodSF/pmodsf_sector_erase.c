@@ -33,7 +33,7 @@
 **  Erases a sector on the PmodSF on the specified channel
 **  containing the 24-bit address passed in
 **
-**	Input: SpiChannel chn - spi channel 
+**	Input: SpiChannel chn - Spi channel 
 **         uint32_t address - 24-bit address contained in sector
 **                            to erase
 **

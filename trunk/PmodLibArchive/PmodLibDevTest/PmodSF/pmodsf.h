@@ -11,7 +11,7 @@
 /*  This file contains function definitions, data structures and        */
 /*  macros used in manipulating the Digilent PMODSF on                  */
 /*  the Digilent CEREBOT32MX4 and CEREBOT32MX7. For a complete          */
-/*  description of opeations and signalling see the manuals for         */
+/*  description of opeation and signaling see the manuals for           */
 /*  the ST M25P16(PmodSF-16) and M25P128(PmodSF-128)                    */
 /*                                                                      */
 /************************************************************************/
@@ -30,7 +30,7 @@
 #include <stdint.h>
 #include <plib.h>
 
-/*  Table 2 Protected Area Sizes (PMODSF-16)                                                                                  
+/* Protected Area Sizes (PMODSF-16)                                                                                  
 ** -----------------------------------------------------------------------------------------------------------------
 ** |Status Register Content|                                     Memory Content                                    |
 ** -----------------------------------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
 ** |   1   |   1   |   1   | All sectors (32 sectors: 0 to 31)        | none                                       |
 ** -----------------------------------------------------------------------------------------------------------------
 **
-**  Table 2 Protected Area Sizes (PMODSF-128)                                                                                  
+** Protected Area Sizes (PMODSF-128)                                                                                  
 ** -----------------------------------------------------------------------------------------------------------------
 ** |Status Register Content|                                     Memory Content                                    |
 ** -----------------------------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@
 ** |   1   |   1   |   1   | All sectors (64 sectors, 128 Mb)         | none                                       |
 ** -----------------------------------------------------------------------------------------------------------------
 **
-** Table 3. Memory Organization (PMODSF-16)
+** Memory Organization (PMODSF-16)
 ** ------------------------------
 ** | Sector | Address |  Range  |
 ** ------------------------------
@@ -100,7 +100,7 @@
 ** |   0    | 000000h | 00FFFFh |
 ** ------------------------------
 **
-** Table 3. Memory Organization (PMODSF-128)
+** Memory Organization (PMODSF-128)
 ** ------------------------------
 ** | Sector | Address |  Range  |
 ** ------------------------------
@@ -171,17 +171,17 @@
 ** ------------------------------
 **
 ** ----------------------------------------------------------------------------------------------------------------------------
-** |                                                    PMODSF INSTRUCTION SET                                                |
+** |                                                    PMODSF INSTRUCTION SET                         |  Data Xfer Details   |
 ** ----------------------------------------------------------------------------------------------------------------------------
-** |                           |                                            |                          |Address|Dummy|  Data  |
-** |    Instruction            |                   Description              |One-byte Instruction Code |Bytes  |Bytes|  Bytes |
+** |                           |                                            |    Instruction Code      |Address|Dummy|  Data  |
+** |    Instruction (MACRO)    | Description (See M25P16/M25P28 Ref Manual) |  Binary   | Hex          |Bytes  |Bytes|  Bytes |
 ** |--------------------------------------------------------------------------------------------------------------------------|
 ** | PMODSF_WRITE_ENABLE       | Write Enable (WREN)                        | 0000 0110 | 06h          |   0   |  0  |   0    |
 ** | PMODSF_WRITE_DISABLE      | Write Disable (WRDI)                       | 0000 0100 | 04h          |   0   |  0  |   0    |
 ** | PMODSF_READ_ID            | Read Identification (RDID)                 | 1001 1111 | 9Fh          |   0   |  0  |1 to 3  | 
-** | PMODSF_READ_STATUS_REG    | Read Status Register (RDSR)                | 0000 0101 | 05h          |   0   |  0  |1 to 8  |
+** | PMODSF_READ_STATUS_REG    | Read Status Register (RDSR)                | 0000 0101 | 05h          |   0   |  0  |1 to INF|
 ** | PMODSF_WRITE_STATUS_REG   | Write Status Register (WRSR)               | 0000 0001 | 01h          |   0   |  0  |   1    |
-** | PMODSF_READ_DATA_BYTES    | Read Data Bytes (READ)                     | 0000 0011 | 03h          |   3   |  0  |1 to 8  |
+** | PMODSF_READ_DATA_BYTES    | Read Data Bytes (READ)                     | 0000 0011 | 03h          |   3   |  0  |1 to INF|
 ** | PMODSF_PAGE_PGM           | Page Program (PP)                          | 0000 0010 | 02h          |   3   |  0  |1 to 256|
 ** | PMODSF_SECTOR_ERASE       | Sector Erase (SE)                          | 1101 1000 | D8h          |   3   |  0  |   0    |
 ** | PMODSF_BULK_ERASE         | Bulk Erase (BE)                            | 1100 0111 | C7h          |   0   |  0  |   0    |
