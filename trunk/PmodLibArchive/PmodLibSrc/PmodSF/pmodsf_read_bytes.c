@@ -30,14 +30,14 @@
 /*  PmodSFReadBytes
 **
 **	Synopsis:
-**  The Read Data bytes  instruction allows bytes to
-**  be read from memory into a buffer from the specified
-**  24-bit address on the SPI channel selected.
+**  The Read Data bytes  reads N number of bytes from flash memory 
+**  into a buffer from the specified 24-bit address on the SPI channel 
+**  selected.
 **
 **	Input: SpiChannel chn - Spi channel
 **         uint32_t numBytes - number of bytes to read
 **         uint8_t *data - buffer to store data read 
-**         uint32_t address - 24bit repsresentation of the page address
+**         uint32_t address - 24bit representation of the page address
 **
 **  Returns: none
 **

@@ -4,7 +4,7 @@ Version=1.0
 [File000]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodsf.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -17,7 +17,7 @@ DebugOptions=-D__DEBUG
 [File001]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodsf_bulk_erase.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -30,7 +30,7 @@ DebugOptions=-D__DEBUG
 [File002]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodsf_dpd_rel.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -43,7 +43,7 @@ DebugOptions=-D__DEBUG
 [File003]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodsf_page_program.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -56,7 +56,7 @@ DebugOptions=-D__DEBUG
 [File004]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodsf_read_bytes.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -69,7 +69,7 @@ DebugOptions=-D__DEBUG
 [File005]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodsf_read_id.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -82,7 +82,7 @@ DebugOptions=-D__DEBUG
 [File006]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodsf_sector_erase.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -95,7 +95,7 @@ DebugOptions=-D__DEBUG
 [File007]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodsf_set_clear_status_reg_bits.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -108,7 +108,7 @@ DebugOptions=-D__DEBUG
 [File008]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodsf_write_disable.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -121,7 +121,7 @@ DebugOptions=-D__DEBUG
 [File009]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodJSTK.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -134,7 +134,7 @@ DebugOptions=-D__DEBUG
 [File010]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodHB5_PmodHB5ChangeDirection.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -147,7 +147,7 @@ DebugOptions=-D__DEBUG
 [File011]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodHB5_pmodHB5getQEncRMP.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -160,7 +160,7 @@ DebugOptions=-D__DEBUG
 [File012]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodHB5_PmodHB5SetDCInitialDirection.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -173,7 +173,7 @@ DebugOptions=-D__DEBUG
 [File013]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodHB5_PmodHB5SetDCPWMDutyCycle.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -186,7 +186,7 @@ DebugOptions=-D__DEBUG
 [File014]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\bufferlib.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -199,7 +199,7 @@ DebugOptions=-D__DEBUG
 [File015]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmod_spi_common.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -212,7 +212,7 @@ DebugOptions=-D__DEBUG
 [File016]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\fnDelayNcycles.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -225,7 +225,7 @@ DebugOptions=-D__DEBUG
 [File017]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\fnGetByteFromUint32.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -238,7 +238,7 @@ DebugOptions=-D__DEBUG
 [File018]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodACL.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -251,7 +251,7 @@ DebugOptions=-D__DEBUG
 [File019]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\pmodACL_PmodACLCalibrate.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -264,7 +264,7 @@ DebugOptions=-D__DEBUG
 [File020]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\PmodDA2.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -277,7 +277,7 @@ DebugOptions=-D__DEBUG
 [File021]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLibBuild\PmodMic.o
 Folder=Intermediary
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={430F471F-7ECB-4852-A80D-DEF9A5C8E751}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-gcc.exe
@@ -290,7 +290,7 @@ DebugOptions=-D__DEBUG
 [File022]
 Location=C:\Code\cpts421\PmodLibArchive\PmodLib\lib\pmodlib_$(Device).a
 Folder=Output
-DeviceName=PIC32MX460F512L
+DeviceName=PIC32MX795F512L
 LanguageToolSuiteID={14495C23-81F8-43F3-8A44-859C583D7760}
 LanguageToolID={64EFB0AB-375F-4A36-B8F3-BFFE44B756FB}
 LanguageToolLocation=C:\Program Files (x86)\Microchip\MPLAB C32 Suite\bin\pic32-ar.exe
