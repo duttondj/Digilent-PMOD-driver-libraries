@@ -62,7 +62,7 @@ void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask)
 **  Clear bits in the status register based on a bit mask passed in, the bits
 **  to be cleared should be set to 1 in the bitmask
 **
-**	Input: SpiChannel chn - spi channel to clear status register bits on
+**	Input: SpiChannel chn - Spi channel
 **         uint8_t bitMask - bitmask to apply to status register                          
 **
 **  Returns: none
@@ -72,7 +72,7 @@ void PmodSFSetStatusRegBits(SpiChannel chn,uint8_t bitMask)
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
 **
-**  Decription: 
+**  Description: 
 **
 **  Status register is read in, a bitwise OR is performed on the bitmask passed in,
 **  an AND operation is performed on the value of the status register and the bitmask,

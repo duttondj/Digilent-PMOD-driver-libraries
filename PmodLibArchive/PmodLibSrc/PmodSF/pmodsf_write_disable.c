@@ -26,12 +26,12 @@
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
-
+ 
 /*  PmodSFWriteDisable
 **
 **	Synopsis:
-**  Disable writing by resetting the Write Enable Latch(WEL)
-**  bit on the selected chanel
+**  Disable writing to flash by resetting the Write Enable Latch(WEL)
+**  bit on the selected channel
 **
 **	Input:  SpiChannel chn - Spi channel
 **
