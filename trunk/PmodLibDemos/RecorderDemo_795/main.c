@@ -1,9 +1,38 @@
-#include "setup.h"
+/************************************************************************/
+/*																		*/
+/*	main.c	--	contains main function of RecorderDemo for Cerebot		*/
+/*				32MX7													*/
+/************************************************************************/
+/*	Author: 	Ross Kristof											*/
+/*	Copyright (C) 2011 Ross Kristof										*/
+/************************************************************************/
+/*  Module Description: 												*/
+/*  The RecorderDemo contains a sample project that demonstrates the	*/
+/*	use of the PmodDA2, PmodMIC, PmodSF and BufferLib libraries included*/
+/*	in the PmodLib Library												*/
+/*																		*/
+/************************************************************************/
+/*  Revision History:													*/
+/*																		*/
+/* <12/09/11>(RossK): Created											*/
+/*																		*/
+/************************************************************************/
 
+/* ------------------------------------------------------------ */
+/*				PIC32 Configuration Settings					*/
+/* ------------------------------------------------------------ */
 #pragma config ICESEL = ICS_PGx1 //debug mode on Pic32 795
 #pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1, FWDTEN = OFF
 #pragma config POSCMOD = HS, FNOSC = PRIPLL, FPBDIV = DIV_2
 
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+#include "setup.h"
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 int main(void)
 {
 	uint8_t BTN1Status = 0;
