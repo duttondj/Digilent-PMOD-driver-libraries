@@ -31,14 +31,13 @@
 /*  PmodSFPageProgram
 **
 **	Synopsis:
-**  The Page Program (PP) instruction allows bytes to
-**  be programmed in the memory (changing bits from
-**  1 to 0).
+**  The Page Program (PP) instruction programs bytes into a single
+**  page of flash memory (changing bits from 1 to 0).
 **
 **	Input: SpiChannel chn - Spi channel
 **         uint32_t numBytes - number of bytes to write 
 **         uint8_t *data - data to write
-**         uint32_t address - 24bit repsresentation of the page address
+**         uint32_t address - 24bit representation of the page address
 **
 **  Returns: none
 **
@@ -51,7 +50,7 @@
 **
 **  For a complete description see Page Program (PP) in the M25P16/M25P128 
 **	reference manual. 
-*/ 
+*/
 void PmodSFPageProgram(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t address)
 {
 	int32_t byteCounter = 0;

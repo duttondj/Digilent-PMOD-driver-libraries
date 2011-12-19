@@ -87,10 +87,10 @@ void PmodDA2Disable(SpiChannel chn);
 **		   uint_16 data - the digital representation of the analog
 **						  signal to send to the PmodDA2
 **
-**  Returns: 1 if successfully sent, 0 if failed to send
+**  Returns: none
 **
-**	Errors:	0 is returned if failed to send
+**	Errors:	none
 */
-uint8_t PmodDA2Send(SpiChannel chn, uint16_t data);
+void PmodDA2Send(SpiChannel chn, uint16_t data);
 
 #endif
