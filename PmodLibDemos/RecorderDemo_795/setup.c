@@ -1,5 +1,31 @@
+/************************************************************************/
+/*																		*/
+/*	setup.c	--	contains function definitions for the RecorderDemo for	*/
+/*				the Cerebot 32MX7										*/
+/************************************************************************/
+/*	Author: 	Ross Kristof											*/
+/*	Copyright (C) 2011 Ross Kristof										*/
+/************************************************************************/
+/*  Module Description: 												*/
+/*  The RecorderDemo contains a sample project that demonstrates the	*/
+/*	use of the PmodDA2, PmodMIC, PmodSF and BufferLib libraries included*/
+/*	in the PmodLib Library												*/
+/*																		*/
+/************************************************************************/
+/*  Revision History:													*/
+/*																		*/
+/* <12/09/11>(RossK): Created											*/
+/*																		*/
+/************************************************************************/
+
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
 #include "setup.h"
 
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
 uint8_t RecorderInit(uint8_t BufferCount, uint16_t BufferSize)
 {
 	uint32_t pmodSFID = 0;

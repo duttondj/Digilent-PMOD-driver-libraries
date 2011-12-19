@@ -1,18 +1,20 @@
 /************************************************************************/
 /*																		*/
-/*	<FILE NAME>	--	<BRIEF DESCRIPTION>         						*/
-/*																		*/
+/*	main.c	--	contains main function of RecorderDemo for Cerebot		*/
+/*				32MX4													*/
 /************************************************************************/
-/*	Author: 	<AUTHOR NAME> 											*/
-/*	Copyright (C) <YEAR> <ENTITY>										*/
+/*	Author: 	Ross Kristof											*/
+/*	Copyright (C) 2011 Ross Kristof										*/
 /************************************************************************/
 /*  Module Description: 												*/
-/*  <MODULE DESCRIPTION>												*/
+/*  The RecorderDemo contains a sample project that demonstrates the	*/
+/*	use of the PmodDA2, PmodMIC and BufferLib libraries included		*/
+/*	in the PmodLib Library												*/
 /*																		*/
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
-/* <MM/DD/YY>(<FIRST NAME><LAST INITIAL): <NOTES>						*/
+/* <12/09/11>(RossK): Created											*/
 /*																		*/
 /************************************************************************/
 
@@ -22,7 +24,6 @@
 #pragma config FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FPLLODIV = DIV_1, FWDTEN = OFF
 #pragma config POSCMOD = HS, FNOSC = PRIPLL, FPBDIV = DIV_2
 
-
 /* ------------------------------------------------------------ */
 /*				Include File Definitions						*/
 /* ------------------------------------------------------------ */
@@ -31,7 +32,6 @@
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
-
 int main(void)
 {
 	uint8_t BTN1Status = 0;

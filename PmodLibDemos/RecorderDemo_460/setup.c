@@ -1,18 +1,20 @@
 /************************************************************************/
 /*																		*/
-/*	<FILE NAME>	--	<BRIEF DESCRIPTION>         						*/
-/*																		*/
+/*	setup.c	--	contains function definitions for the RecorderDemo for	*/
+/*				the Cerebot 32MX4										*/
 /************************************************************************/
-/*	Author: 	<AUTHOR NAME> 											*/
-/*	Copyright (C) <YEAR> <ENTITY>										*/
+/*	Author: 	Ross Kristof											*/
+/*	Copyright (C) 2011 Ross Kristof										*/
 /************************************************************************/
 /*  Module Description: 												*/
-/*  <MODULE DESCRIPTION>												*/
+/*  The RecorderDemo contains a sample project that demonstrates the	*/
+/*	use of the PmodDA2, PmodMIC and BufferLib libraries included		*/
+/*	in the PmodLib Library												*/
 /*																		*/
 /************************************************************************/
 /*  Revision History:													*/
 /*																		*/
-/* <MM/DD/YY>(<FIRST NAME><LAST INITIAL): <NOTES>						*/
+/* <12/09/11>(RossK): Created											*/
 /*																		*/
 /************************************************************************/
 
@@ -24,8 +26,6 @@
 /* ------------------------------------------------------------ */
 /*				Procedure Definitions							*/
 /* ------------------------------------------------------------ */
-
-
 uint8_t RecorderInit(uint8_t BufferCount, uint16_t BufferSize)
 {
 	// Attempt to allocate buffers
