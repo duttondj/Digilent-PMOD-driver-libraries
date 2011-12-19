@@ -11,7 +11,7 @@
 /*  This file contains function definitions, data structures and        */
 /*  macros used in manipulating the Digilent PMODSF on                  */
 /*  the Digilent CEREBOT32MX4 and CEREBOT32MX7. For a complete          */
-/*  description of opeations and signalling see the manuals for         */
+/*  description of opeation and signaling see the manuals for           */
 /*  the ST M25P16(PmodSF-16) and M25P128(PmodSF-128)                    */
 /*                                                                      */
 /************************************************************************/
@@ -30,7 +30,7 @@
 #include <stdint.h>
 #include <plib.h>
 
-/*  Table 2 Protected Area Sizes (PMODSF-16)                                                                                  
+/* Protected Area Sizes (PMODSF-16)                                                                                  
 ** -----------------------------------------------------------------------------------------------------------------
 ** |Status Register Content|                                     Memory Content                                    |
 ** -----------------------------------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@
 ** |   1   |   1   |   1   | All sectors (32 sectors: 0 to 31)        | none                                       |
 ** -----------------------------------------------------------------------------------------------------------------
 **
-**  Table 2 Protected Area Sizes (PMODSF-128)                                                                                  
+** Protected Area Sizes (PMODSF-128)                                                                                  
 ** -----------------------------------------------------------------------------------------------------------------
 ** |Status Register Content|                                     Memory Content                                    |
 ** -----------------------------------------------------------------------------------------------------------------
@@ -62,7 +62,7 @@
 ** |   1   |   1   |   1   | All sectors (64 sectors, 128 Mb)         | none                                       |
 ** -----------------------------------------------------------------------------------------------------------------
 **
-** Table 3. Memory Organization (PMODSF-16)
+** Memory Organization (PMODSF-16)
 ** ------------------------------
 ** | Sector | Address |  Range  |
 ** ------------------------------
@@ -100,7 +100,7 @@
 ** |   0    | 000000h | 00FFFFh |
 ** ------------------------------
 **
-** Table 3. Memory Organization (PMODSF-128)
+** Memory Organization (PMODSF-128)
 ** ------------------------------
 ** | Sector | Address |  Range  |
 ** ------------------------------
@@ -170,36 +170,18 @@
 ** |    0   | 000000h | 03FFFFh |
 ** ------------------------------
 **
-** --------------------------------------------------------------------------------------------------
-** | Excerpt from PIC32 Familiy Reference Manual Chapter 23 section 23.3.7                          |
-** --------------------------------------------------------------------------------------------------
-** | The following equation defines the SCKx clock frequency as a function of SPIxBRG settings      |
-** |  Fsck = (Fpb) / 2 * (SPIxBRK + 1)                                                              |
-** |                                                                                                |
-** --------------------------------------------------------------------------------------------------
-** |                                       Sample SCKx Frequencies                                  |
-** --------------------------------------------------------------------------------------------------
-** | SPIxBRG Setting   |    0      |    15      |     31     |     63     |     85     |     127    |
-** --------------------------------------------------------------------------------------------------
-** | FPB = 50 MHz      | 25.00 MHz | 1.56 MHz   | 781.25 kHz | 390.63 kHz | 290.7 kHz  | 195.31 kHz |
-** | FPB = 40 MHz      | 20.00 MHz | 1.25 MHz   | 625.00 kHz | 312.50 kHz | 232.56 kHz | 156.25 kHz |
-** | FPB = 25 MHz      | 12.50 MHz | 781.25 kHz | 390.63 kHz | 195.31 kHz | 145.35 kHz | 97.66 kHz  |
-** | FPB = 20 MHz      | 10.00 MHz | 625.00 kHz | 312.50 kHz | 156.25 kHz | 116.28 kHz | 78.13 kHz  |
-** | FPB = 10 MHZ      | 5.00 MHz  | 312.50 kHz | 156.25 kHz | 78.13 kHz  | 58.14 kHz  | 39.06 kHz  |
-** --------------------------------------------------------------------------------------------------
-**
 ** ----------------------------------------------------------------------------------------------------------------------------
-** |                                                    PMODSF INSTRUCTION SET                                                |
+** |                                                    PMODSF INSTRUCTION SET                         |  Data Xfer Details   |
 ** ----------------------------------------------------------------------------------------------------------------------------
-** |                           |                                            |                          |Address|Dummy|  Data  |
-** |    Instruction            |                   Description              |One-byte Instruction Code |Bytes  |Bytes|  Bytes |
+** |                           |                                            |    Instruction Code      |Address|Dummy|  Data  |
+** |    Instruction (MACRO)    | Description (See M25P16/M25P28 Ref Manual) |  Binary   | Hex          |Bytes  |Bytes|  Bytes |
 ** |--------------------------------------------------------------------------------------------------------------------------|
 ** | PMODSF_WRITE_ENABLE       | Write Enable (WREN)                        | 0000 0110 | 06h          |   0   |  0  |   0    |
 ** | PMODSF_WRITE_DISABLE      | Write Disable (WRDI)                       | 0000 0100 | 04h          |   0   |  0  |   0    |
 ** | PMODSF_READ_ID            | Read Identification (RDID)                 | 1001 1111 | 9Fh          |   0   |  0  |1 to 3  | 
-** | PMODSF_READ_STATUS_REG    | Read Status Register (RDSR)                | 0000 0101 | 05h          |   0   |  0  |1 to 8  |
+** | PMODSF_READ_STATUS_REG    | Read Status Register (RDSR)                | 0000 0101 | 05h          |   0   |  0  |1 to INF|
 ** | PMODSF_WRITE_STATUS_REG   | Write Status Register (WRSR)               | 0000 0001 | 01h          |   0   |  0  |   1    |
-** | PMODSF_READ_DATA_BYTES    | Read Data Bytes (READ)                     | 0000 0011 | 03h          |   3   |  0  |1 to 8  |
+** | PMODSF_READ_DATA_BYTES    | Read Data Bytes (READ)                     | 0000 0011 | 03h          |   3   |  0  |1 to INF|
 ** | PMODSF_PAGE_PGM           | Page Program (PP)                          | 0000 0010 | 02h          |   3   |  0  |1 to 256|
 ** | PMODSF_SECTOR_ERASE       | Sector Erase (SE)                          | 1101 1000 | D8h          |   3   |  0  |   0    |
 ** | PMODSF_BULK_ERASE         | Bulk Erase (BE)                            | 1100 0111 | C7h          |   0   |  0  |   0    |
@@ -210,7 +192,6 @@
 ** |                           |--------------------------------------------|           |              |----------------------- 
 ** |                           | Release from Deep Power-down               |           |              |   0   |  0  |   0    |
 ** ----------------------------------------------------------------------------------------------------------------------------
-**   Items marked with a '#' have not been implimented 
 **   Items marked with a '*' are for the PmodSF-16 only
 */
 
@@ -263,12 +244,6 @@
 #define	PMODSD_MEM_TYPE_BYTE 1
 #define	PMODSD_MFID_BYTE 2
 
-//feature set definitions used in conditional compiling for processor type
-#define PIC32_300_400_SERIES ((__PIC32_FEATURE_SET__ >= 300) && (__PIC32_FEATURE_SET__ <= 499))
-#define PIC32_500_600_700_SERIES ((__PIC32_FEATURE_SET__ >= 500) && (__PIC32_FEATURE_SET__ <= 799))
-
-
-
 /*  PmodSFInit
 **
 **	Synopsis:
@@ -284,8 +259,7 @@
 **
 **  Opens the desired SPI channel in 8-bit mode as a master, enables the slave select bit,
 **  and sets the desired bit rate as a function of pbClock/bitRate.  Examples of peripheral bus
-**  bit rate combinations are available in the table labeld "Excerpt from PIC32 Familiy Reference 
-**  Manual Chapter 23 section 23.3.7" in pmodsf.h.
+**  bit rate combinations are available in the PIC32 Family Reference Manual.
 */
 void PmodSFInit(SpiChannel chn,uint32_t pbClock,uint32_t bitRate);
 
@@ -337,7 +311,7 @@ void PmodSFBlockWhileWriteInProgress(SpiChannel chn);
 **
 **	Synopsis:
 **  Enables writing to flash by setting the Write Enable Latch(WEL)
-**  bit on the selected chanel
+**  bit on the selected channel
 **
 **	Input: SpiChannel chn - Spi channel
 **
@@ -374,8 +348,8 @@ uint8_t PmodSFReadStatusRegister(SpiChannel chn);
 /*  PmodSFWriteDisable
 **
 **	Synopsis:
-**  Disable writing by resetting the Write Enable Latch(WEL)
-**  bit on the selected chanel
+**  Disable writing to flash by resetting the Write Enable Latch(WEL)
+**  bit on the selected channel
 **
 **	Input:  SpiChannel chn - Spi channel
 **
@@ -393,13 +367,13 @@ void PmodSFWriteDisable(SpiChannel chn);
 /*  PmodSFReadID
 **
 **	Synopsis:
-**  The Read Identification (RDID) instruction allows
-**  the 24-bit device identification to be read
-**  into a 32 bit unsigned integer 
+**  The Read Identification (RDID) reads the
+**  24-bit device identification to into a 32 bit 
+**  unsigned integer 
 **
 **	Input: SpiChannel chn - Spi channel
 **
-**  Returns: uin32_t => Bits 0 - 7:   Memory Capacity
+**  Returns: uint32_t => Bits 0 - 7:   Memory Capacity
 **                      Bits 8 - 15:  Memory Type
 **                      Bits 16- 23 : Manufacturer ID
 **	Errors: none
@@ -457,14 +431,13 @@ void PmodSFDeepPowerDown(SpiChannel chn);
 /*  PmodSFPageProgram
 **
 **	Synopsis:
-**  The Page Program (PP) instruction allows bytes to
-**  be programmed in the memory (changing bits from
-**  1 to 0).
+**  The Page Program (PP) instruction programs bytes into a single
+**  page of flash memory (changing bits from 1 to 0).
 **
 **	Input: SpiChannel chn - Spi channel
 **         uint32_t numBytes - number of bytes to write 
 **         uint8_t *data - data to write
-**         uint32_t address - 24bit repsresentation of the page address
+**         uint32_t address - 24bit representation of the page address
 **
 **  Returns: none
 **
@@ -483,14 +456,14 @@ void PmodSFPageProgram(SpiChannel chn,uint32_t numBytes,uint8_t *data,uint32_t a
 /*  PmodSFReadBytes
 **
 **	Synopsis:
-**  The Read Data bytes  instruction allows bytes to
-**  be read from memory into a buffer from the specified
-**  24-bit address on the SPI channel selected.
+**  The Read Data bytes  reads N number of bytes from flash memory 
+**  into a buffer from the specified 24-bit address on the SPI channel 
+**  selected.
 **
 **	Input: SpiChannel chn - Spi channel
 **         uint32_t numBytes - number of bytes to read
 **         uint8_t *data - buffer to store data read 
-**         uint32_t address - 24bit repsresentation of the page address
+**         uint32_t address - 24bit representation of the page address
 **
 **  Returns: none
 **
@@ -544,7 +517,7 @@ void PmodSFBulkErase(SpiChannel chn);
 **  Notes: Blocks while Write In Progress bit is set
 **         prior to performing operation
 **
-**  Decription: 
+**  Description: 
 **
 **  Status register is read in, a bitwise OR is performed on the bitmask passed in,
 **  an AND operation is performed on the value of the status register and the bitmask,

@@ -30,6 +30,14 @@
 /*				Local Type Definitions							*/
 /* ------------------------------------------------------------ */
 
+//Enum denoting motor direction
+typedef enum
+{
+	PMOD_HB5_DIR_CW = 0,   //Motor direction clockwise
+	PMOD_HB5_DIR_CCW   //Motor direction counter clockwise
+}PMODHB5_DIR;
+
+
 /* HBRIDGE:
 /* Maintains state for an instance of a PmodHB5
 /* Initialization example for OC2 on Cerebot32MX4:
@@ -52,25 +60,24 @@
 */
 typedef struct
 {
-	uint8_t quadPos;          	//quadrature encoding (Gray encoding)
+	uint8_t quadPos;          	//Quadrature encoding 
 	uint16_t sensorAport;     	//Port mask for sensor A
 	uint16_t sensorAportBit;  	//Bit mask for sensor A
 	uint16_t sensorBport;     	//Port mask for sensor B
 	uint16_t sensorBportBit;  	//Bit mask for sensorB
 	uint16_t directionPort;		//Port mask for direction
 	uint16_t directionPortBit;  //Bit mask for direction
-	uint32_t pulseCount;        //Quadrature encoding state changes/time period detetected
-	uint32_t pollCount;         //Number of quadrature encoding state polls taken 
+	uint32_t pulseCount;        //Quadrature encoding state changes/time period detected
+	uint32_t pollCount;         //Number of quadrature encoding state polls taken for current polling period
 	uint16_t rpm;               //Current motor RPM
 	uint16_t prevRpm;           //Previous motor RPM
-	uint8_t newDirection;       //New drirection of motor (PMOD_HB5_DIR_CW,PMOD_HB5_DIR_CCW)
-	uint8_t currentDirection;   //Current direction of motor (PMOD_HB5_DIR_CW,PMOD_HB5_DIR_CCW)
+	PMODHB5_DIR newDirection;       //New drirection of motor 
+	PMODHB5_DIR currentDirection;   //Current direction of motor 
 	uint8_t ocChannel;          //Output comparator channel, (1-5)
 	
 }HBRIDGE;
 
-#define PMOD_HB5_DIR_CW 0x0  //Motor direction clockwise
-#define PMOD_HB5_DIR_CCW 0x1 //motor direction counter clockwise
+
 
 /* ------------------------------------------------------------ */
 /*				Forward Declarations							*/
