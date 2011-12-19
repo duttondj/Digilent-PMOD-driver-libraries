@@ -8,7 +8,7 @@ xcopy /y /e ..\PmodLibDevTest\PmodJSTK\*.* ..\PmodLibSrc\PmodJSTK\
 xcopy /y /e ..\PmodLibDevTest\PmodMic\*.* ..\PmodLibSrc\PmodMic\
 xcopy /y /e ..\PmodLibDevTest\PmodSF\*.* ..\PmodLibSrc\PmodSF\
 xcopy /y /e ..\PmodLibDevTest\PmodDA2\*.* ..\PmodLibSrc\PmodDA2\
-xcopy /y /e ..\PmodLibDevTest\pmodlib.h ..\PmodLibSrc\
+xcopy /y  ..\PmodLibDevTest\pmodlib.h ..\PmodLibSrc\
 
 del /f /q ..\PmodLib\*
 xcopy /y /e ..\PmodLibDevTest\PmodACL\*.h ..\PmodLib\include\PmodACL\
@@ -18,4 +18,4 @@ xcopy /y /e ..\PmodLibDevTest\PmodJSTK\*.h ..\PmodLib\include\PmodJSTK\
 xcopy /y /e ..\PmodLibDevTest\PmodMic\*.h ..\PmodLib\include\PmodMic\
 xcopy /y /e ..\PmodLibDevTest\PmodSF\*.h ..\PmodLib\include\PmodSF\
 xcopy /y /e ..\PmodLibDevTest\PmodDA2\*.h ..\PmodLib\include\PmodDA2\
-xcopy /y /e ..\PmodLibDevTest\pmodlib.h ..\PmodLibSrc\include\
+xcopy /y  ..\PmodLibDevTest\pmodlib.h ..\PmodLib\include\

@@ -1,7 +1,7 @@
 /********************************************
 * README.txt for PmodLib library            *
 * Author: Ryan Hoffman                      *
-* Date: December 13, 2011                   *
+* Date: December 18, 2011                   *
 *********************************************/
 
 System Requirements:
@@ -14,9 +14,9 @@ For instructions on use refer to the programers reference guides in ./Programmer
 
 PmodLibArchive - PmodLib Library and Reference Manuals
           |
-          |-> PmodLib - header files and archive
+          |->PmodLib - header files and archive
           |
-          |-> PmodLibBuild - MPLAB Project for building processor specific archives
+          |->PmodLibBuild - MPLAB Project for building processor specific archives
           |
           |->PmodLibDevTest - Development environment and test harness
           |        
